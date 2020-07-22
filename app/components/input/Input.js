@@ -1,11 +1,11 @@
-import React, { useRef, useState } from 'react';
-import PropTypes from 'prop-types';
-import classnames from 'classnames';
-import { uid } from '../utils';
-import css from './Input.css';
+import React, { useRef, useState } from "react";
+import PropTypes from "prop-types";
+import classnames from "classnames";
+import { uid } from "../../utils";
+import css from "./Input.css";
 
-export const Input = (props) => {
-  const _id = useRef(uid('input'));
+export const Input = props => {
+  const _id = useRef(uid("input"));
   const {
     type,
     name,
@@ -20,11 +20,11 @@ export const Input = (props) => {
     error,
     id = _id.current,
     invalid,
-    required,
+    required
   } = props;
   const [focus, setFocus] = useState(false);
 
-  const handleOnChange = useRef((event) => {
+  const handleOnChange = useRef(event => {
     const { name, value } = event.target;
     onChange && onChange(event, name, value);
   });
@@ -33,7 +33,7 @@ export const Input = (props) => {
     [className]: className,
     [css.invalid]: invalid,
     [css.disabled]: disabled,
-    [css.focus]: focus,
+    [css.focus]: focus
   });
 
   return (
@@ -69,9 +69,9 @@ export const Input = (props) => {
 export default Input;
 
 Input.defaultProps = {
-  type: 'text',
+  type: "text",
   onChange: () => {},
-  onKeyPress: () => {},
+  onKeyPress: () => {}
 };
 
 Input.propTypes = {
@@ -88,5 +88,5 @@ Input.propTypes = {
   onChange: PropTypes.func,
   onKeyPress: PropTypes.func,
   placeholder: PropTypes.string,
-  required: PropTypes.bool,
+  required: PropTypes.bool
 };

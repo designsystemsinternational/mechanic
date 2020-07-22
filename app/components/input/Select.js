@@ -1,14 +1,15 @@
-import React, { Fragment, useRef, useState } from 'react';
-import PropTypes from 'prop-types';
-import classnames from 'classnames';
-import { uid } from '../utils';
-import css from './Select.css';
+import React, { Fragment, useRef, useState } from "react";
+import PropTypes from "prop-types";
+import classnames from "classnames";
+import { uid } from "../../utils";
+import css from "./Select.css";
 
-export const Select = (props) => {
-  const _id = useRef(uid('select'));
+export const Select = props => {
+  const _id = useRef(uid("select"));
   const {
     children,
     className,
+    onChange,
     defaultValue,
     disabled,
     error,
@@ -18,11 +19,11 @@ export const Select = (props) => {
     name,
     placeholder,
     required,
-    value,
+    value
   } = props;
   const [focus, setFocus] = useState(false);
 
-  const handleOnChange = useRef((event) => {
+  const handleOnChange = useRef(event => {
     const { name, value } = event.target;
     onChange && onChange(event, name, value);
   });
@@ -32,7 +33,7 @@ export const Select = (props) => {
     [css.focus]: focus,
     [css.withLabel]: label,
     [css.invalid]: invalid,
-    [css.disabled]: disabled,
+    [css.disabled]: disabled
   });
 
   return (
@@ -71,7 +72,7 @@ export const Select = (props) => {
 export default Select;
 
 Select.defaultProps = {
-  placeholder: 'Select...',
+  placeholder: "Select..."
 };
 
 Select.propTypes = {
@@ -86,5 +87,5 @@ Select.propTypes = {
   className: PropTypes.string,
   onChange: PropTypes.func,
   placeholder: PropTypes.string,
-  required: PropTypes.bool,
+  required: PropTypes.bool
 };

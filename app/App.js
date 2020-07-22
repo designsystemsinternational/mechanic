@@ -4,6 +4,8 @@ import { requireFunctions } from "./utils";
 
 import Function from "./pages/Function";
 import NotFound from "./pages/NotFound";
+import Nav from "./components/Nav";
+
 const functions = requireFunctions();
 const functionNames = Object.keys(functions);
 
@@ -16,9 +18,13 @@ const App = props => {
         {functionNames.map((name, i) => (
           <Route
             exact
-            key={name}
+            key={`route-${name}`}
             path={i == 0 ? ["/", `/${name}`] : `/${name}`}
-            render={() => <Function name={name} exports={functions[name]} />}
+            render={() => (
+              <Function name={name} exports={functions[name]}>
+                <Nav functions={functions} />
+              </Function>
+            )}
           />
         ))}
         <Route component={NotFound} />

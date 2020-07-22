@@ -1,11 +1,11 @@
-import React, { useRef, useState } from 'react';
-import PropTypes from 'prop-types';
-import classnames from 'classnames';
-import css from './Radio.css';
-import { uid } from '../utils';
+import React, { useRef, useState } from "react";
+import PropTypes from "prop-types";
+import classnames from "classnames";
+import css from "./Radio.css";
+import { uid } from "../../utils";
 
-export const Radio = (props) => {
-  const _id = useRef(uid('radio'));
+export const Radio = props => {
+  const _id = useRef(uid("radio"));
   const {
     name,
     value,
@@ -14,11 +14,11 @@ export const Radio = (props) => {
     onChange,
     className,
     disabled,
-    id = _id.current,
+    id = _id.current
   } = props;
   const [focus, setFocus] = useState(false);
 
-  const handleOnChange = useRef((event) => {
+  const handleOnChange = useRef(event => {
     const { name, value } = event.target;
     onChange && onChange(event, name, value);
   });
@@ -29,7 +29,7 @@ export const Radio = (props) => {
         className: className,
         [css.focus]: focus,
         [css.checked]: checked,
-        [css.disabled]: disabled,
+        [css.disabled]: disabled
       })}>
       <input
         checked={checked}
@@ -57,5 +57,5 @@ Radio.propTypes = {
   id: PropTypes.string,
   label: PropTypes.string,
   className: PropTypes.string,
-  onChange: PropTypes.func,
+  onChange: PropTypes.func
 };

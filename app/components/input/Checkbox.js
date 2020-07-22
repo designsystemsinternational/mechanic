@@ -1,11 +1,11 @@
-import React, { useRef } from 'react';
-import PropTypes from 'prop-types';
-import { uid } from '../utils';
-import classnames from 'classnames';
-import css from './Checkbox.css';
+import React, { useRef } from "react";
+import PropTypes from "prop-types";
+import { uid } from "../../utils";
+import classnames from "classnames";
+import css from "./Checkbox.css";
 
-export const Checkbox = (props) => {
-  const _id = useRef(uid('checkbox'));
+export const Checkbox = props => {
+  const _id = useRef(uid("checkbox"));
   const {
     className,
     checked,
@@ -14,10 +14,10 @@ export const Checkbox = (props) => {
     label,
     name,
     value,
-    onChange,
+    onChange
   } = props;
 
-  const handleOnChange = useRef((event) => {
+  const handleOnChange = useRef(event => {
     const { name, checked } = event.target;
     const returnValue = checked ? value : false;
     onChange && onChange(event, name, returnValue);
@@ -28,7 +28,7 @@ export const Checkbox = (props) => {
       className={classnames(css.root, {
         [className]: className,
         [css.checked]: checked,
-        [css.disabled]: disabled,
+        [css.disabled]: disabled
       })}>
       <input
         checked={checked}
@@ -45,7 +45,7 @@ export const Checkbox = (props) => {
 };
 Checkbox.defaultProps = {
   value: true,
-  onChange: () => {},
+  onChange: () => {}
 };
 Checkbox.propTypes = {
   name: PropTypes.string,
@@ -55,7 +55,7 @@ Checkbox.propTypes = {
   id: PropTypes.string,
   onChange: PropTypes.func.isRequired,
   checked: PropTypes.bool,
-  disabled: PropTypes.bool,
+  disabled: PropTypes.bool
 };
 
 export default Checkbox;
