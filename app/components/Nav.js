@@ -1,21 +1,21 @@
-import React, { useState } from "react";
+import React from "react";
 import Select from "./input/Select";
 import { useHistory } from "react-router-dom";
 import css from "./Nav.css";
 
 const Nav = ({ functions }) => {
-  const names = Object.keys(functions);
-  const [cur, setCur] = useState(names[0]);
   const history = useHistory();
+  const names = Object.keys(functions);
 
   const handleOnChange = (e, name, value) => {
-    setCur(value);
     history.push(`/${value}`);
   };
 
   return (
     <div className={css.root}>
-      <Select onChange={handleOnChange} value={cur}>
+      <Select
+        onChange={handleOnChange}
+        value={history.location.pathname.substring(1)}>
         {names.map(name => (
           <option key={`option-${name}`} value={name}>
             {name}
