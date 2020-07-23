@@ -1,2 +1,15 @@
 .root {
+  display: flex;
+}
+
+.root aside {
+  padding-right: 25px;
+  flex: 0 0 300px;
+  border-right: 1px solid var(--dust-gray);
+  min-height: 100vh;
+}
+
+.root main {
+  padding-left: 25px;
+  flex: 1;
 }
