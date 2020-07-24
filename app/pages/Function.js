@@ -5,40 +5,42 @@ import Button from "../components/input/Button";
 import {
   validateParameterTemplate,
   validateParameterValues,
-  runDesignFunction
+  runDesignFunction,
+  getTimeStamp,
+  download
 } from "../utils/mechanic";
 import css from "./Function.css";
 
-const Function = ({ exports, children }) => {
+const Function = ({ name, exports, children }) => {
   const [values, setValues] = useState({});
   const canvasParent = useRef();
 
-  const { parameters, handler } = exports;
-  const err1 = validateParameterTemplate(parameters);
+  const { params, handler } = exports;
+  const err1 = validateParameterTemplate(params);
   if (err1) {
     throw err1;
   }
 
-  const err2 = validateParameterValues(parameters, values);
+  const err2 = validateParameterValues(params, values);
   if (err2) {
     throw err2;
   }
 
-  const sizes = Object.keys(parameters.size);
+  const sizes = Object.keys(params.size);
 
   const handleOnChange = (e, name, value) => {
     setValues(Object.assign({}, values, { [name]: value }));
   };
 
-  const handleRun = () => {
-    console.log("run");
-    runDesignFunction(handler, parameters, values).then(el => {
-      canvasParent.current.appendChild(el);
-    });
+  const handleRun = async () => {
+    const [el, finalParams] = await runDesignFunction(handler, params, values);
+    canvasParent.current.appendChild(el);
   };
 
-  const handleDownload = () => {
-    console.log("download");
+  const handleDownload = async () => {
+    const [el, finalParams] = await runDesignFunction(handler, params, values);
+    const fileName = `${name}-${getTimeStamp()}`;
+    await download(el, finalParams, fileName);
   };
 
   return (
@@ -51,8 +53,7 @@ const Function = ({ exports, children }) => {
           value={values.size || "default"}>
           {sizes.map(size => (
             <option key={`size-${size}`} value={size}>
-              {size} ({parameters.size[size].width}x
-              {parameters.size[size].height})
+              {size} ({params.size[size].width}x{params.size[size].height})
             </option>
           ))}
         </Select>
@@ -67,9 +68,10 @@ const Function = ({ exports, children }) => {
 };
 
 Function.propTypes = {
+  name: PropTypes.string.isRequired,
   exports: PropTypes.shape({
     handler: PropTypes.func.isRequired,
-    parameters: PropTypes.object.isRequired
+    params: PropTypes.object.isRequired
   })
 };
 

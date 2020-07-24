@@ -13,7 +13,7 @@ export const handler = params => {
 // This will need to be parsed into a JSON file for the API
 // We will probably do this with a webpack loader
 // We also need a nicer API to create this file
-export const parameters = {
+export const params = {
   size: {
     default: {
       width: 400,
