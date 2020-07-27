@@ -3,28 +3,20 @@ import PropTypes from "prop-types";
 import Select from "../components/input/Select";
 import Button from "../components/input/Button";
 import {
-  validateParameterTemplate,
-  validateParameterValues,
+  validateParams,
+  validateValues,
+  validateSettings,
   createRunner,
   getTimeStamp
 } from "../utils/mechanic";
-import { download } from "../utils/download";
 import css from "./Function.css";
 
 const Function = ({ name, exports, children }) => {
   const [values, setValues] = useState({});
   const canvasParent = useRef();
 
-  const { params, handler } = exports;
-  const err1 = validateParameterTemplate(params);
-  if (err1) {
-    throw err1;
-  }
-
-  const err2 = validateParameterValues(params, values);
-  if (err2) {
-    throw err2;
-  }
+  const { handler, params, settings } = exports;
+  validate(params, values, settings);
 
   const sizes = Object.keys(params.size);
 
@@ -33,20 +25,18 @@ const Function = ({ name, exports, children }) => {
   };
 
   const handleRun = async () => {
-    const runner = createRunner(handler, params, values);
-    runner.addEventListener("init", (el, finalParams) => {
-      // clear
-      canvasParent.current.appendChild(el);
+    const runner = createRunner(handler, params, settings, values, {
+      preview: true
     });
-    runner.addEventListener("done", (el, finalParams) => {
-      // Only insert if init has not run
+    runner.addEventListener("init", (el, finalParams) => {
+      canvasParent.current.innerHTML = "";
       canvasParent.current.appendChild(el);
     });
     runner.run();
   };
 
   const handleDownload = async () => {
-    const runner = createRunner(handler, params, values);
+    const runner = createRunner(handler, params, settings, values);
     runner.addEventListener("init", (el, finalParams) => {
       // Show loading animation?
     });
@@ -54,8 +44,7 @@ const Function = ({ name, exports, children }) => {
       // Tick frames in loading animation?
     });
     runner.addEventListener("done", (el, finalParams) => {
-      const fileName = `${name}-${getTimeStamp()}`;
-      download(el, fileName);
+      runner.download(`${name}-${getTimeStamp()}`);
     });
     runner.run();
   };
@@ -82,6 +71,23 @@ const Function = ({ name, exports, children }) => {
       </main>
     </div>
   );
+};
+
+const validate = (params, values, settings) => {
+  const err1 = validateParams(params);
+  if (err1) {
+    throw err1;
+  }
+
+  const err2 = validateValues(params, values);
+  if (err2) {
+    throw err2;
+  }
+
+  const err3 = validateSettings(settings);
+  if (err3) {
+    throw err3;
+  }
 };
 
 Function.propTypes = {

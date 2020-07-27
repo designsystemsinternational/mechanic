@@ -34,4 +34,6 @@ export const params = {
   }
 };
 
-export const settings = {};
+export const settings = {
+  type: "image"
+};
