@@ -1,4 +1,4 @@
-export const handler = params => {
+export const handler = (params, mechanic) => {
   const canvas = document.createElement("canvas");
   canvas.width = params.width;
   canvas.height = params.height;
@@ -7,7 +7,7 @@ export const handler = params => {
   ctx.fillRect(0, 0, params.width, params.height);
   ctx.fillStyle = "#00FFFF";
   ctx.fillRect(100, 100, params.width - 200, params.height - 200);
-  return canvas;
+  mechanic.done(canvas);
 };
 
 // This will need to be parsed into a JSON file for the API
@@ -33,3 +33,5 @@ export const params = {
     }
   }
 };
+
+export const settings = {};

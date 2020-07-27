@@ -60,33 +60,52 @@ export const getParameterValues = (params, values = {}) => {
 };
 
 /**
- * Runs a design function
+ * Creates a runner for a design function
  * @param {object} func - The design function
  * @param {object} params - Parameter template from the design function
  * @param {object} values - Values for some or all of the parameters
  */
-export const runDesignFunction = async (handler, params, values = {}) => {
+export const createRunner = (handler, params, values = {}) => {
   const finalParams = getParameterValues(params, values);
-  const el = await handler(finalParams);
-  return [el, finalParams];
+  const runner = createEventDispatcher();
+  runner.run = () => {
+    handler(finalParams, {
+      init: el => runner.dispatch("init", [el, finalParams]),
+      frame: el => runner.dispatch("frame", [el, finalParams]),
+      done: el => runner.dispatch("done", [el, finalParams])
+    });
+  };
+  return runner;
 };
 
 /**
- * Download the output of a design function
- * @param {HTMLCanvasElement|SVGElement} el - Element returned from the design function
- * @param {object} finalParams - Final parameters returned from the design function
+ * Creates an event dispatcher
  */
-export const download = async (el, finalParams, fileName) => {
-  if (el instanceof HTMLCanvasElement) {
-    await downloadCanvas(el, finalParams, fileName);
-  } else {
-    throw `Can not download design function response`;
-  }
-};
-
-const downloadCanvas = async (el, finalParams, fileName) => {
-  const link = document.createElement("a");
-  link.download = `${fileName}.png`;
-  link.href = el.toDataURL();
-  link.click();
+export const createEventDispatcher = () => {
+  const listeners = {};
+  return {
+    addEventListener: (eventName, func) => {
+      if (!listeners.hasOwnProperty(eventName)) {
+        listeners[eventName] = [];
+      }
+      listeners[eventName].push(func);
+    },
+    removeEventListener: (eventName, func) => {
+      if (!listeners.hasOwnProperty(eventName)) {
+        return;
+      }
+      const idx = listeners[eventName].findIndex(f => f === func);
+      if (idx > -1) {
+        listeners[eventName].splice(idx, 1);
+      }
+    },
+    dispatch: (eventName, eventData) => {
+      if (!listeners.hasOwnProperty(eventName)) {
+        return;
+      }
+      for (let listener of listeners[eventName]) {
+        listener.apply(this, eventData);
+      }
+    }
+  };
 };

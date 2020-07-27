@@ -5,10 +5,10 @@ import Button from "../components/input/Button";
 import {
   validateParameterTemplate,
   validateParameterValues,
-  runDesignFunction,
-  getTimeStamp,
-  download
+  createRunner,
+  getTimeStamp
 } from "../utils/mechanic";
+import { download } from "../utils/download";
 import css from "./Function.css";
 
 const Function = ({ name, exports, children }) => {
@@ -33,14 +33,31 @@ const Function = ({ name, exports, children }) => {
   };
 
   const handleRun = async () => {
-    const [el, finalParams] = await runDesignFunction(handler, params, values);
-    canvasParent.current.appendChild(el);
+    const runner = createRunner(handler, params, values);
+    runner.addEventListener("init", (el, finalParams) => {
+      // clear
+      canvasParent.current.appendChild(el);
+    });
+    runner.addEventListener("done", (el, finalParams) => {
+      // Only insert if init has not run
+      canvasParent.current.appendChild(el);
+    });
+    runner.run();
   };
 
   const handleDownload = async () => {
-    const [el, finalParams] = await runDesignFunction(handler, params, values);
-    const fileName = `${name}-${getTimeStamp()}`;
-    await download(el, finalParams, fileName);
+    const runner = createRunner(handler, params, values);
+    runner.addEventListener("init", (el, finalParams) => {
+      // Show loading animation?
+    });
+    runner.addEventListener("frame", (el, finalParams) => {
+      // Tick frames in loading animation?
+    });
+    runner.addEventListener("done", (el, finalParams) => {
+      const fileName = `${name}-${getTimeStamp()}`;
+      download(el, fileName);
+    });
+    runner.run();
   };
 
   return (
@@ -71,7 +88,8 @@ Function.propTypes = {
   name: PropTypes.string.isRequired,
   exports: PropTypes.shape({
     handler: PropTypes.func.isRequired,
-    params: PropTypes.object.isRequired
+    params: PropTypes.object.isRequired,
+    settings: PropTypes.object.isRequired
   })
 };
 
