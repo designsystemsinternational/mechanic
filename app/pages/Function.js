@@ -35,7 +35,7 @@ const Function = ({ name, exports, children }) => {
     runner.run();
   };
 
-  const handleDownload = async () => {
+  const handleExport = async () => {
     const runner = createRunner(handler, params, settings, values);
     runner.addEventListener("init", (el, finalParams) => {
       // Show loading animation?
@@ -64,7 +64,7 @@ const Function = ({ name, exports, children }) => {
           ))}
         </Select>
         <Button onClick={handleRun}>Run</Button>
-        <Button onClick={handleDownload}>Download</Button>
+        <Button onClick={handleExport}>Export</Button>
       </aside>
       <main>
         <div ref={canvasParent}></div>

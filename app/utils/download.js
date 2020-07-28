@@ -1,6 +1,8 @@
-export const download = (el, fileName) => {
-  if (el instanceof HTMLCanvasElement) {
-    _download(el.toDataURL(), fileName, "image/png");
+export const download = (data, fileName) => {
+  if (data instanceof HTMLCanvasElement) {
+    _download(data.toDataURL(), fileName, "image/png");
+  } else if (data instanceof Blob) {
+    _download(data, fileName, "video/webm");
   }
 };
 

@@ -11,12 +11,12 @@ export const handler = async (params, mechanic) => {
     ctx.fillRect(0, 0, params.width, params.height);
     ctx.fillStyle = "#00FFFF";
     ctx.fillRect(x, params.height / 2, params.width / 3, params.width / 3);
-    mechanic.addFrame(canvas);
+    mechanic.frame(canvas);
 
     x++;
 
     if (x < params.width) {
-      window.requestAnimationFrame(drawFrame);
+      mechanic.requestAnimationFrame(drawFrame);
     } else {
       mechanic.done(canvas);
     }

@@ -1,4 +1,5 @@
 import { download } from "./download";
+import WebMWriter from "./webm-writer";
 
 // These utils should probably be moved to a mechanic-utils package
 const isObject = obj => obj && typeof obj === "object";
@@ -107,6 +108,13 @@ class Runner {
     this.settings = settings;
     this.opts = opts;
 
+    if (settings.type === "video" && !opts.preview) {
+      this.videoWriter = new WebMWriter({
+        quality: 0.95,
+        frameRate: 60
+      });
+    }
+
     this.init = this.init.bind(this);
     this.frame = this.frame.bind(this);
     this.done = this.done.bind(this);
@@ -116,7 +124,11 @@ class Runner {
     this.handler(this.finalParams, {
       init: this.init,
       frame: this.frame,
-      done: this.done
+      done: this.done,
+      // A raf implementation that bypasses on export
+      requestAnimationFrame: this.opts.preview
+        ? window.requestAnimationFrame.bind(window)
+        : func => func()
     });
   }
 
@@ -132,6 +144,10 @@ class Runner {
       throw "The frame() function can only be used for videos";
     }
 
+    if (this.videoWriter) {
+      this.videoWriter.addFrame(el);
+    }
+
     if (!this.hasDispatched("init")) {
       this.dispatch("init", [el, this.finalParams]);
     }
@@ -139,7 +155,17 @@ class Runner {
   }
 
   done(el) {
-    this.doneCanvas = el;
+    if (typeof el === "string") {
+      const div = document.createElement("div");
+      div.innerHTML = el;
+      el = div.childNodes[0];
+      this.doneSVG = el;
+    } else if (this.videoWriter) {
+      this.doneVideoWriter = this.videoWriter.complete();
+    } else if (el instanceof HTMLCanvasElement) {
+      this.doneCanvas = el;
+    }
+
     if (!this.hasDispatched("init")) {
       this.dispatch("init", [el, this.finalParams]);
     }
@@ -151,12 +177,39 @@ class Runner {
 
   download(fileName) {
     if (this.hasDispatched("done")) {
-      if (this.settings.type === "image") {
+      if (this.doneSVG) {
+        const serializer = new XMLSerializer();
+        let source = serializer.serializeToString(this.doneSVG);
+        if (
+          !source.match(/^<svg[^>]+xmlns="http\:\/\/www\.w3\.org\/2000\/svg"/)
+        ) {
+          source = source.replace(
+            /^<svg/,
+            '<svg xmlns="http://www.w3.org/2000/svg"'
+          );
+        }
+        if (!source.match(/^<svg[^>]+"http\:\/\/www\.w3\.org\/1999\/xlink"/)) {
+          source = source.replace(
+            /^<svg/,
+            '<svg xmlns:xlink="http://www.w3.org/1999/xlink"'
+          );
+        }
+        source = '<?xml version="1.0" standalone="no"?>\r\n' + source;
+        const url =
+          "data:image/svg+xml;charset=utf-8," + encodeURIComponent(source);
+        const link = document.createElement("a");
+        link.download = `${fileName}.svg`;
+        link.href = url;
+        link.click();
+      } else if (this.doneCanvas) {
         const link = document.createElement("a");
         link.download = `${fileName}.png`;
         link.href = this.doneCanvas.toDataURL();
         link.click();
-      } else if (this.settings.type === "video") {
+      } else if (this.doneVideoWriter) {
+        this.doneVideoWriter.then(blob => {
+          download(blob, `${fileName}.webm`);
+        });
       }
     } else {
       throw "The download() function can only be called after the done event";
