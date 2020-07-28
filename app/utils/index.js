@@ -20,3 +20,16 @@ export const requireFunctions = () => {
   });
   return functions;
 };
+
+/**
+ * Returns a timestamp to be used in a filename
+ */
+export const getTimeStamp = () => {
+  const now = new Date();
+  const year = now.getFullYear();
+  const month = `${now.getMonth() + 1}`.padStart(2, "0");
+  const day = `${now.getDate()}`.padStart(2, "0");
+  const hour = `${now.getHours()}`.padStart(2, "0");
+  const minute = `${now.getMinutes()}`.padStart(2, "0");
+  return `${year}-${month}-${day}-${hour}-${minute}`;
+};

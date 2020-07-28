@@ -12,4 +12,5 @@
 .root main {
   padding-left: 25px;
   flex: 1;
+  min-height: 100vh;
 }

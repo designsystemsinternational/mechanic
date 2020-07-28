@@ -1,24 +1,25 @@
 export const handler = async (params, mechanic) => {
-  const canvas = document.createElement("canvas");
-  canvas.width = params.width;
-  canvas.height = params.height;
-  const ctx = canvas.getContext("2d");
-
+  const r = params.width / 3;
   let x = 0;
 
   const drawFrame = () => {
-    ctx.fillStyle = "#FF0000";
-    ctx.fillRect(0, 0, params.width, params.height);
-    ctx.fillStyle = "#00FFFF";
-    ctx.fillRect(x, params.height / 2, params.width / 3, params.width / 3);
-    mechanic.frame(canvas);
+    const svg = `<svg width="${params.width}" height="${params.height}">
+      <rect x="0" y="0" width="${params.width}" height="${
+      params.height
+    }" stroke="none" fill="red" />
+      <ellipse cx="${x}" cy="${
+      params.height / 2
+    }" rx="${r}" ry="${r}" stroke="none" fill="cyan" />
+    </svg>`;
+
+    mechanic.frame(svg);
 
     x++;
 
     if (x < params.width) {
       mechanic.requestAnimationFrame(drawFrame);
     } else {
-      mechanic.done(canvas);
+      mechanic.done(svg);
     }
   };
 
@@ -50,6 +51,6 @@ export const params = {
 };
 
 export const settings = {
-  returns: "canvas",
+  returns: "svgString",
   type: "video"
 };

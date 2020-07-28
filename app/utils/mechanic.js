@@ -6,23 +6,10 @@ const isObject = obj => obj && typeof obj === "object";
 const hasKey = (obj, key) => obj.hasOwnProperty(key);
 
 /**
- * Returns a timestamp to be used in a filename
- */
-export const getTimeStamp = () => {
-  const now = new Date();
-  const year = now.getFullYear();
-  const month = `${now.getMonth() + 1}`.padStart(2, "0");
-  const day = `${now.getDate()}`.padStart(2, "0");
-  const hour = `${now.getHours()}`.padStart(2, "0");
-  const minute = `${now.getMinutes()}`.padStart(2, "0");
-  return `${year}-${month}-${day}-${hour}-${minute}`;
-};
-
-/**
  * Receives the parameter template and checks that it is valid
  * @param {object} params - Parameter template from the design function
  */
-export const validateParams = params => {
+const validateParams = params => {
   if (!isObject(params.size)) {
     return `Parameter template must have a size object`;
   }
@@ -38,7 +25,7 @@ export const validateParams = params => {
  * @param {object} params - Parameter template from the design function
  * @param {object} values - Values for some or all of the parameters
  */
-export const validateValues = (params, values = {}) => {
+const validateValues = (params, values = {}) => {
   // Validate that the size is specified in the template
   if (hasKey(values, "size") && !hasKey(params.size, values.size)) {
     return `Supplied size parameter is not available in the template: ${values.size}`;
@@ -50,13 +37,19 @@ export const validateValues = (params, values = {}) => {
  * Receives the settings from a function and validates it.
  * @param {object} settings - Design function settings
  */
-export const validateSettings = settings => {
+const validateSettings = settings => {
   // Validate that it has a type
   if (!hasKey(settings, "type")) {
     return `The design function must have a type in its settings export`;
   }
   if (!["image", "video"].includes(settings.type)) {
     return `Wrong type in design function settings: ${settings.type}`;
+  }
+  if (!hasKey(settings, "returns")) {
+    return `The design function must have a returns in its settings export`;
+  }
+  if (!["svgString", "canvas", "svg"].includes(settings.returns)) {
+    return `Wrong returns in design function settings: ${settings.returns}`;
   }
   return null;
 };
@@ -68,51 +61,68 @@ export const validateSettings = settings => {
  * @param {object} params - Parameter template from the design function
  * @param {object} values - Values for some or all of the parameters
  */
-export const getParameterValues = (params, values = {}) => {
+const getParameterValues = (params, values = {}) => {
   const size = values.size || "default";
-  return {
-    size,
-    width: params.size[size].width,
-    height: params.size[size].height
-  };
+  let width = params.size[size].width;
+  let height = params.size[size].height;
+  if (
+    values.scaleDownToFit &&
+    (values.scaleDownToFit.width < width || values.scaleDownToFit.height < height)
+  ) {
+    const ratioWidth = values.scaleDownToFit.width ? values.scaleDownToFit.width / width : 1;
+    const ratioHeight = values.scaleDownToFit.height ? values.scaleDownToFit.height / height : 1;
+    const ratio = ratioWidth < ratioHeight ? ratioWidth : ratioHeight;
+    width = Math.floor(width * ratio);
+    height = Math.floor(height * ratio);
+  }
+  return { size, width, height };
 };
 
 /**
- * Creates a runner for a design function
+ * A class to run Mechanic design functions
  * @param {object} handler - The design function
  * @param {object} params - Parameter template from the design function
  * @param {object} values - Values for some or all of the parameters
  * @param {object} settings - Settings for the design function
  * @param {object} opts - Options for the design function
  */
-export const createRunner = (
-  handler,
-  params,
-  settings,
-  values = {},
-  opts = {}
-) => {
-  const finalParams = getParameterValues(params, values);
-  return new Runner(handler, finalParams, settings, opts);
-};
+export class Mechanic {
+  constructor(handler, params, settings, values = {}, opts = {}) {
+    const err1 = validateParams(params);
+    if (err1) {
+      throw err1;
+    }
 
-/**
- * Creates an event dispatcher
- */
-class Runner {
-  constructor(handler, finalParams, settings, opts) {
+    const err2 = validateValues(params, values);
+    if (err2) {
+      throw err2;
+    }
+
+    const err3 = validateSettings(settings);
+    if (err3) {
+      throw err3;
+    }
+
+    this.handler = handler;
+    this.finalParams = getParameterValues(params, values);
+    this.settings = settings;
+    this.values = values;
+    this.opts = opts;
+
     this.listeners = {};
     this.dispatches = {};
-    this.handler = handler;
-    this.finalParams = finalParams;
-    this.settings = settings;
-    this.opts = opts;
 
     if (settings.type === "video" && !opts.preview) {
       this.videoWriter = new WebMWriter({
         quality: 0.95,
         frameRate: 60
       });
+    }
+
+    if (settings.type === "video" && settings.returns === "svgString") {
+      this.svgCanvas = document.createElement("canvas");
+      this.svgCanvas.width = finalParams.width;
+      this.svgCanvas.height = finalParams.height;
     }
 
     this.init = this.init.bind(this);
@@ -144,7 +154,12 @@ class Runner {
       throw "The frame() function can only be used for videos";
     }
 
+    if (this.settings.returns === "svgString") {
+      el = stringToSVG(el);
+    }
+
     if (this.videoWriter) {
+      // Convert to canvas if needed here!
       this.videoWriter.addFrame(el);
     }
 
@@ -156,9 +171,7 @@ class Runner {
 
   done(el) {
     if (typeof el === "string") {
-      const div = document.createElement("div");
-      div.innerHTML = el;
-      el = div.childNodes[0];
+      el = stringToSVG(el);
       this.doneSVG = el;
     } else if (this.videoWriter) {
       this.doneVideoWriter = this.videoWriter.complete();
@@ -180,23 +193,14 @@ class Runner {
       if (this.doneSVG) {
         const serializer = new XMLSerializer();
         let source = serializer.serializeToString(this.doneSVG);
-        if (
-          !source.match(/^<svg[^>]+xmlns="http\:\/\/www\.w3\.org\/2000\/svg"/)
-        ) {
-          source = source.replace(
-            /^<svg/,
-            '<svg xmlns="http://www.w3.org/2000/svg"'
-          );
+        if (!source.match(/^<svg[^>]+xmlns="http\:\/\/www\.w3\.org\/2000\/svg"/)) {
+          source = source.replace(/^<svg/, '<svg xmlns="http://www.w3.org/2000/svg"');
         }
         if (!source.match(/^<svg[^>]+"http\:\/\/www\.w3\.org\/1999\/xlink"/)) {
-          source = source.replace(
-            /^<svg/,
-            '<svg xmlns:xlink="http://www.w3.org/1999/xlink"'
-          );
+          source = source.replace(/^<svg/, '<svg xmlns:xlink="http://www.w3.org/1999/xlink"');
         }
         source = '<?xml version="1.0" standalone="no"?>\r\n' + source;
-        const url =
-          "data:image/svg+xml;charset=utf-8," + encodeURIComponent(source);
+        const url = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(source);
         const link = document.createElement("a");
         link.download = `${fileName}.svg`;
         link.href = url;
@@ -253,3 +257,11 @@ class Runner {
     return this.dispatches[eventName] > 0;
   }
 }
+
+// Helpers
+
+const stringToSVG = svgString => {
+  const div = document.createElement("div");
+  div.innerHTML = svgString;
+  return div.childNodes[0];
+};

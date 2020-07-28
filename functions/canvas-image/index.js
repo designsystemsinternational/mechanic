@@ -35,5 +35,6 @@ export const params = {
 };
 
 export const settings = {
+  returns: "canvas",
   type: "image"
 };

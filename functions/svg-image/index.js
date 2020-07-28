@@ -36,5 +36,6 @@ export const params = {
 };
 
 export const settings = {
+  returns: "svgString",
   type: "image"
 };

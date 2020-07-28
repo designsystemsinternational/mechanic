@@ -2,51 +2,62 @@ import React, { useState, useRef } from "react";
 import PropTypes from "prop-types";
 import Select from "../components/input/Select";
 import Button from "../components/input/Button";
-import {
-  validateParams,
-  validateValues,
-  validateSettings,
-  createRunner,
-  getTimeStamp
-} from "../utils/mechanic";
+import Checkbox from "../components/input/Checkbox";
+import { Mechanic } from "../utils/mechanic";
+import { getTimeStamp } from "../utils";
 import css from "./Function.css";
 
 const Function = ({ name, exports, children }) => {
   const [values, setValues] = useState({});
+  const [fastPreview, setFastPreview] = useState(false);
   const canvasParent = useRef();
+  const mainRef = useRef();
 
   const { handler, params, settings } = exports;
-  validate(params, values, settings);
-
   const sizes = Object.keys(params.size);
 
   const handleOnChange = (e, name, value) => {
     setValues(Object.assign({}, values, { [name]: value }));
   };
 
-  const handleRun = async () => {
-    const runner = createRunner(handler, params, settings, values, {
+  const handlePreview = async () => {
+    const finalValues = Object.assign({}, values);
+    if (fastPreview) {
+      const bounds = mainRef.current.getBoundingClientRect();
+      finalValues.scaleDownToFit = {
+        width: bounds.width,
+        height: bounds.height
+      };
+    }
+    const mechanic = new Mechanic(handler, params, settings, finalValues, {
       preview: true
     });
-    runner.addEventListener("init", (el, finalParams) => {
+    mechanic.addEventListener("init", (el, finalParams) => {
       canvasParent.current.innerHTML = "";
       canvasParent.current.appendChild(el);
     });
-    runner.run();
+    mechanic.addEventListener("frame", (el, finalParams) => {
+      // Only if the element changed (HACK! React for SVG?)
+      if (el !== canvasParent.current.childNodes[0]) {
+        canvasParent.current.innerHTML = "";
+        canvasParent.current.appendChild(el);
+      }
+    });
+    mechanic.run();
   };
 
   const handleExport = async () => {
-    const runner = createRunner(handler, params, settings, values);
-    runner.addEventListener("init", (el, finalParams) => {
+    const mechanic = new Mechanic(handler, params, settings, values);
+    mechanic.addEventListener("init", (el, finalParams) => {
       // Show loading animation?
     });
-    runner.addEventListener("frame", (el, finalParams) => {
+    mechanic.addEventListener("frame", (el, finalParams) => {
       // Tick frames in loading animation?
     });
-    runner.addEventListener("done", (el, finalParams) => {
-      runner.download(`${name}-${getTimeStamp()}`);
+    mechanic.addEventListener("done", (el, finalParams) => {
+      mechanic.download(`${name}-${getTimeStamp()}`);
     });
-    runner.run();
+    mechanic.run();
   };
 
   return (
@@ -63,31 +74,20 @@ const Function = ({ name, exports, children }) => {
             </option>
           ))}
         </Select>
-        <Button onClick={handleRun}>Run</Button>
+        <Checkbox
+          label="Fast Preview"
+          checked={fastPreview}
+          onChange={e => setFastPreview(e.target.checked)}
+        />
+        <br />
+        <Button onClick={handlePreview}>Preview</Button>
         <Button onClick={handleExport}>Export</Button>
       </aside>
-      <main>
+      <main ref={mainRef}>
         <div ref={canvasParent}></div>
       </main>
     </div>
   );
-};
-
-const validate = (params, values, settings) => {
-  const err1 = validateParams(params);
-  if (err1) {
-    throw err1;
-  }
-
-  const err2 = validateValues(params, values);
-  if (err2) {
-    throw err2;
-  }
-
-  const err3 = validateSettings(settings);
-  if (err3) {
-    throw err3;
-  }
 };
 
 Function.propTypes = {
