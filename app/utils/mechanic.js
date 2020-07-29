@@ -91,22 +91,19 @@ const addDefaultValues = (params, values = {}) => {
 
 /**
  * A class to run Mechanic design functions
- * @param {object} handler - The design function
+ * @param {object} exports - An object with .handler, .params, and .settings exports
  * @param {object} params - Parameter template from the design function
  * @param {object} values - Values for some or all of the parameters
  * @param {object} settings - Settings for the design function
  * @param {object} opts - Options for the design function
  */
 export class Mechanic {
-  constructor(handler, params, settings, values = {}, opts = {}) {
+  constructor(exports, opts = {}) {
+    const { handler, params, settings } = exports;
+
     const err1 = validateParams(params);
     if (err1) {
       throw err1;
-    }
-
-    const err2 = validateValues(params, values);
-    if (err2) {
-      throw err2;
     }
 
     const err3 = validateSettings(settings);
@@ -115,10 +112,9 @@ export class Mechanic {
     }
 
     this.handler = handler;
+    this.params = params;
     this.settings = settings;
-    this.values = values;
     this.opts = opts;
-    this.payload = addDefaultValues(params, values);
 
     this.listeners = {};
     this.dispatches = {};
@@ -131,9 +127,9 @@ export class Mechanic {
     }
 
     if (settings.type === "video" && settings.returns === "svgString") {
-      this.svgCanvas = document.createElement("canvas");
-      this.svgCanvas.width = this.payload.width;
-      this.svgCanvas.height = this.payload.height;
+      this.cacheCanvas = document.createElement("canvas");
+      this.cacheCanvas.width = this.params.size.default.width;
+      this.cacheCanvas.height = this.params.size.default.height;
     }
 
     this.init = this.init.bind(this);
@@ -141,19 +137,32 @@ export class Mechanic {
     this.done = this.done.bind(this);
   }
 
-  run() {
-    // TODO: This needs to run in an iframe, and the random seed
-    // needs to run in that iframe too.
-    if (this.settings.usesRandom) {
-      if (!this.payload.randomSeed) {
-        // Get random seed
-        this.payload.randomSeed = seedrandom(null, { global: true });
-      }
-      // Lock random to a specific seed
-      seedrandom(this.payload.randomSeed, { global: true });
+  run(values = {}) {
+    const err2 = validateValues(this.params, values);
+    if (err2) {
+      throw err2;
     }
 
-    this.handler(this.payload, {
+    this.values = addDefaultValues(this.params, values);
+
+    // Change dimensions of cacheCanvas if needed
+    if (this.cacheCanvas) {
+      if (this.values.width !== this.cacheCanvas.width) {
+        this.cacheCanvas.width = this.values.width;
+      }
+      if (this.values.height !== this.cacheCanvas.height) {
+        this.cacheCanvas.height = this.values.height;
+      }
+    }
+
+    if (this.settings.usesRandom) {
+      if (!this.values.randomSeed) {
+        this.values.randomSeed = seedrandom(null, { global: true });
+      }
+      seedrandom(this.values.randomSeed, { global: true });
+    }
+
+    this.handler(this.values, {
       init: this.init,
       frame: this.frame,
       done: this.done,
@@ -168,7 +177,7 @@ export class Mechanic {
   // ----------------------------------------------------
 
   init(el) {
-    this.dispatch("init", [el, this.payload]);
+    this.dispatch("init", [el, this.values]);
   }
 
   frame(el) {
@@ -181,14 +190,14 @@ export class Mechanic {
     }
 
     if (this.videoWriter) {
-      // Convert to canvas if needed here!
+      // TODO: Convert to SVG to canvas if needed here!
       this.videoWriter.addFrame(el);
     }
 
     if (!this.hasDispatched("init")) {
-      this.dispatch("init", [el, this.payload]);
+      this.dispatch("init", [el, this.values]);
     }
-    this.dispatch("frame", [el, this.payload]);
+    this.dispatch("frame", [el, this.values]);
   }
 
   done(el) {
@@ -202,9 +211,9 @@ export class Mechanic {
     }
 
     if (!this.hasDispatched("init")) {
-      this.dispatch("init", [el, this.payload]);
+      this.dispatch("init", [el, this.values]);
     }
-    this.dispatch("done", [el, this.payload]);
+    this.dispatch("done", [el, this.values]);
   }
 
   // Download
@@ -223,18 +232,12 @@ export class Mechanic {
         }
         source = '<?xml version="1.0" standalone="no"?>\r\n' + source;
         const url = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(source);
-        const link = document.createElement("a");
-        link.download = `${fileName}.svg`;
-        link.href = url;
-        link.click();
+        download(url, `${fileName}.svg`, "image/svg+xml");
       } else if (this.doneCanvas) {
-        const link = document.createElement("a");
-        link.download = `${fileName}.png`;
-        link.href = this.doneCanvas.toDataURL();
-        link.click();
+        download(this.doneCanvas.toDataURL(), `${fileName}.png`, "image/png");
       } else if (this.doneVideoWriter) {
         this.doneVideoWriter.then(blob => {
-          download(blob, `${fileName}.webm`);
+          download(blob, `${fileName}.webm`, "video/webm");
         });
       }
     } else {

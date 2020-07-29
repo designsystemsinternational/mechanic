@@ -1,11 +1,3 @@
-export const download = (data, fileName) => {
-  if (data instanceof HTMLCanvasElement) {
-    _download(data.toDataURL(), fileName, "image/png");
-  } else if (data instanceof Blob) {
-    _download(data, fileName, "video/webm");
-  }
-};
-
 /**
  * Trigger a file download from JavaScript
  * (Ported from http://danml.com/download.html)
@@ -13,7 +5,7 @@ export const download = (data, fileName) => {
  * @param {string} strFileName - Name of file to be downloaded
  * @param {string} strMineType - The MIME content-type of the file to download
  */
-const _download = (data, strFileName, strMimeType) => {
+export const download = (data, strFileName, strMimeType) => {
   var self = window, // this script is only for browsers anyway...
     defaultMime = "application/octet-stream", // this default mime also triggers iframe downloads
     mimeType = strMimeType || defaultMime,
@@ -67,10 +59,7 @@ const _download = (data, strFileName, strMimeType) => {
     }
   } //end if dataURL passed?
 
-  blob =
-    payload instanceof myBlob
-      ? payload
-      : new myBlob([payload], { type: mimeType });
+  blob = payload instanceof myBlob ? payload : new myBlob([payload], { type: mimeType });
 
   function dataUrlToBlob(strUrl) {
     var parts = strUrl.split(/[:;,]/),
@@ -108,9 +97,7 @@ const _download = (data, strFileName, strMimeType) => {
     }
 
     // handle non-a[download] safari as best we can:
-    if (
-      /(Version)\/(\d+)\.(\d+)(?:\.(\d+))?.*Safari\//.test(navigator.userAgent)
-    ) {
+    if (/(Version)\/(\d+)\.(\d+)(?:\.(\d+))?.*Safari\//.test(navigator.userAgent)) {
       url = url.replace(/^data:([\w\/\-\+]+)/, defaultMime);
       if (!window.open(url)) {
         // popup blocked, offer direct download:
