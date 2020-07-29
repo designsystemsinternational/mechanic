@@ -1,5 +1,6 @@
 import { download } from "./download";
 import WebMWriter from "./webm-writer";
+import seedrandom from "seedrandom";
 
 // These utils should probably be moved to a mechanic-utils package
 const isObject = obj => obj && typeof obj === "object";
@@ -30,6 +31,9 @@ const validateValues = (params, values = {}) => {
   if (hasKey(values, "size") && !hasKey(params.size, values.size)) {
     return `Supplied size parameter is not available in the template: ${values.size}`;
   }
+
+  // TODO: Check that there are not other values besides parameters and default params
+
   return null;
 };
 
@@ -61,21 +65,28 @@ const validateSettings = settings => {
  * @param {object} params - Parameter template from the design function
  * @param {object} values - Values for some or all of the parameters
  */
-const getParameterValues = (params, values = {}) => {
+const addDefaultValues = (params, values = {}) => {
   const size = values.size || "default";
-  let width = params.size[size].width;
-  let height = params.size[size].height;
-  if (
-    values.scaleDownToFit &&
-    (values.scaleDownToFit.width < width || values.scaleDownToFit.height < height)
-  ) {
-    const ratioWidth = values.scaleDownToFit.width ? values.scaleDownToFit.width / width : 1;
-    const ratioHeight = values.scaleDownToFit.height ? values.scaleDownToFit.height / height : 1;
-    const ratio = ratioWidth < ratioHeight ? ratioWidth : ratioHeight;
-    width = Math.floor(width * ratio);
-    height = Math.floor(height * ratio);
+  const finalValues = Object.assign({}, values, {
+    width: params.size[size].width,
+    height: params.size[size].height
+  });
+
+  if (values.scaleDownToFit) {
+    const ratioWidth = values.scaleDownToFit.width
+      ? values.scaleDownToFit.width / finalValues.width
+      : 1;
+    const ratioHeight = values.scaleDownToFit.height
+      ? values.scaleDownToFit.height / finalValues.height
+      : 1;
+    if (ratioWidth < 1 || ratioHeight < 1) {
+      const ratio = ratioWidth < ratioHeight ? ratioWidth : ratioHeight;
+      finalValues.width = Math.floor(finalValues.width * ratio);
+      finalValues.height = Math.floor(finalValues.height * ratio);
+    }
   }
-  return { size, width, height };
+
+  return finalValues;
 };
 
 /**
@@ -104,10 +115,10 @@ export class Mechanic {
     }
 
     this.handler = handler;
-    this.finalParams = getParameterValues(params, values);
     this.settings = settings;
     this.values = values;
     this.opts = opts;
+    this.payload = addDefaultValues(params, values);
 
     this.listeners = {};
     this.dispatches = {};
@@ -121,8 +132,8 @@ export class Mechanic {
 
     if (settings.type === "video" && settings.returns === "svgString") {
       this.svgCanvas = document.createElement("canvas");
-      this.svgCanvas.width = finalParams.width;
-      this.svgCanvas.height = finalParams.height;
+      this.svgCanvas.width = this.payload.width;
+      this.svgCanvas.height = this.payload.height;
     }
 
     this.init = this.init.bind(this);
@@ -131,7 +142,18 @@ export class Mechanic {
   }
 
   run() {
-    this.handler(this.finalParams, {
+    // TODO: This needs to run in an iframe, and the random seed
+    // needs to run in that iframe too.
+    if (this.settings.usesRandom) {
+      if (!this.payload.randomSeed) {
+        // Get random seed
+        this.payload.randomSeed = seedrandom(null, { global: true });
+      }
+      // Lock random to a specific seed
+      seedrandom(this.payload.randomSeed, { global: true });
+    }
+
+    this.handler(this.payload, {
       init: this.init,
       frame: this.frame,
       done: this.done,
@@ -146,7 +168,7 @@ export class Mechanic {
   // ----------------------------------------------------
 
   init(el) {
-    this.dispatch("init", [el, this.finalParams]);
+    this.dispatch("init", [el, this.payload]);
   }
 
   frame(el) {
@@ -164,9 +186,9 @@ export class Mechanic {
     }
 
     if (!this.hasDispatched("init")) {
-      this.dispatch("init", [el, this.finalParams]);
+      this.dispatch("init", [el, this.payload]);
     }
-    this.dispatch("frame", [el, this.finalParams]);
+    this.dispatch("frame", [el, this.payload]);
   }
 
   done(el) {
@@ -180,9 +202,9 @@ export class Mechanic {
     }
 
     if (!this.hasDispatched("init")) {
-      this.dispatch("init", [el, this.finalParams]);
+      this.dispatch("init", [el, this.payload]);
     }
-    this.dispatch("done", [el, this.finalParams]);
+    this.dispatch("done", [el, this.payload]);
   }
 
   // Download
