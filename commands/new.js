@@ -53,23 +53,29 @@ const mechanicSpinner = {
   frames: spinnerFrames(mechanic)
 };
 
+// Not sure what params will recieve. 
+// TODO: Complete.
 const generateProjectTemplate = async (answers) => {
   const spinner = ora({
     text: "Generating project template",
     spinner: dsiSpinner,
   }).start();
 
+  // Simulated time passing.
   await new Promise(resolve => setTimeout(resolve, 5000 * (Math.random() + 1)));
 
   spinner.succeed();
 };
 
+// Not sure what params will recieve. 
+// TODO: Complete.
 const installDependencies = async (answers) => {
   const spinner = ora({
     text: "Installing dependencies",
     spinner: mechanicSpinner,
   }).start();
 
+  // Simulated time passing.
   await new Promise(resolve => setTimeout(resolve, 5000 * (Math.random() + 1)));
 
   spinner.succeed();
