@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 const _new = require("./commands/new");
 // More commands...
 
