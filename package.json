@@ -5,7 +5,11 @@
   "scripts": {
     "start": "serve dist",
     "dev": "webpack-dev-server --mode development",
-    "build": "webpack --mode production"
+    "build": "webpack --mode production",
+    "cli": "node cli.js"
+  },
+  "bin": {
+    "mechanic": "cli.js"
   },
   "devDependencies": {
     "@babel/cli": "^7.8.4",
