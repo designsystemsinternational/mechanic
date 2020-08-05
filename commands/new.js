@@ -66,7 +66,7 @@ const generateProjectTemplate = async (answers) => {
 
 const installDependencies = async (answers) => {
   const spinner = ora({
-    text: "Installing dependencias",
+    text: "Installing dependencies",
     spinner: mechanicSpinner,
   }).start();
 
@@ -81,14 +81,14 @@ const _new = async () => {
     {
       name: "project",
       type: "input",
-      message: "Project name?",
+      message: "Name your project",
       default: "my-project"
     },
     {
       name: "template",
       type: "list",
       message: `Select template for your first design function
-(you can always create more with mechanic new function)`,
+(you can always create more with \`mechanic new function\`)`,
       choices: templateOptions.map((option) => ({
         name: `${option.name} (${option.type})`, value: option
       }))
@@ -105,7 +105,7 @@ const _new = async () => {
 
   await installDependencies(answers);
 
-  console.log(`Done! Now run \`cd ${answers.project}\` and \` npm run dev\``);
+  console.log(`Done! Now run \`cd ${answers.project}\` and \`npm run dev\``);
 };
 
 module.exports = _new;
