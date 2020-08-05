@@ -11,24 +11,68 @@ const templateOptions = [
   {name: 'THREE.js', type: 'Canvas'},
 ];
 
-const generateProjectTemplate = (answers) => {
-  const spinner = ora("Generating project template").start();
-  
+const red = chalk.bgHex("#D70000").white;
+const white = chalk.bgWhite.hex("#121212");
+const blue = chalk.bgHex("#0000AF").white;
+
+const DSI = [
+  {word: 'DESIGN', color: red},
+  {word: 'SYSTEMS', color: white},
+  {word: 'INTERNATIONAL', color: blue}
+];
+
+const mechanic = [
+  {word: 'MECHANIC', color: red},
+  {word: 'MECHANIC', color: blue},
+];
+
+const spinnerFrames = (settings) => {
+  let length = 0;
+  let letterArray = [];
+  settings.forEach(({word, color}) => {
+    length += word.length;
+    [...word].forEach((c) => letterArray.push(color(c)))
+  });
+  letterArray = letterArray.concat(letterArray)
+  const frames = [];
+  for(let index = 0; index < length; index++) {
+    const subLetters = letterArray.slice(index, index + length / 2 + 1);
+    frames.push(subLetters.reduce((acc, curr) => acc + curr, ""))
+  }
+  // console.log(frames);
+  return frames;
+};
+
+const dsiSpinner = {
+  interval: 80,
+  frames: spinnerFrames(DSI)
+};
+
+const mechanicSpinner = {
+  interval: 80,
+  frames: spinnerFrames(mechanic)
+};
+
+const generateProjectTemplate = async (answers) => {
+  const spinner = ora({
+    text: "Generating project template",
+    spinner: dsiSpinner,
+  }).start();
+
+  await new Promise(resolve => setTimeout(resolve, 5000 * (Math.random() + 1)));
+
   spinner.succeed();
 };
 
-const installDependencies = (answers) => {
-  const spinner = ora("Installing dependencias").start();
-  
-  spinner.succeed();
-};
+const installDependencies = async (answers) => {
+  const spinner = ora({
+    text: "Installing dependencias",
+    spinner: mechanicSpinner,
+  }).start();
 
-const mechanicSignature = () => {
-  const blue = chalk.bgHex("#0000AF").white;
-  const red = chalk.bgHex("#D70000").white;
-  const white = chalk.bgWhite.hex("#121212");
-  console.log(blue("IONAL") + red("DESIGN") + white("SY"));
-  console.log(white("STEMS") + blue("INTERNAT"));
+  await new Promise(resolve => setTimeout(resolve, 5000 * (Math.random() + 1)));
+
+  spinner.succeed();
 };
 
 const _new = async () => {
@@ -57,12 +101,11 @@ const _new = async () => {
     }
   ]);
 
-  generateProjectTemplate(answers);
+  await generateProjectTemplate(answers);
 
-  installDependencies(answers);
+  await installDependencies(answers);
 
   console.log(`Done! Now run \`cd ${answers.project}\` and \` npm run dev\``);
-  mechanicSignature();
 };
 
 module.exports = _new;
