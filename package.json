@@ -45,6 +45,7 @@
   },
   "dependencies": {
     "canvg": "^3.0.6",
+    "p5": "^1.1.9",
     "seedrandom": "^3.0.5"
   }
 }

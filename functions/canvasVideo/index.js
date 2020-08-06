@@ -16,7 +16,7 @@ export const handler = async (params, mechanic) => {
     x++;
 
     if (x < params.width) {
-      mechanic.requestAnimationFrame(drawFrame);
+      window.requestAnimationFrame(drawFrame);
     } else {
       mechanic.done(canvas);
     }
@@ -50,6 +50,6 @@ export const params = {
 };
 
 export const settings = {
-  returns: "canvas",
-  type: "video"
+  engine: "canvas",
+  animated: true
 };

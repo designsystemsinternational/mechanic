@@ -170,18 +170,19 @@ export class Mechanic {
     this.params = params;
     this.settings = settings;
     this.values = prepareValues(params, settings, values);
+  }
 
-    this.serializer = new XMLSerializer();
-
-    if (settings.animated) {
-      this.videoWriter = new WebMWriter({
-        quality: 0.95,
-        frameRate: 60
-      });
-    }
-
-    this.frame = this.frame.bind(this);
-    this.done = this.done.bind(this);
+  /**
+   * Returns an object with common functions to be used in the design function
+   * @param {function} frame - The frame function
+   * @param {function} done - The done function
+   */
+  callbacks(frame, done) {
+    return {
+      frame,
+      done
+      //requestAnimationFrame:
+    };
   }
 
   /**
@@ -196,6 +197,19 @@ export class Mechanic {
     const err = validateEl(el);
     if (err) {
       throw err;
+    }
+
+    // Init values if needed. Is it slow to do this on the first frame?
+    // We put it here because constructor would create objects not needed for preview
+    if (!this.exportInit) {
+      this.exportInit = true;
+      this.serializer = new XMLSerializer();
+      if (this.settings.animated) {
+        this.videoWriter = new WebMWriter({
+          quality: 0.95,
+          frameRate: 60
+        });
+      }
     }
 
     if (isSVG(el)) {
@@ -224,6 +238,8 @@ export class Mechanic {
       }
     } else {
       if (isSVG(el)) {
+        // This is slow. We should figure out a way to draw into canvas on every frame
+        // or at least do Promise.all
         const cacheCanvas = document.createElement("canvas");
         cacheCanvas.width = this.values.width;
         cacheCanvas.height = this.values.height;

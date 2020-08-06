@@ -9,10 +9,10 @@ export const handler = ({ width, height, frame, done }) => {
 
   useEffect(() => {
     if (frameCount < 100) {
-      if (frame) frame();
+      frame();
     } else if (isPlaying.current) {
       isPlaying.current = false;
-      if (done) done();
+      done();
     }
   }, [frameCount]);
 

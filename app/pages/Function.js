@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import PropTypes from "prop-types";
 import Select from "../components/input/Select";
 import Button from "../components/input/Button";
@@ -16,6 +16,15 @@ const Function = ({ name, exports, children }) => {
   const { params } = exports;
   const sizes = Object.keys(params.size);
 
+  // Init engine when the name of the function changes
+  useEffect(() => {
+    const onLoad = () => {
+      iframe.current.contentWindow.initEngine(exports.settings.engine);
+    };
+    iframe.current.addEventListener("load", onLoad);
+    return () => iframe.current.removeEventListener("load", onLoad);
+  }, [name]);
+
   const handleOnChange = (e, name, value) => {
     setValues(Object.assign({}, values, { [name]: value }));
   };
@@ -29,7 +38,7 @@ const Function = ({ name, exports, children }) => {
         height: bounds.height - 100
       };
     }
-    iframe.current.contentWindow.preview(name, vals);
+    iframe.current.contentWindow.run(name, vals, true);
   };
 
   const handleExport = async () => {
@@ -37,7 +46,7 @@ const Function = ({ name, exports, children }) => {
     if (randomSeed.current) {
       vals.randomSeed = randomSeed.current;
     }
-    iframe.current.contentWindow.export(name, vals);
+    iframe.current.contentWindow.run(name, vals);
   };
 
   return (

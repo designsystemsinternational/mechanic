@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 
 export const handler = ({ width, height, done }) => {
   useEffect(() => {
-    if (done) done();
+    done();
   }, []);
   return (
     <svg width={width} height={height}>
