@@ -7,7 +7,7 @@ import ParamInput from "../components/ParamInput";
 import css from "./Function.css";
 
 const Function = ({ name, exports, children }) => {
-  const [values, setValues] = useState({});
+  const [values, setValues] = useState({hi: 1});
   const [fastPreview, setFastPreview] = useState(true);
 
   const mainRef = useRef();
@@ -28,7 +28,7 @@ const Function = ({ name, exports, children }) => {
   }, [name]);
 
   const handleOnChange = (e, name, value) => {
-    setValues(Object.assign({}, values, { [name]: value }));
+    setValues(values => Object.assign({}, values, { [name]: value }));
   };
 
   const handlePreview = async () => {
@@ -70,7 +70,7 @@ const Function = ({ name, exports, children }) => {
           Object.entries(optional).map(([name, param]) => (
             <label key={`param-${name}`}>
               <span>{name}:</span> 
-              <ParamInput name={name} values={values} options={param} onChange={handleOnChange}/>
+              <ParamInput name={name} value={values[name]} options={param} onChange={handleOnChange}/>
             </label>
           ))
         }
