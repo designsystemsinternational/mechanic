@@ -42,18 +42,8 @@ const validateValues = (params, values = {}) => {
  * @param {object} settings - Design function settings
  */
 const validateSettings = settings => {
-  // Validate that it has a type
-  if (!hasKey(settings, "type")) {
-    return `The design function must have a type in its settings export`;
-  }
-  if (!["image", "video"].includes(settings.type)) {
-    return `Wrong type in design function settings: ${settings.type}`;
-  }
-  if (!hasKey(settings, "returns")) {
-    return `The design function must have a returns in its settings export`;
-  }
-  if (!["svgString", "canvas", "svg"].includes(settings.returns)) {
-    return `Wrong returns in design function settings: ${settings.returns}`;
+  if (!hasKey(settings, "engine")) {
+    return `The design function must have specify an engine in settings`;
   }
   return null;
 };
@@ -63,227 +53,220 @@ const validateSettings = settings => {
  * values (including defaults if value is missing) that can be passed to the
  * design function.
  * @param {object} params - Parameter template from the design function
+ * @param {object} settings - Settings from the design function
  * @param {object} values - Values for some or all of the parameters
  */
-const addDefaultValues = (params, values = {}) => {
+const prepareValues = (params, settings, values) => {
+  // Size
   const size = values.size || "default";
-  const finalValues = Object.assign({}, values, {
+  const vals = Object.assign({}, values, {
     width: params.size[size].width,
     height: params.size[size].height
   });
 
+  // Scale down to fit
   if (values.scaleDownToFit) {
-    const ratioWidth = values.scaleDownToFit.width
-      ? values.scaleDownToFit.width / finalValues.width
-      : 1;
+    const ratioWidth = values.scaleDownToFit.width ? values.scaleDownToFit.width / vals.width : 1;
     const ratioHeight = values.scaleDownToFit.height
-      ? values.scaleDownToFit.height / finalValues.height
+      ? values.scaleDownToFit.height / vals.height
       : 1;
     if (ratioWidth < 1 || ratioHeight < 1) {
       const ratio = ratioWidth < ratioHeight ? ratioWidth : ratioHeight;
-      finalValues.width = Math.floor(finalValues.width * ratio);
-      finalValues.height = Math.floor(finalValues.height * ratio);
+      vals.width = Math.floor(vals.width * ratio);
+      vals.height = Math.floor(vals.height * ratio);
     }
   }
 
-  return finalValues;
+  // Random seed
+  if (settings.usesRandom) {
+    if (!vals.randomSeed) {
+      vals.randomSeed = seedrandom(null, { global: true });
+    }
+    seedrandom(vals.randomSeed, { global: true });
+  }
+
+  return vals;
 };
 
 /**
+ * Validates that a DOM element is SVG or Canvas
+ * @param {object} el - A DOM element to check
+ */
+const validateEl = el => {
+  if (el instanceof SVGElement || el instanceof HTMLCanvasElement) {
+    return null;
+  }
+  return "Element passed to the frame() function must be SVGElement or HTMLCanvasElement";
+};
+
+/**
+ * Checks whether a DOM element is instance of SVGElement
+ * @param {object} el - A DOM element to check
+ */
+const isSVG = el => el instanceof SVGElement;
+
+/**
+ * Converts an SVG element to a data url
+ * @param {SVGElement} el - SVG element to convert
+ * @param {XMLSerializer} serializer - An instance of XMLSerializer to use for serialization
+ */
+const svgToDataUrl = (el, serializer) => {
+  let str = serializer.serializeToString(el);
+  if (!str.match(/^<svg[^>]+xmlns="http\:\/\/www\.w3\.org\/2000\/svg"/)) {
+    str = str.replace(/^<svg/, '<svg xmlns="http://www.w3.org/2000/svg"');
+  }
+  if (!str.match(/^<svg[^>]+"http\:\/\/www\.w3\.org\/1999\/xlink"/)) {
+    str = str.replace(/^<svg/, '<svg xmlns:xlink="http://www.w3.org/1999/xlink"');
+  }
+  str = '<?xml version="1.0" standalone="no"?>\r\n' + str;
+  return "data:image/svg+xml;charset=utf-8," + encodeURIComponent(str);
+};
+
+/**
+ * Draws a dataUrl to canvas
+ * @param {string} dataUrl - SVG string to draw
+ * @param {HTMLCanvasElement} canvas - A canvas element to draw into
+ */
+const dataUrlToCanvas = (dataUrl, canvas) =>
+  new Promise((resolve, reject) => {
+    const image = new Image();
+    image.onload = () => {
+      const ctx = canvas.getContext("2d");
+      ctx.drawImage(image, 0, 0);
+      resolve();
+    };
+    image.onerror = e => {
+      reject(e);
+    };
+    image.src = dataUrl;
+  });
+
+/**
  * A class to run Mechanic design functions
- * @param {object} handler - The design function
- * @param {object} params - Parameter template from the design function
- * @param {object} values - Values for some or all of the parameters
- * @param {object} settings - Settings for the design function
- * @param {object} opts - Options for the design function
  */
 export class Mechanic {
-  constructor(handler, params, settings, values = {}, opts = {}) {
+  /**
+   * Mechanic class constructor
+   * @param {object} params - Parameters from the design function
+   * @param {object} settings - Settings from the design function
+   * @param {object} values - Values for some or all of the design function parameters
+   */
+  constructor(params, settings, values) {
     const err1 = validateParams(params);
     if (err1) {
       throw err1;
     }
 
-    const err2 = validateValues(params, values);
+    const err2 = validateSettings(settings);
     if (err2) {
       throw err2;
     }
 
-    const err3 = validateSettings(settings);
+    const err3 = validateValues(params, values);
     if (err3) {
       throw err3;
     }
 
-    this.handler = handler;
+    this.params = params;
     this.settings = settings;
-    this.values = values;
-    this.opts = opts;
-    this.payload = addDefaultValues(params, values);
-
-    this.listeners = {};
-    this.dispatches = {};
-
-    if (settings.type === "video" && !opts.preview) {
-      this.videoWriter = new WebMWriter({
-        quality: 0.95,
-        frameRate: 60
-      });
-    }
-
-    if (settings.type === "video" && settings.returns === "svgString") {
-      this.svgCanvas = document.createElement("canvas");
-      this.svgCanvas.width = this.payload.width;
-      this.svgCanvas.height = this.payload.height;
-    }
-
-    this.init = this.init.bind(this);
-    this.frame = this.frame.bind(this);
-    this.done = this.done.bind(this);
+    this.values = prepareValues(params, settings, values);
   }
 
-  run() {
-    // TODO: This needs to run in an iframe, and the random seed
-    // needs to run in that iframe too.
-    if (this.settings.usesRandom) {
-      if (!this.payload.randomSeed) {
-        // Get random seed
-        this.payload.randomSeed = seedrandom(null, { global: true });
-      }
-      // Lock random to a specific seed
-      seedrandom(this.payload.randomSeed, { global: true });
-    }
-
-    this.handler(this.payload, {
-      init: this.init,
-      frame: this.frame,
-      done: this.done,
-      // A raf implementation that bypasses on export
-      requestAnimationFrame: this.opts.preview
-        ? window.requestAnimationFrame.bind(window)
-        : func => func()
-    });
+  /**
+   * Returns an object with common functions to be used in the design function
+   * @param {function} frame - The frame function
+   * @param {function} done - The done function
+   */
+  callbacks(frame, done) {
+    return {
+      frame,
+      done
+      //requestAnimationFrame:
+    };
   }
 
-  // Handler callbacks
-  // ----------------------------------------------------
-
-  init(el) {
-    this.dispatch("init", [el, this.payload]);
-  }
-
+  /**
+   * Register a frame for an animated design function
+   * @param {SVGElement|HTMLCanvasElement} el - Element with the current drawing state of the design function
+   */
   frame(el) {
-    if (this.settings.type === "image") {
-      throw "The frame() function can only be used for videos";
+    if (!this.settings.animated) {
+      throw "The frame() function can only be used for animations";
     }
 
-    if (this.settings.returns === "svgString") {
-      el = stringToSVG(el);
+    const err = validateEl(el);
+    if (err) {
+      throw err;
     }
 
-    if (this.videoWriter) {
-      // Convert to canvas if needed here!
-      this.videoWriter.addFrame(el);
-    }
-
-    if (!this.hasDispatched("init")) {
-      this.dispatch("init", [el, this.payload]);
-    }
-    this.dispatch("frame", [el, this.payload]);
-  }
-
-  done(el) {
-    if (typeof el === "string") {
-      el = stringToSVG(el);
-      this.doneSVG = el;
-    } else if (this.videoWriter) {
-      this.doneVideoWriter = this.videoWriter.complete();
-    } else if (el instanceof HTMLCanvasElement) {
-      this.doneCanvas = el;
-    }
-
-    if (!this.hasDispatched("init")) {
-      this.dispatch("init", [el, this.payload]);
-    }
-    this.dispatch("done", [el, this.payload]);
-  }
-
-  // Download
-  // ----------------------------------------------------
-
-  download(fileName) {
-    if (this.hasDispatched("done")) {
-      if (this.doneSVG) {
-        const serializer = new XMLSerializer();
-        let source = serializer.serializeToString(this.doneSVG);
-        if (!source.match(/^<svg[^>]+xmlns="http\:\/\/www\.w3\.org\/2000\/svg"/)) {
-          source = source.replace(/^<svg/, '<svg xmlns="http://www.w3.org/2000/svg"');
-        }
-        if (!source.match(/^<svg[^>]+"http\:\/\/www\.w3\.org\/1999\/xlink"/)) {
-          source = source.replace(/^<svg/, '<svg xmlns:xlink="http://www.w3.org/1999/xlink"');
-        }
-        source = '<?xml version="1.0" standalone="no"?>\r\n' + source;
-        const url = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(source);
-        const link = document.createElement("a");
-        link.download = `${fileName}.svg`;
-        link.href = url;
-        link.click();
-      } else if (this.doneCanvas) {
-        const link = document.createElement("a");
-        link.download = `${fileName}.png`;
-        link.href = this.doneCanvas.toDataURL();
-        link.click();
-      } else if (this.doneVideoWriter) {
-        this.doneVideoWriter.then(blob => {
-          download(blob, `${fileName}.webm`);
+    // Init values if needed. Is it slow to do this on the first frame?
+    // We put it here because constructor would create objects not needed for preview
+    if (!this.exportInit) {
+      this.exportInit = true;
+      this.serializer = new XMLSerializer();
+      if (this.settings.animated) {
+        this.videoWriter = new WebMWriter({
+          quality: 0.95,
+          frameRate: 60
         });
       }
+    }
+
+    if (isSVG(el)) {
+      // Because drawing an SVG to canvas is asynchronous,
+      // We wait until the end to render it all.
+      // TODO: This needs to be revisited.
+      if (!this.svgFrames) {
+        this.svgFrames = [];
+      }
+      this.svgFrames.push(svgToDataUrl(el, this.serializer));
     } else {
-      throw "The download() function can only be called after the done event";
+      this.videoWriter.addFrame(el);
     }
   }
 
-  // Events
-  // ----------------------------------------------------
-
-  addEventListener(eventName, func) {
-    if (!this.listeners.hasOwnProperty(eventName)) {
-      this.listeners[eventName] = [];
+  /**
+   * Finish a static or animated design function
+   * @param {SVGElement|HTMLCanvasElement} el - Element with the current drawing state of the design function
+   */
+  async done(el) {
+    if (!this.settings.animated) {
+      if (isSVG(el)) {
+        this.svgData = svgToDataUrl(el, this.serializer);
+      } else {
+        this.canvasData = el.toDataURL();
+      }
+    } else {
+      if (isSVG(el)) {
+        // This is slow. We should figure out a way to draw into canvas on every frame
+        // or at least do Promise.all
+        const cacheCanvas = document.createElement("canvas");
+        cacheCanvas.width = this.values.width;
+        cacheCanvas.height = this.values.height;
+        for (let i = 0; i < this.svgFrames.length; i++) {
+          await dataUrlToCanvas(this.svgFrames[i], cacheCanvas);
+          this.videoWriter.addFrame(cacheCanvas);
+        }
+      }
+      this.videoData = await this.videoWriter.complete();
     }
-    this.listeners[eventName].push(func);
+    this.isDone = true;
   }
 
-  removeEventListener(eventName, func) {
-    if (!this.listeners.hasOwnProperty(eventName)) {
-      return;
+  /**
+   * Download the output of a design function
+   * @param {string} fileName - Name of file to be downloaded. Will automatically receive filetype.
+   */
+  download(fileName) {
+    if (!this.isDone) {
+      throw "The download function can only be called after the done() function has finished";
     }
-    const idx = this.listeners[eventName].findIndex(f => f === func);
-    if (idx > -1) {
-      this.listeners[eventName].splice(idx, 1);
+    if (this.svgData) {
+      download(this.svgData, `${fileName}.svg`, "image/svg+xml");
+    } else if (this.canvasData) {
+      download(this.canvasData, `${fileName}.png`, "image/png");
+    } else if (this.videoData) {
+      download(this.videoData, `${fileName}.webm`, "video/webm");
     }
-  }
-
-  dispatch(eventName, eventData) {
-    if (!this.dispatches.hasOwnProperty(eventName)) {
-      this.dispatches[eventName] = 0;
-    }
-    this.dispatches[eventName]++;
-    if (!this.listeners.hasOwnProperty(eventName)) {
-      return;
-    }
-    for (let listener of this.listeners[eventName]) {
-      listener.apply(this, eventData);
-    }
-  }
-
-  hasDispatched(eventName) {
-    return this.dispatches[eventName] > 0;
   }
 }
-
-// Helpers
-
-const stringToSVG = svgString => {
-  const div = document.createElement("div");
-  div.innerHTML = svgString;
-  return div.childNodes[0];
-};

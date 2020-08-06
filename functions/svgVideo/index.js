@@ -7,9 +7,7 @@ export const handler = async (params, mechanic) => {
       <rect x="0" y="0" width="${params.width}" height="${
       params.height
     }" stroke="none" fill="red" />
-      <ellipse cx="${x}" cy="${
-      params.height / 2
-    }" rx="${r}" ry="${r}" stroke="none" fill="cyan" />
+      <ellipse cx="${x}" cy="${params.height / 2}" rx="${r}" ry="${r}" stroke="none" fill="cyan" />
     </svg>`;
 
     mechanic.frame(svg);

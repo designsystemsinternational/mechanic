@@ -57,7 +57,13 @@ module.exports = async (env, argv) => {
       "process.env.NODE_ENV": mode
     }),
     new HtmlWebPackPlugin({
-      template: "./app/index.html"
+      template: "./app/index.html",
+      chunks: ["app"]
+    }),
+    new HtmlWebPackPlugin({
+      template: "./app/index.html",
+      filename: "functions.html",
+      chunks: ["functions"]
     })
   ].concat(
     isProduction
@@ -93,7 +99,10 @@ Copied "${url}" to clipboard.
   return {
     mode,
     devtool: isProduction ? "source-map" : "eval-source-map",
-    entry: { app: "./app/index.js" },
+    entry: {
+      app: "./app/index.js",
+      functions: "./functions/index.js"
+    },
     output: {
       path: path.join(__dirname, "dist"),
       libraryTarget: "umd",

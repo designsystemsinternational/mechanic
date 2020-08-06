@@ -1,71 +1,52 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import PropTypes from "prop-types";
 import Select from "../components/input/Select";
 import Button from "../components/input/Button";
 import Checkbox from "../components/input/Checkbox";
-import { Mechanic } from "../utils/mechanic";
-import { getTimeStamp } from "../utils";
 import css from "./Function.css";
 
 const Function = ({ name, exports, children }) => {
   const [values, setValues] = useState({});
   const [fastPreview, setFastPreview] = useState(true);
-  const canvasParent = useRef();
+
   const mainRef = useRef();
   const randomSeed = useRef();
+  const iframe = useRef();
 
-  const { handler, params, settings } = exports;
+  const { params } = exports;
   const sizes = Object.keys(params.size);
+
+  // Init engine when the name of the function changes
+  useEffect(() => {
+    const onLoad = () => {
+      iframe.current.contentWindow.initEngine(exports.settings.engine);
+    };
+    iframe.current.addEventListener("load", onLoad);
+    return () => iframe.current.removeEventListener("load", onLoad);
+  }, [name]);
 
   const handleOnChange = (e, name, value) => {
     setValues(Object.assign({}, values, { [name]: value }));
   };
 
   const handlePreview = async () => {
-    const finalValues = Object.assign({}, values);
+    const vals = Object.assign({}, values);
     if (fastPreview) {
       const bounds = mainRef.current.getBoundingClientRect();
-      finalValues.scaleDownToFit = {
+      vals.scaleDownToFit = {
         width: bounds.width - 100,
         height: bounds.height - 100
       };
     }
-    const mechanic = new Mechanic(handler, params, settings, finalValues, {
-      preview: true
-    });
-    mechanic.addEventListener("init", (el, payload) => {
-      canvasParent.current.innerHTML = "";
-      canvasParent.current.appendChild(el);
-      randomSeed.current = payload.randomSeed;
-    });
-    mechanic.addEventListener("frame", el => {
-      // Only if the element changed (HACK! React for SVG?)
-      if (el !== canvasParent.current.childNodes[0]) {
-        canvasParent.current.innerHTML = "";
-        canvasParent.current.appendChild(el);
-      }
-    });
-    mechanic.run();
+    iframe.current.contentWindow.run(name, vals, true);
   };
 
   const handleExport = async () => {
-    // Add random seed from last preview
     const vals = Object.assign({}, values);
     if (randomSeed.current) {
       vals.randomSeed = randomSeed.current;
     }
-
-    const mechanic = new Mechanic(handler, params, settings, vals);
-    mechanic.addEventListener("init", el => {
-      // Show loading animation?
-    });
-    mechanic.addEventListener("frame", el => {
-      // Tick frames in loading animation?
-    });
-    mechanic.addEventListener("done", el => {
-      mechanic.download(`${name}-${getTimeStamp()}`);
-    });
-    mechanic.run();
+    iframe.current.contentWindow.run(name, vals);
   };
 
   return (
@@ -89,7 +70,7 @@ const Function = ({ name, exports, children }) => {
         <Button onClick={handleExport}>Export</Button>
       </aside>
       <main ref={mainRef}>
-        <div ref={canvasParent}></div>
+        <iframe src="functions.html" className={css.iframe} ref={iframe} />
       </main>
     </div>
   );
