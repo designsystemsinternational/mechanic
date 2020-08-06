@@ -85,6 +85,16 @@ const prepareValues = (params, settings, values) => {
     seedrandom(vals.randomSeed, { global: true });
   }
 
+  // Other params
+
+  Object.keys(params).forEach((key) => {
+    if (key != "size") {
+      let val = values[key] || params[key].default;
+      vals[key] = val;
+      console.log(key, val);
+    }
+  });
+
   return vals;
 };
 

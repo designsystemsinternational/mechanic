@@ -64,6 +64,14 @@ const Function = ({ name, exports, children }) => {
               ))}
           </Select>
         </label>
+        <p>Params:</p>
+        {
+          Object.entries(optional).map(([key, value]) => (
+            <Button>{key}</Button>
+          ))
+        }
+        <br />
+        <br />
         <Checkbox
           label="Fast Preview"
           checked={fastPreview}

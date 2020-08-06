@@ -3,9 +3,9 @@ export const handler = (params, mechanic) => {
   canvas.width = params.width;
   canvas.height = params.height;
   const ctx = canvas.getContext("2d");
-  ctx.fillStyle = "#FF0000";
+  ctx.fillStyle = params.primaryColor;
   ctx.fillRect(0, 0, params.width, params.height);
-  ctx.fillStyle = "#00FFFF";
+  ctx.fillStyle = params.secondaryColor;
   ctx.fillRect(100, 100, params.width - 200, params.height - 200);
   mechanic.done(canvas);
 };
@@ -31,6 +31,14 @@ export const params = {
       width: 3200,
       height: 2400
     }
+  },
+  primaryColor: {
+    type: 'string',
+    default: '#FF0000'
+  },
+  secondaryColor: {
+    type: 'string',
+    default: '#00FFFF'
   }
 };
 
