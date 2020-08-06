@@ -65,7 +65,7 @@ const Function = ({ name, exports, children }) => {
               ))}
           </Select>
         </label>
-        <p>Params:</p>
+        {Object.keys(optional).length > 0 ? <p>Params:</p> : ''}
         {
           Object.entries(optional).map(([name, param]) => (
             <label key={`param-${name}`}>

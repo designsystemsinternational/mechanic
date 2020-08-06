@@ -14,8 +14,16 @@ const validateParams = params => {
   if (!isObject(params.size)) {
     return `Parameter template must have a size object`;
   }
-  if (!isObject(params.size.default)) {
+  const {size, ...optionals} = params;
+  if (!isObject(size.default)) {
     return `Parameter template must have default size`;
+  }
+  for (let param in optionals) {
+    for (let key of ["type", "default"]) {
+      if (!hasKey(optionals[param], key)) {
+        return `Parameter ${param} must have ${key} property`;
+      }
+    }
   }
   return null;
 };
