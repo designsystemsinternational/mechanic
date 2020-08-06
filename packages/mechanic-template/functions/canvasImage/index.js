@@ -1,12 +1,16 @@
 export const handler = (params, mechanic) => {
+  const { width, height, primaryColor, secondaryColor, numberOfRects } = params;
   const canvas = document.createElement("canvas");
-  canvas.width = params.width;
-  canvas.height = params.height;
+  canvas.width = width;
+  canvas.height = height;
   const ctx = canvas.getContext("2d");
-  ctx.fillStyle = params.primaryColor;
-  ctx.fillRect(0, 0, params.width, params.height);
-  ctx.fillStyle = params.secondaryColor;
-  ctx.fillRect(100, 100, params.width - 200, params.height - 200);
+  ctx.fillStyle = primaryColor;
+  ctx.fillRect(0, 0, width, height);
+  ctx.fillStyle = secondaryColor;
+  const rectWidth = (width - 200 - 10 * (numberOfRects - 1)) / numberOfRects
+  for(let index = 0; index < numberOfRects; index++) {
+    ctx.fillRect(100 + index * (rectWidth + 10), 100, rectWidth, height - 200);
+  }
   mechanic.done(canvas);
 };
 
@@ -38,7 +42,12 @@ export const params = {
   },
   secondaryColor: {
     type: 'string',
+    choices: ['#00FFFF', '#00FFFF', '#00FFFF'],
     default: '#00FFFF'
+  },
+  numberOfRects: {
+    type: 'integer',
+    default: 1
   }
 };
 

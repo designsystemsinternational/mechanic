@@ -91,7 +91,6 @@ const prepareValues = (params, settings, values) => {
     if (key != "size") {
       let val = values[key] || params[key].default;
       vals[key] = val;
-      console.log(key, val);
     }
   });
 
