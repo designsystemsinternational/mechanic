@@ -5,7 +5,11 @@
   "scripts": {
     "start": "serve dist",
     "dev": "webpack-dev-server --mode development",
-    "build": "webpack --mode production"
+    "build": "webpack --mode production",
+    "cli": "node cli.js"
+  },
+  "bin": {
+    "mechanic": "cli.js"
   },
   "devDependencies": {
     "@babel/cli": "^7.8.4",
@@ -44,8 +48,12 @@
     "webpack-dev-server": "^3.11.0"
   },
   "dependencies": {
-    "canvg": "^3.0.6",
     "p5": "^1.1.9",
-    "seedrandom": "^3.0.5"
+    "seedrandom": "^3.0.5",
+    "chalk": "^4.1.0",
+    "inquirer": "^7.3.3",
+    "ora": "^4.0.5",
+    "seedrandom": "^3.0.5",
+    "yargs": "^15.4.1"
   }
 }
