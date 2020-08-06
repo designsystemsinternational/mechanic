@@ -42,7 +42,7 @@ export const params = {
   },
   secondaryColor: {
     type: 'string',
-    choices: ['#00FFFF', '#00FFFF', '#00FFFF'],
+    choices: ['#00FFFF', '#FF00FF', '#FFFF00'],
     default: '#00FFFF'
   },
   numberOfRects: {

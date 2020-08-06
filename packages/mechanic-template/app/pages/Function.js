@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import Select from "../components/input/Select";
 import Button from "../components/input/Button";
 import Checkbox from "../components/input/Checkbox";
+import ParamInput from "../components/ParamInput";
 import css from "./Function.css";
 
 const Function = ({ name, exports, children }) => {
@@ -66,8 +67,11 @@ const Function = ({ name, exports, children }) => {
         </label>
         <p>Params:</p>
         {
-          Object.entries(optional).map(([key, value]) => (
-            <Button>{key}</Button>
+          Object.entries(optional).map(([name, param]) => (
+            <label key={`param-${name}`}>
+              <span>{name}:</span> 
+              <ParamInput name={name} values={values} options={param} onChange={handleOnChange}/>
+            </label>
           ))
         }
         <br />
