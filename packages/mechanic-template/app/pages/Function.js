@@ -14,7 +14,8 @@ const Function = ({ name, exports, children }) => {
   const iframe = useRef();
 
   const { params } = exports;
-  const sizes = Object.keys(params.size);
+  const {size, ...optional} = params;
+  const sizes = Object.keys(size);
 
   // Init engine when the name of the function changes
   useEffect(() => {
@@ -53,13 +54,16 @@ const Function = ({ name, exports, children }) => {
     <div className={css.root}>
       <aside>
         {children}
-        <Select onChange={handleOnChange} name="size" value={values.size || "default"}>
-          {sizes.map(size => (
-            <option key={`size-${size}`} value={size}>
-              {size} ({params.size[size].width}x{params.size[size].height})
-            </option>
-          ))}
-        </Select>
+        <label>
+          <span>size:</span> 
+          <Select onChange={handleOnChange} name="size" value={values.size || "default"}>
+            {sizes.map(size => (
+              <option key={`size-${size}`} value={size}>
+                {size} ({params.size[size].width}x{params.size[size].height})
+              </option>
+              ))}
+          </Select>
+        </label>
         <Checkbox
           label="Fast Preview"
           checked={fastPreview}
