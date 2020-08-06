@@ -1,21 +1,25 @@
 export const handler = async (params, mechanic) => {
+  const {width, height, primaryColor, secondaryColor, maxFrames} = params;
+
   const canvas = document.createElement("canvas");
-  canvas.width = params.width;
-  canvas.height = params.height;
+  canvas.width = width;
+  canvas.height = height;
   const ctx = canvas.getContext("2d");
 
   let x = 0;
+  let frames = 0;
 
   const drawFrame = () => {
-    ctx.fillStyle = "#FF0000";
-    ctx.fillRect(0, 0, params.width, params.height);
-    ctx.fillStyle = "#00FFFF";
-    ctx.fillRect(x, params.height / 2, params.width / 3, params.width / 3);
+    ctx.fillStyle = primaryColor;
+    ctx.fillRect(0, 0, width, height);
+    ctx.fillStyle = secondaryColor;
+    ctx.fillRect(x, height / 2, width / 3, width / 3);
     mechanic.frame(canvas);
 
     x++;
 
-    if (x < params.width) {
+    if (frames < maxFrames && x < width) {
+      frames += 1;
       window.requestAnimationFrame(drawFrame);
     } else {
       mechanic.done(canvas);
@@ -46,6 +50,18 @@ export const params = {
       width: 3200,
       height: 2400
     }
+  },
+  primaryColor: {
+    type: "string",
+    default: "#FF0000"
+  },
+  secondaryColor: {
+    type: "string",
+    default: "#00FFFF"
+  },
+  maxFrames: {
+    type: "integer",
+    default: 100
   }
 };
 

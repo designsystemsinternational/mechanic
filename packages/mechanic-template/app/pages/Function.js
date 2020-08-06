@@ -7,7 +7,7 @@ import ParamInput from "../components/ParamInput";
 import css from "./Function.css";
 
 const Function = ({ name, exports, children }) => {
-  const [values, setValues] = useState({hi: 1});
+  const [values, setValues] = useState({});
   const [fastPreview, setFastPreview] = useState(true);
 
   const mainRef = useRef();
