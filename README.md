@@ -1,14 +1,18 @@
-# Mechanic App
+# Mechanic by Design Systems International
 
-HOW TO USE HERE!
+This is a monorepo with all the open-source code for [Mechanic](https://mechanic.design)
 
-## Running notes
+- [mechanic-template](packages/mechanic-template) A project skeleton for a design tool made with Mechanic
+- [mechanic-cli](packages/mechanic-cli) A command-line tool to generate new projects from the skeleton
 
-Events:
+The repo is managed via [lerna](https://github.com/lerna/lerna).
 
-- `init` when the design function runs. Needs the el and finalParams
-- `frame` when the design function receives a new frame (video only). el and finalParams
-- `done` when the design function is ready. Needs the el, finalParams, and mime type info?
+## Development
 
-- Image function needs to call init() (optional) and done() (so people can draw stuff in the canvas with mouse, etc)
-- Video function needs to call init(), frame() and done()
+To get started, clone this repo.
+
+Then run, `npm run bootstrap`. This will symlink all the dependencies together and run `npm i` inside each package. Running `npm i` inside a package folder will not work.
+
+## Publish
+
+Run `lerna publish`
