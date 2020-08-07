@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import Select from "../components/input/Select";
 import Button from "../components/input/Button";
 import Checkbox from "../components/input/Checkbox";
+import ParamInput from "../components/ParamInput";
 import css from "./Function.css";
 
 const Function = ({ name, exports, children }) => {
@@ -14,7 +15,8 @@ const Function = ({ name, exports, children }) => {
   const iframe = useRef();
 
   const { params } = exports;
-  const sizes = Object.keys(params.size);
+  const {size, ...optional} = params;
+  const sizes = Object.keys(size);
 
   // Init engine when the name of the function changes
   useEffect(() => {
@@ -26,7 +28,7 @@ const Function = ({ name, exports, children }) => {
   }, [name]);
 
   const handleOnChange = (e, name, value) => {
-    setValues(Object.assign({}, values, { [name]: value }));
+    setValues(values => Object.assign({}, values, { [name]: value }));
   };
 
   const handlePreview = async () => {
@@ -53,13 +55,27 @@ const Function = ({ name, exports, children }) => {
     <div className={css.root}>
       <aside>
         {children}
-        <Select onChange={handleOnChange} name="size" value={values.size || "default"}>
-          {sizes.map(size => (
-            <option key={`size-${size}`} value={size}>
-              {size} ({params.size[size].width}x{params.size[size].height})
-            </option>
-          ))}
-        </Select>
+        <label>
+          <span>size:</span> 
+          <Select onChange={handleOnChange} name="size" value={values.size || "default"}>
+            {sizes.map(size => (
+              <option key={`size-${size}`} value={size}>
+                {size} ({params.size[size].width}x{params.size[size].height})
+              </option>
+              ))}
+          </Select>
+        </label>
+        {Object.keys(optional).length > 0 ? <p>Params:</p> : ''}
+        {
+          Object.entries(optional).map(([name, param]) => (
+            <label key={`param-${name}`}>
+              <span>{name}:</span> 
+              <ParamInput name={name} value={values[name]} options={param} onChange={handleOnChange}/>
+            </label>
+          ))
+        }
+        <br />
+        <br />
         <Checkbox
           label="Fast Preview"
           checked={fastPreview}

@@ -1,19 +1,19 @@
 import React, { useState, useEffect } from "react";
 
-export const handler = ({ width, height, done }) => {
+export const handler = ({ width, height, done, background, fill }) => {
   useEffect(() => {
     done();
   }, []);
   return (
     <svg width={width} height={height}>
-      <rect x={0} y={0} width={width} height={height} stroke="none" fill="red" />
+      <rect x={0} y={0} width={width} height={height} stroke="none" fill={background} />
       <ellipse
         cx={width / 2}
         cy={height / 2}
         rx={width / 3}
         ry={width / 3}
         stroke="none"
-        fill="cyan"
+        fill={fill}
       />
     </svg>
   );
@@ -28,7 +28,17 @@ export const params = {
       width: 600,
       height: 600
     }
-  }
+  },
+  background: {
+    type: "string",
+    default: "red",
+    choices: ["red", "orange", "yellow"]
+  },
+  fill: {
+    type: "string",
+    default: "cyan",
+    choices: ["cyan", "blue", "green"]
+  },
 };
 
 export const settings = {

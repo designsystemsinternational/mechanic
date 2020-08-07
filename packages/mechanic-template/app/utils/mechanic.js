@@ -5,6 +5,7 @@ import seedrandom from "seedrandom";
 // These utils should probably be moved to a mechanic-utils package
 const isObject = obj => obj && typeof obj === "object";
 const hasKey = (obj, key) => obj.hasOwnProperty(key);
+const supportedTypes = ["string", "integer"];
 
 /**
  * Receives the parameter template and checks that it is valid
@@ -14,8 +15,20 @@ const validateParams = params => {
   if (!isObject(params.size)) {
     return `Parameter template must have a size object`;
   }
-  if (!isObject(params.size.default)) {
+  const {size, ...optionals} = params;
+  if (!isObject(size.default)) {
     return `Parameter template must have default size`;
+  }
+  for (let param in optionals) {
+    if (!hasKey(optionals[param], "type")) {
+      return `Parameter ${param} must have ${key} property`;
+    }
+    if (!supportedTypes.includes(optionals[param].type)) {
+      return `Parameter of type ${optionals[param].type} not supported, expected: ${supportedTypes}`
+    }
+    if (!hasKey(optionals[param], "default")) {
+      return `Parameter ${param} must have ${key} property`;
+    }
   }
   return null;
 };
@@ -84,6 +97,15 @@ const prepareValues = (params, settings, values) => {
     }
     seedrandom(vals.randomSeed, { global: true });
   }
+
+  // Other params
+
+  Object.keys(params).forEach((key) => {
+    if (key != "size") {
+      let val = values[key] || params[key].default;
+      vals[key] = val;
+    }
+  });
 
   return vals;
 };

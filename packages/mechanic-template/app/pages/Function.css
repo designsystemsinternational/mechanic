@@ -9,6 +9,14 @@
   min-height: 100vh;
 }
 
+.root aside label {
+  display: block;
+}
+
+.root aside label span {
+  padding-right: 10px;
+}
+
 .root main {
   padding-left: 25px;
   flex: 1;

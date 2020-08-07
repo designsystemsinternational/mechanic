@@ -1,18 +1,22 @@
 export const handler = async (sketch, params, mechanic) => {
+  const {width, height, primaryColor, secondaryColor, maxFrames} = params;
+
   let x = 0;
+  let frames = 0;
   sketch.setup = () => {
-    sketch.createCanvas(params.width, params.height);
+    sketch.createCanvas(width, height);
   };
 
   sketch.draw = () => {
-    sketch.background(255, 0, 0);
-    sketch.fill(0, 255, 255);
-    sketch.rect(x, params.height / 2, params.width / 3, params.width / 3);
+    sketch.background(primaryColor);
+    sketch.fill(secondaryColor);
+    sketch.rect(x, height / 2, width / 3, width / 3);
 
     x++;
 
-    if (x < params.width) {
+    if (frames < maxFrames && x < width) {
       mechanic.frame();
+      frames += 1;
     } else {
       mechanic.done();
     }
@@ -40,6 +44,18 @@ export const params = {
       width: 3200,
       height: 2400
     }
+  },
+  primaryColor: {
+    type: "string",
+    default: "#FF0000"
+  },
+  secondaryColor: {
+    type: "string",
+    default: "#00FFFF"
+  },
+  maxFrames: {
+    type: "integer",
+    default: 100
   }
 };
 

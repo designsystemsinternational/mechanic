@@ -1,24 +1,23 @@
 export const handler = (params, mechanic) => {
+  const {width, height, background, color1, color2, numberOfSquares} = params;
+  const colors = [color1, color2];
+
   const canvas = document.createElement("canvas");
-  canvas.width = params.width;
-  canvas.height = params.height;
+  canvas.width = width;
+  canvas.height = height;
   const ctx = canvas.getContext("2d");
-  ctx.fillStyle = "#333333";
-  ctx.fillRect(0, 0, params.width, params.height);
-  ctx.fillStyle = "#FF00FF";
-  ctx.fillRect(
-    Math.random() * params.width,
-    Math.random() * params.height,
-    params.width * 0.2,
-    params.height * 0.2
-  );
-  ctx.fillStyle = "#0000FF";
-  ctx.fillRect(
-    Math.random() * params.width,
-    Math.random() * params.height,
-    params.width * 0.2,
-    params.height * 0.2
-  );
+  ctx.fillStyle = background;
+  ctx.fillRect(0, 0, width, height);
+
+  for (let i = 0; i < numberOfSquares; i++) {
+    ctx.fillStyle = colors[i % 2];
+    ctx.fillRect(
+      Math.random() * width,
+      Math.random() * height,
+      width * 0.2,
+      height * 0.2
+    );
+  }
   mechanic.done(canvas);
 };
 
@@ -31,6 +30,24 @@ export const params = {
       width: 1600,
       height: 1600
     }
+  },
+  background: {
+    type: "string",
+    default: "#333333"
+  },
+  color1: {
+    type: "string",
+    default: "#FF00FF",
+    choices: ["#FF00FF", "#0000FF", "#FF0000"]
+  },
+  color2: {
+    type: "string",
+    default: "#0000FF",
+    choices: ["#FF00FF", "#0000FF", "#FF0000"]
+  },
+  numberOfSquares: {
+    type: "integer",
+    default: 2
   }
 };
 
