@@ -1,2 +1,64 @@
+@import "../../variables.css";
+
 .root {
+	position: relative;
+	display: block;
+	-webkit-appearance: none;
+	cursor: pointer;
+	padding: 0.5em 1em;
+	margin-bottom: 1em;
+	background-color: white;
+    border: 1px solid var(--text);
+    font-weight: bold;
+}
+
+.root:not(:last-child) {
+    margin-right: 0.5rem;
+}
+
+.root:active {
+    background-color: var(--blue) !important;
+    color: white;
+}
+
+.root:hover {
+    /* background-color: var(--dust-gray-darker); */
+}
+
+.root:focus {
+    outline: none;
+    /* background-color: var(--dust-gray-darker); */
+}
+
+.grow {
+	flex-grow: 1;
+}
+
+.withHover.hover {
+	display: none;
+}
+
+.withHover:hover.label {
+	display: none;
+}
+
+.withHover:hover.label.hover {
+	display: block;
+}
+
+.status {
+	display: inline-block;
+	position: absolute;
+	top: 50%;
+	transform: translateY(-50%);
+	left: 10px;
+
+	width: 10px;
+	height: 10px;
+	border-radius: 50%;
+	background: var(--red);
+}
+
+.status.on {
+    background: var(--blue);
 }

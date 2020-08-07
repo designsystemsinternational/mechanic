@@ -1,0 +1,15 @@
+.root {
+
+}
+
+.row {
+	display: flex;
+	justify-content: space-between;
+}
+
+.label {
+    padding: 1em 1em;
+    flex-grow: 1;
+    text-align: center;
+    font-weight: bolder;
+}

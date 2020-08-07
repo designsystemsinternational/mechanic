@@ -18,8 +18,10 @@ body {
   -moz-osx-font-smoothing: grayscale;
   font-family: Helvetica, sans-serif;
   color: var(--text);
+  font-size: 14px;
 }
 
+button,
 input,
 select {
   font-family: inherit;
