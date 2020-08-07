@@ -89,11 +89,13 @@ const Function = ({ name, exports, children }) => {
             {fastPreview ? "Fast Preview On" : "Fast Preview Off"}
           </Button>
         </div>
+        <div className={css.sep} />
         <div className={css.row}>
           <Button variant="grow" onClick={handlePreview}>
             Preview
           </Button>
         </div>
+        <div className={css.sep} />
         <div className={css.row}>
           <Button variant="grow" onClick={handleExport}>
             Export

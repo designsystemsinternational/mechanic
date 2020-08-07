@@ -3,12 +3,12 @@
 }
 
 .row {
-	display: flex;
+    display: flex;
+    align-items: center;
 	justify-content: space-between;
 }
 
 .label {
-    padding: 1em 1em;
     flex-grow: 1;
     text-align: center;
     font-weight: bolder;
