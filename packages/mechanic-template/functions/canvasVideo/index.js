@@ -1,5 +1,5 @@
 export const handler = async (params, mechanic) => {
-  const {width, height, primaryColor, secondaryColor, maxFrames} = params;
+  const { width, height, primaryColor, secondaryColor, maxFrames } = params;
 
   const canvas = document.createElement("canvas");
   canvas.width = width;

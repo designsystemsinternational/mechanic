@@ -7,8 +7,8 @@ export const handler = (params, mechanic) => {
   ctx.fillStyle = primaryColor;
   ctx.fillRect(0, 0, width, height);
   ctx.fillStyle = secondaryColor;
-  const rectWidth = (width - 200 - 10 * (numberOfRects - 1)) / numberOfRects
-  for(let index = 0; index < numberOfRects; index++) {
+  const rectWidth = (width - 200 - 10 * (numberOfRects - 1)) / numberOfRects;
+  for (let index = 0; index < numberOfRects; index++) {
     ctx.fillRect(100 + index * (rectWidth + 10), 100, rectWidth, height - 200);
   }
   mechanic.done(canvas);
@@ -37,16 +37,16 @@ export const params = {
     }
   },
   primaryColor: {
-    type: 'string',
-    default: '#FF0000'
+    type: "string",
+    default: "#FF0000"
   },
   secondaryColor: {
-    type: 'string',
-    choices: ['#00FFFF', '#FF00FF', '#FFFF00'],
-    default: '#00FFFF'
+    type: "string",
+    choices: ["#00FFFF", "#FF00FF", "#FFFF00"],
+    default: "#00FFFF"
   },
   numberOfRects: {
-    type: 'integer',
+    type: "integer",
     default: 1
   }
 };

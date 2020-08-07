@@ -1,5 +1,5 @@
 export const handler = async (sketch, params, mechanic) => {
-  const {width, height, primaryColor, secondaryColor, maxFrames} = params;
+  const { width, height, primaryColor, secondaryColor, maxFrames } = params;
 
   let x = 0;
   let frames = 0;

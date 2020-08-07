@@ -1,5 +1,5 @@
 export const handler = (params, mechanic) => {
-  const {width, height, background, color1, color2, numberOfSquares} = params;
+  const { width, height, background, color1, color2, numberOfSquares } = params;
   const colors = [color1, color2];
 
   const canvas = document.createElement("canvas");
@@ -11,12 +11,7 @@ export const handler = (params, mechanic) => {
 
   for (let i = 0; i < numberOfSquares; i++) {
     ctx.fillStyle = colors[i % 2];
-    ctx.fillRect(
-      Math.random() * width,
-      Math.random() * height,
-      width * 0.2,
-      height * 0.2
-    );
+    ctx.fillRect(Math.random() * width, Math.random() * height, width * 0.2, height * 0.2);
   }
   mechanic.done(canvas);
 };

@@ -6,16 +6,7 @@ import { uid } from "../../utils";
 
 export const Radio = props => {
   const _id = useRef(uid("radio"));
-  const {
-    name,
-    value,
-    label,
-    checked,
-    onChange,
-    className,
-    disabled,
-    id = _id.current
-  } = props;
+  const { name, value, label, checked, onChange, className, disabled, id = _id.current } = props;
   const [focus, setFocus] = useState(false);
 
   const handleOnChange = useRef(event => {

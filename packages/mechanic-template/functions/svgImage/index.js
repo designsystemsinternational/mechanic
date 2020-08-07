@@ -1,9 +1,7 @@
 export const handler = (params, mechanic) => {
   const r = params.height / 3;
   const svg = `<svg width="${params.width}" height="${params.height}">
-    <rect x="0" y="0" width="${params.width}" height="${
-    params.height
-  }" stroke="none" fill="red" />
+    <rect x="0" y="0" width="${params.width}" height="${params.height}" stroke="none" fill="red" />
     <ellipse cx="${params.width / 2}" cy="${
     params.height / 2
   }" rx="${r}" ry="${r}" stroke="none" fill="cyan" />

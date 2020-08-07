@@ -6,16 +6,7 @@ import css from "./Checkbox.css";
 
 export const Checkbox = props => {
   const _id = useRef(uid("checkbox"));
-  const {
-    className,
-    checked,
-    disabled,
-    id = _id.current,
-    label,
-    name,
-    value,
-    onChange
-  } = props;
+  const { className, checked, disabled, id = _id.current, label, name, value, onChange } = props;
 
   const handleOnChange = useRef(event => {
     const { name, checked } = event.target;

@@ -15,7 +15,7 @@ const Function = ({ name, exports, children }) => {
   const iframe = useRef();
 
   const { params } = exports;
-  const {size, ...optional} = params;
+  const { size, ...optional } = params;
   const sizes = Object.keys(size);
 
   // Init engine when the name of the function changes
@@ -56,24 +56,27 @@ const Function = ({ name, exports, children }) => {
       <aside>
         {children}
         <label>
-          <span>size:</span> 
+          <span>size:</span>
           <Select onChange={handleOnChange} name="size" value={values.size || "default"}>
             {sizes.map(size => (
               <option key={`size-${size}`} value={size}>
                 {size} ({params.size[size].width}x{params.size[size].height})
               </option>
-              ))}
+            ))}
           </Select>
         </label>
-        {Object.keys(optional).length > 0 ? <p>Params:</p> : ''}
-        {
-          Object.entries(optional).map(([name, param]) => (
-            <label key={`param-${name}`}>
-              <span>{name}:</span> 
-              <ParamInput name={name} value={values[name]} options={param} onChange={handleOnChange}/>
-            </label>
-          ))
-        }
+        {Object.keys(optional).length > 0 ? <p>Params:</p> : ""}
+        {Object.entries(optional).map(([name, param]) => (
+          <label key={`param-${name}`}>
+            <span>{name}:</span>
+            <ParamInput
+              name={name}
+              value={values[name]}
+              options={param}
+              onChange={handleOnChange}
+            />
+          </label>
+        ))}
         <br />
         <br />
         <Checkbox
