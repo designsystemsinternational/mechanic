@@ -5,7 +5,7 @@ import seedrandom from "seedrandom";
 // These utils should probably be moved to a mechanic-utils package
 const isObject = obj => obj && typeof obj === "object";
 const hasKey = (obj, key) => obj.hasOwnProperty(key);
-const supportedTypes = ["string", "integer"];
+const supportedTypes = ["string", "integer", "boolean"];
 
 /**
  * Receives the parameter template and checks that it is valid
@@ -102,7 +102,7 @@ const prepareValues = (params, settings, values) => {
 
   Object.keys(params).forEach(key => {
     if (key != "size") {
-      let val = values[key] || params[key].default;
+      let val = values[key] === undefined ? params[key].default : values[key];
       vals[key] = val;
     }
   });

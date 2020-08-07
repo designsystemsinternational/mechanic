@@ -1,5 +1,5 @@
 export const handler = (params, mechanic) => {
-  const { width, height, primaryColor, secondaryColor, numberOfRects } = params;
+  const { width, height, primaryColor, secondaryColor, numberOfRects, hasMargin } = params;
   const canvas = document.createElement("canvas");
   canvas.width = width;
   canvas.height = height;
@@ -7,9 +7,11 @@ export const handler = (params, mechanic) => {
   ctx.fillStyle = primaryColor;
   ctx.fillRect(0, 0, width, height);
   ctx.fillStyle = secondaryColor;
-  const rectWidth = (width - 200 - 10 * (numberOfRects - 1)) / numberOfRects;
+  console.log(hasMargin);
+  const margin = hasMargin ? 200 : 0;
+  const rectWidth = (width - margin - 10 * (numberOfRects - 1)) / numberOfRects;
   for (let index = 0; index < numberOfRects; index++) {
-    ctx.fillRect(100 + index * (rectWidth + 10), 100, rectWidth, height - 200);
+    ctx.fillRect(margin / 2 + index * (rectWidth + 10), margin / 2, rectWidth, height - margin);
   }
   mechanic.done(canvas);
 };
@@ -48,6 +50,10 @@ export const params = {
   numberOfRects: {
     type: "integer",
     default: 1
+  },
+  hasMargin: {
+    type: "boolean",
+    default: true
   }
 };
 
