@@ -43,7 +43,7 @@ export const params = {
     type: "string",
     default: "cyan",
     choices: ["cyan", "blue", "green"]
-  },
+  }
 };
 
 export const settings = {

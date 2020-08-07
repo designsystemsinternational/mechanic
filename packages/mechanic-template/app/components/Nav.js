@@ -13,9 +13,7 @@ const Nav = ({ functions }) => {
 
   return (
     <div className={css.root}>
-      <Select
-        onChange={handleOnChange}
-        value={history.location.pathname.substring(1)}>
+      <Select onChange={handleOnChange} value={history.location.pathname.substring(1)}>
         {names.map(name => (
           <option key={`option-${name}`} value={name}>
             {name}

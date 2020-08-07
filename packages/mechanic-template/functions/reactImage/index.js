@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 
-export const handler = ({ width, height, done, background, fill }) => {
+export const handler = ({ width, height, done, background, fill, hasInnerHole }) => {
   useEffect(() => {
     done();
   }, []);
@@ -15,6 +15,18 @@ export const handler = ({ width, height, done, background, fill }) => {
         stroke="none"
         fill={fill}
       />
+      {hasInnerHole ? (
+        <ellipse
+          cx={width / 2}
+          cy={height / 2}
+          rx={width / 6}
+          ry={width / 6}
+          stroke="none"
+          fill={background}
+        />
+      ) : (
+        ""
+      )}
     </svg>
   );
 };
@@ -39,6 +51,10 @@ export const params = {
     default: "cyan",
     choices: ["cyan", "blue", "green"]
   },
+  hasInnerHole: {
+    type: "boolean",
+    default: false
+  }
 };
 
 export const settings = {

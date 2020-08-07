@@ -1,5 +1,5 @@
 export const handler = (params, mechanic) => {
-  const { width, height, primaryColor, secondaryColor, numberOfRects } = params;
+  const { width, height, primaryColor, secondaryColor, numberOfRects, hasOuterMargin } = params;
   const canvas = document.createElement("canvas");
   canvas.width = width;
   canvas.height = height;
@@ -7,9 +7,10 @@ export const handler = (params, mechanic) => {
   ctx.fillStyle = primaryColor;
   ctx.fillRect(0, 0, width, height);
   ctx.fillStyle = secondaryColor;
-  const rectWidth = (width - 200 - 10 * (numberOfRects - 1)) / numberOfRects
-  for(let index = 0; index < numberOfRects; index++) {
-    ctx.fillRect(100 + index * (rectWidth + 10), 100, rectWidth, height - 200);
+  const margin = hasOuterMargin ? 200 : 0;
+  const rectWidth = (width - margin - 10 * (numberOfRects - 1)) / numberOfRects;
+  for (let index = 0; index < numberOfRects; index++) {
+    ctx.fillRect(margin / 2 + index * (rectWidth + 10), margin / 2, rectWidth, height - margin);
   }
   mechanic.done(canvas);
 };
@@ -37,17 +38,21 @@ export const params = {
     }
   },
   primaryColor: {
-    type: 'string',
-    default: '#FF0000'
+    type: "string",
+    default: "#FF0000"
   },
   secondaryColor: {
-    type: 'string',
-    choices: ['#00FFFF', '#FF00FF', '#FFFF00'],
-    default: '#00FFFF'
+    type: "string",
+    choices: ["#00FFFF", "#FF00FF", "#FFFF00"],
+    default: "#00FFFF"
   },
   numberOfRects: {
-    type: 'integer',
-    default: 1
+    type: "integer",
+    default: 2
+  },
+  hasOuterMargin: {
+    type: "boolean",
+    default: true
   }
 };
 
