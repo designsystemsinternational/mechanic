@@ -2,47 +2,49 @@
 
 .root {
   display: flex;
+  height: 100vh;
 }
 
 .root aside {
   padding: 0 25px;
   flex: 0 0 300px;
   border-right: 1px solid var(--dust-gray);
-  max-height: 100vh;
+  height: 100vh;
   display: flex;
-	flex-direction: column;
-	user-select: none;
+  flex-direction: column;
+  user-select: none;
 }
 
 .params-wrapper {
   position: relative;
 }
 
-.params-wrapper:before, .params-wrapper:after {
-	content: "";
-	position: absolute;
-	z-index: 100;
-	pointer-events: none;
-	left: 0;
-	right: 0;
+.params-wrapper:before,
+.params-wrapper:after {
+  content: "";
+  position: absolute;
+  z-index: 100;
+  pointer-events: none;
+  left: 0;
+  right: 0;
 }
 
 .params-wrapper:before {
-	top: 0;
-	height: 10px;
-	background-image: linear-gradient(to top, rgba(255, 255, 255, 0), white);
+  top: 0;
+  height: 10px;
+  background-image: linear-gradient(to top, rgba(255, 255, 255, 0), white);
 }
 
 .params-wrapper:after {
-	bottom: 0;
-	height: 40px;
-	background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0), white);
+  bottom: 0;
+  height: 40px;
+  background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0), white);
 }
 
 .params {
-	padding: 0.5em 1em 0 0;
-	max-height: calc(100vh - 370px);
-	overflow: auto;
+  padding: 0.5em 1em 0 0;
+  max-height: calc(100vh - 370px);
+  overflow: auto;
 }
 
 .params > :last-child {
@@ -53,7 +55,7 @@
   margin-bottom: 1em;
 }
 
-.param span{
+.param span {
   margin-bottom: 0.5em;
 }
 
@@ -62,7 +64,7 @@
 }
 
 .code span {
-  font-family: 'Courier New', Courier, monospace;
+  font-family: "Courier New", Courier, monospace;
   font-weight: 600;
 }
 
@@ -78,8 +80,8 @@
 
 .row {
   width: 100%;
-	display: flex;
-	justify-content: space-between;
+  display: flex;
+  justify-content: space-between;
 }
 
 .blue {
@@ -90,7 +92,7 @@
 .root main {
   padding-left: 25px;
   flex: 1;
-  max-height: 100vh;
+  height: 100vh;
 }
 
 .iframe {

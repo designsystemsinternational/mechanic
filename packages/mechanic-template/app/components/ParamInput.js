@@ -16,7 +16,7 @@ export const ParamInput = ({ name, value, options, onChange, children }) => {
         className={classnames(css.select, css.grow)}
         onChange={onChange}
         name={name}
-        value={value || _default}>
+        value={value === undefined ? _default : value}>
         {options.choices.map(choice => (
           <option key={`$param-${name}-${choice}`} value={choice}>
             {choice}
@@ -29,11 +29,12 @@ export const ParamInput = ({ name, value, options, onChange, children }) => {
   if (type == "integer") {
     return (
       <Input
-        inputmode="numeric"
+        type="number"
+        // inputmode="numeric"
         className={classnames(css.number, css.grow)}
         label=""
         name={name}
-        value={"" + (value || _default)}
+        value={"" + (value === undefined ? _default : value)}
         onChange={onChange}>
         {children}
       </Input>
@@ -63,7 +64,7 @@ export const ParamInput = ({ name, value, options, onChange, children }) => {
       className={classnames(css.text, css.grow)}
       label=""
       name={name}
-      value={value || _default}
+      value={value === undefined ? _default : value}
       onChange={onChange}>
       {children}
     </Input>
