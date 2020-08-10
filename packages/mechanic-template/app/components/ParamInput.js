@@ -29,7 +29,7 @@ export const ParamInput = ({ name, value, options, onChange, children }) => {
   if (type == "integer") {
     return (
       <Input
-        type="number"
+        inputmode="numeric"
         className={classnames(css.number, css.grow)}
         label=""
         name={name}
