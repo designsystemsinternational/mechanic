@@ -27,21 +27,24 @@
 
 .params-wrapper:before {
 	top: 0;
-	height: 20px;
-	background-image: linear-gradient(to top, color(white a(0)), white);
+	height: 10px;
+	background-image: linear-gradient(to top, rgba(255, 255, 255, 0), white);
 }
 
 .params-wrapper:after {
 	bottom: 0;
 	height: 50px;
-	background-image: linear-gradient(to bottom, color(white a(0)), white);
-	border-bottom: 1px solid gray(95%);
+	background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0), white);
 }
 
 .params {
-	padding: 0 1em 0 0;
-	height: calc(100vh - 370px);
+	padding: 0.5em 1em 0 0;
+	max-height: calc(100vh - 370px);
 	overflow: auto;
+}
+
+.params > :last-child {
+  padding-bottom: 1em;
 }
 
 .param {
