@@ -22,7 +22,7 @@ const App = props => {
             path={i == 0 ? ["/", `/${name}`] : `/${name}`}
             render={() => (
               <Function name={name} exports={functions[name]}>
-                <Nav functions={functions} />
+                <Nav name={name} functions={functions} />
               </Function>
             )}
           />

@@ -2,7 +2,6 @@ import React, { useState, useRef, useEffect } from "react";
 import PropTypes from "prop-types";
 import Select from "../components/input/Select";
 import Button from "../components/input/Button";
-import Checkbox from "../components/input/Checkbox";
 import ParamInput from "../components/ParamInput";
 import css from "./Function.css";
 
@@ -54,9 +53,11 @@ const Function = ({ name, exports, children }) => {
   return (
     <div className={css.root}>
       <aside>
+        <div className={css.sep} />
         {children}
-        <label>
-          <span>size:</span>
+        <div className={css.sep} />
+        <div className={css.row}>
+          <span>Size:</span>
           <Select onChange={handleOnChange} name="size" value={values.size || "default"}>
             {sizes.map(size => (
               <option key={`size-${size}`} value={size}>
@@ -64,10 +65,10 @@ const Function = ({ name, exports, children }) => {
               </option>
             ))}
           </Select>
-        </label>
+        </div>
         {Object.keys(optional).length > 0 ? <p>Params:</p> : ""}
         {Object.entries(optional).map(([name, param]) => (
-          <label key={`param-${name}`}>
+          <div key={`param-${name}`} className={css.row}>
             <span>{name}:</span>
             <ParamInput
               name={name}
@@ -75,18 +76,30 @@ const Function = ({ name, exports, children }) => {
               options={param}
               onChange={handleOnChange}
             />
-          </label>
+          </div>
         ))}
-        <br />
-        <br />
-        <Checkbox
-          label="Fast Preview"
-          checked={fastPreview}
-          onChange={e => setFastPreview(e.target.checked)}
-        />
-        <br />
-        <Button onClick={handlePreview}>Preview</Button>
-        <Button onClick={handleExport}>Export</Button>
+        <div className={css.sep} />
+        <div className={css.sep} />
+        <div className={css.row}>
+          <Button
+            status={fastPreview}
+            variant="grow"
+            onClick={() => setFastPreview(fastPreview => !fastPreview)}>
+            {fastPreview ? "Fast Preview On" : "Fast Preview Off"}
+          </Button>
+        </div>
+        <div className={css.sep} />
+        <div className={css.row}>
+          <Button variant="grow" onClick={handlePreview}>
+            Preview
+          </Button>
+        </div>
+        <div className={css.sep} />
+        <div className={css.row}>
+          <Button variant="grow" onClick={handleExport}>
+            Export
+          </Button>
+        </div>
       </aside>
       <main ref={mainRef}>
         <iframe src="functions.html" className={css.iframe} ref={iframe} />

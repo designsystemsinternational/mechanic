@@ -1,25 +1,27 @@
 import React from "react";
-import Select from "./input/Select";
+import Button from "./input/Button";
 import { useHistory } from "react-router-dom";
+import { upper } from "case";
 import css from "./Nav.css";
+import classnames from "classnames";
 
-const Nav = ({ functions }) => {
+const Nav = ({ name, functions }) => {
   const history = useHistory();
   const names = Object.keys(functions);
 
-  const handleOnChange = (e, name, value) => {
-    history.push(`/${value}`);
+  const changeFunction = direction => {
+    const currentIndex = names.indexOf(name);
+    history.push(`/${names[(names.length + currentIndex + direction) % names.length]}`);
   };
 
+  const previous = () => changeFunction(-1);
+  const next = () => changeFunction(1);
+
   return (
-    <div className={css.root}>
-      <Select onChange={handleOnChange} value={history.location.pathname.substring(1)}>
-        {names.map(name => (
-          <option key={`option-${name}`} value={name}>
-            {name}
-          </option>
-        ))}
-      </Select>
+    <div className={classnames(css.root, css.row)}>
+      <Button onClick={previous}>←</Button>
+      <span className={css.label}>{upper(name)}</span>
+      <Button onClick={next}>→</Button>
     </div>
   );
 };
