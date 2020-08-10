@@ -119,7 +119,7 @@ const Function = ({ name, exports, children }) => {
         </div>
         <div className={css.sep} />
         <div className={classnames(css.row, css.strong)}>
-          <Button variant="grow" onClick={handleExport}>
+          <Button className={css.blue} variant="grow" onClick={handleExport}>
             Export
           </Button>
         </div>

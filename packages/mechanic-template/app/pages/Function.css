@@ -1,3 +1,5 @@
+@import "../variables.css";
+
 .root {
   display: flex;
 }
@@ -78,6 +80,11 @@
   width: 100%;
 	display: flex;
 	justify-content: space-between;
+}
+
+.blue {
+  background-color: var(--blue);
+  color: white;
 }
 
 .root main {
