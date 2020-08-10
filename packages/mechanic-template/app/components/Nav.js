@@ -10,17 +10,20 @@ const Nav = ({ functions }) => {
   const names = Object.keys(functions);
 
   const changeFunction = direction => {
-    const currentIndex = names.indexOf(history.location.pathname.substring(1));
+    const currentFunction = history.location.pathname.substring(1);
+    const currentIndex = names.indexOf(currentFunction != "" ? currentFunction : names[0]);
     history.push(`/${names[(names.length + currentIndex + direction) % names.length]}`);
   };
 
   const previous = () => changeFunction(-1);
   const next = () => changeFunction(1);
 
+  const routeFunction = history.location.pathname.substring(1);
+
   return (
     <div className={classnames(css.root, css.row)}>
       <Button onClick={previous}>←</Button>
-      <span className={css.label}>{upper(history.location.pathname.substring(1))}</span>
+      <span className={css.label}>{upper(routeFunction != "" ? routeFunction : names[0])}</span>
       <Button onClick={next}>→</Button>
     </div>
   );
