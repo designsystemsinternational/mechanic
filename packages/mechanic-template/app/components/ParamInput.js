@@ -44,7 +44,13 @@ export const ParamInput = ({ name, value, options, onChange, children }) => {
     const v = value === undefined ? _default : value;
     const onClickHandler = e => onChange(e, name, !v);
     return (
-      <Button className={css.status} name={name} value={v} status={v} onClick={onClickHandler}>
+      <Button
+        className={css.status}
+        variant="grow"
+        name={name}
+        value={v}
+        status={v}
+        onClick={onClickHandler}>
         {v ? "true" : "false"}
         {children}
       </Button>

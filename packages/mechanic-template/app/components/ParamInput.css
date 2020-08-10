@@ -1,3 +1,4 @@
+@import "../variables.css";
 
 .status {
     min-width: 120px;
@@ -7,18 +8,24 @@
     flex-grow: 1;
 }
 
-.grow *{
+.grow > *{
     width: 100%;
 }
 
-.text {
-
+.text input{
+    padding: 0.5em 1em;
+	background-color: white;
+    border: 1px solid var(--text);
 }
 
-.number {
-
+.number input{
+    padding: 0.5em 1em;
+	background-color: white;
+    border: 1px solid var(--text);
 }
 
-.select {
-
+.select select{
+    padding: 0.5em 1em;
+	background-color: white;
+    border: 1px solid var(--text);
 }

@@ -6,6 +6,7 @@ import Select from "../components/input/Select";
 import Button from "../components/input/Button";
 import ParamInput from "../components/ParamInput";
 import css from "./Function.css";
+import paramcss from "../components/ParamInput.css";
 
 const Function = ({ name, exports, children }) => {
   const [values, setValues] = useState({});
@@ -59,12 +60,12 @@ const Function = ({ name, exports, children }) => {
         {children}
         <div className={css.sep} />
         <div className={css.param}>
-          <div className={css.row}>
+          <div className={classnames(css.row, css.strong)}>
             <span>Size</span>
           </div>
           <div className={css.row}>
             <Select
-              className={css.grow}
+              className={classnames(paramcss.select, paramcss.grow)}
               onChange={handleOnChange}
               name="size"
               value={values.size || "default"}>
@@ -79,8 +80,8 @@ const Function = ({ name, exports, children }) => {
         {Object.entries(optional).length == 0 ? "" : <div className={css.line} />}
         {Object.entries(optional).map(([name, param]) => (
           <div key={`param-${name}`} className={css.param}>
-            <div className={css.row}>
-              <span>{capital(name)}</span>
+            <div className={classnames(css.row, css.code)}>
+              <span>{name}</span>
             </div>
             <div className={css.row}>
               <ParamInput
@@ -95,7 +96,7 @@ const Function = ({ name, exports, children }) => {
         <div className={css.sep} />
         <div className={css.line} />
         <div className={css.sep} />
-        <div className={css.row}>
+        <div className={classnames(css.row, css.strong)}>
           <Button
             status={fastPreview}
             variant="grow"
@@ -104,13 +105,13 @@ const Function = ({ name, exports, children }) => {
           </Button>
         </div>
         <div className={css.sep} />
-        <div className={css.row}>
+        <div className={classnames(css.row, css.strong)}>
           <Button variant="grow" onClick={handlePreview}>
             Preview
           </Button>
         </div>
         <div className={css.sep} />
-        <div className={css.row}>
+        <div className={classnames(css.row, css.strong)}>
           <Button variant="grow" onClick={handleExport}>
             Export
           </Button>

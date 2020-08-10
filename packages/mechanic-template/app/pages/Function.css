@@ -12,20 +12,12 @@
 	user-select: none;
 }
 
-.root aside .row span {
+.strong span {
   font-weight: bold;
 }
 
-.root aside label span {
-  padding-right: 10px;
-}
-
-.grow {
-  flex-grow: 1;
-}
-
-.grow > *{
-  width: 100%;
+.code span {
+  font-family: 'Courier';
 }
 
 .sep {
