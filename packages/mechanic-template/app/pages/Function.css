@@ -60,7 +60,7 @@
   font-family: Menlo, "Courier New", monospace;
 }
 
-.param span {
+.param .row > span {
   margin-bottom: 0.5em;
   font-size: 0.75em;
   font-weight: 600;

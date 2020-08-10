@@ -1,7 +1,7 @@
 import React from "react";
 import Button from "./input/Button";
 import { useHistory } from "react-router-dom";
-import { upper } from "case";
+import { capital } from "case";
 import classnames from "classnames";
 import css from "./Nav.css";
 
@@ -14,14 +14,12 @@ const Nav = ({ name, functions }) => {
     history.push(`/${names[(names.length + currentIndex + direction) % names.length]}`);
   };
 
-  const previous = () => changeFunction(-1);
   const next = () => changeFunction(1);
 
   return (
     <div className={classnames(css.root, css.row)}>
-      <Button onClick={previous}>←</Button>
-      <span className={css.label}>{upper(name)}</span>
-      <Button onClick={next}>→</Button>
+      <span className={css.label}>{name}</span>
+      <Button onClick={next}></Button>
     </div>
   );
 };

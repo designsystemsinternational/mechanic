@@ -62,7 +62,7 @@ const Function = ({ name, exports, children }) => {
         <div className={css.paramsWrapper}>
           <div className={css.params}>
             <div className={css.param}>
-              <div className={classnames(css.row, css.strong)}>
+              <div className={css.row}>
                 <span>size</span>
               </div>
               <div className={css.row}>
