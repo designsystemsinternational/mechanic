@@ -43,7 +43,7 @@
 
 .params {
   padding: 0.5em 1em 0 0;
-  max-height: calc(100vh - 270px);
+  max-height: calc(100vh - 273px);
   overflow: auto;
 }
 
