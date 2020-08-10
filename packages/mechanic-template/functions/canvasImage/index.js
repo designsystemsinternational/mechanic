@@ -25,7 +25,6 @@ export const handler = (params, mechanic) => {
     bottom: hasOuterMargin ? bottomMargin : 0,
     left: hasOuterMargin ? leftMargin : 0
   };
-  console.log(typeof innerMargin, innerMargin);
   const rectWidth =
     (width - margin.left - margin.right - innerMargin * (numberOfRects - 1)) / numberOfRects;
   for (let index = 0; index < numberOfRects; index++) {
