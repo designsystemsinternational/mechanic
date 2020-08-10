@@ -2,8 +2,8 @@ import React from "react";
 import Button from "./input/Button";
 import { useHistory } from "react-router-dom";
 import { upper } from "case";
-import css from "./Nav.css";
 import classnames from "classnames";
+import css from "./Nav.css";
 
 const Nav = ({ name, functions }) => {
   const history = useHistory();

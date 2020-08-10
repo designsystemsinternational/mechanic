@@ -17,7 +17,8 @@
 }
 
 .code span {
-  font-family: 'Courier';
+  font-family: 'Courier New', Courier, monospace;
+  font-weight: 600;
 }
 
 .sep {
