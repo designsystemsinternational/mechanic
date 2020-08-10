@@ -56,50 +56,46 @@ const Function = ({ name, exports, children }) => {
     <div className={css.root}>
       <aside>
         <div className={css.sep} />
-        {children}
+        <div className={css.section}>{children}</div>
         <div className={css.sep} />
-        {Object.entries(optional).length == 0 ? "" : <div className={css.line} />}
-        {Object.entries(optional).length == 0 ? (
-          ""
-        ) : (
-          <div className={css.paramsWrapper}>
-            <div className={css.params}>
-              <div className={css.param}>
-                <div className={classnames(css.row, css.strong)}>
-                  <span>size</span>
+        <div className={css.line} />
+        <div className={css.paramsWrapper}>
+          <div className={css.params}>
+            <div className={css.param}>
+              <div className={classnames(css.row, css.strong)}>
+                <span>size</span>
+              </div>
+              <div className={css.row}>
+                <Select
+                  className={classnames(paramcss.select, paramcss.grow)}
+                  onChange={handleOnChange}
+                  name="size"
+                  value={values.size || "default"}>
+                  {sizes.map(size => (
+                    <option key={`size-${size}`} value={size}>
+                      {size} ({params.size[size].width}x{params.size[size].height})
+                    </option>
+                  ))}
+                </Select>
+              </div>
+            </div>
+            {Object.entries(optional).map(([name, param]) => (
+              <div key={`param-${name}`} className={css.param}>
+                <div className={css.row}>
+                  <span>{name}</span>
                 </div>
                 <div className={css.row}>
-                  <Select
-                    className={classnames(paramcss.select, paramcss.grow)}
+                  <ParamInput
+                    name={name}
+                    value={values[name]}
+                    options={param}
                     onChange={handleOnChange}
-                    name="size"
-                    value={values.size || "default"}>
-                    {sizes.map(size => (
-                      <option key={`size-${size}`} value={size}>
-                        {size} ({params.size[size].width}x{params.size[size].height})
-                      </option>
-                    ))}
-                  </Select>
+                  />
                 </div>
               </div>
-              {Object.entries(optional).map(([name, param]) => (
-                <div key={`param-${name}`} className={css.param}>
-                  <div className={css.row}>
-                    <span>{name}</span>
-                  </div>
-                  <div className={css.row}>
-                    <ParamInput
-                      name={name}
-                      value={values[name]}
-                      options={param}
-                      onChange={handleOnChange}
-                    />
-                  </div>
-                </div>
-              ))}
-            </div>
+            ))}
           </div>
-        )}
+        </div>
         <div className={css.sep} />
         <div className={css.line} />
         <div className={css.sep} />
