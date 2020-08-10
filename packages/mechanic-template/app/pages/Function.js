@@ -2,7 +2,6 @@ import React, { useState, useRef, useEffect } from "react";
 import PropTypes from "prop-types";
 import Select from "../components/input/Select";
 import Button from "../components/input/Button";
-import Checkbox from "../components/input/Checkbox";
 import ParamInput from "../components/ParamInput";
 import css from "./Function.css";
 
