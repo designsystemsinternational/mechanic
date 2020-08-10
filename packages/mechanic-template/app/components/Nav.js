@@ -9,6 +9,11 @@ const Nav = ({ name, functions }) => {
   const history = useHistory();
   const names = Object.keys(functions);
 
+  const handleOnChange = ({ target }) => {
+    // console.log(value);
+    history.push(target.value);
+  };
+
   const changeFunction = direction => {
     const currentIndex = names.indexOf(name);
     history.push(`/${names[(names.length + currentIndex + direction) % names.length]}`);
@@ -19,7 +24,21 @@ const Nav = ({ name, functions }) => {
   return (
     <div className={classnames(css.root, css.row)}>
       <span className={css.label}>{name}</span>
-      <Button onClick={next}></Button>
+      {/* <Button onClick={next}></Button> */}
+      <select
+        className={css.select}
+        onChange={handleOnChange}
+        name={name}
+        value={name}
+        // aria-required={required}
+        // aria-describedby={`error-${id}`}
+        // aria-invalid={invalid}
+      >
+        <option disabled>Select...</option>
+        {names.map(name => (
+          <option key={`route-${name}`}>{name}</option>
+        ))}
+      </select>
     </div>
   );
 };
