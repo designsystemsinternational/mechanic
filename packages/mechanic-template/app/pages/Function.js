@@ -1,5 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import PropTypes from "prop-types";
+import { capital } from "case";
+import classnames from "classnames";
 import Select from "../components/input/Select";
 import Button from "../components/input/Button";
 import ParamInput from "../components/ParamInput";
@@ -56,29 +58,38 @@ const Function = ({ name, exports, children }) => {
         <div className={css.sep} />
         {children}
         <div className={css.sep} />
-        <div className={css.row}>
-          <span>Size:</span>
-          <Select onChange={handleOnChange} name="size" value={values.size || "default"}>
-            {sizes.map(size => (
-              <option key={`size-${size}`} value={size}>
-                {size} ({params.size[size].width}x{params.size[size].height})
-              </option>
-            ))}
-          </Select>
+        <div className={css.param}>
+          <div className={css.row}>
+            <span>Size</span>
+          </div>
+          <div className={css.row}>
+            <Select onChange={handleOnChange} name="size" value={values.size || "default"}>
+              {sizes.map(size => (
+                <option key={`size-${size}`} value={size}>
+                  {size} ({params.size[size].width}x{params.size[size].height})
+                </option>
+              ))}
+            </Select>
+          </div>
         </div>
-        {Object.keys(optional).length > 0 ? <p>Params:</p> : ""}
+        {Object.entries(optional).length == 0 ? "" : <div className={css.line} />}
         {Object.entries(optional).map(([name, param]) => (
-          <div key={`param-${name}`} className={css.row}>
-            <span>{name}:</span>
-            <ParamInput
-              name={name}
-              value={values[name]}
-              options={param}
-              onChange={handleOnChange}
-            />
+          <div key={`param-${name}`} className={css.param}>
+            <div className={css.row}>
+              <span>{capital(name)}</span>
+            </div>
+            <div className={css.row}>
+              <ParamInput
+                name={name}
+                value={values[name]}
+                options={param}
+                onChange={handleOnChange}
+              />
+            </div>
           </div>
         ))}
         <div className={css.sep} />
+        <div className={css.line} />
         <div className={css.sep} />
         <div className={css.row}>
           <Button

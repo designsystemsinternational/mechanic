@@ -36,8 +36,22 @@
   height: 15px;
 }
 
+.line {
+  /* padding-bottom: 14px; */
+  margin-bottom: 15px;
+  border-bottom: 1px solid var(--dust-gray);
+}
+
 .row {
   width: 100%;
 	display: flex;
 	justify-content: space-between;
+}
+
+.param {
+  margin-bottom: 1em;
+}
+
+.param span{
+  margin-bottom: 0.5em;
 }
