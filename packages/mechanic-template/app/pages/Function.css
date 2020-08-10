@@ -6,13 +6,17 @@
 }
 
 .root aside {
-  padding: 0 25px;
+  padding-left: 25px;
   flex: 0 0 300px;
   border-right: 1px solid var(--dust-gray);
   height: 100%;
   display: flex;
   flex-direction: column;
   user-select: none;
+}
+
+.root aside .section {
+  padding-right: 25px;
 }
 
 .params-wrapper {
@@ -42,7 +46,7 @@
 }
 
 .params {
-  padding: 0.5em 1em 0 0;
+  padding: 0.5em 25px 0 0;
   max-height: calc(100vh - 273px);
   overflow: auto;
 }

@@ -103,25 +103,27 @@ const Function = ({ name, exports, children }) => {
         <div className={css.sep} />
         <div className={css.line} />
         <div className={css.sep} />
-        <div className={classnames(css.row, css.strong)}>
-          <Button
-            status={fastPreview}
-            variant="grow"
-            onClick={() => setFastPreview(fastPreview => !fastPreview)}>
-            {fastPreview ? "Fast Preview On" : "Fast Preview Off"}
-          </Button>
-        </div>
-        <div className={css.sep} />
-        <div className={classnames(css.row, css.strong)}>
-          <Button variant="grow" onClick={handlePreview}>
-            Preview
-          </Button>
-        </div>
-        <div className={css.sep} />
-        <div className={classnames(css.row, css.strong)}>
-          <Button className={css.blue} variant="grow" onClick={handleExport}>
-            Export
-          </Button>
+        <div className={css.section}>
+          <div className={classnames(css.row, css.strong)}>
+            <Button
+              status={fastPreview}
+              variant="grow"
+              onClick={() => setFastPreview(fastPreview => !fastPreview)}>
+              {fastPreview ? "Fast Preview On" : "Fast Preview Off"}
+            </Button>
+          </div>
+          <div className={css.sep} />
+          <div className={classnames(css.row, css.strong)}>
+            <Button variant="grow" onClick={handlePreview}>
+              Preview
+            </Button>
+          </div>
+          <div className={css.sep} />
+          <div className={classnames(css.row, css.strong)}>
+            <Button className={css.blue} variant="grow" onClick={handleExport}>
+              Export
+            </Button>
+          </div>
         </div>
       </aside>
       <main ref={mainRef}>
