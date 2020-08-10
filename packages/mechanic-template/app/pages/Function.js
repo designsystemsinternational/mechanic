@@ -63,7 +63,11 @@ const Function = ({ name, exports, children }) => {
             <span>Size</span>
           </div>
           <div className={css.row}>
-            <Select onChange={handleOnChange} name="size" value={values.size || "default"}>
+            <Select
+              className={css.grow}
+              onChange={handleOnChange}
+              name="size"
+              value={values.size || "default"}>
               {sizes.map(size => (
                 <option key={`size-${size}`} value={size}>
                   {size} ({params.size[size].width}x{params.size[size].height})

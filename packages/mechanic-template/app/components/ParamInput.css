@@ -2,3 +2,23 @@
 .status {
     min-width: 120px;
 }
+
+.grow {
+    flex-grow: 1;
+}
+
+.grow *{
+    width: 100%;
+}
+
+.text {
+
+}
+
+.number {
+
+}
+
+.select {
+
+}

@@ -20,16 +20,12 @@
   padding-right: 10px;
 }
 
-.root main {
-  padding-left: 25px;
-  flex: 1;
-  min-height: 100vh;
+.grow {
+  flex-grow: 1;
 }
 
-.iframe {
-  border: none;
+.grow > *{
   width: 100%;
-  height: 100%;
 }
 
 .sep {
@@ -54,4 +50,16 @@
 
 .param span{
   margin-bottom: 0.5em;
+}
+
+.root main {
+  padding-left: 25px;
+  flex: 1;
+  min-height: 100vh;
+}
+
+.iframe {
+  border: none;
+  width: 100%;
+  height: 100%;
 }

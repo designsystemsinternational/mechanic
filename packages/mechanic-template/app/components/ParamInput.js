@@ -1,5 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
+import classnames from "classnames";
 import css from "./ParamInput.css";
 import Input from "./input/Input";
 import Select from "./input/Select";
@@ -11,7 +12,11 @@ export const ParamInput = ({ name, value, options, onChange, children }) => {
 
   if (choices) {
     return (
-      <Select onChange={onChange} name={name} value={value || _default}>
+      <Select
+        className={classnames(css.select, css.grow)}
+        onChange={onChange}
+        name={name}
+        value={value || _default}>
         {options.choices.map(choice => (
           <option key={`$param-${name}-${choice}`} value={choice}>
             {choice}
@@ -25,6 +30,7 @@ export const ParamInput = ({ name, value, options, onChange, children }) => {
     return (
       <Input
         type="number"
+        className={classnames(css.number, css.grow)}
         label=""
         name={name}
         value={"" + (value || _default)}
@@ -46,7 +52,13 @@ export const ParamInput = ({ name, value, options, onChange, children }) => {
   }
 
   return (
-    <Input type="text" label="" name={name} value={value || _default} onChange={onChange}>
+    <Input
+      type="text"
+      className={classnames(css.text, css.grow)}
+      label=""
+      name={name}
+      value={value || _default}
+      onChange={onChange}>
       {children}
     </Input>
   );
