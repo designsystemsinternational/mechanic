@@ -1,5 +1,17 @@
 export const handler = (params, mechanic) => {
-  const { width, height, primaryColor, secondaryColor, numberOfRects, hasOuterMargin } = params;
+  const {
+    width,
+    height,
+    primaryColor,
+    secondaryColor,
+    numberOfRects,
+    hasOuterMargin,
+    innerMargin,
+    topMargin,
+    bottomMargin,
+    leftMargin,
+    rightMargin
+  } = params;
   const canvas = document.createElement("canvas");
   canvas.width = width;
   canvas.height = height;
@@ -7,10 +19,22 @@ export const handler = (params, mechanic) => {
   ctx.fillStyle = primaryColor;
   ctx.fillRect(0, 0, width, height);
   ctx.fillStyle = secondaryColor;
-  const margin = hasOuterMargin ? 200 : 0;
-  const rectWidth = (width - margin - 10 * (numberOfRects - 1)) / numberOfRects;
+  const margin = {
+    top: hasOuterMargin ? topMargin : 0,
+    right: hasOuterMargin ? rightMargin : 0,
+    bottom: hasOuterMargin ? bottomMargin : 0,
+    left: hasOuterMargin ? leftMargin : 0
+  };
+  console.log(typeof innerMargin, innerMargin);
+  const rectWidth =
+    (width - margin.left - margin.right - innerMargin * (numberOfRects - 1)) / numberOfRects;
   for (let index = 0; index < numberOfRects; index++) {
-    ctx.fillRect(margin / 2 + index * (rectWidth + 10), margin / 2, rectWidth, height - margin);
+    ctx.fillRect(
+      margin.left + index * (rectWidth + innerMargin),
+      margin.top,
+      rectWidth,
+      height - margin.top - margin.bottom
+    );
   }
   mechanic.done(canvas);
 };
@@ -56,23 +80,23 @@ export const params = {
   },
   innerMargin: {
     type: "integer",
-    default: 0
+    default: 10
   },
   topMargin: {
     type: "integer",
-    default: 0
+    default: 100
   },
   bottomMargin: {
     type: "integer",
-    default: 0
+    default: 100
   },
   leftMargin: {
     type: "integer",
-    default: 0
+    default: 100
   },
   rightMargin: {
     type: "integer",
-    default: 0
+    default: 100
   }
 };
 
