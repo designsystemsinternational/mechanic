@@ -53,6 +53,26 @@ export const params = {
   hasOuterMargin: {
     type: "boolean",
     default: true
+  },
+  innerMargin: {
+    type: "integer",
+    default: 0
+  },
+  topMargin: {
+    type: "integer",
+    default: 0
+  },
+  bottomMargin: {
+    type: "integer",
+    default: 0
+  },
+  leftMargin: {
+    type: "integer",
+    default: 0
+  },
+  rightMargin: {
+    type: "integer",
+    default: 0
   }
 };
 

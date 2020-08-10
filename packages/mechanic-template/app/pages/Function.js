@@ -77,21 +77,25 @@ const Function = ({ name, exports, children }) => {
           </div>
         </div>
         {Object.entries(optional).length == 0 ? "" : <div className={css.line} />}
-        {Object.entries(optional).map(([name, param]) => (
-          <div key={`param-${name}`} className={css.param}>
-            <div className={classnames(css.row, css.code)}>
-              <span>{name}</span>
-            </div>
-            <div className={css.row}>
-              <ParamInput
-                name={name}
-                value={values[name]}
-                options={param}
-                onChange={handleOnChange}
-              />
-            </div>
+        <div className={css.paramsWrapper}>
+          <div className={css.params}>
+            {Object.entries(optional).map(([name, param]) => (
+              <div key={`param-${name}`} className={css.param}>
+                <div className={classnames(css.row, css.code)}>
+                  <span>{name}</span>
+                </div>
+                <div className={css.row}>
+                  <ParamInput
+                    name={name}
+                    value={values[name]}
+                    options={param}
+                    onChange={handleOnChange}
+                  />
+                </div>
+              </div>
+            ))}
           </div>
-        ))}
+        </div>
         <div className={css.sep} />
         <div className={css.line} />
         <div className={css.sep} />
