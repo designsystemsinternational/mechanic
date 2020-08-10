@@ -53,19 +53,17 @@
 
 .param {
   margin-bottom: 1em;
+  font-family: Menlo, "Courier New", monospace;
 }
 
 .param span {
   margin-bottom: 0.5em;
+  font-size: 0.75em;
+  font-weight: 600;
 }
 
 .strong span {
   font-weight: bold;
-}
-
-.code span {
-  font-family: "Courier New", Courier, monospace;
-  font-weight: 600;
 }
 
 .sep {
