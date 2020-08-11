@@ -3,7 +3,7 @@
 }
 
 /* Followed steps in this article to make cross-platform compatible: https://www.filamentgroup.com/lab/select-css.html */
-select {
+.root select {
   font-family: inherit;
   font-size: inherit;
   font-weight: inherit;

@@ -23,16 +23,8 @@ const Nav = ({ name, functions }) => {
 
   return (
     <div className={css.root}>
-      <span className={css.label}>{name}</span>
-      <select
-        className={css.select}
-        onChange={handleOnChange}
-        name={name}
-        value={name}
-        // aria-required={required}
-        // aria-describedby={`error-${id}`}
-        // aria-invalid={invalid}
-      >
+      <span className={css.funclabel}>{name}</span>
+      <select className={css.navigationSelect} onChange={handleOnChange} name={name} value={name}>
         <option disabled>Select...</option>
         {names.map(name => (
           <option key={`route-${name}`}>{name}</option>
