@@ -54,7 +54,7 @@ const Function = ({ name, exports, children }) => {
 
   return (
     <div className={css.root}>
-      <aside>
+      <aside className={css.aside}>
         <div className={css.sep} />
         <div className={css.section}>{children}</div>
         <div className={css.sep} />
@@ -62,12 +62,12 @@ const Function = ({ name, exports, children }) => {
         <div className={css.paramsWrapper}>
           <div className={css.params}>
             <div className={css.param}>
-              <div className={css.row}>
-                <span>size</span>
+              <div className={classnames(css.row, css.strong)}>
+                <span className={classnames(css.grow, css.paramlabel)}>size</span>
               </div>
               <div className={css.row}>
                 <Select
-                  className={classnames(paramcss.select, paramcss.grow)}
+                  className={css.grow}
                   onChange={handleOnChange}
                   name="size"
                   value={values.size || "default"}>
@@ -81,11 +81,12 @@ const Function = ({ name, exports, children }) => {
             </div>
             {Object.entries(optional).map(([name, param]) => (
               <div key={`param-${name}`} className={css.param}>
-                <div className={css.row}>
-                  <span>{name}</span>
+                <div className={classnames(css.row, css.strong)}>
+                  <span className={classnames(css.grow, css.paramlabel)}>{name}</span>
                 </div>
                 <div className={css.row}>
                   <ParamInput
+                    className={css.grow}
                     name={name}
                     value={values[name]}
                     options={param}
@@ -96,12 +97,12 @@ const Function = ({ name, exports, children }) => {
             ))}
           </div>
         </div>
-        <div className={css.sep} />
         <div className={css.line} />
         <div className={css.sep} />
         <div className={css.section}>
           <div className={classnames(css.row, css.strong)}>
             <Button
+              className={css.grow}
               status={fastPreview}
               variant="grow"
               onClick={() => setFastPreview(fastPreview => !fastPreview)}>
@@ -110,19 +111,22 @@ const Function = ({ name, exports, children }) => {
           </div>
           <div className={css.sep} />
           <div className={classnames(css.row, css.strong)}>
-            <Button variant="grow" onClick={handlePreview}>
+            <Button className={css.grow} variant="grow" onClick={handlePreview}>
               Preview
             </Button>
           </div>
           <div className={css.sep} />
           <div className={classnames(css.row, css.strong)}>
-            <Button className={css.blue} variant="grow" onClick={handleExport}>
+            <Button
+              className={classnames(css.grow, css.bluehighlight)}
+              variant="grow"
+              onClick={handleExport}>
               Export
             </Button>
           </div>
         </div>
       </aside>
-      <main ref={mainRef}>
+      <main className={css.main} ref={mainRef}>
         <iframe src="functions.html" className={css.iframe} ref={iframe} />
       </main>
     </div>

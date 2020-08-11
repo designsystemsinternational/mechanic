@@ -10,6 +10,11 @@
   border: 1px solid var(--text);
 }
 
+button {
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: inherit;
+}
 .root:active {
   background-color: var(--blue) !important;
   color: white;
@@ -24,10 +29,6 @@
   /* background-color: var(--dust-gray-darker); */
 }
 
-.grow {
-  flex-grow: 1;
-}
-
 .withHover.hover {
   display: none;
 }
@@ -38,6 +39,10 @@
 
 .withHover:hover.label.hover {
   display: block;
+}
+
+.hasStatus {
+  min-width: 120px;
 }
 
 .status {

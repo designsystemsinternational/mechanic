@@ -6,14 +6,17 @@ import Input from "./input/Input";
 import Select from "./input/Select";
 import Button from "./input/Button";
 
-export const ParamInput = ({ name, value, options, onChange, children }) => {
+export const ParamInput = ({ name, className, value, options, onChange, children }) => {
   const { type, choices } = options;
   const _default = options["default"];
 
   if (choices) {
+    const rootClasses = classnames(css.root, css.select, {
+      [className]: className
+    });
     return (
       <Select
-        className={classnames(css.select, css.grow)}
+        className={rootClasses}
         onChange={onChange}
         name={name}
         value={value === undefined ? _default : value}>
@@ -27,11 +30,13 @@ export const ParamInput = ({ name, value, options, onChange, children }) => {
   }
 
   if (type == "integer") {
+    const rootClasses = classnames(css.root, css.number, {
+      [className]: className
+    });
     return (
       <Input
         type="number"
-        // inputmode="numeric"
-        className={classnames(css.number, css.grow)}
+        className={rootClasses}
         label=""
         name={name}
         value={"" + (value === undefined ? _default : value)}
@@ -42,11 +47,14 @@ export const ParamInput = ({ name, value, options, onChange, children }) => {
   }
 
   if (type == "boolean") {
+    const rootClasses = classnames(css.root, css.status, {
+      [className]: className
+    });
     const v = value === undefined ? _default : value;
     const onClickHandler = e => onChange(e, name, !v);
     return (
       <Button
-        className={css.status}
+        className={rootClasses}
         variant="grow"
         name={name}
         value={v}
@@ -58,10 +66,14 @@ export const ParamInput = ({ name, value, options, onChange, children }) => {
     );
   }
 
+  const rootClasses = classnames(css.root, css.text, {
+    [className]: className
+  });
+
   return (
     <Input
       type="text"
-      className={classnames(css.text, css.grow)}
+      className={rootClasses}
       label=""
       name={name}
       value={value === undefined ? _default : value}
@@ -81,6 +93,7 @@ ParamInput.propTypes = {
   children: PropTypes.node,
   onChange: PropTypes.func,
   name: PropTypes.string,
+  className: PropTypes.string,
   value: PropTypes.any,
   options: PropTypes.object
 };

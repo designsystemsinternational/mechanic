@@ -22,9 +22,8 @@ const Nav = ({ name, functions }) => {
   const next = () => changeFunction(1);
 
   return (
-    <div className={classnames(css.root, css.row)}>
+    <div className={css.root}>
       <span className={css.label}>{name}</span>
-      {/* <Button onClick={next}></Button> */}
       <select
         className={css.select}
         onChange={handleOnChange}

@@ -4,10 +4,14 @@ import classnames from "classnames";
 import css from "./Button.css";
 
 export const Button = ({ className, variant, status, onClick, children, disabled }) => {
-  const classes = classnames(css.root, {
+  const classVariants = {
     [className]: className,
     [css[variant]]: css[variant]
-  });
+  };
+  if (typeof status !== "undefined") {
+    classVariants[css.hasStatus] = css.hasStatus;
+  }
+  const classes = classnames(css.root, classVariants);
   return (
     <button className={classes} onClick={onClick} disabled={disabled}>
       {typeof status !== "undefined" && (

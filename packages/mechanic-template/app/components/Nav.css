@@ -1,8 +1,5 @@
 .root {
   font-family: Menlo, "Courier New", monospace;
-}
-
-.row {
   display: flex;
   align-items: center;
   justify-content: space-between;
