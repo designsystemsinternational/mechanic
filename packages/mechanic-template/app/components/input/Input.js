@@ -26,7 +26,6 @@ export const Input = props => {
 
   const handleOnChange = useRef(event => {
     const { name, value } = event.target;
-    console.log(name, typeof value, value);
     onChange && onChange(event, name, value);
   });
 

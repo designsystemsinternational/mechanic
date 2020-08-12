@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import PropTypes from "prop-types";
 import classnames from "classnames";
+import Mousetrap from "mousetrap";
 import Select from "../components/input/Select";
 import Button from "../components/input/Button";
 import Toggle from "../components/input/Toggle";
@@ -18,15 +19,6 @@ const Function = ({ name, exports, children }) => {
   const { params } = exports;
   const { size, ...optional } = params;
   const sizes = Object.keys(size);
-
-  // Init engine when the name of the function changes
-  useEffect(() => {
-    const onLoad = () => {
-      iframe.current.contentWindow.initEngine(exports.settings.engine);
-    };
-    iframe.current.addEventListener("load", onLoad);
-    return () => iframe.current.removeEventListener("load", onLoad);
-  }, [name]);
 
   const handleOnChange = (e, name, value) => {
     setValues(values => Object.assign({}, values, { [name]: value }));
@@ -51,6 +43,24 @@ const Function = ({ name, exports, children }) => {
     }
     iframe.current.contentWindow.run(name, vals);
   };
+
+  // Init engine when the name of the function changes
+  useEffect(() => {
+    const onLoad = () => {
+      iframe.current.contentWindow.initEngine(exports.settings.engine);
+    };
+    iframe.current.addEventListener("load", onLoad);
+    return () => {
+      iframe.current.removeEventListener("load", onLoad);
+    };
+  }, [name]);
+
+  useEffect(() => {
+    Mousetrap.bind("command+e", handleExport);
+    return () => {
+      Mousetrap.unbind("command+e");
+    };
+  });
 
   return (
     <div className={css.root}>
