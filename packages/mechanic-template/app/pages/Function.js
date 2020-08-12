@@ -3,9 +3,9 @@ import PropTypes from "prop-types";
 import classnames from "classnames";
 import Select from "../components/input/Select";
 import Button from "../components/input/Button";
+import Toggle from "../components/input/Toggle";
 import ParamInput from "../components/ParamInput";
 import css from "./Function.css";
-import paramcss from "../components/ParamInput.css";
 
 const Function = ({ name, exports, children }) => {
   const [values, setValues] = useState({});
@@ -101,13 +101,13 @@ const Function = ({ name, exports, children }) => {
         <div className={css.sep} />
         <div className={css.section}>
           <div className={classnames(css.row, css.strong)}>
-            <Button
+            <Toggle
               className={css.grow}
               status={fastPreview}
               variant="grow"
               onClick={() => setFastPreview(fastPreview => !fastPreview)}>
               {fastPreview ? "Fast Preview On" : "Fast Preview Off"}
-            </Button>
+            </Toggle>
           </div>
           <div className={css.sep} />
           <div className={classnames(css.row, css.strong)}>

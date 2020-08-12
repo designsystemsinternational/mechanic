@@ -5,6 +5,7 @@ import css from "./ParamInput.css";
 import Input from "./input/Input";
 import Select from "./input/Select";
 import Button from "./input/Button";
+import Toggle from "./input/Toggle";
 
 export const ParamInput = ({ name, className, value, options, onChange, children }) => {
   const { type, choices } = options;
@@ -53,7 +54,7 @@ export const ParamInput = ({ name, className, value, options, onChange, children
     const v = value === undefined ? _default : value;
     const onClickHandler = e => onChange(e, name, !v);
     return (
-      <Button
+      <Toggle
         className={rootClasses}
         variant="grow"
         name={name}
@@ -62,7 +63,7 @@ export const ParamInput = ({ name, className, value, options, onChange, children
         onClick={onClickHandler}>
         {v ? "true" : "false"}
         {children}
-      </Button>
+      </Toggle>
     );
   }
 
