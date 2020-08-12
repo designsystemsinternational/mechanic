@@ -3,6 +3,7 @@
 .root {
   font-family: inherit;
   font-size: inherit;
+  line-height: 1em;
   font-weight: inherit;
   position: relative;
   display: block;
@@ -10,6 +11,7 @@
   cursor: pointer;
   min-width: 120px;
   padding: 0.5em 1em;
+  margin: 0;
   background-color: white;
   border: 1px solid var(--text);
   &:active {
