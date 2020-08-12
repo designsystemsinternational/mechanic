@@ -30,6 +30,24 @@ export const ParamInput = ({ name, className, value, options, onChange, children
     );
   }
 
+  if (type == "boolean") {
+    const rootClasses = classnames(css.root, css.status, {
+      [className]: className
+    });
+    const v = value === undefined ? _default : value;
+    return (
+      <Toggle
+        className={rootClasses}
+        name={name}
+        value={v}
+        status={v}
+        onClick={e => onChange(e, name, !v)}>
+        {v ? "true" : "false"}
+        {children}
+      </Toggle>
+    );
+  }
+
   if (type == "integer") {
     const rootClasses = classnames(css.root, css.number, {
       [className]: className
@@ -44,26 +62,6 @@ export const ParamInput = ({ name, className, value, options, onChange, children
         onChange={onChange}>
         {children}
       </Input>
-    );
-  }
-
-  if (type == "boolean") {
-    const rootClasses = classnames(css.root, css.status, {
-      [className]: className
-    });
-    const v = value === undefined ? _default : value;
-    const onClickHandler = e => onChange(e, name, !v);
-    return (
-      <Toggle
-        className={rootClasses}
-        variant="grow"
-        name={name}
-        value={v}
-        status={v}
-        onClick={onClickHandler}>
-        {v ? "true" : "false"}
-        {children}
-      </Toggle>
     );
   }
 

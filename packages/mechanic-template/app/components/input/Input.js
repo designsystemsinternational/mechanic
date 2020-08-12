@@ -38,7 +38,7 @@ export const Input = props => {
   });
 
   return (
-    <div style={css} className={rootClasses}>
+    <div className={rootClasses}>
       {label && <label htmlFor={id}>{label}</label>}
       <input
         autoComplete={autocomplete}
