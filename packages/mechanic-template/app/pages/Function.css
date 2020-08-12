@@ -77,7 +77,7 @@
 
 .params {
   padding-right: 25px;
-  height: calc(100vh - 252px);
+  height: calc(100vh - 247px);
   overflow: auto;
   & > .param:first-child {
     padding-top: 10px;
