@@ -10,11 +10,11 @@ import Toggle from "./input/Toggle";
 export const ParamInput = ({ name, className, value, options, onChange, children }) => {
   const { type, choices } = options;
   const _default = options["default"];
+  const rootClasses = classnames(css.root, {
+    [className]: className
+  });
 
   if (choices) {
-    const rootClasses = classnames(css.root, css.select, {
-      [className]: className
-    });
     return (
       <Select
         className={rootClasses}
@@ -31,9 +31,6 @@ export const ParamInput = ({ name, className, value, options, onChange, children
   }
 
   if (type == "boolean") {
-    const rootClasses = classnames(css.root, css.status, {
-      [className]: className
-    });
     const v = value === undefined ? _default : value;
     return (
       <Toggle
@@ -48,34 +45,13 @@ export const ParamInput = ({ name, className, value, options, onChange, children
     );
   }
 
-  if (type == "integer") {
-    const rootClasses = classnames(css.root, css.number, {
-      [className]: className
-    });
-    return (
-      <Input
-        type="number"
-        className={rootClasses}
-        label=""
-        name={name}
-        value={"" + (value === undefined ? _default : value)}
-        onChange={onChange}>
-        {children}
-      </Input>
-    );
-  }
-
-  const rootClasses = classnames(css.root, css.text, {
-    [className]: className
-  });
-
   return (
     <Input
-      type="text"
+      type={type == "integer" ? "number" : "text"}
       className={rootClasses}
       label=""
       name={name}
-      value={value === undefined ? _default : value}
+      value={"" + (value === undefined ? _default : value)}
       onChange={onChange}>
       {children}
     </Input>
