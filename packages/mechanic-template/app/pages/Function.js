@@ -104,23 +104,19 @@ const Function = ({ name, exports, children }) => {
             <Toggle
               className={css.grow}
               status={fastPreview}
-              variant="grow"
               onClick={() => setFastPreview(fastPreview => !fastPreview)}>
               {fastPreview ? "Fast Preview On" : "Fast Preview Off"}
             </Toggle>
           </div>
           <div className={css.sep} />
           <div className={classnames(css.row, css.strong)}>
-            <Button className={css.grow} variant="grow" onClick={handlePreview}>
+            <Button className={css.grow} onClick={handlePreview}>
               Preview
             </Button>
           </div>
           <div className={css.sep} />
           <div className={classnames(css.row, css.strong)}>
-            <Button
-              className={classnames(css.grow, css.blueHighlight)}
-              variant="grow"
-              onClick={handleExport}>
+            <Button className={classnames(css.grow, css.blueHighlight)} onClick={handleExport}>
               Export
             </Button>
           </div>
