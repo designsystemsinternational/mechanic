@@ -118,7 +118,7 @@ const Function = ({ name, exports, children }) => {
           <div className={css.sep} />
           <div className={classnames(css.row, css.strong)}>
             <Button
-              className={classnames(css.grow, css.bluehighlight)}
+              className={classnames(css.grow, css.blueHighlight)}
               variant="grow"
               onClick={handleExport}>
               Export
