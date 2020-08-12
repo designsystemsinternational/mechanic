@@ -1,7 +1,2 @@
-@import "../variables.css";
-
 .root {
-  & > input {
-    width: 100%;
-  }
 }

@@ -79,7 +79,7 @@ Input.propTypes = {
   name: PropTypes.string,
   value: PropTypes.string,
   type: PropTypes.string,
-  label: PropTypes.string.isRequired,
+  label: PropTypes.string,
   className: PropTypes.string,
   autocomplete: PropTypes.string,
   disabled: PropTypes.bool,
