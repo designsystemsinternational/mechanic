@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import PropTypes from "prop-types";
 import classnames from "classnames";
-import Mousetrap from "mousetrap";
+import shortcut from "../utils/shortcut";
 import Select from "../components/input/Select";
 import Button from "../components/input/Button";
 import Toggle from "../components/input/Toggle";
@@ -49,29 +49,16 @@ const Function = ({ name, exports, children }) => {
   useEffect(() => {
     const onLoad = () => {
       iframe.current.contentWindow.initEngine(exports.settings.engine);
-      Mousetrap(iframe.current.contentWindow).bind("mod+p", () => {
-        handlePreview();
-        return false;
-      });
     };
     iframe.current.addEventListener("load", onLoad);
     return () => {
       iframe.current.removeEventListener("load", onLoad);
-      Mousetrap(iframe.current.contentWindow).unbind("mod+p");
     };
   }, [name]);
 
-  useEffect(() => {
-    Mousetrap.bind("mod+e", handleExport);
-    Mousetrap.bind("mod+p", () => {
-      handlePreview();
-      return false;
-    });
-    Mousetrap.bind("space", () => setShowPanel(showPanel => !showPanel));
-    return () => {
-      Mousetrap.unbind(["mod+e", "mod+p", "space"]);
-    };
-  });
+  shortcut("mod+e", handleExport, iframe);
+  shortcut("mod+p", handlePreview, iframe, true);
+  shortcut("mod+y", () => setShowPanel(showPanel => !showPanel), iframe);
 
   return (
     <div className={css.root}>
