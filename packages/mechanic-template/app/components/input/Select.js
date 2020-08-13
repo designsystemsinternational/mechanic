@@ -1,6 +1,7 @@
 import React, { Fragment, useRef, useState } from "react";
 import PropTypes from "prop-types";
 import classnames from "classnames";
+import { enablesShortcutsClass } from "../../utils/shortcut";
 import { uid } from "../../utils";
 import css from "./Select.css";
 
@@ -47,7 +48,7 @@ export const Select = props => {
         )}
         <select
           id={id}
-          className={allowShortcuts ? "mousetrap" : ""}
+          className={allowShortcuts ? enablesShortcutsClass : ""}
           disabled={disabled}
           onChange={handleOnChange.current}
           onFocus={() => setFocus(true)}

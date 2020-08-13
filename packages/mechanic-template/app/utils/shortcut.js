@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import Mousetrap from "mousetrap";
 
-const shortcut = function (command, handler, iframRef, overrideDefault = true) {
+export const globalShortcut = function (command, handler, iframRef, overrideDefault = false) {
   const handlerFunction = () => {
     handler();
     return !overrideDefault;
@@ -17,4 +17,18 @@ const shortcut = function (command, handler, iframRef, overrideDefault = true) {
   });
 };
 
-export default shortcut;
+export const shortcut = function (element, command, handler, overrideDefault = false) {
+  const handlerFunction = () => {
+    handler();
+    return !overrideDefault;
+  };
+  useEffect(() => {
+    const mousetrap = Mousetrap(element);
+    mousetrap.bind(command, handlerFunction);
+    return () => {
+      mousetrap.unbind(command);
+    };
+  });
+};
+
+export const enablesShortcutsClass = "mousetrap";

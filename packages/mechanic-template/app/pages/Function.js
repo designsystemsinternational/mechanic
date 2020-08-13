@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import PropTypes from "prop-types";
 import classnames from "classnames";
-import shortcut from "../utils/shortcut";
+import { globalShortcut } from "../utils/shortcut";
 import Select from "../components/input/Select";
 import Button from "../components/input/Button";
 import Toggle from "../components/input/Toggle";
@@ -56,10 +56,10 @@ const Function = ({ name, exports, children }) => {
     };
   }, [name]);
 
-  shortcut("mod+e", handleExport, iframe);
-  shortcut("mod+p", handlePreview, iframe, true);
-  shortcut("mod+f", () => setFastPreview(fastPreview => !fastPreview), iframe, true);
-  shortcut("mod+y", () => setShowPanel(showPanel => !showPanel), iframe);
+  globalShortcut("mod+e", handleExport, iframe);
+  globalShortcut("mod+p", handlePreview, iframe, true);
+  globalShortcut("mod+f", () => setFastPreview(fastPreview => !fastPreview), iframe, true);
+  globalShortcut("mod+y", () => setShowPanel(showPanel => !showPanel), iframe);
 
   return (
     <div className={css.root}>
