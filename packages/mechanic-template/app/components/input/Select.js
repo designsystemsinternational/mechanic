@@ -10,6 +10,7 @@ export const Select = props => {
     children,
     className,
     onChange,
+    allowShortcuts,
     defaultValue,
     disabled,
     error,
@@ -46,6 +47,7 @@ export const Select = props => {
         )}
         <select
           id={id}
+          className={allowShortcuts ? "mousetrap" : ""}
           disabled={disabled}
           onChange={handleOnChange.current}
           onFocus={() => setFocus(true)}
@@ -72,7 +74,8 @@ export const Select = props => {
 export default Select;
 
 Select.defaultProps = {
-  placeholder: "Select..."
+  placeholder: "Select...",
+  allowShortcuts: false
 };
 
 Select.propTypes = {
@@ -80,6 +83,7 @@ Select.propTypes = {
   value: PropTypes.string,
   children: PropTypes.node,
   disabled: PropTypes.bool,
+  allowShortcuts: PropTypes.bool,
   error: PropTypes.string,
   id: PropTypes.string,
   invalid: PropTypes.bool,

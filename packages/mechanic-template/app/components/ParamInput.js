@@ -19,6 +19,7 @@ export const ParamInput = ({ name, className, value, options, onChange, children
       <Select
         className={rootClasses}
         onChange={onChange}
+        allowShortcuts={true}
         name={name}
         value={value === undefined ? _default : value}>
         {options.choices.map(choice => (
@@ -49,6 +50,7 @@ export const ParamInput = ({ name, className, value, options, onChange, children
     <Input
       type={type == "integer" ? "number" : "text"}
       className={rootClasses}
+      allowShortcuts={true}
       label=""
       name={name}
       value={"" + (value === undefined ? _default : value)}

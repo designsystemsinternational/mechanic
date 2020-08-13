@@ -11,6 +11,7 @@ import css from "./Function.css";
 const Function = ({ name, exports, children }) => {
   const [values, setValues] = useState({});
   const [fastPreview, setFastPreview] = useState(true);
+  const [showPanel, setShowPanel] = useState(true);
 
   const mainRef = useRef();
   const randomSeed = useRef();
@@ -48,90 +49,103 @@ const Function = ({ name, exports, children }) => {
   useEffect(() => {
     const onLoad = () => {
       iframe.current.contentWindow.initEngine(exports.settings.engine);
+      console.log(iframe.current);
+      Mousetrap(iframe.current).bind("mod+p", () => {
+        handlePreview();
+        return false;
+      });
     };
     iframe.current.addEventListener("load", onLoad);
     return () => {
       iframe.current.removeEventListener("load", onLoad);
+      Mousetrap(iframe.current).unbind("mod+p");
     };
   }, [name]);
 
   useEffect(() => {
-    Mousetrap.bind("command+e", handleExport);
+    Mousetrap.bind("mod+e", handleExport);
+    Mousetrap.bind("mod+p", () => {
+      handlePreview();
+      return false;
+    });
+    Mousetrap.bind("space", () => setShowPanel(showPanel => !showPanel));
     return () => {
-      Mousetrap.unbind("command+e");
+      Mousetrap.unbind(["mod+e", "mod+p", "space"]);
     };
   });
 
   return (
     <div className={css.root}>
-      <aside className={css.aside}>
-        <div className={css.sep} />
-        <div className={css.section}>{children}</div>
-        <div className={css.sep} />
-        <div className={css.line} />
-        <div className={css.paramsWrapper}>
-          <div className={css.params}>
-            <div className={css.param}>
-              <div className={classnames(css.row, css.strong)}>
-                <span className={classnames(css.grow, css.paramlabel)}>size</span>
-              </div>
-              <div className={css.row}>
-                <Select
-                  className={css.grow}
-                  onChange={handleOnChange}
-                  name="size"
-                  value={values.size || "default"}>
-                  {sizes.map(size => (
-                    <option key={`size-${size}`} value={size}>
-                      {size} ({params.size[size].width}x{params.size[size].height})
-                    </option>
-                  ))}
-                </Select>
-              </div>
-            </div>
-            {Object.entries(optional).map(([name, param]) => (
-              <div key={`param-${name}`} className={css.param}>
+      {showPanel && (
+        <aside className={css.aside}>
+          <div className={css.sep} />
+          <div className={css.section}>{children}</div>
+          <div className={css.sep} />
+          <div className={css.line} />
+          <div className={css.paramsWrapper}>
+            <div className={css.params}>
+              <div className={css.param}>
                 <div className={classnames(css.row, css.strong)}>
-                  <span className={classnames(css.grow, css.paramlabel)}>{name}</span>
+                  <span className={classnames(css.grow, css.paramlabel)}>size</span>
                 </div>
                 <div className={css.row}>
-                  <ParamInput
+                  <Select
                     className={css.grow}
-                    name={name}
-                    value={values[name]}
-                    options={param}
                     onChange={handleOnChange}
-                  />
+                    name="size"
+                    value={values.size || "default"}>
+                    {sizes.map(size => (
+                      <option key={`size-${size}`} value={size}>
+                        {size} ({params.size[size].width}x{params.size[size].height})
+                      </option>
+                    ))}
+                  </Select>
                 </div>
               </div>
-            ))}
+              {Object.entries(optional).map(([name, param]) => (
+                <div key={`param-${name}`} className={css.param}>
+                  <div className={classnames(css.row, css.strong)}>
+                    <span className={classnames(css.grow, css.paramlabel)}>{name}</span>
+                  </div>
+                  <div className={css.row}>
+                    <ParamInput
+                      className={css.grow}
+                      name={name}
+                      value={values[name]}
+                      options={param}
+                      onChange={handleOnChange}
+                    />
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
-        </div>
-        <div className={css.line} />
-        <div className={css.sep} />
-        <div className={css.section}>
-          <div className={classnames(css.row, css.strong)}>
-            <Toggle
-              className={css.grow}
-              status={fastPreview}
-              onClick={() => setFastPreview(fastPreview => !fastPreview)}>
-              {fastPreview ? "Fast Preview On" : "Fast Preview Off"}
-            </Toggle>
-          </div>
+          <div className={css.line} />
           <div className={css.sep} />
-          <div className={classnames(css.row, css.strong)}>
-            <Button className={css.grow} onClick={handlePreview}>
-              Preview
-            </Button>
+          <div className={css.section}>
+            <div className={classnames(css.row, css.strong)}>
+              <Toggle
+                className={css.grow}
+                status={fastPreview}
+                onClick={() => setFastPreview(fastPreview => !fastPreview)}>
+                {fastPreview ? "Fast Preview On" : "Fast Preview Off"}
+              </Toggle>
+            </div>
+            <div className={css.sep} />
+            <div className={classnames(css.row, css.strong)}>
+              <Button className={css.grow} onClick={handlePreview}>
+                Preview
+              </Button>
+            </div>
+            <div className={css.sep} />
+            <div className={classnames(css.row, css.strong)}>
+              <Button className={classnames(css.grow, css.blueHighlight)} onClick={handleExport}>
+                Export
+              </Button>
+            </div>
           </div>
-          <div className={css.sep} />
-          <div className={classnames(css.row, css.strong)}>
-            <Button className={classnames(css.grow, css.blueHighlight)} onClick={handleExport}>
-              Export
-            </Button>
-          </div>
-        </div>
-      </aside>
+        </aside>
+      )}
       <main className={css.main} ref={mainRef}>
         <iframe src="functions.html" className={css.iframe} ref={iframe} />
       </main>

@@ -16,6 +16,7 @@ export const Input = props => {
     onKeyPress,
     className,
     disabled,
+    allowShortcuts,
     autocomplete,
     error,
     id = _id.current,
@@ -42,6 +43,7 @@ export const Input = props => {
       <input
         autoComplete={autocomplete}
         id={id}
+        className={allowShortcuts ? "mousetrap" : ""}
         name={name}
         type={type}
         value={value}
@@ -71,7 +73,8 @@ export default Input;
 Input.defaultProps = {
   type: "text",
   onChange: () => {},
-  onKeyPress: () => {}
+  onKeyPress: () => {},
+  allowShortcuts: false
 };
 
 Input.propTypes = {
@@ -82,6 +85,7 @@ Input.propTypes = {
   className: PropTypes.string,
   autocomplete: PropTypes.string,
   disabled: PropTypes.bool,
+  allowShortcuts: PropTypes.bool,
   error: PropTypes.string,
   id: PropTypes.string,
   invalid: PropTypes.bool,
