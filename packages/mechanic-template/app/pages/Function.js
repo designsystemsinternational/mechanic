@@ -58,6 +58,7 @@ const Function = ({ name, exports, children }) => {
 
   shortcut("mod+e", handleExport, iframe);
   shortcut("mod+p", handlePreview, iframe, true);
+  shortcut("mod+f", () => setFastPreview(fastPreview => !fastPreview), iframe, true);
   shortcut("mod+y", () => setShowPanel(showPanel => !showPanel), iframe);
 
   return (
