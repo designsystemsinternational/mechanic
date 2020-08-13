@@ -49,8 +49,7 @@ const Function = ({ name, exports, children }) => {
   useEffect(() => {
     const onLoad = () => {
       iframe.current.contentWindow.initEngine(exports.settings.engine);
-      console.log(iframe.current);
-      Mousetrap(iframe.current).bind("mod+p", () => {
+      Mousetrap(iframe.current.contentWindow).bind("mod+p", () => {
         handlePreview();
         return false;
       });
@@ -58,7 +57,7 @@ const Function = ({ name, exports, children }) => {
     iframe.current.addEventListener("load", onLoad);
     return () => {
       iframe.current.removeEventListener("load", onLoad);
-      Mousetrap(iframe.current).unbind("mod+p");
+      Mousetrap(iframe.current.contentWindow).unbind("mod+p");
     };
   }, [name]);
 
