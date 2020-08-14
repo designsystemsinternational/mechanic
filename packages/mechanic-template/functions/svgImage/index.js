@@ -1,12 +1,15 @@
 export const handler = (params, mechanic) => {
-  const r = params.height / 3;
+  const r = params.radius;
   const svg = `<svg width="${params.width}" height="${params.height}">
     <rect x="0" y="0" width="${params.width}" height="${params.height}" stroke="none" fill="red" />
     <ellipse cx="${params.width / 2}" cy="${
     params.height / 2
   }" rx="${r}" ry="${r}" stroke="none" fill="cyan" />
-  </svg>`;
-  mechanic.done(svg);
+  </svg>`.trim();
+
+  const template = document.createElement("template");
+  template.innerHTML = svg;
+  mechanic.done(template.content.firstChild);
 };
 
 // This will need to be parsed into a JSON file for the API
@@ -30,10 +33,13 @@ export const params = {
       width: 3200,
       height: 2400
     }
+  },
+  radius: {
+    type: "integer",
+    default: 100
   }
 };
 
 export const settings = {
-  returns: "svgString",
-  type: "image"
+  engine: "svg"
 };

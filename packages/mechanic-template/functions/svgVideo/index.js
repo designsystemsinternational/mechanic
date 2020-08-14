@@ -1,6 +1,8 @@
 export const handler = async (params, mechanic) => {
-  const r = params.width / 3;
+  const r = params.radius;
   let x = 0;
+
+  const template = document.createElement("template");
 
   const drawFrame = () => {
     const svg = `<svg width="${params.width}" height="${params.height}">
@@ -10,14 +12,14 @@ export const handler = async (params, mechanic) => {
       <ellipse cx="${x}" cy="${params.height / 2}" rx="${r}" ry="${r}" stroke="none" fill="cyan" />
     </svg>`;
 
-    mechanic.frame(svg);
+    template.innerHTML = svg;
 
-    x++;
-
-    if (x < params.width) {
-      mechanic.requestAnimationFrame(drawFrame);
+    if (x < params.width && x < params.maxFrames) {
+      mechanic.frame(template.content.firstChild);
+      x++;
+      window.requestAnimationFrame(drawFrame);
     } else {
-      mechanic.done(svg);
+      mechanic.done(template.content.firstChild);
     }
   };
 
@@ -45,10 +47,18 @@ export const params = {
       width: 3200,
       height: 2400
     }
+  },
+  radius: {
+    type: "integer",
+    default: 100
+  },
+  maxFrames: {
+    type: "integer",
+    default: 200
   }
 };
 
 export const settings = {
-  returns: "svgString",
-  type: "video"
+  engine: "svg",
+  animated: true
 };

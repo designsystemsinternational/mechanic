@@ -93,12 +93,41 @@ const runP5 = (functionName, values, isPreview) => {
   );
 };
 
+// SVG
+// -------------------------------------------------------------------------
+
+const runSVG = (functionName, values, isPreview) => {
+  root.innerHTML = "";
+  const func = functions[functionName];
+  const mechanic = new Mechanic(func.params, func.settings, values);
+
+  const onFrame = el => {
+    root.innerHTML = "";
+    root.appendChild(el);
+    if (!isPreview) {
+      mechanic.frame(el);
+    }
+  };
+
+  const onDone = async el => {
+    root.innerHTML = "";
+    root.appendChild(el);
+    if (!isPreview) {
+      await mechanic.done(el);
+      mechanic.download(`${functionName}-${getTimeStamp()}`);
+    }
+  };
+
+  func.handler(mechanic.values, { frame: onFrame, done: onDone });
+};
+
 // This should be replaced by an automatic `require` based on the `settings.engine`
 // in the design function settings.
 const engines = {
   canvas: runCanvas,
   react: runReact,
-  p5: runP5
+  p5: runP5,
+  svg: runSVG
 };
 
 let curEngine = null;
