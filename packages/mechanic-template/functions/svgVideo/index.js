@@ -2,8 +2,6 @@ export const handler = async (params, mechanic) => {
   const r = params.radius;
   let x = 0;
 
-  const template = document.createElement("template");
-
   const drawFrame = () => {
     const svg = `<svg width="${params.width}" height="${params.height}">
       <rect x="0" y="0" width="${params.width}" height="${
@@ -12,14 +10,12 @@ export const handler = async (params, mechanic) => {
       <ellipse cx="${x}" cy="${params.height / 2}" rx="${r}" ry="${r}" stroke="none" fill="cyan" />
     </svg>`;
 
-    template.innerHTML = svg;
-
     if (x < params.width && x < params.maxFrames) {
-      mechanic.frame(template.content.firstChild);
+      mechanic.frame(svg);
       x++;
       window.requestAnimationFrame(drawFrame);
     } else {
-      mechanic.done(template.content.firstChild);
+      mechanic.done(svg);
     }
   };
 

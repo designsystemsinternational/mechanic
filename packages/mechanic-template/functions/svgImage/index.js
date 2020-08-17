@@ -5,11 +5,8 @@ export const handler = (params, mechanic) => {
     <ellipse cx="${params.width / 2}" cy="${
     params.height / 2
   }" rx="${r}" ry="${r}" stroke="none" fill="cyan" />
-  </svg>`.trim();
-
-  const template = document.createElement("template");
-  template.innerHTML = svg;
-  mechanic.done(template.content.firstChild);
+  </svg>`;
+  mechanic.done(svg);
 };
 
 // This will need to be parsed into a JSON file for the API

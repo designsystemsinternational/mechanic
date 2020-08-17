@@ -98,22 +98,22 @@ const runP5 = (functionName, values, isPreview) => {
 
 const runSVG = (functionName, values, isPreview) => {
   root.innerHTML = "";
+
   const func = functions[functionName];
   const mechanic = new Mechanic(func.params, func.settings, values);
 
   const onFrame = el => {
-    root.innerHTML = "";
-    root.appendChild(el);
+    // Pending virtual-dom approach
+    root.innerHTML = el.trim();
     if (!isPreview) {
-      mechanic.frame(el);
+      mechanic.frame(root.childNodes[0]);
     }
   };
 
   const onDone = async el => {
-    root.innerHTML = "";
-    root.appendChild(el);
+    root.innerHTML = el.trim();
     if (!isPreview) {
-      await mechanic.done(el);
+      await mechanic.done(root.childNodes[0]);
       mechanic.download(`${functionName}-${getTimeStamp()}`);
     }
   };
