@@ -1,43 +1,107 @@
+@import "../variables.css";
+
 .root {
   display: flex;
-}
-
-.root aside {
-  padding: 0 25px;
-  flex: 0 0 300px;
-  border-right: 1px solid var(--dust-gray);
-  min-height: 100vh;
-  display: flex;
-	flex-direction: column;
-	user-select: none;
-}
-
-.root aside .row span {
-  font-weight: bold;
-}
-
-.root aside label span {
-  padding-right: 10px;
-}
-
-.root main {
-  padding-left: 25px;
-  flex: 1;
-  min-height: 100vh;
-}
-
-.iframe {
-  border: none;
-  width: 100%;
   height: 100%;
 }
 
+.main {
+  padding-left: 30px;
+  flex: 1;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.iframe {
+  flex-grow: 1;
+  border: none;
+}
+
+.aside {
+  padding-left: 30px;
+  flex: 0 0 300px;
+  border-right: 1px solid var(--dust-gray);
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  user-select: none;
+}
+
+.section {
+  padding-right: 30px;
+}
+
 .sep {
-  height: 15px;
+  height: 1em;
+  flex-shrink: 0;
+}
+
+.line {
+  margin-right: 30px;
+  margin-bottom: 1em;
+  border-bottom: 1px solid var(--dust-gray);
 }
 
 .row {
   width: 100%;
-	display: flex;
-	justify-content: space-between;
+  display: flex;
+}
+
+.grow {
+  flex-grow: 1;
+}
+
+.params-wrapper {
+  position: relative;
+  &:before,
+  &:after {
+    content: "";
+    position: absolute;
+    z-index: 100;
+    pointer-events: none;
+    left: 0;
+    right: 0;
+  }
+  &:before {
+    top: 0;
+    height: 10px;
+    background-image: linear-gradient(to top, rgba(255, 255, 255, 0), white);
+  }
+  &:after {
+    bottom: 0;
+    height: 30px;
+    background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0), white);
+  }
+}
+
+.params {
+  padding-right: 30px;
+  height: calc(100vh - 248px);
+  overflow: auto;
+  & > .param:first-child {
+    padding-top: 10px;
+  }
+  & > .param:last-child {
+    padding-bottom: 5px;
+  }
+}
+
+.param {
+  margin-bottom: 1em;
+  font-family: Menlo, "Courier New", monospace;
+}
+
+.paramlabel {
+  margin-bottom: 0.5em;
+  font-size: 0.75em;
+}
+
+.strong {
+  font-weight: bold;
+}
+
+.blue-highlight {
+  background-color: var(--blue);
+  color: white;
 }

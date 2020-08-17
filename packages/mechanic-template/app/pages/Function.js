@@ -1,7 +1,10 @@
 import React, { useState, useRef, useEffect } from "react";
 import PropTypes from "prop-types";
+import classnames from "classnames";
+import Mousetrap from "mousetrap";
 import Select from "../components/input/Select";
 import Button from "../components/input/Button";
+import Toggle from "../components/input/Toggle";
 import ParamInput from "../components/ParamInput";
 import css from "./Function.css";
 
@@ -16,15 +19,6 @@ const Function = ({ name, exports, children }) => {
   const { params } = exports;
   const { size, ...optional } = params;
   const sizes = Object.keys(size);
-
-  // Init engine when the name of the function changes
-  useEffect(() => {
-    const onLoad = () => {
-      iframe.current.contentWindow.initEngine(exports.settings.engine);
-    };
-    iframe.current.addEventListener("load", onLoad);
-    return () => iframe.current.removeEventListener("load", onLoad);
-  }, [name]);
 
   const handleOnChange = (e, name, value) => {
     setValues(values => Object.assign({}, values, { [name]: value }));
@@ -50,58 +44,95 @@ const Function = ({ name, exports, children }) => {
     iframe.current.contentWindow.run(name, vals);
   };
 
+  // Init engine when the name of the function changes
+  useEffect(() => {
+    const onLoad = () => {
+      iframe.current.contentWindow.initEngine(exports.settings.engine);
+    };
+    iframe.current.addEventListener("load", onLoad);
+    return () => {
+      iframe.current.removeEventListener("load", onLoad);
+    };
+  }, [name]);
+
+  useEffect(() => {
+    Mousetrap.bind("command+e", handleExport);
+    return () => {
+      Mousetrap.unbind("command+e");
+    };
+  });
+
   return (
     <div className={css.root}>
-      <aside>
+      <aside className={css.aside}>
         <div className={css.sep} />
-        {children}
+        <div className={css.section}>{children}</div>
         <div className={css.sep} />
-        <div className={css.row}>
-          <span>Size:</span>
-          <Select onChange={handleOnChange} name="size" value={values.size || "default"}>
-            {sizes.map(size => (
-              <option key={`size-${size}`} value={size}>
-                {size} ({params.size[size].width}x{params.size[size].height})
-              </option>
+        <div className={css.line} />
+        <div className={css.paramsWrapper}>
+          <div className={css.params}>
+            <div className={css.param}>
+              <div className={classnames(css.row, css.strong)}>
+                <span className={classnames(css.grow, css.paramlabel)}>size</span>
+              </div>
+              <div className={css.row}>
+                <Select
+                  className={css.grow}
+                  onChange={handleOnChange}
+                  name="size"
+                  value={values.size || "default"}>
+                  {sizes.map(size => (
+                    <option key={`size-${size}`} value={size}>
+                      {size} ({params.size[size].width}x{params.size[size].height})
+                    </option>
+                  ))}
+                </Select>
+              </div>
+            </div>
+            {Object.entries(optional).map(([name, param]) => (
+              <div key={`param-${name}`} className={css.param}>
+                <div className={classnames(css.row, css.strong)}>
+                  <span className={classnames(css.grow, css.paramlabel)}>{name}</span>
+                </div>
+                <div className={css.row}>
+                  <ParamInput
+                    className={css.grow}
+                    name={name}
+                    value={values[name]}
+                    options={param}
+                    onChange={handleOnChange}
+                  />
+                </div>
+              </div>
             ))}
-          </Select>
-        </div>
-        {Object.keys(optional).length > 0 ? <p>Params:</p> : ""}
-        {Object.entries(optional).map(([name, param]) => (
-          <div key={`param-${name}`} className={css.row}>
-            <span>{name}:</span>
-            <ParamInput
-              name={name}
-              value={values[name]}
-              options={param}
-              onChange={handleOnChange}
-            />
           </div>
-        ))}
-        <div className={css.sep} />
-        <div className={css.sep} />
-        <div className={css.row}>
-          <Button
-            status={fastPreview}
-            variant="grow"
-            onClick={() => setFastPreview(fastPreview => !fastPreview)}>
-            {fastPreview ? "Fast Preview On" : "Fast Preview Off"}
-          </Button>
         </div>
+        <div className={css.line} />
         <div className={css.sep} />
-        <div className={css.row}>
-          <Button variant="grow" onClick={handlePreview}>
-            Preview
-          </Button>
-        </div>
-        <div className={css.sep} />
-        <div className={css.row}>
-          <Button variant="grow" onClick={handleExport}>
-            Export
-          </Button>
+        <div className={css.section}>
+          <div className={classnames(css.row, css.strong)}>
+            <Toggle
+              className={css.grow}
+              status={fastPreview}
+              onClick={() => setFastPreview(fastPreview => !fastPreview)}>
+              {fastPreview ? "Fast Preview On" : "Fast Preview Off"}
+            </Toggle>
+          </div>
+          <div className={css.sep} />
+          <div className={classnames(css.row, css.strong)}>
+            <Button className={css.grow} onClick={handlePreview}>
+              Preview
+            </Button>
+          </div>
+          <div className={css.sep} />
+          <div className={classnames(css.row, css.strong)}>
+            <Button className={classnames(css.grow, css.blueHighlight)} onClick={handleExport}>
+              Export
+            </Button>
+          </div>
         </div>
       </aside>
-      <main ref={mainRef}>
+      <main className={css.main} ref={mainRef}>
         <iframe src="functions.html" className={css.iframe} ref={iframe} />
       </main>
     </div>

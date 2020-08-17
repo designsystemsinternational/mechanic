@@ -103,7 +103,11 @@ const prepareValues = (params, settings, values) => {
   Object.keys(params).forEach(key => {
     if (key != "size") {
       let val = values[key] === undefined ? params[key].default : values[key];
-      vals[key] = val;
+      if (params[key].type == "integer") {
+        vals[key] = parseInt(val);
+      } else {
+        vals[key] = val;
+      }
     }
   });
 

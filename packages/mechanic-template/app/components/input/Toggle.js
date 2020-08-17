@@ -1,28 +1,30 @@
 import React from "react";
 import PropTypes from "prop-types";
 import classnames from "classnames";
-import css from "./Button.css";
+import css from "./Toggle.css";
 
-export const Button = ({ className, variant, onClick, children, disabled }) => {
+export const Toggle = ({ className, variant, status, onClick, children, disabled }) => {
   const classes = classnames(css.root, {
     [className]: className,
     [css[variant]]: css[variant]
   });
   return (
     <button className={classes} onClick={onClick} disabled={disabled}>
-      {children}
+      <div className={classnames(css.status, { [css.on]: status })} />
+      <span className={css.label}>{children}</span>
     </button>
   );
 };
 
-export default Button;
+export default Toggle;
 
-Button.defaultProps = {
+Toggle.defaultProps = {
   onClick: () => {}
 };
 
-Button.propTypes = {
+Toggle.propTypes = {
   children: PropTypes.node,
+  status: PropTypes.bool.isRequired,
   className: PropTypes.string,
   disabled: PropTypes.bool,
   onClick: PropTypes.func,
