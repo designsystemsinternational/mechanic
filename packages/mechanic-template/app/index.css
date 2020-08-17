@@ -20,10 +20,3 @@ body {
   color: var(--text);
   font-size: 14px;
 }
-
-button,
-input,
-select {
-  font-family: inherit;
-  font-size: inherit;
-}
