@@ -26,7 +26,9 @@ const setUp = (functions, engines) => {
   window.initEngine = (functionName) => {
     if (engines[functionName] === undefined) {
       window.run = () => {
-        throw new MechanicError("No engine to run!");
+        const p = document.createElement("p");
+        p.textContent = `No engine to run for ${functionName}!`;
+        document.body.appendChild(p);
       };
       throw new MechanicError(`No defined engine for: ${functionName}`);
     } else if (engines[functionName] !== curEngine) {
