@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+// import engine from "mechanic-react-engine";
 
 export const handler = ({ width, height, done, background, fill, hasInnerHole }) => {
   useEffect(() => {
@@ -58,5 +59,5 @@ export const params = {
 };
 
 export const settings = {
-  engine: "react"
+  // engine
 };

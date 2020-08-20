@@ -1,3 +1,5 @@
+import engine from "mechanic-canvas-engine";
+
 export const handler = (params, mechanic) => {
   const {
     width,
@@ -100,5 +102,5 @@ export const params = {
 };
 
 export const settings = {
-  engine: "canvas"
+  engine
 };

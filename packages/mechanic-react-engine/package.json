@@ -1,0 +1,19 @@
+{
+  "name": "@designsystemsinternational/mechanic-react-engine",
+  "version": "0.0.1",
+  "main": "index.js",
+  "scripts": {
+  },
+  "peerDependencies": {      
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1"
+  },
+  "devDependencies": {
+    "@babel/runtime": "^7.9.2",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1"
+  },
+  "dependencies": {
+    "mechanic-utils": "../mechanic-utils"
+  }
+}
