@@ -1,5 +1,4 @@
 import seedrandom from "seedrandom";
-import { MechanicError } from "./mechanic-error";
 
 const isObject = (obj) => obj && typeof obj === "object";
 const hasKey = (obj, key) => obj.hasOwnProperty(key);
