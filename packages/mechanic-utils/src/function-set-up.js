@@ -6,7 +6,7 @@ import { MechanicError } from "./mechanic-error";
  * @param {function} context - webpack's require.context object,
  * used to require all index.js files in function folder.
  */
-const requireFunctions = (context) => {
+const extractContexts = (context) => {
   const functions = {};
   const engines = {};
   context.keys().forEach((k) => {
@@ -20,12 +20,13 @@ const requireFunctions = (context) => {
 
 /**
  * Sets up iframe's window functions that call
- * the corresponding engines and design functions.
- * @param {object} functions Object containing design functions contexts
- * @param {object} engines Object containing engines for each design function
+ * the corresponding engines and design functions from context function.
+ * @param {function} context - webpack's require.context object,
+ * used to require all index.js files in function folder.
  */
-const setUp = (functions, engines) => {
+const setUp = (context) => {
   console.log("Setting up!");
+  const { functions, engines } = extractContexts(context);
   let curEngine = null;
   window.initEngine = (functionName) => {
     if (engines[functionName] === undefined) {
@@ -48,4 +49,4 @@ const setUp = (functions, engines) => {
   };
 };
 
-export { requireFunctions, setUp };
+export { extractContexts, setUp };
