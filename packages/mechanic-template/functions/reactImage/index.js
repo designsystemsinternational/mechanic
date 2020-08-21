@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-// import engine from "mechanic-react-engine";
+import engine from "mechanic-react-engine";
 
 export const handler = ({ width, height, done, background, fill, hasInnerHole }) => {
   useEffect(() => {
@@ -16,7 +16,7 @@ export const handler = ({ width, height, done, background, fill, hasInnerHole })
         stroke="none"
         fill={fill}
       />
-      {hasInnerHole ? (
+      {hasInnerHole && (
         <ellipse
           cx={width / 2}
           cy={height / 2}
@@ -25,8 +25,6 @@ export const handler = ({ width, height, done, background, fill, hasInnerHole })
           stroke="none"
           fill={background}
         />
-      ) : (
-        ""
       )}
     </svg>
   );
@@ -59,5 +57,5 @@ export const params = {
 };
 
 export const settings = {
-  // engine
+  engine
 };
