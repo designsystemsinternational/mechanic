@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import engine from "mechanic-react-engine";
+import engine from "mechanic-engine-react";
 
 export const handler = ({ width, height, done, background, fill, hasInnerHole }) => {
   useEffect(() => {

@@ -1,4 +1,4 @@
-import engine from "mechanic-canvas-engine";
+import engine from "mechanic-engine-canvas";
 
 export const handler = (params, mechanic) => {
   const {

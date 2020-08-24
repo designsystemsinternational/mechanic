@@ -1,4 +1,4 @@
-import engine from "mechanic-p5-engine";
+import engine from "mechanic-engine-p5";
 
 export const handler = async (sketch, params, mechanic) => {
   const { width, height, primaryColor, secondaryColor, maxFrames } = params;

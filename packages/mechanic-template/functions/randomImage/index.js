@@ -1,4 +1,4 @@
-import engine from "mechanic-canvas-engine";
+import engine from "mechanic-engine-canvas";
 
 export const handler = (params, mechanic) => {
   const { width, height, background, color1, color2, numberOfSquares } = params;

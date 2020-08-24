@@ -1,4 +1,4 @@
-import engine from "mechanic-canvas-engine";
+import engine from "mechanic-engine-canvas";
 
 export const handler = async (params, mechanic) => {
   const { width, height, primaryColor, secondaryColor, maxFrames } = params;
