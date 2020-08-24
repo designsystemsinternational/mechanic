@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import engine from "mechanic-react-engine";
 
 export const handler = ({ width, height, done, background, fill, hasInnerHole }) => {

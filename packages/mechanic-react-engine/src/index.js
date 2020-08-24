@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 import { render, unmountComponentAtNode } from "react-dom";
 import { Mechanic } from "mechanic-utils";
 
@@ -19,7 +19,6 @@ const run = (functionName, func, values, isPreview) => {
       mechanic.download(functionName);
     }
   };
-  console.log("hi");
   render(<Handler {...mechanic.values} frame={onFrame} done={onDone} />, root);
 };
 

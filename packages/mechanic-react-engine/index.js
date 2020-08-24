@@ -11,7 +11,7 @@ var __signature__ = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoader
   return a;
 };
 
-import React, { Component } from "react";
+import React from "react";
 import { render, unmountComponentAtNode } from "react-dom";
 import { Mechanic } from "mechanic-utils";
 var root = document.getElementById("root");

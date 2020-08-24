@@ -114,7 +114,9 @@ Copied "${url}" to clipboard.
     },
     resolve: {
       extensions: [".js", ".jsx", ".json"],
-      alias: {}
+      alias: {
+        react: path.resolve("./node_modules/react")
+      }
     },
     module: {
       rules: [js, css]

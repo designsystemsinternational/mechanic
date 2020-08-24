@@ -6,13 +6,13 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "./node_modules/.bin/babel src --out-file index.js"
   },
-  "peerDependencies": {      
+  "peerDependencies": {
     "react": "^16.13.1",
     "react-dom": "^16.13.1"
   },
   "devDependencies": {
-    "@babel/cli": "^7.1.5",
-    "@babel/core": "^7.1.6",
+    "@babel/cli": "^7.8.4",
+    "@babel/core": "^7.9.0",
     "@babel/runtime": "^7.9.2",
     "@babel/preset-env": "^7.9.0",
     "@babel/preset-react": "^7.9.4",
