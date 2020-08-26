@@ -2,9 +2,8 @@ import React from "react";
 import { useHistory } from "react-router-dom";
 import css from "./Nav.css";
 
-const Nav = ({ name, functions }) => {
+const Nav = ({ name, functionsNames }) => {
   const history = useHistory();
-  const names = Object.keys(functions);
 
   return (
     <div className={css.root}>
@@ -17,7 +16,7 @@ const Nav = ({ name, functions }) => {
         <option key="disabled" disabled>
           Select...
         </option>
-        {names.map(name => (
+        {functionsNames.map(name => (
           <option key={`route-${name}`}>{name}</option>
         ))}
       </select>
