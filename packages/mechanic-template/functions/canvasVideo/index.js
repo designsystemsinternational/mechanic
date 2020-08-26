@@ -1,3 +1,5 @@
+import engine from "mechanic-engine-canvas";
+
 export const handler = async (params, mechanic) => {
   const { width, height, primaryColor, secondaryColor, maxFrames } = params;
 
@@ -66,6 +68,6 @@ export const params = {
 };
 
 export const settings = {
-  engine: "canvas",
+  engine,
   animated: true
 };

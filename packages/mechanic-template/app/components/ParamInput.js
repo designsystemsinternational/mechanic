@@ -4,7 +4,6 @@ import classnames from "classnames";
 import css from "./ParamInput.css";
 import Input from "./input/Input";
 import Select from "./input/Select";
-import Button from "./input/Button";
 import Toggle from "./input/Toggle";
 
 export const ParamInput = ({ name, className, value, options, onChange, children }) => {

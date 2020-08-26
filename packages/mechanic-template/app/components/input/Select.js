@@ -2,7 +2,7 @@ import React, { Fragment, useRef, useState } from "react";
 import PropTypes from "prop-types";
 import classnames from "classnames";
 import { enablesShortcutsClass } from "../../utils/shortcut";
-import { uid } from "../../utils";
+import { uid } from "../../utils/utils";
 import css from "./Select.css";
 
 export const Select = props => {

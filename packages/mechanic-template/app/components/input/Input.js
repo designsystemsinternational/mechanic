@@ -2,7 +2,7 @@ import React, { useRef, useState } from "react";
 import PropTypes from "prop-types";
 import classnames from "classnames";
 import { enablesShortcutsClass } from "../../utils/shortcut";
-import { uid } from "../../utils";
+import { uid } from "../../utils/utils";
 import css from "./Input.css";
 
 export const Input = props => {

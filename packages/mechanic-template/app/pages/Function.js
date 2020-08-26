@@ -19,7 +19,7 @@ const Function = ({ name, exports, children }) => {
 
   const { params } = exports;
   const { size, ...optional } = params;
-  const sizes = Object.keys(size);
+  const sizes = size !== undefined ? Object.keys(size) : [];
 
   const handleOnChange = (e, name, value) => {
     setValues(values => Object.assign({}, values, { [name]: value }));
@@ -48,7 +48,7 @@ const Function = ({ name, exports, children }) => {
   // Init engine when the name of the function changes
   useEffect(() => {
     const onLoad = () => {
-      iframe.current.contentWindow.initEngine(exports.settings.engine);
+      iframe.current.contentWindow.initEngine(name);
     };
     iframe.current.addEventListener("load", onLoad);
     return () => {
@@ -71,24 +71,26 @@ const Function = ({ name, exports, children }) => {
           <div className={css.line} />
           <div className={css.paramsWrapper}>
             <div className={css.params}>
-              <div className={css.param}>
-                <div className={classnames(css.row, css.strong)}>
-                  <span className={classnames(css.grow, css.paramlabel)}>size</span>
+              {size && (
+                <div className={css.param}>
+                  <div className={classnames(css.row, css.strong)}>
+                    <span className={classnames(css.grow, css.paramlabel)}>size</span>
+                  </div>
+                  <div className={css.row}>
+                    <Select
+                      className={css.grow}
+                      onChange={handleOnChange}
+                      name="size"
+                      value={values.size || "default"}>
+                      {sizes.map(size => (
+                        <option key={`size-${size}`} value={size}>
+                          {size} ({params.size[size].width}x{params.size[size].height})
+                        </option>
+                      ))}
+                    </Select>
+                  </div>
                 </div>
-                <div className={css.row}>
-                  <Select
-                    className={css.grow}
-                    onChange={handleOnChange}
-                    name="size"
-                    value={values.size || "default"}>
-                    {sizes.map(size => (
-                      <option key={`size-${size}`} value={size}>
-                        {size} ({params.size[size].width}x{params.size[size].height})
-                      </option>
-                    ))}
-                  </Select>
-                </div>
-              </div>
+              )}
               {Object.entries(optional).map(([name, param]) => (
                 <div key={`param-${name}`} className={css.param}>
                   <div className={classnames(css.row, css.strong)}>
