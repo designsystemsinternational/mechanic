@@ -35,6 +35,16 @@ export function getRandomFlag() {
   return flags[Math.floor(Math.random() * flags.length)];
 }
 
+export const flagNames = flags.map(({ name }) => name);
+
+export function getFlag(name) {
+  for (const flag of flags) {
+    if (name === flag.name) {
+      return flag;
+    }
+  }
+}
+
 function textContrastColor(bgColor) {
   let color = bgColor.charAt(0) === "#" ? bgColor.substring(1, 7) : bgColor;
   const r = parseInt(color.substring(0, 2), 16); // hexToR

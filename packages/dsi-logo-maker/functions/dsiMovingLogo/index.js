@@ -2,6 +2,8 @@ import engine from "mechanic-engine-canvas";
 import {
   splitContent,
   getRandomFlag,
+  flagNames,
+  getFlag,
   genColorObject,
   computeSpacing,
   computePadding,
@@ -9,7 +11,7 @@ import {
 } from "../utils";
 
 export const handler = (params, mechanic) => {
-  const { width, height, randomColors, color1, color2, color3, offset, duration, loops } = params;
+  const { width, height, colorMode, flag, colors: colorsString, offset, duration, loops } = params;
 
   const canvas = document.createElement("canvas");
   canvas.width = width;
@@ -19,9 +21,15 @@ export const handler = (params, mechanic) => {
   const rows = 2;
   const cols = 13;
   const words = ["DESIGN", "SYSTEMS", "INTERNATIONAL"];
-  const colors = randomColors
-    ? getRandomFlag().colors
-    : [color1, color2, color3].map(genColorObject);
+  let colors;
+  if (colorMode === "Custom Colors") {
+    colors = colorsString.split(",").map(genColorObject);
+  } else if (colorMode === "Pick Flag") {
+    let f = getFlag(flag);
+    colors = f.colors;
+  } else {
+    colors = getRandomFlag().colors;
+  }
 
   const spacing = computeSpacing(width, height, rows);
   const bricks = splitContent(spacing.fontSize, words, colors);
@@ -107,21 +115,19 @@ export const params = {
       height: 333
     }
   },
-  randomColors: {
-    type: "boolean",
-    default: false
-  },
-  color1: {
+  colorMode: {
     type: "string",
-    default: "#11457e"
+    choices: ["Random Flag", "Pick Flag", "Custom Colors"],
+    default: "randomFlag"
   },
-  color2: {
+  flag: {
     type: "string",
-    default: "#d7141a"
+    choices: flagNames,
+    default: flagNames[0]
   },
-  color3: {
+  colors: {
     type: "string",
-    default: "#f1f1f1"
+    default: "#11457e,#d7141a,#f1f1f1"
   },
   offset: {
     type: "integer",
