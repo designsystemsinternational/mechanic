@@ -96,7 +96,7 @@ export const params = {
   },
   logoWidth: {
     type: "integer",
-    default: 100
+    default: 80
   },
   logoRatio: {
     type: "integer",

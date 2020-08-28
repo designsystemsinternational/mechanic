@@ -46,6 +46,7 @@
   "dependencies": {
     "mousetrap": "^1.6.5",
     "mechanic-utils": "../mechanic-utils",
-    "mechanic-engine-canvas": "../mechanic-engine-canvas"
+    "mechanic-engine-canvas": "../mechanic-engine-canvas",
+    "mechanic-engine-react": "../mechanic-engine-react"
   }
 }

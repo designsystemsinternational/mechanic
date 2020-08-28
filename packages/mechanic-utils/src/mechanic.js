@@ -97,6 +97,10 @@ export class Mechanic {
   async done(el) {
     if (!this.settings.animated) {
       if (validation.isSVG(el)) {
+        // This conditional is a patch to an error, needs to be revised:
+        if (!this.serializer) {
+          this.serializer = new XMLSerializer();
+        }
         this.svgData = svgToDataUrl(el, this.serializer);
       } else {
         this.canvasData = el.toDataURL();
