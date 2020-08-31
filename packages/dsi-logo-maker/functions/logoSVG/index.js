@@ -1,15 +1,15 @@
 import React, { useEffect } from "react";
 import engine from "mechanic-engine-react";
 import {
-  splitContent,
   getRandomFlag,
   flagNames,
   getFlag,
   genColorObject,
-  computeSpacing,
-  computePadding,
-  computeBrickHorizontal
+  computeBaseBricks,
+  computeBlockGeometry,
+  computeBlock
 } from "../utils";
+import { Block } from "../components";
 
 export const handler = ({ width, height, done, colorMode, flag, colors: colorsString, offset }) => {
   const rows = 2;
@@ -24,52 +24,11 @@ export const handler = ({ width, height, done, colorMode, flag, colors: colorsSt
   } else {
     colors = getRandomFlag().colors;
   }
+  const blockGeometry = computeBlockGeometry(0, 0, width, height, rows, cols);
+  const baseBricks = computeBaseBricks(words, colors, blockGeometry.fontSize);
+  let brickIndex = baseBricks.length - (offset % baseBricks.length);
 
-  const spacing = computeSpacing(width, height, rows);
-  const bricks = splitContent(spacing.fontSize, words, colors);
-  let brickIndex = bricks.length - (offset % bricks.length);
-
-  const svgBricks = [];
-
-  for (let row = 0; row < rows; row++) {
-    // calc in advance
-    const rowBricks = [];
-    for (let i = brickIndex; i < brickIndex + cols; i++) {
-      rowBricks.push(bricks[i % bricks.length]);
-    }
-    spacing.padding = computePadding(width, rowBricks, spacing);
-
-    // then loop through the row and create the spacing as needed.
-    let x = 0;
-    const y = row * spacing.rowHeight;
-    const charY = y + spacing.fontYOffset;
-
-    rowBricks.forEach((...brickIteration) => {
-      const { w, charX } = computeBrickHorizontal(x, brickIteration, spacing);
-      const brick = brickIteration[0];
-
-      svgBricks.push(
-        <g key={svgBricks.length} transform={`translate(${x} ${y})`}>
-          <rect
-            fill={brick.color.background}
-            width={w}
-            height={spacing.rowHeight}
-            strokeWidth="1"
-            stroke={brick.color.background}></rect>
-          <text
-            fill={brick.color.blackOrWhite}
-            fontSize={spacing.fontSize}
-            fontFamily={`F, Helvetica, Sans-Serif`}
-            x={charX - x}
-            y={charY - y}>
-            {brick.char}
-          </text>
-        </g>
-      );
-      x += w;
-      brickIndex++;
-    });
-  }
+  const block = computeBlock(blockGeometry, baseBricks, brickIndex);
 
   useEffect(() => {
     done();
@@ -77,7 +36,7 @@ export const handler = ({ width, height, done, colorMode, flag, colors: colorsSt
 
   return (
     <svg width={width} height={height}>
-      {svgBricks}
+      <Block block={block}></Block>
     </svg>
   );
 };

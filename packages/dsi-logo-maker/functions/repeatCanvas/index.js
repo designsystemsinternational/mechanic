@@ -1,76 +1,44 @@
 import engine from "mechanic-engine-canvas";
-import {
-  splitContent,
-  getRandomFlag,
-  computeSpacing,
-  computePadding,
-  computeBrickHorizontal
-} from "../utils";
+import { getRandomFlag, computeBlockGeometry, computeBaseBricks, computeBlock } from "../utils";
+import { canvasDraw } from "../canvas-draw";
 
 export const handler = (params, mechanic) => {
   const { width, height, logoWidth, logoRatio } = params;
-  const canvas = document.createElement("canvas");
-  canvas.width = width;
-  canvas.height = height;
-  const ctx = canvas.getContext("2d");
 
   const rows = 2;
   const cols = 13;
   const logoHeight = Math.floor((logoWidth / logoRatio) * rows);
   const words = ["DESIGN", "SYSTEMS", "INTERNATIONAL"];
 
-  const spacing = computeSpacing(logoWidth, logoHeight, rows);
+  const blocks = [];
+  let blockGeometry = computeBlockGeometry(0, 0, logoWidth, logoHeight, rows, cols);
+  let offset = 0;
+  let colors = getRandomFlag().colors;
+  let baseBricks = computeBaseBricks(words, colors, blockGeometry.fontSize);
+  let brickIndex = baseBricks.length - (offset % baseBricks.length);
+  while (blockGeometry.yOffset < height) {
+    const block = computeBlock(blockGeometry, baseBricks, brickIndex);
+    blocks.push(block);
+    if (blockGeometry.xOffset + blockGeometry.width < width) {
+      blockGeometry.xOffset += blockGeometry.width;
+      colors = getRandomFlag().colors;
+      baseBricks = computeBaseBricks(words, colors, blockGeometry.fontSize);
+      offset++;
+      brickIndex = baseBricks.length - (offset % baseBricks.length);
+    } else {
+      blockGeometry.xOffset = blockGeometry.xOffset - width;
+      blockGeometry.yOffset += blockGeometry.height;
+    }
+  }
+
+  const canvas = document.createElement("canvas");
+  canvas.width = width;
+  canvas.height = height;
+  const ctx = canvas.getContext("2d");
 
   ctx.save();
   ctx.clearRect(0, 0, width, height);
-
-  let offset = 0;
-  let colors = getRandomFlag().colors;
-  let bricks = splitContent(spacing.fontSize, words, colors);
-  let brickIndex = bricks.length - (offset % bricks.length);
-  let logoXOffset = 0;
-  let logoYOffset = 0;
-  while (logoYOffset < height) {
-    for (let row = 0; row < rows; row++) {
-      // calc in advance
-      const rowBricks = [];
-      for (let i = brickIndex; i < brickIndex + cols; i++) {
-        rowBricks.push(bricks[i % bricks.length]);
-      }
-      spacing.padding = computePadding(logoWidth, rowBricks, spacing);
-
-      // then loop through the row and create the spacing as needed.
-      let x = logoXOffset;
-      const y = logoYOffset + row * spacing.rowHeight;
-      const charY = y + spacing.fontYOffset;
-
-      rowBricks.forEach((...brickIteration) => {
-        const { w, charX } = computeBrickHorizontal(x, brickIteration, spacing);
-        const brick = brickIteration[0];
-
-        ctx.fillStyle = brick.color.background;
-        ctx.strokeStyle = brick.color.background;
-        ctx.fillRect(x, y, w, spacing.rowHeight);
-        ctx.strokeRect(x, y, w, spacing.rowHeight);
-        ctx.fillStyle = brick.color.blackOrWhite;
-        ctx.font = `${spacing.fontSize}px F, Helvetica, Sans-Serif`;
-        ctx.fillText(brick.char, charX, charY);
-
-        x += w;
-        brickIndex++;
-      });
-    }
-    if (logoXOffset + logoWidth < width) {
-      logoXOffset += logoWidth;
-      colors = getRandomFlag().colors;
-      bricks = splitContent(spacing.fontSize, words, colors);
-      offset++;
-      brickIndex = bricks.length - (offset % bricks.length);
-    } else {
-      logoXOffset = logoXOffset - width;
-      logoYOffset += logoHeight;
-    }
-  }
+  blocks.forEach(block => canvasDraw(ctx, block));
   ctx.restore();
   mechanic.done(canvas);
 };

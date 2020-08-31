@@ -1,22 +1,17 @@
 import engine from "mechanic-engine-canvas";
 import {
-  splitContent,
   getRandomFlag,
   flagNames,
   getFlag,
   genColorObject,
-  computeSpacing,
-  computePadding,
-  computeBrickHorizontal
+  computeBaseBricks,
+  computeBlockGeometry,
+  computeBlock
 } from "../utils";
+import { canvasDraw } from "../canvas-draw";
 
 export const handler = (params, mechanic) => {
   const { width, height, colorMode, flag, colors: colorsString, offset, duration, loops } = params;
-
-  const canvas = document.createElement("canvas");
-  canvas.width = width;
-  canvas.height = height;
-  const ctx = canvas.getContext("2d");
 
   const rows = 2;
   const cols = 13;
@@ -31,44 +26,25 @@ export const handler = (params, mechanic) => {
     colors = getRandomFlag().colors;
   }
 
-  const spacing = computeSpacing(width, height, rows);
-  const bricks = splitContent(spacing.fontSize, words, colors);
+  const blockGeometry = computeBlockGeometry(0, 0, width, height, rows, cols);
+  const baseBricks = computeBaseBricks(words, colors, blockGeometry.fontSize);
+
+  const canvas = document.createElement("canvas");
+  canvas.width = width;
+  canvas.height = height;
+  const ctx = canvas.getContext("2d");
 
   const draw = () => {
     const totalOffset = offset + internalOffset;
-    let bricki = bricks.length - (totalOffset % bricks.length);
+    const brickIndex = baseBricks.length - (totalOffset % baseBricks.length);
+
+    const block = computeBlock(blockGeometry, baseBricks, brickIndex);
 
     ctx.save();
-    ctx.clearRect(0, 0, width, height);
-    for (let row = 0; row < rows; row++) {
-      // calc in advance
-      const rowBricks = [];
-      for (let i = bricki; i < bricki + cols; i++) {
-        rowBricks.push(bricks[i % bricks.length]);
-      }
-      spacing.padding = computePadding(width, rowBricks, spacing);
+    ctx.clearRect(0, 0, blockGeometry.width, blockGeometry.height);
 
-      // then loop through the row and create the spacing as needed.
-      let x = 0;
-      const y = row * spacing.rowHeight;
-      const charY = y + spacing.fontYOffset;
+    canvasDraw(ctx, block);
 
-      rowBricks.forEach((...brickIteration) => {
-        const { w, charX } = computeBrickHorizontal(x, brickIteration, spacing);
-        const brick = brickIteration[0];
-
-        ctx.fillStyle = brick.color.background;
-        ctx.strokeStyle = brick.color.background;
-        ctx.fillRect(x, y, w, spacing.rowHeight);
-        ctx.strokeRect(x, y, w, spacing.rowHeight);
-        ctx.fillStyle = brick.color.blackOrWhite;
-        ctx.font = `${spacing.fontSize}px F, Helvetica, Sans-Serif`;
-        ctx.fillText(brick.char, charX, charY);
-
-        x += w;
-        bricki++;
-      });
-    }
     ctx.restore();
   };
 

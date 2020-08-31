@@ -1,15 +1,16 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import engine from "mechanic-engine-react";
+import { useDrawLoop } from "../drawLoopHook";
 import {
-  splitContent,
   getRandomFlag,
   flagNames,
   getFlag,
   genColorObject,
-  computeSpacing,
-  computePadding,
-  computeBrickHorizontal
+  computeBaseBricks,
+  computeBlockGeometry,
+  computeBlock
 } from "../utils";
+import { Block } from "../components";
 
 export const handler = ({
   width,
@@ -23,10 +24,6 @@ export const handler = ({
   duration,
   loops
 }) => {
-  // const canvas = document.createElement("canvas");
-  // canvas.width = width;
-  // canvas.height = height;
-  // const ctx = canvas.getContext("2d");
   // const rows = 2;
   // const cols = 13;
   // const words = ["DESIGN", "SYSTEMS", "INTERNATIONAL"];
@@ -73,6 +70,24 @@ export const handler = ({
   //   }
   //   ctx.restore();
   // };
+
+  // const isPlaying = useRef(true);
+  // const frameCount = useDrawLoop(isPlaying.current);
+
+  // useEffect(() => {
+  //   if (frameCount < 100) {
+  //     frame();
+  //   } else if (isPlaying.current) {
+  //     isPlaying.current = false;
+  //     done();
+  //   }
+  // }, [frameCount]);
+
+  return (
+    <svg width={width} height={height}>
+      {/* {svgBricks} */}
+    </svg>
+  );
   // const direction = -1;
   // let starttime;
   // let internalOffset = 0;
