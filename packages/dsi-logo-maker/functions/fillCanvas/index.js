@@ -1,6 +1,7 @@
 import engine from "mechanic-engine-canvas";
-import { getRandomFlag, computeBlockGeometry, computeBaseBricks, computeBlock } from "../utils";
-import { canvasDraw } from "../canvas-draw";
+import { getRandomFlag } from "../logo-utils/graphics";
+import { computeBaseBricks, computeBlockGeometry, precomputeBlocks } from "../logo-utils/blocks";
+import { drawBlock } from "../logo-utils/blocks-canvas";
 
 export const handler = (params, mechanic) => {
   const { width, height, logoWidth, logoRatio } = params;
@@ -10,24 +11,28 @@ export const handler = (params, mechanic) => {
   const logoHeight = Math.floor((logoWidth / logoRatio) * rows);
   const words = ["DESIGN", "SYSTEMS", "INTERNATIONAL"];
 
-  const blocks = [];
-  let blockGeometry = computeBlockGeometry(0, 0, logoWidth, logoHeight, rows, cols);
-  let offset = 0;
   let colors = getRandomFlag().colors;
-  let baseBricks = computeBaseBricks(words, colors, blockGeometry.fontSize);
+  const blockGeometry = computeBlockGeometry(logoWidth, logoHeight, rows, cols);
+  const baseBricks = computeBaseBricks(words, colors.length, blockGeometry.fontSize);
+  const blocksByIndex = precomputeBlocks(blockGeometry, baseBricks, baseBricks.length);
+
+  const blockConfigs = [];
+  let position = { x: 0, y: 0 };
+  let offset = 0;
   let brickIndex = baseBricks.length - (offset % baseBricks.length);
-  while (blockGeometry.yOffset < height) {
-    const block = computeBlock(blockGeometry, baseBricks, brickIndex);
-    blocks.push(block);
-    if (blockGeometry.xOffset + blockGeometry.width < width) {
-      blockGeometry.xOffset += blockGeometry.width;
-      colors = getRandomFlag().colors;
-      baseBricks = computeBaseBricks(words, colors, blockGeometry.fontSize);
+
+  while (position.y < height) {
+    const block = { ...blocksByIndex[brickIndex % baseBricks.length] };
+    blockConfigs.push({ position, block, colors });
+    position = { ...position };
+    if (position.x + block.width < width) {
+      position.x += block.width;
       offset++;
       brickIndex = baseBricks.length - (offset % baseBricks.length);
+      colors = getRandomFlag().colors;
     } else {
-      blockGeometry.xOffset = blockGeometry.xOffset - width;
-      blockGeometry.yOffset += blockGeometry.height;
+      position.x = position.x - width;
+      position.y += block.height;
     }
   }
 
@@ -38,7 +43,7 @@ export const handler = (params, mechanic) => {
 
   ctx.save();
   ctx.clearRect(0, 0, width, height);
-  blocks.forEach(block => canvasDraw(ctx, block));
+  blockConfigs.forEach(blockConfig => drawBlock(ctx, blockConfig));
   ctx.restore();
   mechanic.done(canvas);
 };

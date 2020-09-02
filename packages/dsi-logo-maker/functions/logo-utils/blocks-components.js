@@ -1,8 +1,8 @@
 import React from "react";
 
-const Brick = ({ brick, block }) => {
+const Brick = ({ brick, block, colors }) => {
   const { x, w, char, charX } = brick;
-  const { background, blackOrWhite } = brick.color;
+  const { background, blackOrWhite } = colors[brick.color];
   const { fontYOffset: charY, rowHeight: h, fontSize } = block;
   return (
     <g transform={`translate(${x} 0)`}>
@@ -19,23 +19,24 @@ const Brick = ({ brick, block }) => {
   );
 };
 
-const Row = ({ row, block }) => {
+const Row = ({ row, block, colors }) => {
   const { rowIndex, bricks } = row;
   return (
     <g transform={`translate(0 ${rowIndex * block.rowHeight})`}>
       {bricks.map((brick, i) => (
-        <Brick key={i} brick={brick} block={block}></Brick>
+        <Brick key={i} brick={brick} block={block} colors={colors}></Brick>
       ))}
     </g>
   );
 };
 
-export const Block = ({ block }) => {
-  const { xOffset, yOffset, rows } = block;
+export const Block = ({ position, block, colors }) => {
+  const { x, y } = position;
+  const { rows } = block;
   return (
-    <g transform={`translate(${xOffset} ${yOffset})`}>
+    <g transform={`translate(${x} ${y})`}>
       {rows.map(row => (
-        <Row key={row.rowIndex} row={row} block={block}></Row>
+        <Row key={row.rowIndex} row={row} block={block} colors={colors}></Row>
       ))}
     </g>
   );

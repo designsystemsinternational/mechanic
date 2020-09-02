@@ -1,14 +1,7 @@
 import engine from "mechanic-engine-canvas";
-import {
-  getRandomFlag,
-  flagNames,
-  getFlag,
-  genColorObject,
-  computeBaseBricks,
-  computeBlockGeometry,
-  computeBlock
-} from "../utils";
-import { canvasDraw } from "../canvas-draw";
+import { getRandomFlag, flagNames, getFlag, genColorObject } from "../logo-utils/graphics";
+import { computeBaseBricks, computeBlockGeometry, computeBlock } from "../logo-utils/blocks";
+import { drawBlock } from "../logo-utils/blocks-canvas";
 
 export const handler = (params, mechanic) => {
   const { width, height, colorMode, flag, colors: colorsString, offset } = params;
@@ -26,11 +19,12 @@ export const handler = (params, mechanic) => {
     colors = getRandomFlag().colors;
   }
 
-  const blockGeometry = computeBlockGeometry(0, 0, width, height, rows, cols);
-  const baseBricks = computeBaseBricks(words, colors, blockGeometry.fontSize);
+  const blockGeometry = computeBlockGeometry(width, height, rows, cols);
+  const baseBricks = computeBaseBricks(words, colors.length, blockGeometry.fontSize);
   const brickIndex = baseBricks.length - (offset % baseBricks.length);
 
   const block = computeBlock(blockGeometry, baseBricks, brickIndex);
+  const position = { x: 0, y: 0 };
 
   const canvas = document.createElement("canvas");
   canvas.width = width;
@@ -39,7 +33,7 @@ export const handler = (params, mechanic) => {
 
   ctx.save();
   ctx.clearRect(0, 0, blockGeometry.width, blockGeometry.height);
-  canvasDraw(ctx, block);
+  drawBlock(ctx, { position, block, colors });
   ctx.restore();
   mechanic.done(canvas);
 };

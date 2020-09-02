@@ -1,16 +1,8 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect } from "react";
 import engine from "mechanic-engine-react";
-import { useDrawLoop } from "../drawLoopHook";
-import {
-  getRandomFlag,
-  flagNames,
-  getFlag,
-  genColorObject,
-  computeBaseBricks,
-  computeBlockGeometry,
-  computeBlock
-} from "../utils";
-import { Block } from "../components";
+import { getRandomFlag, flagNames, getFlag, genColorObject } from "../logo-utils/graphics";
+import { computeBaseBricks, computeBlockGeometry, computeBlock } from "../logo-utils/blocks";
+import { Block } from "../logo-utils/blocks-components";
 
 export const handler = ({
   width,

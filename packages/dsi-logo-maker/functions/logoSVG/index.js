@@ -1,15 +1,8 @@
 import React, { useEffect } from "react";
 import engine from "mechanic-engine-react";
-import {
-  getRandomFlag,
-  flagNames,
-  getFlag,
-  genColorObject,
-  computeBaseBricks,
-  computeBlockGeometry,
-  computeBlock
-} from "../utils";
-import { Block } from "../components";
+import { getRandomFlag, flagNames, getFlag, genColorObject } from "../logo-utils/graphics";
+import { computeBaseBricks, computeBlockGeometry, computeBlock } from "../logo-utils/blocks";
+import { Block } from "../logo-utils/blocks-components";
 
 export const handler = ({ width, height, done, colorMode, flag, colors: colorsString, offset }) => {
   const rows = 2;
@@ -24,8 +17,9 @@ export const handler = ({ width, height, done, colorMode, flag, colors: colorsSt
   } else {
     colors = getRandomFlag().colors;
   }
-  const blockGeometry = computeBlockGeometry(0, 0, width, height, rows, cols);
-  const baseBricks = computeBaseBricks(words, colors, blockGeometry.fontSize);
+  const position = { x: 0, y: 0 };
+  const blockGeometry = computeBlockGeometry(width, height, rows, cols);
+  const baseBricks = computeBaseBricks(words, colors.length, blockGeometry.fontSize);
   let brickIndex = baseBricks.length - (offset % baseBricks.length);
 
   const block = computeBlock(blockGeometry, baseBricks, brickIndex);
@@ -36,7 +30,7 @@ export const handler = ({ width, height, done, colorMode, flag, colors: colorsSt
 
   return (
     <svg width={width} height={height}>
-      <Block block={block}></Block>
+      <Block position={position} block={block} colors={colors}></Block>
     </svg>
   );
 };

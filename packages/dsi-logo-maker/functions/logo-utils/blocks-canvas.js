@@ -1,12 +1,14 @@
-export const canvasDraw = (context, block) => {
+export const drawBlock = (context, blockConfig) => {
+  const { position, block, colors } = blockConfig;
   block.rows.forEach(row =>
     row.bricks.forEach(brick => {
-      const { background, blackOrWhite } = brick.color;
+      const { x: xOffset, y: yOffset } = position;
       const { x: brickX, w, char, charX: brickCharX } = brick;
+      const { background, blackOrWhite } = colors[brick.color];
 
-      const x = block.xOffset + brickX;
+      const x = xOffset + brickX;
       const charX = x + brickCharX;
-      const y = block.yOffset + row.rowIndex * block.rowHeight;
+      const y = yOffset + row.rowIndex * block.rowHeight;
       const charY = y + block.fontYOffset;
       const h = block.rowHeight;
 

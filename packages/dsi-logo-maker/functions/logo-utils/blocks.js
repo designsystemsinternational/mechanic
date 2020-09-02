@@ -1,54 +1,6 @@
-import fontMetrics from "./fontmetrics";
-import flags from "./flags";
+import { glyphAdvanceWidth } from "./graphics";
 
-// This function currently does not take kerning into account,
-// since every letter is being computed individually
-const glyphAdvanceWidth = (fontSize, char) => {
-  const glyph = fontMetrics.glyphs[char];
-  if (!glyph) {
-    console.error("Char is not in fontmetrics:", char);
-  }
-  return (glyph.advanceWidth / fontMetrics.unitsPerEm) * fontSize;
-};
-
-export function getRandomFlag() {
-  return flags[Math.floor(Math.random() * flags.length)];
-}
-
-export const flagNames = flags.map(({ name }) => name);
-
-export function getFlag(name) {
-  for (const flag of flags) {
-    if (name === flag.name) {
-      return flag;
-    }
-  }
-}
-
-function textContrastColor(bgColor) {
-  let color = bgColor.charAt(0) === "#" ? bgColor.substring(1, 7) : bgColor;
-  const r = parseInt(color.substring(0, 2), 16); // hexToR
-  const g = parseInt(color.substring(2, 4), 16); // hexToG
-  const b = parseInt(color.substring(4, 6), 16); // hexToB
-  const uicolors = [r / 255, g / 255, b / 255];
-  const c = uicolors.map(col => {
-    if (col <= 0.03928) {
-      return col / 12.92;
-    }
-    return Math.pow((col + 0.055) / 1.055, 2.4);
-  });
-  const l = 0.2126 * c[0] + 0.7152 * c[1] + 0.0722 * c[2];
-  return l > 0.179 ? "black" : "white";
-}
-
-export function genColorObject(color) {
-  return {
-    background: color,
-    blackOrWhite: textContrastColor(color)
-  };
-}
-
-export const computeBaseBricks = (words, colors, fontSize) => {
+export const computeBaseBricks = (words, ncolors, fontSize) => {
   const bricks = [];
   let colori = 0;
   words.forEach(word => {
@@ -58,7 +10,7 @@ export const computeBaseBricks = (words, colors, fontSize) => {
         width: glyphAdvanceWidth(fontSize, word[i]),
         isWordFirst: i === 0,
         isWordLast: i === word.length - 1,
-        color: colors[colori % colors.length]
+        color: colori % ncolors
       });
       if (i === word.length - 1) {
         colori++;
@@ -68,8 +20,16 @@ export const computeBaseBricks = (words, colors, fontSize) => {
   return bricks;
 };
 
-export const computeBlockGeometry = (xOffset, yOffset, width, height, rows, cols) => {
-  const geometry = { xOffset, yOffset, width, height, numberRows: rows, cols };
+export const precomputeBlocks = (blockGeometry, baseBricks, lastIndex) => {
+  const blocksByIndex = [];
+  for (let i = 0; i < Math.min(lastIndex, baseBricks.length); i++) {
+    blocksByIndex.push(computeBlock(blockGeometry, baseBricks, i));
+  }
+  return blocksByIndex;
+};
+
+export const computeBlockGeometry = (width, height, rows, cols) => {
+  const geometry = { width, height, numberRows: rows, cols };
   geometry.rowHeight = height / rows;
   geometry.fontSize = Math.round(geometry.rowHeight * 0.8);
   geometry.wordGap = width * 0.015;
@@ -80,10 +40,7 @@ export const computeBlockGeometry = (xOffset, yOffset, width, height, rows, cols
 };
 
 export const computeBlock = (blockGeometry, baseBricks, brickIndex) => {
-  // console.log(blockGeometry);
-  // console.log(baseBricks);
-  // console.log(brickIndex);
-  const block = { ...blockGeometry, baseBricks, brickIndex, rows: [] };
+  const block = { ...blockGeometry, brickIndex, rows: [] };
 
   for (let rowIndex = 0; rowIndex < block.numberRows; rowIndex++) {
     const rowBricks = computeRowBricks(baseBricks, brickIndex, block.cols);
