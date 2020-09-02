@@ -13,7 +13,7 @@ export const handler = (params, mechanic) => {
 
   let colors = getRandomFlag().colors;
   const blockGeometry = computeBlockGeometry(logoWidth, logoHeight, rows, cols);
-  const baseBricks = computeBaseBricks(words, colors.length, blockGeometry.fontSize);
+  const baseBricks = computeBaseBricks(words, blockGeometry.fontSize);
   const blocksByIndex = precomputeBlocks(blockGeometry, baseBricks, baseBricks.length);
 
   const blockConfigs = [];

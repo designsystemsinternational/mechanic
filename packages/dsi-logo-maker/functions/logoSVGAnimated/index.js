@@ -1,8 +1,9 @@
-import React, { useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import engine from "mechanic-engine-react";
 import { getRandomFlag, flagNames, getFlag, genColorObject } from "../logo-utils/graphics";
-import { computeBaseBricks, computeBlockGeometry, computeBlock } from "../logo-utils/blocks";
+import { computeBaseBricks, computeBlockGeometry, precomputeBlocks } from "../logo-utils/blocks";
 import { Block } from "../logo-utils/blocks-components";
+import { useDrawLoop } from "../logo-utils/drawLoopHook";
 
 export const handler = ({
   width,
@@ -16,94 +17,62 @@ export const handler = ({
   duration,
   loops
 }) => {
-  // const rows = 2;
-  // const cols = 13;
-  // const words = ["DESIGN", "SYSTEMS", "INTERNATIONAL"];
-  // let colors;
-  // if (colorMode === "Custom Colors") {
-  //   colors = colorsString.split(",").map(genColorObject);
-  // } else if (colorMode === "Pick Flag") {
-  //   let f = getFlag(flag);
-  //   colors = f.colors;
-  // } else {
-  //   colors = getRandomFlag().colors;
-  // }
-  // const spacing = computeSpacing(width, height, rows);
-  // const bricks = splitContent(spacing.fontSize, words, colors);
-  // const draw = () => {
-  //   const totalOffset = offset + internalOffset;
-  //   let bricki = bricks.length - (totalOffset % bricks.length);
-  //   ctx.save();
-  //   ctx.clearRect(0, 0, width, height);
-  //   for (let row = 0; row < rows; row++) {
-  //     // calc in advance
-  //     const rowBricks = [];
-  //     for (let i = bricki; i < bricki + cols; i++) {
-  //       rowBricks.push(bricks[i % bricks.length]);
-  //     }
-  //     spacing.padding = computePadding(width, rowBricks, spacing);
-  //     // then loop through the row and create the spacing as needed.
-  //     let x = 0;
-  //     const y = row * spacing.rowHeight;
-  //     const charY = y + spacing.fontYOffset;
-  //     rowBricks.forEach((...brickIteration) => {
-  //       const { w, charX } = computeBrickHorizontal(x, brickIteration, spacing);
-  //       const brick = brickIteration[0];
-  //       ctx.fillStyle = brick.color.background;
-  //       ctx.strokeStyle = brick.color.background;
-  //       ctx.fillRect(x, y, w, spacing.rowHeight);
-  //       ctx.strokeRect(x, y, w, spacing.rowHeight);
-  //       ctx.fillStyle = brick.color.blackOrWhite;
-  //       ctx.font = `${spacing.fontSize}px F, Helvetica, Sans-Serif`;
-  //       ctx.fillText(brick.char, charX, charY);
-  //       x += w;
-  //       bricki++;
-  //     });
-  //   }
-  //   ctx.restore();
-  // };
+  const [colors, setColors] = useState(null);
+  const [baseBricks, setBaseBricks] = useState(null);
+  const [blocksByIndex, setBlocksByIndex] = useState(null);
+  const [internalOffset, setInternalOffset] = useState(0);
+  const isPlaying = useRef(true);
+  const progress = useRef(0);
+  const runtime = useDrawLoop(isPlaying.current);
 
-  // const isPlaying = useRef(true);
-  // const frameCount = useDrawLoop(isPlaying.current);
+  const rows = 2;
+  const cols = 13;
+  const words = ["DESIGN", "SYSTEMS", "INTERNATIONAL"];
 
-  // useEffect(() => {
-  //   if (frameCount < 100) {
-  //     frame();
-  //   } else if (isPlaying.current) {
-  //     isPlaying.current = false;
-  //     done();
-  //   }
-  // }, [frameCount]);
+  useEffect(() => {
+    let choice;
+    if (colorMode === "Custom Colors") {
+      choice = colorsString.split(",").map(genColorObject);
+    } else if (colorMode === "Pick Flag") {
+      let f = getFlag(flag);
+      choice = f.colors;
+    } else {
+      choice = getRandomFlag().colors;
+    }
+    const blockGeometry = computeBlockGeometry(width, height, rows, cols);
+    const bricks = computeBaseBricks(words, blockGeometry.fontSize);
+    const blocks = precomputeBlocks(blockGeometry, bricks, bricks.length);
+    setColors(choice);
+    setBaseBricks(bricks);
+    setBlocksByIndex(blocks);
+  }, []);
+
+  const totalOffset = offset + internalOffset;
+  const brickIndex = baseBricks ? baseBricks.length - (totalOffset % baseBricks.length) : 0;
+
+  const position = { x: 0, y: 0 };
+  const block = blocksByIndex ? blocksByIndex[brickIndex % baseBricks.length] : null;
+
+  const direction = -1;
+  useEffect(() => {
+    if (runtime < duration) {
+      frame();
+      let currentProgress = Math.floor(2 * loops * cols * (runtime / duration));
+      if (currentProgress > progress.current) {
+        progress.current = currentProgress;
+        setInternalOffset(internalOffset => internalOffset + 1 * direction);
+      }
+    } else if (isPlaying.current) {
+      isPlaying.current = false;
+      done();
+    }
+  }, [runtime]);
 
   return (
     <svg width={width} height={height}>
-      {/* {svgBricks} */}
+      {block && <Block position={position} block={block} colors={colors}></Block>}
     </svg>
   );
-  // const direction = -1;
-  // let starttime;
-  // let internalOffset = 0;
-  // let progress = 0;
-  // const animationHandler = t => {
-  //   const timestamp = timestamp || new Date().getTime();
-  //   if (!starttime) {
-  //     starttime = timestamp;
-  //   }
-  //   const runtime = timestamp - starttime;
-  //   let currentProgress = Math.floor(2 * loops * cols * (runtime / duration));
-  //   if (currentProgress > progress) {
-  //     progress = currentProgress;
-  //     internalOffset = internalOffset + 1 * direction;
-  //     draw();
-  //   }
-  //   if (runtime < duration) {
-  //     mechanic.frame(canvas);
-  //     requestAnimationFrame(animationHandler);
-  //   } else {
-  //     mechanic.done(canvas);
-  //   }
-  // };
-  // requestAnimationFrame(animationHandler);
 };
 
 export const params = {

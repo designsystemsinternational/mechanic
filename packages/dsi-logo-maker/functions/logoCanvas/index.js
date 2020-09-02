@@ -20,7 +20,7 @@ export const handler = (params, mechanic) => {
   }
 
   const blockGeometry = computeBlockGeometry(width, height, rows, cols);
-  const baseBricks = computeBaseBricks(words, colors.length, blockGeometry.fontSize);
+  const baseBricks = computeBaseBricks(words, blockGeometry.fontSize);
   const brickIndex = baseBricks.length - (offset % baseBricks.length);
 
   const block = computeBlock(blockGeometry, baseBricks, brickIndex);

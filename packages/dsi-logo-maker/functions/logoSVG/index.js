@@ -19,7 +19,7 @@ export const handler = ({ width, height, done, colorMode, flag, colors: colorsSt
   }
   const position = { x: 0, y: 0 };
   const blockGeometry = computeBlockGeometry(width, height, rows, cols);
-  const baseBricks = computeBaseBricks(words, colors.length, blockGeometry.fontSize);
+  const baseBricks = computeBaseBricks(words, blockGeometry.fontSize);
   let brickIndex = baseBricks.length - (offset % baseBricks.length);
 
   const block = computeBlock(blockGeometry, baseBricks, brickIndex);

@@ -20,7 +20,7 @@ export const handler = (params, mechanic) => {
   }
 
   const blockGeometry = computeBlockGeometry(width, height, rows, cols);
-  const baseBricks = computeBaseBricks(words, colors.length, blockGeometry.fontSize);
+  const baseBricks = computeBaseBricks(words, blockGeometry.fontSize);
   const blocksByIndex = precomputeBlocks(blockGeometry, baseBricks, baseBricks.length);
   const position = { x: 0, y: 0 };
 
@@ -48,7 +48,7 @@ export const handler = (params, mechanic) => {
   let progress = 0;
 
   const animationHandler = t => {
-    const timestamp = timestamp || new Date().getTime();
+    const timestamp = t || new Date().getTime();
     if (!starttime) {
       starttime = timestamp;
     }

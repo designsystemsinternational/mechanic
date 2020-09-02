@@ -2,7 +2,7 @@ import React from "react";
 
 const Brick = ({ brick, block, colors }) => {
   const { x, w, char, charX } = brick;
-  const { background, blackOrWhite } = colors[brick.color];
+  const { background, blackOrWhite } = colors[brick.color % colors.length];
   const { fontYOffset: charY, rowHeight: h, fontSize } = block;
   return (
     <g transform={`translate(${x} 0)`}>

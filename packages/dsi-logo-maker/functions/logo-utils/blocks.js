@@ -1,6 +1,6 @@
 import { glyphAdvanceWidth } from "./graphics";
 
-export const computeBaseBricks = (words, ncolors, fontSize) => {
+export const computeBaseBricks = (words, fontSize) => {
   const bricks = [];
   let colori = 0;
   words.forEach(word => {
@@ -10,7 +10,7 @@ export const computeBaseBricks = (words, ncolors, fontSize) => {
         width: glyphAdvanceWidth(fontSize, word[i]),
         isWordFirst: i === 0,
         isWordLast: i === word.length - 1,
-        color: colori % ncolors
+        color: colori
       });
       if (i === word.length - 1) {
         colori++;

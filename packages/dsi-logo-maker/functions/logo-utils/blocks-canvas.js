@@ -4,7 +4,7 @@ export const drawBlock = (context, blockConfig) => {
     row.bricks.forEach(brick => {
       const { x: xOffset, y: yOffset } = position;
       const { x: brickX, w, char, charX: brickCharX } = brick;
-      const { background, blackOrWhite } = colors[brick.color];
+      const { background, blackOrWhite } = colors[brick.color % colors.length];
 
       const x = xOffset + brickX;
       const charX = x + brickCharX;

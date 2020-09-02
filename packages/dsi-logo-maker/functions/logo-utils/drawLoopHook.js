@@ -2,7 +2,8 @@ import { useState, useEffect, useRef } from "react";
 
 export const useDrawLoop = isPlaying => {
   const raf = useRef();
-  const [frameCount, setFrameCount] = useState(0);
+  const starttime = useRef();
+  const [runtime, setRuntime] = useState(0);
 
   useEffect(() => {
     cancelAnimationFrame(raf.current);
@@ -11,17 +12,21 @@ export const useDrawLoop = isPlaying => {
       return;
     }
 
-    const draw = () => {
-      setFrameCount(cur => cur + 1);
+    const draw = t => {
+      const timestamp = t || new Date().getTime();
+      if (!starttime.current) {
+        starttime.current = timestamp;
+      }
+      setRuntime(timestamp - starttime.current);
       raf.current = requestAnimationFrame(draw);
     };
 
-    draw();
+    raf.current = requestAnimationFrame(draw);
 
     return () => {
       cancelAnimationFrame(raf.current);
     };
   }, [isPlaying]);
 
-  return frameCount;
+  return runtime;
 };
