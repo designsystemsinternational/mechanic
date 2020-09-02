@@ -17,11 +17,13 @@ export const handler = ({
   duration,
   loops
 }) => {
-  const [colors, setColors] = useState(null);
-  const [baseBricks, setBaseBricks] = useState(null);
-  const [blocksByIndex, setBlocksByIndex] = useState(null);
+  const [blockParams, setBlockParams] = useState({
+    colors: [],
+    baseBricks: [],
+    blocksByIndex: []
+  });
   const [internalOffset, setInternalOffset] = useState(0);
-  const isPlaying = useRef(true);
+  const isPlaying = useRef(false);
   const progress = useRef(0);
   const runtime = useDrawLoop(isPlaying.current);
 
@@ -29,33 +31,38 @@ export const handler = ({
   const cols = 13;
   const words = ["DESIGN", "SYSTEMS", "INTERNATIONAL"];
 
-  useEffect(() => {
-    let choice;
-    if (colorMode === "Custom Colors") {
-      choice = colorsString.split(",").map(genColorObject);
-    } else if (colorMode === "Pick Flag") {
-      let f = getFlag(flag);
-      choice = f.colors;
-    } else {
-      choice = getRandomFlag().colors;
-    }
-    const blockGeometry = computeBlockGeometry(width, height, rows, cols);
-    const bricks = computeBaseBricks(words, blockGeometry.fontSize);
-    const blocks = precomputeBlocks(blockGeometry, bricks, bricks.length);
-    setColors(choice);
-    setBaseBricks(bricks);
-    setBlocksByIndex(blocks);
-  }, []);
+  const { colors, baseBricks, blocksByIndex } = blockParams;
 
   const totalOffset = offset + internalOffset;
   const brickIndex = baseBricks ? baseBricks.length - (totalOffset % baseBricks.length) : 0;
 
   const position = { x: 0, y: 0 };
-  const block = blocksByIndex ? blocksByIndex[brickIndex % baseBricks.length] : null;
+  const block = blocksByIndex[brickIndex % baseBricks.length];
+
+  useEffect(() => {
+    let colors;
+    if (colorMode === "Custom Colors") {
+      colors = colorsString.split(",").map(genColorObject);
+    } else if (colorMode === "Pick Flag") {
+      let f = getFlag(flag);
+      colors = f.colors;
+    } else {
+      colors = getRandomFlag().colors;
+    }
+    const blockGeometry = computeBlockGeometry(width, height, rows, cols);
+    const baseBricks = computeBaseBricks(words, blockGeometry.fontSize);
+    const blocksByIndex = precomputeBlocks(blockGeometry, baseBricks, baseBricks.length);
+    setBlockParams({
+      colors,
+      baseBricks,
+      blocksByIndex
+    });
+    isPlaying.current = true;
+  }, []);
 
   const direction = -1;
   useEffect(() => {
-    if (runtime < duration) {
+    if (isPlaying.current && runtime < duration) {
       frame();
       let currentProgress = Math.floor(2 * loops * cols * (runtime / duration));
       if (currentProgress > progress.current) {
