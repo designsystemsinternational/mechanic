@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import engine from "mechanic-engine-react";
-import { getRandomFlag } from "../utils/graphics";
+import { getColors } from "../utils/graphics";
 import { computeBaseBricks, computeBlockGeometry, precomputeBlocks } from "../utils/blocks";
 import { Block } from "../utils/blocks-components";
 
@@ -16,7 +16,7 @@ export const handler = ({ width, height, done, logoWidth, logoRatio }) => {
 
   const blockConfigs = [];
   let position = { x: 0, y: 0 };
-  let colors = getRandomFlag().colors;
+  let colors = getColors("Random Flag");
   let offset = 0;
   let brickIndex = baseBricks.length - (offset % baseBricks.length);
 
@@ -28,7 +28,7 @@ export const handler = ({ width, height, done, logoWidth, logoRatio }) => {
       position.x += block.width;
       offset++;
       brickIndex = baseBricks.length - (offset % baseBricks.length);
-      colors = getRandomFlag().colors;
+      colors = getColors("Random Flag");
     } else {
       position.x = position.x - width;
       position.y += block.height;

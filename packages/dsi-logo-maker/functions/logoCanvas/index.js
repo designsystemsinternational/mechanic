@@ -1,5 +1,5 @@
 import engine from "mechanic-engine-canvas";
-import { getRandomFlag, flagNames, getFlag, genColorObject } from "../utils/graphics";
+import { getColors, flagNames } from "../utils/graphics";
 import { computeBaseBricks, computeBlockGeometry, computeBlock } from "../utils/blocks";
 import { drawBlock } from "../utils/blocks-canvas";
 
@@ -9,16 +9,8 @@ export const handler = (params, mechanic) => {
   const rows = 2;
   const cols = 13;
   const words = ["DESIGN", "SYSTEMS", "INTERNATIONAL"];
-  let colors;
-  if (colorMode === "Custom Colors") {
-    colors = colorsString.split(",").map(genColorObject);
-  } else if (colorMode === "Pick Flag") {
-    let f = getFlag(flag);
-    colors = f.colors;
-  } else {
-    colors = getRandomFlag().colors;
-  }
 
+  const colors = getColors(colorMode, flag, colorsString);
   const blockGeometry = computeBlockGeometry(width, height, rows, cols);
   const baseBricks = computeBaseBricks(words, blockGeometry.fontSize);
   const brickIndex = baseBricks.length - (offset % baseBricks.length);

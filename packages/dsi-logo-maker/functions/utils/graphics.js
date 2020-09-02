@@ -11,6 +11,17 @@ export const glyphAdvanceWidth = (fontSize, char) => {
   return (glyph.advanceWidth / fontMetrics.unitsPerEm) * fontSize;
 };
 
+export function getColors(colorMode, flag, colorsString) {
+  if (colorMode === "Custom Colors") {
+    return colorsString.split(",").map(genColorObject);
+  } else if (colorMode === "Pick Flag") {
+    let f = getFlag(flag);
+    return f.colors;
+  } else {
+    return getRandomFlag().colors;
+  }
+}
+
 export function getRandomFlag() {
   return flags[Math.floor(Math.random() * flags.length)];
 }

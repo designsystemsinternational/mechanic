@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import engine from "mechanic-engine-react";
-import { getRandomFlag, flagNames, getFlag, genColorObject } from "../utils/graphics";
+import { getColors, flagNames } from "../utils/graphics";
 import { computeBaseBricks, computeBlockGeometry, precomputeBlocks } from "../utils/blocks";
 import { Block } from "../utils/blocks-components";
 import { useDrawLoop } from "../utils/drawLoopHook";
@@ -40,15 +40,7 @@ export const handler = ({
   const block = blocksByIndex[brickIndex % baseBricks.length];
 
   useEffect(() => {
-    let colors;
-    if (colorMode === "Custom Colors") {
-      colors = colorsString.split(",").map(genColorObject);
-    } else if (colorMode === "Pick Flag") {
-      let f = getFlag(flag);
-      colors = f.colors;
-    } else {
-      colors = getRandomFlag().colors;
-    }
+    const colors = getColors(colorMode, flag, colorsString);
     const blockGeometry = computeBlockGeometry(width, height, rows, cols);
     const baseBricks = computeBaseBricks(words, blockGeometry.fontSize);
     const blocksByIndex = precomputeBlocks(blockGeometry, baseBricks, baseBricks.length);
