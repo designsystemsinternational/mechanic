@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useRef } from "react";
 import engine from "mechanic-engine-react";
-import { getRandomFlag, flagNames, getFlag, genColorObject } from "../logo-utils/graphics";
-import { computeBaseBricks, computeBlockGeometry, precomputeBlocks } from "../logo-utils/blocks";
-import { Block } from "../logo-utils/blocks-components";
-import { useDrawLoop } from "../logo-utils/drawLoopHook";
+import { getRandomFlag, flagNames, getFlag, genColorObject } from "../utils/graphics";
+import { computeBaseBricks, computeBlockGeometry, precomputeBlocks } from "../utils/blocks";
+import { Block } from "../utils/blocks-components";
+import { useDrawLoop } from "../utils/drawLoopHook";
 
 export const handler = ({
   width,

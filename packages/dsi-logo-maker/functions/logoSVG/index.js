@@ -1,8 +1,8 @@
 import React, { useEffect } from "react";
 import engine from "mechanic-engine-react";
-import { getRandomFlag, flagNames, getFlag, genColorObject } from "../logo-utils/graphics";
-import { computeBaseBricks, computeBlockGeometry, computeBlock } from "../logo-utils/blocks";
-import { Block } from "../logo-utils/blocks-components";
+import { getRandomFlag, flagNames, getFlag, genColorObject } from "../utils/graphics";
+import { computeBaseBricks, computeBlockGeometry, computeBlock } from "../utils/blocks";
+import { Block } from "../utils/blocks-components";
 
 export const handler = ({ width, height, done, colorMode, flag, colors: colorsString, offset }) => {
   const rows = 2;

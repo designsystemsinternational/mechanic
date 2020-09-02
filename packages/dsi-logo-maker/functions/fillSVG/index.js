@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useRef } from "react";
 import engine from "mechanic-engine-react";
-import { getRandomFlag } from "../logo-utils/graphics";
-import { computeBaseBricks, computeBlockGeometry, precomputeBlocks } from "../logo-utils/blocks";
-import { Block } from "../logo-utils/blocks-components";
+import { getRandomFlag } from "../utils/graphics";
+import { computeBaseBricks, computeBlockGeometry, precomputeBlocks } from "../utils/blocks";
+import { Block } from "../utils/blocks-components";
 
 export const handler = ({ width, height, done, logoWidth, logoRatio }) => {
   const rows = 2;

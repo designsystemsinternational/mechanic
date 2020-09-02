@@ -1,7 +1,7 @@
 import engine from "mechanic-engine-canvas";
-import { getRandomFlag, flagNames, getFlag, genColorObject } from "../logo-utils/graphics";
-import { computeBaseBricks, computeBlockGeometry, computeBlock } from "../logo-utils/blocks";
-import { drawBlock } from "../logo-utils/blocks-canvas";
+import { getRandomFlag, flagNames, getFlag, genColorObject } from "../utils/graphics";
+import { computeBaseBricks, computeBlockGeometry, computeBlock } from "../utils/blocks";
+import { drawBlock } from "../utils/blocks-canvas";
 
 export const handler = (params, mechanic) => {
   const { width, height, colorMode, flag, colors: colorsString, offset } = params;

@@ -1,7 +1,7 @@
 import engine from "mechanic-engine-canvas";
-import { getRandomFlag } from "../logo-utils/graphics";
-import { computeBaseBricks, computeBlockGeometry, precomputeBlocks } from "../logo-utils/blocks";
-import { drawBlock } from "../logo-utils/blocks-canvas";
+import { getRandomFlag } from "../utils/graphics";
+import { computeBaseBricks, computeBlockGeometry, precomputeBlocks } from "../utils/blocks";
+import { drawBlock } from "../utils/blocks-canvas";
 
 export const handler = (params, mechanic) => {
   const { width, height, logoWidth, logoRatio } = params;
