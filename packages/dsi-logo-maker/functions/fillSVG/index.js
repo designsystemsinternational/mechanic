@@ -1,23 +1,22 @@
-import engine from "mechanic-engine-canvas";
+import React, { useState, useEffect, useRef } from "react";
+import engine from "mechanic-engine-react";
 import { getRandomFlag } from "../logo-utils/graphics";
 import { computeBaseBricks, computeBlockGeometry, precomputeBlocks } from "../logo-utils/blocks";
-import { drawBlock } from "../logo-utils/blocks-canvas";
+import { Block } from "../logo-utils/blocks-components";
 
-export const handler = (params, mechanic) => {
-  const { width, height, logoWidth, logoRatio } = params;
-
+export const handler = ({ width, height, done, logoWidth, logoRatio }) => {
   const rows = 2;
   const cols = 13;
   const logoHeight = Math.floor((logoWidth / logoRatio) * rows);
   const words = ["DESIGN", "SYSTEMS", "INTERNATIONAL"];
 
-  let colors = getRandomFlag().colors;
   const blockGeometry = computeBlockGeometry(logoWidth, logoHeight, rows, cols);
   const baseBricks = computeBaseBricks(words, blockGeometry.fontSize);
   const blocksByIndex = precomputeBlocks(blockGeometry, baseBricks, baseBricks.length);
 
   const blockConfigs = [];
   let position = { x: 0, y: 0 };
+  let colors = getRandomFlag().colors;
   let offset = 0;
   let brickIndex = baseBricks.length - (offset % baseBricks.length);
 
@@ -36,16 +35,21 @@ export const handler = (params, mechanic) => {
     }
   }
 
-  const canvas = document.createElement("canvas");
-  canvas.width = width;
-  canvas.height = height;
-  const ctx = canvas.getContext("2d");
+  useEffect(() => {
+    done();
+  }, []);
 
-  ctx.save();
-  ctx.clearRect(0, 0, width, height);
-  blockConfigs.forEach(blockConfig => drawBlock(ctx, blockConfig));
-  ctx.restore();
-  mechanic.done(canvas);
+  return (
+    <svg width={width} height={height}>
+      {blockConfigs.map(({ position, block, colors }) => (
+        <Block
+          key={`${position.x}-${position.y}`}
+          position={position}
+          block={block}
+          colors={colors}></Block>
+      ))}
+    </svg>
+  );
 };
 
 export const params = {
