@@ -7,7 +7,7 @@ import {
   precomputeBlocks,
   getIndexModule
 } from "../utils/blocks";
-import { Block } from "../utils/blocks-components";
+import { Unit } from "../utils/blocks-components";
 import { useDrawLoop } from "../utils/drawLoopHook";
 
 export const handler = ({
@@ -24,7 +24,6 @@ export const handler = ({
 }) => {
   const [blockParams, setBlockParams] = useState({
     colors: [],
-    baseBricks: [],
     blocksByIndex: []
   });
   const [internalOffset, setInternalOffset] = useState(0);
@@ -36,12 +35,17 @@ export const handler = ({
   const cols = 13;
   const words = ["DESIGN", "SYSTEMS", "INTERNATIONAL"];
 
-  const { colors, baseBricks, blocksByIndex } = blockParams;
+  const { colors, blocksByIndex } = blockParams;
 
   const brickIndex = offset + internalOffset;
 
   const position = { x: 0, y: 0 };
   const block = blocksByIndex[getIndexModule(brickIndex, blocksByIndex.length)];
+  const animation = {
+    stepRate: (rows * cols * Math.floor(Math.random() * 4 + 1)) / duration,
+    progress: 0,
+    duration
+  };
 
   useEffect(() => {
     const colors = getColors(colorMode, flag, colorsString);
@@ -50,7 +54,6 @@ export const handler = ({
     const blocksByIndex = precomputeBlocks(blockGeometry, baseBricks);
     setBlockParams({
       colors,
-      baseBricks,
       blocksByIndex
     });
     isPlaying.current = true;
@@ -72,7 +75,16 @@ export const handler = ({
 
   return (
     <svg width={width} height={height}>
-      {block && <Block position={position} block={block} colors={colors}></Block>}
+      {blocksByIndex.length && (
+        <Unit
+          key={`${position.x}-${position.y}`}
+          position={position}
+          blocks={blockParams.blocksByIndex}
+          blockIndex={brickIndex}
+          colors={colors}
+          animation={animation}
+          runtime={runtime}></Unit>
+      )}
     </svg>
   );
 };
