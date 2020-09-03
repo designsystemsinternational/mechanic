@@ -1,5 +1,5 @@
 import engine from "mechanic-engine-canvas";
-import { getColors, flagNames } from "../utils/graphics";
+import { getColors } from "../utils/graphics";
 import {
   computeBaseBricks,
   computeBlockGeometry,
@@ -9,15 +9,24 @@ import {
 import { drawBlock } from "../utils/blocks-canvas";
 
 export const handler = (params, mechanic) => {
-  const { width, height, colorMode, flag, colors: colorsString, offset, duration, loops } = params;
+  const {
+    width,
+    height,
+    text,
+    columns: cols,
+    rows,
+    colors: colorsString,
+    offset,
+    duration,
+    loops
+  } = params;
 
-  const rows = 2;
-  const cols = 13;
-  const words = ["DESIGN", "SYSTEMS", "INTERNATIONAL"];
+  const words = text.split(" ").map(s => s.toUpperCase());
 
-  const colors = getColors(colorMode, flag, colorsString);
+  const colors = getColors("Custom Colors", null, colorsString);
   const blockGeometry = computeBlockGeometry(width, height, rows, cols);
   const baseBricks = computeBaseBricks(words, blockGeometry.fontSize);
+
   const blocksByIndex = precomputeBlocks(blockGeometry, baseBricks);
   const position = { x: 0, y: 0 };
 
@@ -72,23 +81,25 @@ export const params = {
       height: 111
     },
     bigger: {
-      width: 1000,
+      width: 500,
       height: 222
     },
     biggerr: {
-      width: 1500,
+      width: 500,
       height: 333
     }
   },
-  colorMode: {
+  text: {
     type: "string",
-    choices: ["Random Flag", "Pick Flag", "Custom Colors"],
-    default: "randomFlag"
+    default: "Whatever you want"
   },
-  flag: {
-    type: "string",
-    choices: flagNames,
-    default: flagNames[0]
+  columns: {
+    type: "integer",
+    default: 13
+  },
+  rows: {
+    type: "integer",
+    default: 2
   },
   colors: {
     type: "string",

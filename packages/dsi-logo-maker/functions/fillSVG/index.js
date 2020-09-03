@@ -22,8 +22,7 @@ export const handler = ({ width, height, done, logoWidth, logoRatio }) => {
   const blockConfigs = [];
   let position = { x: 0, y: 0 };
   let colors = getColors("Random Flag");
-  let offset = 0;
-  let brickOffset = -offset;
+  let brickOffset = 0;
 
   while (position.y < height) {
     const block = blocksByIndex[getIndexModule(brickOffset, blocksByIndex.length)];
@@ -31,8 +30,7 @@ export const handler = ({ width, height, done, logoWidth, logoRatio }) => {
     position = { ...position };
     if (position.x + block.width < width) {
       position.x += block.width;
-      offset++;
-      brickOffset = -offset;
+      brickOffset++;
       colors = getColors("Random Flag");
     } else {
       position.x = position.x - width;
@@ -78,7 +76,7 @@ export const params = {
   },
   logoWidth: {
     type: "integer",
-    default: 80
+    default: 110
   },
   logoRatio: {
     type: "integer",

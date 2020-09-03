@@ -33,8 +33,7 @@ export const handler = ({ width, height, frame, done, logoWidth, logoRatio, dura
 
     const blockConfigs = [];
     let position = { x: 0, y: 0 };
-    let offset = 0;
-    let brickOffset = -offset;
+    let brickOffset = 0;
 
     while (position.y < height) {
       const block = blocksByIndex[getIndexModule(brickOffset, blocksByIndex.length)];
@@ -47,8 +46,7 @@ export const handler = ({ width, height, frame, done, logoWidth, logoRatio, dura
       if (position.x + block.width < width) {
         position.x += block.width;
         colors = getColors("Random Flag");
-        offset++;
-        brickOffset = -offset;
+        brickOffset++;
       } else {
         position.x = position.x - width;
         position.y += block.height;
@@ -70,8 +68,7 @@ export const handler = ({ width, height, frame, done, logoWidth, logoRatio, dura
           const newAnimation = { ...animation };
           animation.progress = currentProgress;
           changed = true;
-          const index = block.brickIndex - 1;
-          const brickIndex = getIndexModule(index, blocksByIndex.length);
+          const brickIndex = getIndexModule(block.brickIndex + 1, blocksByIndex.length);
           const newBlock = blocksByIndex[brickIndex];
           return { position, colors, block: newBlock, animation: newAnimation };
         }

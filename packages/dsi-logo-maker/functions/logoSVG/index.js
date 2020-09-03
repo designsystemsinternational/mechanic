@@ -13,9 +13,8 @@ export const handler = ({ width, height, done, colorMode, flag, colors: colorsSt
   const position = { x: 0, y: 0 };
   const blockGeometry = computeBlockGeometry(width, height, rows, cols);
   const baseBricks = computeBaseBricks(words, blockGeometry.fontSize);
-  const brickOffset = -offset;
 
-  const block = computeBlock(blockGeometry, baseBricks, brickOffset);
+  const block = computeBlock(blockGeometry, baseBricks, offset);
 
   useEffect(() => {
     done();

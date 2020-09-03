@@ -54,7 +54,7 @@ export const computeBlock = (blockGeometry, baseBricks, brickOffset) => {
     const rowBricks = computeRowBricks(baseBricks, brickOffset, block.cols);
     const rowGeometry = computeRowGeometry(rowBricks, rowIndex, block);
     const row = computeRow(rowBricks, rowGeometry, block);
-    brickOffset -= row.bricks.length;
+    brickOffset += row.bricks.length;
     block.rows.push(row);
   }
   return block;

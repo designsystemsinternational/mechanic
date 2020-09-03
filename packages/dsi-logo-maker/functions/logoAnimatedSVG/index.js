@@ -38,8 +38,7 @@ export const handler = ({
 
   const { colors, baseBricks, blocksByIndex } = blockParams;
 
-  const totalOffset = offset + internalOffset;
-  const brickIndex = -totalOffset;
+  const brickIndex = offset + internalOffset;
 
   const position = { x: 0, y: 0 };
   const block = blocksByIndex[getIndexModule(brickIndex, blocksByIndex.length)];
