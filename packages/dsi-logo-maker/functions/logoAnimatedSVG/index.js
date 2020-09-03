@@ -30,7 +30,7 @@ export const handler = ({
   const [internalOffset, setInternalOffset] = useState(0);
   const isPlaying = useRef(false);
   const progress = useRef(0);
-  const runtime = useDrawLoop(isPlaying.current);
+  const runtime = useDrawLoop(isPlaying.current, duration);
 
   const rows = 2;
   const cols = 13;
@@ -57,14 +57,14 @@ export const handler = ({
   }, []);
 
   useEffect(() => {
-    if (isPlaying.current && runtime < duration) {
+    if (runtime < duration) {
       frame();
       let currentProgress = Math.floor(2 * loops * cols * (runtime / duration));
       if (currentProgress > progress.current) {
         progress.current = currentProgress;
         setInternalOffset(internalOffset => internalOffset + 1);
       }
-    } else if (isPlaying.current) {
+    } else {
       isPlaying.current = false;
       done();
     }

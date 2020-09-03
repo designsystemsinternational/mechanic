@@ -1,5 +1,5 @@
-import React from "react";
-
+import React, { useState, useEffect, useRef } from "react";
+import { getIndexModule } from "../utils/blocks";
 const Brick = ({ brick, block, colors }) => {
   const { x, w, char, charX } = brick;
   const { background, blackOrWhite } = colors[brick.color % colors.length];
@@ -40,4 +40,21 @@ export const Block = ({ position, block, colors }) => {
       ))}
     </g>
   );
+};
+
+export const Unit = ({ blocks, blockIndex, animation, runtime, position, colors }) => {
+  const [index, setIndex] = useState(blockIndex);
+  const progress = useRef(animation.progress);
+  useEffect(() => {
+    const { stepRate } = animation;
+    let runtimeProgress = Math.floor(runtime * stepRate);
+    if (runtimeProgress > progress.current) {
+      progress.current = runtimeProgress;
+      setIndex(index => getIndexModule(index + 1, blocks.length));
+    }
+  }, [runtime]);
+
+  const block = blocks[index];
+
+  return <Block position={position} block={block} colors={colors} />;
 };

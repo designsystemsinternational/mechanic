@@ -7,18 +7,17 @@ import {
   precomputeBlocks,
   getIndexModule
 } from "../utils/blocks";
-import { Block } from "../utils/blocks-components";
+import { Unit } from "../utils/blocks-components";
 import { useDrawLoop } from "../utils/drawLoopHook";
 
 export const handler = ({ width, height, frame, done, logoWidth, logoRatio, duration }) => {
   const [blockParams, setBlockParams] = useState({
-    baseBricks: [],
     blocksByIndex: [],
     blockConfigs: []
   });
 
   const isPlaying = useRef(false);
-  const runtime = useDrawLoop(isPlaying.current);
+  const runtime = useDrawLoop(isPlaying.current, duration);
 
   const rows = 2;
   const cols = 13;
@@ -36,48 +35,31 @@ export const handler = ({ width, height, frame, done, logoWidth, logoRatio, dura
     let brickOffset = 0;
 
     while (position.y < height) {
-      const block = blocksByIndex[getIndexModule(brickOffset, blocksByIndex.length)];
+      const blockIndex = getIndexModule(brickOffset, blocksByIndex.length);
       const animation = {
-        loops: Math.floor(Math.random() * 4 + 1),
-        progress: 0
+        stepRate: (rows * cols * Math.floor(Math.random() * 4 + 1)) / duration,
+        progress: 0,
+        duration
       };
-      blockConfigs.push({ position, block, colors, animation });
+      blockConfigs.push({ position, blockIndex, colors, animation });
       position = { ...position };
-      if (position.x + block.width < width) {
-        position.x += block.width;
+      if (position.x + blockGeometry.width < width) {
+        position.x += blockGeometry.width;
         colors = getColors("Random Flag");
         brickOffset++;
       } else {
         position.x = position.x - width;
-        position.y += block.height;
+        position.y += blockGeometry.height;
       }
     }
-    setBlockParams({ baseBricks, blocksByIndex, blockConfigs });
+    setBlockParams({ blocksByIndex, blockConfigs });
     isPlaying.current = true;
   }, []);
 
   useEffect(() => {
-    const { baseBricks, blocksByIndex, blockConfigs } = blockParams;
-    if (isPlaying.current && runtime < duration) {
+    if (runtime < duration) {
       frame();
-      let changed = false;
-      const newConfigs = blockConfigs.map(config => {
-        const { position, block, colors, animation } = config;
-        let currentProgress = Math.floor(2 * animation.loops * cols * (runtime / duration));
-        if (currentProgress > animation.progress) {
-          const newAnimation = { ...animation };
-          animation.progress = currentProgress;
-          changed = true;
-          const brickIndex = getIndexModule(block.brickIndex + 1, blocksByIndex.length);
-          const newBlock = blocksByIndex[brickIndex];
-          return { position, colors, block: newBlock, animation: newAnimation };
-        }
-        return config;
-      });
-      if (changed) {
-        setBlockParams(blockParams => ({ ...blockParams, blockConfigs: newConfigs }));
-      }
-    } else if (isPlaying.current) {
+    } else {
       isPlaying.current = false;
       done();
     }
@@ -87,12 +69,15 @@ export const handler = ({ width, height, frame, done, logoWidth, logoRatio, dura
   return (
     <svg width={width} height={height}>
       {blockConfigs &&
-        blockConfigs.map(({ position, block, colors }) => (
-          <Block
+        blockConfigs.map(({ position, blockIndex, colors, animation }) => (
+          <Unit
             key={`${position.x}-${position.y}`}
             position={position}
-            block={block}
-            colors={colors}></Block>
+            blocks={blockParams.blocksByIndex}
+            blockIndex={blockIndex}
+            colors={colors}
+            animation={animation}
+            runtime={runtime}></Unit>
         ))}
     </svg>
   );
@@ -101,25 +86,13 @@ export const handler = ({ width, height, frame, done, logoWidth, logoRatio, dura
 export const params = {
   size: {
     default: {
-      width: 300,
-      height: 300
-    },
-    bigger: {
-      width: 1000,
-      height: 1000
-    },
-    panoramic: {
-      width: 1000,
-      height: 250
-    },
-    long: {
-      width: 500,
-      height: 1000
+      width: 200,
+      height: 200
     }
   },
   logoWidth: {
     type: "integer",
-    default: 80
+    default: 120
   },
   logoRatio: {
     type: "integer",
@@ -127,7 +100,7 @@ export const params = {
   },
   duration: {
     type: "integer",
-    default: 5000
+    default: 2000
   }
 };
 
