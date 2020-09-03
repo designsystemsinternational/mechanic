@@ -1,6 +1,11 @@
 import engine from "mechanic-engine-canvas";
 import { getColors, flagNames } from "../utils/graphics";
-import { computeBaseBricks, computeBlockGeometry, precomputeBlocks } from "../utils/blocks";
+import {
+  computeBaseBricks,
+  computeBlockGeometry,
+  precomputeBlocks,
+  getIndexModule
+} from "../utils/blocks";
 import { drawBlock } from "../utils/blocks-canvas";
 
 export const handler = (params, mechanic) => {
@@ -13,7 +18,7 @@ export const handler = (params, mechanic) => {
   const colors = getColors(colorMode, flag, colorsString);
   const blockGeometry = computeBlockGeometry(width, height, rows, cols);
   const baseBricks = computeBaseBricks(words, blockGeometry.fontSize);
-  const blocksByIndex = precomputeBlocks(blockGeometry, baseBricks, baseBricks.length);
+  const blocksByIndex = precomputeBlocks(blockGeometry, baseBricks);
   const position = { x: 0, y: 0 };
 
   const canvas = document.createElement("canvas");
@@ -23,8 +28,8 @@ export const handler = (params, mechanic) => {
 
   const draw = () => {
     const totalOffset = offset + internalOffset;
-    const brickIndex = baseBricks.length - (totalOffset % baseBricks.length);
-    const block = blocksByIndex[brickIndex % baseBricks.length];
+    const brickOffset = -totalOffset;
+    const block = blocksByIndex[getIndexModule(brickOffset, blocksByIndex.length)];
 
     ctx.save();
     ctx.clearRect(0, 0, blockGeometry.width, blockGeometry.height);
@@ -34,7 +39,6 @@ export const handler = (params, mechanic) => {
     ctx.restore();
   };
 
-  const direction = -1;
   let starttime;
   let internalOffset = 0;
   let progress = 0;
@@ -48,7 +52,7 @@ export const handler = (params, mechanic) => {
     let currentProgress = Math.floor(2 * loops * cols * (runtime / duration));
     if (currentProgress > progress) {
       progress = currentProgress;
-      internalOffset = internalOffset + 1 * direction;
+      internalOffset = internalOffset + 1;
       draw();
     }
     if (runtime < duration) {

@@ -1,6 +1,11 @@
 import engine from "mechanic-engine-canvas";
 import { getColors } from "../utils/graphics";
-import { computeBaseBricks, computeBlockGeometry, precomputeBlocks } from "../utils/blocks";
+import {
+  computeBaseBricks,
+  computeBlockGeometry,
+  precomputeBlocks,
+  getIndexModule
+} from "../utils/blocks";
 import { drawBlock } from "../utils/blocks-canvas";
 
 export const handler = (params, mechanic) => {
@@ -14,21 +19,21 @@ export const handler = (params, mechanic) => {
   let colors = getColors("Random Flag");
   const blockGeometry = computeBlockGeometry(logoWidth, logoHeight, rows, cols);
   const baseBricks = computeBaseBricks(words, blockGeometry.fontSize);
-  const blocksByIndex = precomputeBlocks(blockGeometry, baseBricks, baseBricks.length);
+  const blocksByIndex = precomputeBlocks(blockGeometry, baseBricks);
 
   const blockConfigs = [];
   let position = { x: 0, y: 0 };
   let offset = 0;
-  let brickIndex = baseBricks.length - (offset % baseBricks.length);
+  let brickOffset = -offset;
 
   while (position.y < height) {
-    const block = blocksByIndex[brickIndex % baseBricks.length];
+    const block = blocksByIndex[getIndexModule(brickOffset, blocksByIndex.length)];
     blockConfigs.push({ position, block, colors });
     position = { ...position };
     if (position.x + block.width < width) {
       position.x += block.width;
       offset++;
-      brickIndex = baseBricks.length - (offset % baseBricks.length);
+      brickOffset = -offset;
       colors = getColors("Random Flag");
     } else {
       position.x = position.x - width;

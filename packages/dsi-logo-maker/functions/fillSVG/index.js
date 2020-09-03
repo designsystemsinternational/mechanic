@@ -1,7 +1,12 @@
 import React, { useState, useEffect, useRef } from "react";
 import engine from "mechanic-engine-react";
 import { getColors } from "../utils/graphics";
-import { computeBaseBricks, computeBlockGeometry, precomputeBlocks } from "../utils/blocks";
+import {
+  computeBaseBricks,
+  computeBlockGeometry,
+  precomputeBlocks,
+  getIndexModule
+} from "../utils/blocks";
 import { Block } from "../utils/blocks-components";
 
 export const handler = ({ width, height, done, logoWidth, logoRatio }) => {
@@ -12,22 +17,22 @@ export const handler = ({ width, height, done, logoWidth, logoRatio }) => {
 
   const blockGeometry = computeBlockGeometry(logoWidth, logoHeight, rows, cols);
   const baseBricks = computeBaseBricks(words, blockGeometry.fontSize);
-  const blocksByIndex = precomputeBlocks(blockGeometry, baseBricks, baseBricks.length);
+  const blocksByIndex = precomputeBlocks(blockGeometry, baseBricks);
 
   const blockConfigs = [];
   let position = { x: 0, y: 0 };
   let colors = getColors("Random Flag");
   let offset = 0;
-  let brickIndex = baseBricks.length - (offset % baseBricks.length);
+  let brickOffset = -offset;
 
   while (position.y < height) {
-    const block = blocksByIndex[brickIndex % baseBricks.length];
+    const block = blocksByIndex[getIndexModule(brickOffset, blocksByIndex.length)];
     blockConfigs.push({ position, block, colors });
     position = { ...position };
     if (position.x + block.width < width) {
       position.x += block.width;
       offset++;
-      brickIndex = baseBricks.length - (offset % baseBricks.length);
+      brickOffset = -offset;
       colors = getColors("Random Flag");
     } else {
       position.x = position.x - width;

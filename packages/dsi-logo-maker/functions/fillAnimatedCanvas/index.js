@@ -1,6 +1,11 @@
 import engine from "mechanic-engine-canvas";
 import { getColors } from "../utils/graphics";
-import { computeBaseBricks, computeBlockGeometry, precomputeBlocks } from "../utils/blocks";
+import {
+  computeBaseBricks,
+  computeBlockGeometry,
+  precomputeBlocks,
+  getIndexModule
+} from "../utils/blocks";
 import { drawBlock } from "../utils/blocks-canvas";
 
 export const handler = (params, mechanic) => {
@@ -14,15 +19,15 @@ export const handler = (params, mechanic) => {
   let colors = getColors("Random Flag");
   const blockGeometry = computeBlockGeometry(logoWidth, logoHeight, rows, cols);
   const baseBricks = computeBaseBricks(words, blockGeometry.fontSize);
-  const blocksByIndex = precomputeBlocks(blockGeometry, baseBricks, baseBricks.length);
+  const blocksByIndex = precomputeBlocks(blockGeometry, baseBricks);
 
   const blockConfigs = [];
   let position = { x: 0, y: 0 };
   let offset = 0;
-  let brickIndex = baseBricks.length - (offset % baseBricks.length);
+  let brickOffset = -offset;
 
   while (position.y < height) {
-    const block = blocksByIndex[brickIndex % baseBricks.length];
+    const block = blocksByIndex[getIndexModule(brickOffset, blocksByIndex.length)];
     const animation = {
       loops: Math.floor(Math.random() * 4 + 1),
       progress: 0
@@ -33,7 +38,7 @@ export const handler = (params, mechanic) => {
       position.x += block.width;
       colors = getColors("Random Flag");
       offset++;
-      brickIndex = baseBricks.length - (offset % baseBricks.length);
+      brickOffset = -offset;
     } else {
       position.x = position.x - width;
       position.y += block.height;
@@ -52,7 +57,6 @@ export const handler = (params, mechanic) => {
     ctx.restore();
   };
 
-  const direction = -1;
   let starttime;
 
   const animationHandler = t => {
@@ -68,8 +72,8 @@ export const handler = (params, mechanic) => {
       if (currentProgress > animation.progress) {
         animation.progress = currentProgress;
         changed = true;
-        const index = block.brickIndex + 1 * direction;
-        const brickIndex = ((index % baseBricks.length) + baseBricks.length) % baseBricks.length;
+        const index = block.brickIndex - 1;
+        const brickIndex = getIndexModule(index, blocksByIndex.length);
         const newBlock = blocksByIndex[brickIndex];
         blockConfigs.block = newBlock;
       }

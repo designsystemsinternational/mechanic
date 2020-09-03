@@ -13,9 +13,9 @@ export const handler = (params, mechanic) => {
   const colors = getColors(colorMode, flag, colorsString);
   const blockGeometry = computeBlockGeometry(width, height, rows, cols);
   const baseBricks = computeBaseBricks(words, blockGeometry.fontSize);
-  const brickIndex = baseBricks.length - (offset % baseBricks.length);
+  const brickOffset = -offset;
 
-  const block = computeBlock(blockGeometry, baseBricks, brickIndex);
+  const block = computeBlock(blockGeometry, baseBricks, brickOffset);
   const position = { x: 0, y: 0 };
 
   const canvas = document.createElement("canvas");

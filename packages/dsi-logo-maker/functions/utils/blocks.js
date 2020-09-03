@@ -20,9 +20,13 @@ export const computeBaseBricks = (words, fontSize) => {
   return bricks;
 };
 
-export const precomputeBlocks = (blockGeometry, baseBricks, lastIndex) => {
+export const getIndexModule = (index, module) => {
+  return ((index % module) + module) % module;
+};
+
+export const precomputeBlocks = (blockGeometry, baseBricks) => {
   const blocksByIndex = [];
-  for (let i = 0; i < Math.min(lastIndex, baseBricks.length); i++) {
+  for (let i = 0; i < baseBricks.length; i++) {
     blocksByIndex.push(computeBlock(blockGeometry, baseBricks, i));
   }
   return blocksByIndex;
@@ -39,23 +43,28 @@ export const computeBlockGeometry = (width, height, rows, cols) => {
   return geometry;
 };
 
-export const computeBlock = (blockGeometry, baseBricks, brickIndex) => {
-  const block = { ...blockGeometry, brickIndex, rows: [] };
+export const computeBlock = (blockGeometry, baseBricks, brickOffset) => {
+  const block = {
+    ...blockGeometry,
+    brickIndex: getIndexModule(brickOffset, baseBricks.length),
+    rows: []
+  };
 
   for (let rowIndex = 0; rowIndex < block.numberRows; rowIndex++) {
-    const rowBricks = computeRowBricks(baseBricks, brickIndex, block.cols);
+    const rowBricks = computeRowBricks(baseBricks, brickOffset, block.cols);
     const rowGeometry = computeRowGeometry(rowBricks, rowIndex, block);
     const row = computeRow(rowBricks, rowGeometry, block);
-    brickIndex += row.bricks.length;
+    brickOffset -= row.bricks.length;
     block.rows.push(row);
   }
   return block;
 };
 
-const computeRowBricks = (baseBricks, brickIndex, cols) => {
+const computeRowBricks = (baseBricks, brickOffset, cols) => {
   const rowBricks = [];
-  for (let i = brickIndex; i < brickIndex + cols; i++) {
-    rowBricks.push(baseBricks[i % baseBricks.length]);
+  for (let i = brickOffset; i < brickOffset + cols; i++) {
+    const index = getIndexModule(i, baseBricks.length);
+    rowBricks.push(baseBricks[index]);
   }
   return rowBricks;
 };

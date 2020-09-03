@@ -1,7 +1,12 @@
 import React, { useState, useEffect, useRef } from "react";
 import engine from "mechanic-engine-react";
 import { getColors, flagNames } from "../utils/graphics";
-import { computeBaseBricks, computeBlockGeometry, precomputeBlocks } from "../utils/blocks";
+import {
+  computeBaseBricks,
+  computeBlockGeometry,
+  precomputeBlocks,
+  getIndexModule
+} from "../utils/blocks";
 import { Block } from "../utils/blocks-components";
 import { useDrawLoop } from "../utils/drawLoopHook";
 
@@ -34,16 +39,16 @@ export const handler = ({
   const { colors, baseBricks, blocksByIndex } = blockParams;
 
   const totalOffset = offset + internalOffset;
-  const brickIndex = baseBricks ? baseBricks.length - (totalOffset % baseBricks.length) : 0;
+  const brickIndex = -totalOffset;
 
   const position = { x: 0, y: 0 };
-  const block = blocksByIndex[brickIndex % baseBricks.length];
+  const block = blocksByIndex[getIndexModule(brickIndex, blocksByIndex.length)];
 
   useEffect(() => {
     const colors = getColors(colorMode, flag, colorsString);
     const blockGeometry = computeBlockGeometry(width, height, rows, cols);
     const baseBricks = computeBaseBricks(words, blockGeometry.fontSize);
-    const blocksByIndex = precomputeBlocks(blockGeometry, baseBricks, baseBricks.length);
+    const blocksByIndex = precomputeBlocks(blockGeometry, baseBricks);
     setBlockParams({
       colors,
       baseBricks,
@@ -52,14 +57,13 @@ export const handler = ({
     isPlaying.current = true;
   }, []);
 
-  const direction = -1;
   useEffect(() => {
     if (isPlaying.current && runtime < duration) {
       frame();
       let currentProgress = Math.floor(2 * loops * cols * (runtime / duration));
       if (currentProgress > progress.current) {
         progress.current = currentProgress;
-        setInternalOffset(internalOffset => internalOffset + 1 * direction);
+        setInternalOffset(internalOffset => internalOffset + 1);
       }
     } else if (isPlaying.current) {
       isPlaying.current = false;
