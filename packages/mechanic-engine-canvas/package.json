@@ -2,9 +2,8 @@
   "name": "@designsystemsinternational/mechanic-engine-canvas",
   "version": "0.0.1",
   "main": "index.js",
-  "scripts": {
-  },
+  "scripts": {},
   "dependencies": {
-    "mechanic-utils": "../mechanic-utils"
+    "mechanic-utils": "file:../mechanic-utils"
   }
 }
