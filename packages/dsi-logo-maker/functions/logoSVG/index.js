@@ -45,7 +45,7 @@ export const params = {
   colorMode: {
     type: "string",
     choices: ["Random Flag", "Pick Flag", "Custom Colors"],
-    default: "randomFlag"
+    default: "Random Flag"
   },
   flag: {
     type: "string",
