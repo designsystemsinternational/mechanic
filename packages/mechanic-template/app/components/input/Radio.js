@@ -37,8 +37,6 @@ export const Radio = props => {
   );
 };
 
-export default Radio;
-
 Radio.propTypes = {
   name: PropTypes.string,
   value: PropTypes.string,

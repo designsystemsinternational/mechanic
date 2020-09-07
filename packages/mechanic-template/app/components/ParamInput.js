@@ -2,9 +2,9 @@ import React from "react";
 import PropTypes from "prop-types";
 import classnames from "classnames";
 import css from "./ParamInput.css";
-import Input from "./input/Input";
-import Select from "./input/Select";
-import Toggle from "./input/Toggle";
+import { Input } from "./input/Input";
+import { Select } from "./input/Select";
+import { Toggle } from "./input/Toggle";
 
 export const ParamInput = ({ name, className, value, options, onChange, children }) => {
   const { type, choices } = options;
@@ -56,8 +56,6 @@ export const ParamInput = ({ name, className, value, options, onChange, children
     </Input>
   );
 };
-
-export default ParamInput;
 
 ParamInput.defaultProps = {
   onChange: () => {}

@@ -2,13 +2,13 @@ import React, { useState, useRef, useEffect } from "react";
 import PropTypes from "prop-types";
 import classnames from "classnames";
 import Mousetrap from "mousetrap";
-import Select from "../components/input/Select";
-import Button from "../components/input/Button";
-import Toggle from "../components/input/Toggle";
-import ParamInput from "../components/ParamInput";
+import { Select } from "../components/input/Select";
+import { Button } from "../components/input/Button";
+import { Toggle } from "../components/input/Toggle";
+import { ParamInput } from "../components/ParamInput";
 import css from "./Function.css";
 
-const Function = ({ name, exports, children }) => {
+export const Function = ({ name, exports, children }) => {
   const [values, setValues] = useState({});
   const [fastPreview, setFastPreview] = useState(true);
 
@@ -149,5 +149,3 @@ Function.propTypes = {
     settings: PropTypes.object.isRequired
   })
 };
-
-export default Function;
