@@ -83,7 +83,7 @@ const prepareValues = (params, settings, values) => {
   });
 
   // Scale down to fit
-  if (values.scaleToFit) {
+  if (values.scaleToFit && vals.width && vals.height) {
     const ratioWidth = values.scaleToFit.width ? values.scaleToFit.width / vals.width : 1;
     const ratioHeight = values.scaleToFit.height ? values.scaleToFit.height / vals.height : 1;
     if (ratioWidth < 1 || ratioHeight < 1) {
