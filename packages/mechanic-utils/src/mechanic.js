@@ -1,5 +1,5 @@
 import { download } from "./download";
-import WebMWriter from "./webm-writer";
+import { WebMWriter } from "./webm-writer";
 import { svgToDataUrl, dataUrlToCanvas, getTimeStamp } from "./mechanic-utils";
 import * as validation from "./mechanic-validation";
 import { MechanicError } from "./mechanic-error";
