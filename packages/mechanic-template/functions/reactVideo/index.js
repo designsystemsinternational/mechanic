@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useRef } from "react";
-import engine from "mechanic-engine-react";
 
 export const handler = ({ width, height, frame, done, background, fill }) => {
   const isPlaying = useRef(true);
@@ -48,7 +47,7 @@ export const params = {
 };
 
 export const settings = {
-  engine,
+  engine: require("mechanic-engine-react").run,
   animated: true
 };
 

@@ -1,5 +1,3 @@
-import engine from "mechanic-engine-canvas";
-
 export const handler = (params, mechanic) => {
   const { width, height, background, color1, color2, numberOfSquares } = params;
   const colors = [color1, color2];
@@ -49,6 +47,6 @@ export const params = {
 };
 
 export const settings = {
-  engine,
+  engine: require("mechanic-engine-canvas").run,
   usesRandom: true
 };
