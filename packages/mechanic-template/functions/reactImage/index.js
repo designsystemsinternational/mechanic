@@ -33,11 +33,13 @@ export const handler = ({ width, height, done, background, fill, hasInnerHole })
 // We will probably do this with a webpack loader
 // We also need a nicer API to create this file
 export const params = {
-  size: {
-    default: {
-      width: 600,
-      height: 600
-    }
+  width: {
+    type: "integer",
+    default: 600
+  },
+  height: {
+    type: "integer",
+    default: 600
   },
   background: {
     type: "string",

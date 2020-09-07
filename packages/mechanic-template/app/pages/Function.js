@@ -9,26 +9,38 @@ import { ParamInput } from "../components/ParamInput";
 import css from "./Function.css";
 
 export const Function = ({ name, exports, children }) => {
-  const [values, setValues] = useState({});
-  const [fastPreview, setFastPreview] = useState(true);
+  const [values, setValues] = useState({ preset: "default" });
+  const [scaleToFit, setScaleToFit] = useState(true);
 
   const mainRef = useRef();
   const randomSeed = useRef();
   const iframe = useRef();
 
-  const { params } = exports;
-  const { size, ...optional } = params;
-  const sizes = size !== undefined ? Object.keys(size) : [];
+  const { params, presets: otherPresets } = exports;
+  const presets = ["default"].concat(Object.keys(otherPresets ? otherPresets : {}));
 
   const handleOnChange = (e, name, value) => {
-    setValues(values => Object.assign({}, values, { [name]: value }));
+    const sources = [{ [name]: value }];
+    if (name === "preset") {
+      if (value === "default") {
+        sources.push(
+          Object.entries(params).reduce((source, param) => {
+            source[param[0]] = param[1].default;
+            return source;
+          }, {})
+        );
+      } else {
+        sources.push(otherPresets[value]);
+      }
+    }
+    setValues(values => Object.assign({}, values, ...sources));
   };
 
   const handlePreview = async () => {
     const vals = Object.assign({}, values);
-    if (fastPreview) {
+    if (scaleToFit) {
       const bounds = mainRef.current.getBoundingClientRect();
-      vals.scaleDownToFit = {
+      vals.scaleToFit = {
         width: bounds.width - 100,
         height: bounds.height - 100
       };
@@ -71,27 +83,25 @@ export const Function = ({ name, exports, children }) => {
         <div className={css.line} />
         <div className={css.paramsWrapper}>
           <div className={css.params}>
-            {size && (
-              <div className={css.param}>
-                <div className={classnames(css.row, css.strong)}>
-                  <span className={classnames(css.grow, css.paramlabel)}>size</span>
-                </div>
-                <div className={css.row}>
-                  <Select
-                    className={css.grow}
-                    onChange={handleOnChange}
-                    name="size"
-                    value={values.size || "default"}>
-                    {sizes.map(size => (
-                      <option key={`size-${size}`} value={size}>
-                        {size} ({params.size[size].width}x{params.size[size].height})
-                      </option>
-                    ))}
-                  </Select>
-                </div>
+            <div className={css.param}>
+              <div className={classnames(css.row, css.strong)}>
+                <span className={classnames(css.grow, css.paramlabel)}>preset</span>
               </div>
-            )}
-            {Object.entries(optional).map(([name, param]) => (
+              <div className={css.row}>
+                <Select
+                  className={css.grow}
+                  onChange={handleOnChange}
+                  name="preset"
+                  value={values.preset}>
+                  {presets.map(preset => (
+                    <option key={`preset-${preset}`} value={preset}>
+                      {preset}
+                    </option>
+                  ))}
+                </Select>
+              </div>
+            </div>
+            {Object.entries(params).map(([name, param]) => (
               <div key={`param-${name}`} className={css.param}>
                 <div className={classnames(css.row, css.strong)}>
                   <span className={classnames(css.grow, css.paramlabel)}>{name}</span>
@@ -115,9 +125,9 @@ export const Function = ({ name, exports, children }) => {
           <div className={classnames(css.row, css.strong)}>
             <Toggle
               className={css.grow}
-              status={fastPreview}
-              onClick={() => setFastPreview(fastPreview => !fastPreview)}>
-              {fastPreview ? "Fast Preview On" : "Fast Preview Off"}
+              status={scaleToFit}
+              onClick={() => setScaleToFit(scaleToFit => !scaleToFit)}>
+              {scaleToFit ? "Scale to fit On" : "Scale to fit Off"}
             </Toggle>
           </div>
           <div className={css.sep} />
