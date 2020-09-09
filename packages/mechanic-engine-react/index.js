@@ -1,16 +1,6 @@
 import _extends from "@babel/runtime/helpers/extends";
 import _regeneratorRuntime from "@babel/runtime/regenerator";
 import _asyncToGenerator from "@babel/runtime/helpers/asyncToGenerator";
-
-(function () {
-  var enterModule = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.enterModule : undefined;
-  enterModule && enterModule(module);
-})();
-
-var __signature__ = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.default.signature : function (a) {
-  return a;
-};
-
 import React from "react";
 import { render, unmountComponentAtNode } from "react-dom";
 import { Mechanic } from "mechanic-utils";
@@ -61,22 +51,3 @@ export var run = function run(functionName, func, values, isPreview) {
     done: onDone
   })), root);
 };
-;
-
-(function () {
-  var reactHotLoader = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.default : undefined;
-
-  if (!reactHotLoader) {
-    return;
-  }
-
-  reactHotLoader.register(root, "root", "/Users/fdoflorenzano/Projects/DSI/mechanic/packages/mechanic-engine-react/src/index.js");
-  reactHotLoader.register(run, "run", "/Users/fdoflorenzano/Projects/DSI/mechanic/packages/mechanic-engine-react/src/index.js");
-})();
-
-;
-
-(function () {
-  var leaveModule = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.leaveModule : undefined;
-  leaveModule && leaveModule(module);
-})();
