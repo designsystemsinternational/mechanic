@@ -130,7 +130,11 @@ export const Function = ({ name, exports, children }) => {
               status={canScale && scaleToFit}
               disabled={!canScale}
               onClick={() => setScaleToFit(scaleToFit => !scaleToFit)}>
-              Scale to fit {canScale && scaleToFit ? "On" : "Off"}
+              {canScale
+                ? scaleToFit
+                  ? "Scale to fit On"
+                  : "Scale to fit Off"
+                : "Params missing for scaling"}
             </Toggle>
           </div>
           <div className={css.sep} />
