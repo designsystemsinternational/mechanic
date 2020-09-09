@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 
-export const handler = ({ width, height, done, background, fill, hasInnerHole }) => {
+export const handler = ({ width, done, background, fill, hasInnerHole }) => {
+  const height = width;
   useEffect(() => {
     done();
   }, []);
@@ -34,10 +35,6 @@ export const handler = ({ width, height, done, background, fill, hasInnerHole })
 // We also need a nicer API to create this file
 export const params = {
   width: {
-    type: "integer",
-    default: 600
-  },
-  height: {
     type: "integer",
     default: 600
   },

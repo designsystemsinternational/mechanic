@@ -36,9 +36,11 @@ export const Function = ({ name, exports, children }) => {
     setValues(values => Object.assign({}, values, ...sources));
   };
 
+  const canScale = params.width && params.height;
+
   const handlePreview = async () => {
     const vals = Object.assign({}, values);
-    if (scaleToFit) {
+    if (canScale && scaleToFit) {
       const bounds = mainRef.current.getBoundingClientRect();
       vals.scaleToFit = {
         width: bounds.width - 100,
@@ -125,9 +127,10 @@ export const Function = ({ name, exports, children }) => {
           <div className={classnames(css.row, css.strong)}>
             <Toggle
               className={css.grow}
-              status={scaleToFit}
+              status={canScale && scaleToFit}
+              disabled={!canScale}
               onClick={() => setScaleToFit(scaleToFit => !scaleToFit)}>
-              {scaleToFit ? "Scale to fit On" : "Scale to fit Off"}
+              Scale to fit {canScale && scaleToFit ? "On" : "Off"}
             </Toggle>
           </div>
           <div className={css.sep} />

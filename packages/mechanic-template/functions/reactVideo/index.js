@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useRef } from "react";
 
-export const handler = ({ width, height, frame, done, background, fill }) => {
+export const handler = ({ height, frame, done, background, fill }) => {
+  const width = height;
+
   const isPlaying = useRef(true);
   const frameCount = useDrawLoop(isPlaying.current);
 
@@ -28,10 +30,6 @@ export const handler = ({ width, height, frame, done, background, fill }) => {
 // We will probably do this with a webpack loader
 // We also need a nicer API to create this file
 export const params = {
-  width: {
-    type: "integer",
-    default: 600
-  },
   height: {
     type: "integer",
     default: 600
