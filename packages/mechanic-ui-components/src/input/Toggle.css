@@ -1,0 +1,38 @@
+@import "../variables.css";
+
+.root {
+  font-family: inherit;
+  font-size: inherit;
+  line-height: 1em;
+  font-weight: inherit;
+  position: relative;
+  display: block;
+  -webkit-appearance: none;
+  min-width: 120px;
+  padding: 0.5em 1em;
+  margin: 0;
+  background-color: white;
+  border: 1px solid var(--text);
+  &:not([disabled]) {
+    cursor: pointer;
+  }
+  &:active:not([disabled]) {
+    background-color: var(--blue);
+    color: white;
+  }
+}
+
+.status {
+  display: inline-block;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  left: 10px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--red);
+  &.on {
+    background: var(--green);
+  }
+}
