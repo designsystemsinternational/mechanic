@@ -15,7 +15,7 @@ module.exports = async (env, argv) => {
   const js = {
     test: /\.(jsx?)$/,
     use: ["babel-loader"],
-    exclude: /.+\/node_modules\/.+/,
+    exclude: /.+\/node_modules\/.+/
   };
 
   const css = {
@@ -25,19 +25,19 @@ module.exports = async (env, argv) => {
         loader: "css-loader",
         options: {
           modules: {
-            localIdentName: "[name]__[local]",
+            localIdentName: "[name]__[local]"
           },
           localsConvention: "camelCase",
-          importLoaders: 1,
-        },
+          importLoaders: 1
+        }
       },
       {
         loader: "postcss-loader",
         options: {
-          sourceMap: true,
-        },
-      },
-    ]),
+          sourceMap: true
+        }
+      }
+    ])
   };
 
   const optimization = isProduction
@@ -45,29 +45,29 @@ module.exports = async (env, argv) => {
         minimizer: [
           new TerserPlugin({
             parallel: true,
-            sourceMap: true,
+            sourceMap: true
           }),
-          new OptimizeCSSAssetsPlugin({}),
-        ],
+          new OptimizeCSSAssetsPlugin({})
+        ]
       }
     : {};
 
   const plugins = [
     new webpack.EnvironmentPlugin({
-      "process.env.NODE_ENV": mode,
+      "process.env.NODE_ENV": mode
     }),
     new HtmlWebPackPlugin({
       template: "./app/index.html",
       filename: "index.html",
-      chunks: ["app"],
-    }),
+      chunks: ["app"]
+    })
   ].concat(
     isProduction
       ? [
           new CleanWebpackPlugin(),
           new MiniCssExtractPlugin({
-            filename: "[contenthash]-[name].css",
-          }),
+            filename: "[name].css"
+          })
         ]
       : [new webpack.HotModuleReplacementPlugin()]
   );
@@ -77,7 +77,7 @@ module.exports = async (env, argv) => {
     host: "0.0.0.0",
     disableHostCheck: true,
     historyApiFallback: true,
-    hot: !isProduction,
+    hot: !isProduction
   };
 
   if (!isProduction) {
@@ -92,33 +92,48 @@ Copied "${url}" to clipboard.
 `);
   }
 
+  let externals = {};
+  if (isProduction) {
+    // Don't bundle react or react-dom
+    (externals.react = {
+      commonjs: "react",
+      commonjs2: "react",
+      amd: "React",
+      root: "React"
+    }),
+      (externals["react-dom"] = {
+        commonjs: "react-dom",
+        commonjs2: "react-dom",
+        amd: "ReactDOM",
+        root: "ReactDOM"
+      });
+  }
+
   return {
     mode,
     devtool: isProduction ? "source-map" : "eval-source-map",
     entry: {
-      components: "./src/index.js",
-      app: "./app/index.js",
+      mechanic: "./src/index.js",
+      app: "./app/index.js"
     },
     output: {
       path: path.join(__dirname, "dist"),
       libraryTarget: "umd",
       publicPath: "/",
-      filename: isProduction ? "[contenthash]-[name].js" : "[hash]-[name].js",
-      chunkFilename: isProduction
-        ? "[contenthash]-[name].[id].chunk.js"
-        : "[hash]-[name].[id].chunk.js",
+      filename: "[name].js"
     },
     resolve: {
       extensions: [".js", ".jsx", ".json"],
       alias: {
-        react: path.resolve("./node_modules/react"),
-      },
+        react: path.resolve("./node_modules/react")
+      }
     },
+    externals,
     module: {
-      rules: [js, css],
+      rules: [js, css]
     },
     optimization,
     plugins,
-    devServer,
+    devServer
   };
 };

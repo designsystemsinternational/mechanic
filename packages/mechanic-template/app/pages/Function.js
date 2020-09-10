@@ -2,10 +2,10 @@ import React, { useState, useRef, useEffect } from "react";
 import PropTypes from "prop-types";
 import classnames from "classnames";
 import Mousetrap from "mousetrap";
-import { Select } from "../components/input/Select";
-import { Button } from "../components/input/Button";
-import { Toggle } from "../components/input/Toggle";
-import { ParamInput } from "../components/ParamInput";
+
+import { Button, Select, Toggle, ParamInput } from "mechanic-ui-components";
+import "mechanic-ui-components/dist/mechanic.css";
+
 import css from "./Function.css";
 
 export const Function = ({ name, exports, children }) => {

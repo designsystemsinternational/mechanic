@@ -48,6 +48,7 @@
     "p5": "^1.1.9",
     "seedrandom": "^3.0.5",
     "mechanic-utils": "../mechanic-utils",
+    "mechanic-ui-components": "../mechanic-ui-components",
     "mechanic-engine-canvas": "../mechanic-engine-canvas",
     "mechanic-engine-p5": "../mechanic-engine-p5",
     "mechanic-engine-react": "../mechanic-engine-react"
