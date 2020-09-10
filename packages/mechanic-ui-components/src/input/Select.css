@@ -1,5 +1,6 @@
 .root {
   display: inline-block;
+  box-sizing: border-box;
 }
 
 /* Followed steps in this article to make cross-platform compatible: https://www.filamentgroup.com/lab/select-css.html */
@@ -7,6 +8,7 @@
   font-family: inherit;
   font-size: inherit;
   font-weight: inherit;
+  box-sizing: border-box;
   width: 100%;
   padding: 0.5em 1.7em 0.5em 1em;
   border: 1px solid var(--text);

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { render } from "react-dom";
-import { ParamInput } from "../src";
+import { ParamInput, Button, Checkbox, Input, Radio, Select, Toggle } from "../src";
 
 const root = document.getElementById("root");
 
@@ -64,6 +64,20 @@ const App = () => {
       />
 
       <h3>Base inputs:</h3>
+
+      <p>Button</p>
+      <Button>I'm a button</Button>
+      <p>Select</p>
+      <Select>
+        <option>Option 1</option>
+        <option>Option 2</option>
+        <option>Option 3</option>
+      </Select>
+      <p>Toggle</p>
+      <Toggle status={true}>On</Toggle>
+      <Toggle status={false}>Off</Toggle>
+      <p>Input</p>
+      <Input type="text"></Input>
     </div>
   );
 };

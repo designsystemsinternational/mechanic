@@ -1,9 +1,10 @@
 .root {
+  box-sizing: border-box;
   & > input {
     font-family: inherit;
     font-size: inherit;
     font-weight: inherit;
-    width: 100%;
+    box-sizing: border-box;
     padding: 0.5em 1em;
     background-color: white;
     border: 1px solid var(--text);
