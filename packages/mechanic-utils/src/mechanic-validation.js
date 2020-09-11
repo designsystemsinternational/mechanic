@@ -2,7 +2,7 @@ import seedrandom from "seedrandom";
 
 const isObject = obj => obj && typeof obj === "object";
 const hasKey = (obj, key) => obj.hasOwnProperty(key);
-const supportedTypes = ["string", "integer", "boolean"];
+const supportedTypes = ["string", "number", "boolean"];
 
 /**
  * Receives the parameter template and checks that it is valid
@@ -71,14 +71,23 @@ const prepareValues = (params, settings, values) => {
   }
 
   // Params
-  Object.keys(params).forEach(key => {
-    if (key != "size") {
-      let val = values[key] === undefined ? params[key].default : values[key];
-      if (params[key].type == "integer") {
-        vals[key] = parseInt(val);
+  Object.entries(params).forEach(([name, param]) => {
+    if (!param.options) {
+      const val = values[name] === undefined ? param.default : values[name];
+      if (param.type === "number") {
+        vals[name] = parseFloat(val);
       } else {
-        vals[key] = val;
+        vals[name] = val;
       }
+    } else {
+      let val = values[name] || param.default.toString();
+      if (Array.isArray(param.options)) {
+        const index = param.options.map(o => o.toString()).indexOf(val);
+        val = param.options[index];
+      } else {
+        val = param.options[val];
+      }
+      vals[name] = val;
     }
   });
 
@@ -92,7 +101,6 @@ const prepareValues = (params, settings, values) => {
       vals.height = Math.floor(vals.height * ratio);
     }
   }
-
   return vals;
 };
 

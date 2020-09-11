@@ -31,18 +31,18 @@ export const handler = ({ height, frame, done, background, fill }) => {
 // We also need a nicer API to create this file
 export const params = {
   height: {
-    type: "integer",
+    type: "number",
     default: 600
   },
   background: {
     type: "string",
     default: "red",
-    choices: ["red", "orange", "yellow"]
+    options: ["red", "orange", "yellow"]
   },
   fill: {
     type: "string",
     default: "cyan",
-    choices: ["cyan", "blue", "green"]
+    options: ["cyan", "blue", "green"]
   }
 };
 

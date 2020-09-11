@@ -28,11 +28,11 @@ export const handler = async (sketch, params, mechanic) => {
 // We also need a nicer API to create this file
 export const params = {
   width: {
-    type: "integer",
+    type: "number",
     default: 400
   },
   height: {
-    type: "integer",
+    type: "number",
     default: 300
   },
   primaryColor: {
@@ -44,7 +44,7 @@ export const params = {
     default: "#00FFFF"
   },
   maxFrames: {
-    type: "integer",
+    type: "number",
     default: 100
   }
 };

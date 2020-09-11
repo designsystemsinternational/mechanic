@@ -29,11 +29,11 @@ export const handler = async (params, mechanic) => {
 // We also need a nicer API to create this file
 export const params = {
   width: {
-    type: "integer",
+    type: "number",
     default: 400
   },
   height: {
-    type: "integer",
+    type: "number",
     default: 300
   }
 };

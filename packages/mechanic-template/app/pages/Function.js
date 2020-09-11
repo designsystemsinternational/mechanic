@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import classnames from "classnames";
 import Mousetrap from "mousetrap";
 
-import { Button, Select, Toggle, ParamInput } from "mechanic-ui-components";
+import { Button, Toggle, ParamInput } from "mechanic-ui-components";
 import "mechanic-ui-components/dist/mechanic.css";
 
 import css from "./Function.css";
@@ -85,39 +85,23 @@ export const Function = ({ name, exports, children }) => {
         <div className={css.line} />
         <div className={css.paramsWrapper}>
           <div className={css.params}>
-            <div className={css.param}>
-              <div className={classnames(css.row, css.strong)}>
-                <span className={classnames(css.grow, css.paramlabel)}>preset</span>
-              </div>
-              <div className={css.row}>
-                <Select
-                  className={css.grow}
-                  onChange={handleOnChange}
-                  name="preset"
-                  value={values.preset}>
-                  {presets.map(preset => (
-                    <option key={`preset-${preset}`} value={preset}>
-                      {preset}
-                    </option>
-                  ))}
-                </Select>
-              </div>
-            </div>
+            <ParamInput
+              className={css.param}
+              key="param-preset"
+              name="preset"
+              value={values.preset}
+              attributes={{ type: "string", options: presets, default: presets[0] }}
+              onChange={handleOnChange}
+            />
             {Object.entries(params).map(([name, param]) => (
-              <div key={`param-${name}`} className={css.param}>
-                <div className={classnames(css.row, css.strong)}>
-                  <span className={classnames(css.grow, css.paramlabel)}>{name}</span>
-                </div>
-                <div className={css.row}>
-                  <ParamInput
-                    className={css.grow}
-                    name={name}
-                    value={values[name]}
-                    options={param}
-                    onChange={handleOnChange}
-                  />
-                </div>
-              </div>
+              <ParamInput
+                className={css.param}
+                key={`param-${name}`}
+                name={name}
+                value={values[name]}
+                attributes={param}
+                onChange={handleOnChange}
+              />
             ))}
           </div>
         </div>

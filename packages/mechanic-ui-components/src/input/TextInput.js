@@ -2,12 +2,11 @@ import React, { useRef, useState } from "react";
 import PropTypes from "prop-types";
 import classnames from "classnames";
 import { uid } from "../utils";
-import css from "./Input.css";
+import css from "./TextInput.css";
 
-export const Input = props => {
+export const TextInput = props => {
   const _id = useRef(uid("input"));
   const {
-    type,
     name,
     value,
     label,
@@ -43,7 +42,7 @@ export const Input = props => {
         autoComplete={autocomplete}
         id={id}
         name={name}
-        type={type}
+        type="text"
         value={value}
         placeholder={placeholder}
         disabled={disabled}
@@ -66,16 +65,14 @@ export const Input = props => {
   );
 };
 
-Input.defaultProps = {
-  type: "text",
+TextInput.defaultProps = {
   onChange: () => {},
   onKeyPress: () => {}
 };
 
-Input.propTypes = {
+TextInput.propTypes = {
   name: PropTypes.string,
   value: PropTypes.string,
-  type: PropTypes.string,
   label: PropTypes.string,
   className: PropTypes.string,
   autocomplete: PropTypes.string,

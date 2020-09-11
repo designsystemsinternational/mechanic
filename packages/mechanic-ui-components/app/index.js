@@ -1,12 +1,13 @@
 import React, { useState } from "react";
 import { render } from "react-dom";
-import { ParamInput, Button, Checkbox, Input, Radio, Select, Toggle } from "../src";
+import { ParamInput, Button, Checkbox, TextInput, Radio, Select, Toggle } from "../src";
 
 const root = document.getElementById("root");
 
 const App = () => {
   const [vals, setVals] = useState({
-    width: 300,
+    width: 400,
+    height: 400,
     content: "Hello world",
     choice: "Option 1",
     toggle: true
@@ -17,33 +18,44 @@ const App = () => {
   return (
     <div style={{ width: "300px" }}>
       <h3>ParamInput:</h3>
-      <p>Integer</p>
       <ParamInput
-        name={"width"}
-        value={vals.width}
-        options={{
-          type: "integer",
-          default: 300
+        name={"height"}
+        value={vals.height}
+        attributes={{
+          type: "number",
+          default: 400
         }}
         onChange={handleChange}
       />
       <br />
-      <p>String</p>
+      <ParamInput
+        name={"width"}
+        value={vals.width}
+        attributes={{
+          type: "number",
+          default: 400,
+          min: 400,
+          max: 500,
+          step: 10,
+          slider: true
+        }}
+        onChange={handleChange}
+      />
+      <br />
       <ParamInput
         name={"content"}
         value={vals.content}
-        options={{
+        attributes={{
           type: "string",
           default: "Hi"
         }}
         onChange={handleChange}
       />
       <br />
-      <p>Choice</p>
       <ParamInput
         name={"choice"}
         value={vals.choice}
-        options={{
+        attributes={{
           type: "string",
           default: "Option 1",
           choices: ["Option 1", "Option 2", "Option 3"]
@@ -51,12 +63,10 @@ const App = () => {
         onChange={handleChange}
       />
       <br />
-      <br />
-      <p>Boolean</p>
       <ParamInput
         name={"toggle"}
         value={vals.toggle}
-        options={{
+        attributes={{
           type: "boolean",
           default: true
         }}
@@ -65,19 +75,17 @@ const App = () => {
 
       <h3>Base inputs:</h3>
 
-      <p>Button</p>
+      <span>Button</span>
       <Button>I'm a button</Button>
-      <p>Select</p>
-      <Select>
+      <Select label="Select input: ">
         <option>Option 1</option>
         <option>Option 2</option>
         <option>Option 3</option>
       </Select>
-      <p>Toggle</p>
+      <span>Toggle</span>
       <Toggle status={true}>On</Toggle>
       <Toggle status={false}>Off</Toggle>
-      <p>Input</p>
-      <Input type="text"></Input>
+      <TextInput label="Text input: "></TextInput>
     </div>
   );
 };

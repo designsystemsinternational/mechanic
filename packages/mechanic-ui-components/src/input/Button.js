@@ -9,7 +9,7 @@ export const Button = ({ className, variant, onClick, children, disabled }) => {
     [css[variant]]: css[variant]
   });
   return (
-    <button className={classes} onClick={onClick} disabled={disabled}>
+    <button className={classes} type="button" onClick={onClick} disabled={disabled}>
       {children}
     </button>
   );

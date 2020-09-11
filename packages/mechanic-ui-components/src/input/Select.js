@@ -37,35 +37,29 @@ export const Select = props => {
   });
 
   return (
-    <Fragment>
-      <div className={rootClasses}>
-        {label && (
-          <label htmlFor={id}>
-            <span>{label}:</span>
-          </label>
-        )}
-        <select
-          id={id}
-          disabled={disabled}
-          onChange={handleOnChange.current}
-          onFocus={() => setFocus(true)}
-          onBlur={() => setFocus(false)}
-          name={name}
-          placeholder={placeholder}
-          value={value}
-          aria-required={required}
-          aria-describedby={`error-${id}`}
-          aria-invalid={invalid}>
-          <option disabled>{placeholder}</option>
-          {children}
-        </select>
-      </div>
+    <div className={rootClasses}>
+      {label && <label htmlFor={id}>{label}</label>}
+      <select
+        id={id}
+        disabled={disabled}
+        onChange={handleOnChange.current}
+        onFocus={() => setFocus(true)}
+        onBlur={() => setFocus(false)}
+        name={name}
+        placeholder={placeholder}
+        value={value}
+        aria-required={required}
+        aria-describedby={`error-${id}`}
+        aria-invalid={invalid}>
+        <option disabled>{placeholder}</option>
+        {children}
+      </select>
       {invalid && error && (
         <div className={css.error} id={`error-${id}`} aria-live="polite">
           {error}
         </div>
       )}
-    </Fragment>
+    </div>
   );
 };
 

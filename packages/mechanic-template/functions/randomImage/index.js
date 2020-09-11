@@ -21,11 +21,11 @@ export const handler = (params, mechanic) => {
 // We also need a nicer API to create this file
 export const params = {
   width: {
-    type: "integer",
+    type: "number",
     default: 1600
   },
   height: {
-    type: "integer",
+    type: "number",
     default: 1600
   },
   background: {
@@ -35,15 +35,15 @@ export const params = {
   color1: {
     type: "string",
     default: "#FF00FF",
-    choices: ["#FF00FF", "#0000FF", "#FF0000"]
+    options: ["#FF00FF", "#0000FF", "#FF0000"]
   },
   color2: {
     type: "string",
     default: "#0000FF",
-    choices: ["#FF00FF", "#0000FF", "#FF0000"]
+    options: ["#FF00FF", "#0000FF", "#FF0000"]
   },
   numberOfSquares: {
-    type: "integer",
+    type: "number",
     default: 2
   }
 };
