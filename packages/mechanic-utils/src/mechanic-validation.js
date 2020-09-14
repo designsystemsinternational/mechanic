@@ -2,7 +2,7 @@ import seedrandom from "seedrandom";
 
 const isObject = obj => obj && typeof obj === "object";
 const hasKey = (obj, key) => obj.hasOwnProperty(key);
-const supportedTypes = ["string", "number", "boolean"];
+const supportedTypes = ["string", "number", "boolean", "color"];
 
 /**
  * Receives the parameter template and checks that it is valid

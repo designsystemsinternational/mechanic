@@ -6,6 +6,7 @@ import { TextInput } from "./input/TextInput";
 import { NumberInput } from "./input/NumberInput";
 import { Select } from "./input/Select";
 import { Toggle } from "./input/Toggle";
+import { ColorPicker } from "./input/ColorPicker";
 import { uid } from "./utils";
 
 export const ParamInput = ({ name, className, value, attributes, onChange, children }) => {
@@ -45,6 +46,15 @@ export const ParamInput = ({ name, className, value, attributes, onChange, child
           {v ? "true" : "false"}
           {children}
         </Toggle>
+      </div>
+    );
+  }
+
+  if (type === "color") {
+    return (
+      <div className={rootClasses}>
+        <label htmlFor={_id}>{name}</label>
+        <ColorPicker name={name} value={value || _default} onChange={onChange} />
       </div>
     );
   }

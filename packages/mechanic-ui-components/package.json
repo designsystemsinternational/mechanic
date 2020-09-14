@@ -49,6 +49,7 @@
     "webpack-dev-server": "^3.11.0"
   },
   "dependencies": {
-    "mechanic-utils": "../mechanic-utils"
+    "mechanic-utils": "../mechanic-utils",
+    "react-color": "^2.18.1"
   }
 }

@@ -35,12 +35,12 @@ export const params = {
     default: 600
   },
   background: {
-    type: "string",
+    type: "color",
     default: "red",
     options: ["red", "orange", "yellow"]
   },
   fill: {
-    type: "string",
+    type: "color",
     default: "cyan",
     options: ["cyan", "blue", "green"]
   }

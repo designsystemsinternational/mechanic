@@ -29,16 +29,16 @@ export const params = {
     default: 1600
   },
   background: {
-    type: "string",
+    type: "color",
     default: "#333333"
   },
   color1: {
-    type: "string",
+    type: "color",
     default: "#FF00FF",
     options: ["#FF00FF", "#0000FF", "#FF0000"]
   },
   color2: {
-    type: "string",
+    type: "color",
     default: "#0000FF",
     options: ["#FF00FF", "#0000FF", "#FF0000"]
   },

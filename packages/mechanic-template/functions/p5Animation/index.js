@@ -36,11 +36,11 @@ export const params = {
     default: 300
   },
   primaryColor: {
-    type: "string",
+    type: "color",
     default: "#FF0000"
   },
   secondaryColor: {
-    type: "string",
+    type: "color",
     default: "#00FFFF"
   },
   maxFrames: {

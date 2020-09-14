@@ -10,7 +10,8 @@ const App = () => {
     height: 400,
     content: "Hello world",
     choice: "Option 1",
-    toggle: true
+    toggle: true,
+    color: "#fe5412"
   });
   const handleChange = (e, name, value) => {
     setVals(vals => Object.assign({}, vals, { [name]: value }));
@@ -48,6 +49,16 @@ const App = () => {
         attributes={{
           type: "string",
           default: "Hi"
+        }}
+        onChange={handleChange}
+      />
+      <br />
+      <ParamInput
+        name={"color"}
+        value={vals.color}
+        attributes={{
+          type: "color",
+          default: "#fe5412"
         }}
         onChange={handleChange}
       />
