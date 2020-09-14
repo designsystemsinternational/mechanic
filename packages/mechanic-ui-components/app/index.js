@@ -11,7 +11,7 @@ const App = () => {
     content: "Hello world",
     choice: "Option 1",
     toggle: true,
-    color: "#fe5412"
+    color: "rgba(200, 120, 34, 1)"
   });
   const handleChange = (e, name, value) => {
     setVals(vals => Object.assign({}, vals, { [name]: value }));
@@ -58,7 +58,8 @@ const App = () => {
         value={vals.color}
         attributes={{
           type: "color",
-          default: "#fe5412"
+          model: "hex",
+          default: "rgba(200,120,34,1)"
         }}
         onChange={handleChange}
       />

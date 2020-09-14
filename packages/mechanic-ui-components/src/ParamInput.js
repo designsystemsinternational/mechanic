@@ -51,10 +51,11 @@ export const ParamInput = ({ name, className, value, attributes, onChange, child
   }
 
   if (type === "color") {
+    const { model } = attributes;
     return (
       <div className={rootClasses}>
         <label htmlFor={_id}>{name}</label>
-        <ColorPicker name={name} value={value || _default} onChange={onChange} />
+        <ColorPicker name={name} value={value || _default} model={model} onChange={onChange} />
       </div>
     );
   }

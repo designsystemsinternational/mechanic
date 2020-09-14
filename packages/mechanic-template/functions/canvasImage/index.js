@@ -43,6 +43,7 @@ export const params = {
   },
   primaryColor: {
     type: "color",
+    model: "hex",
     default: "#FF0000"
   },
   secondaryColor: {
