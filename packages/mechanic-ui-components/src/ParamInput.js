@@ -18,16 +18,16 @@ export const ParamInput = ({ name, className, value, attributes, onChange, child
   });
 
   if (options) {
-    const arrayOfOptions = Array.isArray(options)
-      ? options.map(option => option.toString())
-      : Object.keys(options);
+    const arrayOfOptions = Array.isArray(options) ? options : Object.keys(options);
     return (
       <Select
         className={rootClasses}
-        onChange={onChange}
+        onChange={e =>
+          onChange(e, name, type === "number" ? parseFloat(e.target.value) : e.target.value)
+        }
         name={name}
         label={name}
-        value={value || _default.toString()}>
+        value={value || _default}>
         {arrayOfOptions.map(value => (
           <option key={`$param-${name}-${value}`} value={value}>
             {value}

@@ -31,7 +31,6 @@ export const ColorPicker = ({ name, model, value, className, variant, onChange, 
   const handleClick = () => setPicking(picking => !picking);
 
   const handleChange = color => {
-    console.log(color, colorToLabel(color, model));
     onChange({}, name, colorToLabel(color, model));
   };
 

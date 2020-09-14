@@ -10,8 +10,6 @@ export const handler = (params, mechanic) => {
     margin
   } = params;
 
-  console.log(params);
-
   const canvas = document.createElement("canvas");
   canvas.width = width;
   canvas.height = height;

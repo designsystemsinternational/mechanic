@@ -61,7 +61,6 @@ const validateSettings = settings => {
  */
 const prepareValues = (params, settings, values) => {
   const vals = Object.assign({}, values);
-  console.log(values);
 
   // Random seed
   if (settings.usesRandom) {
@@ -81,18 +80,17 @@ const prepareValues = (params, settings, values) => {
         vals[name] = val;
       }
     } else {
-      let val = values[name] || param.default.toString();
+      let val = values[name] || param.default;
       if (Array.isArray(param.options)) {
-        const index = param.options.map(o => o.toString()).indexOf(val);
+        const index = param.options.indexOf(val);
         val = param.options[index];
-        console.log(index, val);
       } else {
         val = param.options[val];
       }
       vals[name] = val;
     }
   });
-  console.log(vals);
+
   // Scale down to fit
   if (values.scaleToFit && vals.width && vals.height) {
     const ratioWidth = values.scaleToFit.width ? values.scaleToFit.width / vals.width : 1;

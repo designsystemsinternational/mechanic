@@ -44,7 +44,6 @@ export const Function = ({ name, exports, children }) => {
         sources.push(otherPresets[value]);
       }
     }
-    console.log(sources);
     setValues(values => Object.assign({}, values, ...sources));
   };
 
