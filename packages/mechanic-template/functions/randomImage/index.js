@@ -20,11 +20,13 @@ export const handler = (params, mechanic) => {
 // We will probably do this with a webpack loader
 // We also need a nicer API to create this file
 export const params = {
-  size: {
-    default: {
-      width: 1600,
-      height: 1600
-    }
+  width: {
+    type: "integer",
+    default: 1600
+  },
+  height: {
+    type: "integer",
+    default: 1600
   },
   background: {
     type: "string",

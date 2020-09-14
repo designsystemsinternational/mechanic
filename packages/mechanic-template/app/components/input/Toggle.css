@@ -8,13 +8,15 @@
   position: relative;
   display: block;
   -webkit-appearance: none;
-  cursor: pointer;
   min-width: 120px;
   padding: 0.5em 1em;
   margin: 0;
   background-color: white;
   border: 1px solid var(--text);
-  &:active {
+  &:not([disabled]) {
+    cursor: pointer;
+  }
+  &:active:not([disabled]) {
     background-color: var(--blue);
     color: white;
   }
