@@ -44,13 +44,14 @@
     "webpack-dev-server": "^3.11.0"
   },
   "dependencies": {
+    "mechanic-engine-canvas": "../mechanic-engine-canvas",
+    "mechanic-engine-p5": "../mechanic-engine-p5",
+    "mechanic-engine-react": "../mechanic-engine-react",
+    "mechanic-ui-components": "../mechanic-ui-components",
+    "mechanic-utils": "../mechanic-utils",
     "mousetrap": "^1.6.5",
     "p5": "^1.1.9",
     "seedrandom": "^3.0.5",
-    "mechanic-utils": "../mechanic-utils",
-    "mechanic-ui-components": "../mechanic-ui-components",
-    "mechanic-engine-canvas": "../mechanic-engine-canvas",
-    "mechanic-engine-p5": "../mechanic-engine-p5",
-    "mechanic-engine-react": "../mechanic-engine-react"
+    "use-persisted-state": "^0.3.0"
   }
 }

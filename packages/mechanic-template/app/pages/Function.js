@@ -3,13 +3,24 @@ import PropTypes from "prop-types";
 import classnames from "classnames";
 import Mousetrap from "mousetrap";
 
+import createPersistedState from "use-persisted-state";
+const useFunctionValues = createPersistedState("function-values");
+
 import { Button, Toggle, ParamInput } from "mechanic-ui-components";
 import "mechanic-ui-components/dist/mechanic.css";
 
 import css from "./Function.css";
 
 export const Function = ({ name, exports, children }) => {
-  const [values, setValues] = useState({ preset: "default" });
+  const [allValues, setAllValues] = useFunctionValues({});
+
+  const values = allValues[name] || { preset: "default" };
+  const setValues = assigFunc => {
+    setAllValues(allValues => {
+      return Object.assign({}, allValues, { [name]: assigFunc(allValues[name]) });
+    });
+  };
+
   const [scaleToFit, setScaleToFit] = useState(true);
 
   const mainRef = useRef();
@@ -33,6 +44,7 @@ export const Function = ({ name, exports, children }) => {
         sources.push(otherPresets[value]);
       }
     }
+    console.log(sources);
     setValues(values => Object.assign({}, values, ...sources));
   };
 
