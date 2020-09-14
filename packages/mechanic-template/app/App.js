@@ -2,9 +2,9 @@ import React from "react";
 import { Switch, Route, withRouter } from "react-router-dom";
 import { extractContexts } from "mechanic-utils";
 
-import Function from "./pages/Function";
-import NotFound from "./pages/NotFound";
-import Nav from "./components/Nav";
+import { Function } from "./pages/Function";
+import { NotFound } from "./pages/NotFound";
+import { Nav } from "./components/Nav";
 
 const functionContext = require.context("../functions", true, /^(.{2,})\/index\.js$/);
 const { functions } = extractContexts(functionContext);
@@ -12,7 +12,7 @@ const functionNames = Object.keys(functions);
 
 import css from "./App.css";
 
-const App = props => {
+const AppComponent = props => {
   return (
     <div className={css.root}>
       <Switch>
@@ -34,4 +34,4 @@ const App = props => {
   );
 };
 
-export default withRouter(App);
+export const App = withRouter(AppComponent);

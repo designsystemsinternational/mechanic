@@ -4,7 +4,7 @@ import { Mechanic } from "mechanic-utils";
 
 const root = document.getElementById("root");
 
-const run = (functionName, func, values, isPreview) => {
+export const run = (functionName, func, values, isPreview) => {
   unmountComponentAtNode(root);
   const mechanic = new Mechanic(func.params, func.settings, values);
   const Handler = func.handler;
@@ -21,5 +21,3 @@ const run = (functionName, func, values, isPreview) => {
   };
   render(<Handler {...mechanic.values} frame={onFrame} done={onDone} />, root);
 };
-
-export default run;

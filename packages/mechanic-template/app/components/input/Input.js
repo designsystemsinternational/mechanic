@@ -66,8 +66,6 @@ export const Input = props => {
   );
 };
 
-export default Input;
-
 Input.defaultProps = {
   type: "text",
   onChange: () => {},

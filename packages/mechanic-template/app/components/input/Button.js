@@ -15,8 +15,6 @@ export const Button = ({ className, variant, onClick, children, disabled }) => {
   );
 };
 
-export default Button;
-
 Button.defaultProps = {
   onClick: () => {}
 };

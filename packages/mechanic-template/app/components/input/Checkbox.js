@@ -48,5 +48,3 @@ Checkbox.propTypes = {
   checked: PropTypes.bool,
   disabled: PropTypes.bool
 };
-
-export default Checkbox;

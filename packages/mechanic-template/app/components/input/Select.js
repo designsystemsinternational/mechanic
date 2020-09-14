@@ -69,8 +69,6 @@ export const Select = props => {
   );
 };
 
-export default Select;
-
 Select.defaultProps = {
   placeholder: "Select..."
 };

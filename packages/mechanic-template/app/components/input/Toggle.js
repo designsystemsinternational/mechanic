@@ -16,8 +16,6 @@ export const Toggle = ({ className, variant, status, onClick, children, disabled
   );
 };
 
-export default Toggle;
-
 Toggle.defaultProps = {
   onClick: () => {}
 };
