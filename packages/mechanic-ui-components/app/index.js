@@ -6,86 +6,149 @@ const root = document.getElementById("root");
 
 const App = () => {
   const [vals, setVals] = useState({
-    width: 400,
-    height: 400,
-    content: "Hello world",
-    choice: "Option 1",
+    text: "Hello world",
     toggle: true,
-    color: "rgba(200, 120, 34, 1)"
+    number: 400,
+    range: 400,
+    slider: 400,
+    colorHex: "#f62696",
+    colorRgba: "rgba(200,120,34,1)",
+    textOption: "Option 1",
+    numberOption: 10,
+    objectOption: "first"
   });
+
   const handleChange = (e, name, value) => {
+    console.info(name, typeof value, value);
     setVals(vals => Object.assign({}, vals, { [name]: value }));
   };
-  return (
-    <div style={{ width: "300px" }}>
-      <h3>ParamInput:</h3>
-      <ParamInput
-        name={"height"}
-        value={vals.height}
-        attributes={{
-          type: "number",
-          default: 400
-        }}
-        onChange={handleChange}
-      />
-      <br />
-      <ParamInput
-        name={"width"}
-        value={vals.width}
-        attributes={{
-          type: "number",
-          default: 400,
-          min: 400,
-          max: 500,
-          step: 10,
-          slider: true
-        }}
-        onChange={handleChange}
-      />
-      <br />
-      <ParamInput
-        name={"content"}
-        value={vals.content}
-        attributes={{
-          type: "string",
-          default: "Hi"
-        }}
-        onChange={handleChange}
-      />
-      <br />
-      <ParamInput
-        name={"color"}
-        value={vals.color}
-        attributes={{
-          type: "color",
-          model: "hex",
-          default: "rgba(200,120,34,1)"
-        }}
-        onChange={handleChange}
-      />
-      <br />
-      <ParamInput
-        name={"choice"}
-        value={vals.choice}
-        attributes={{
-          type: "string",
-          default: "Option 1",
-          choices: ["Option 1", "Option 2", "Option 3"]
-        }}
-        onChange={handleChange}
-      />
-      <br />
-      <ParamInput
-        name={"toggle"}
-        value={vals.toggle}
-        attributes={{
-          type: "boolean",
-          default: true
-        }}
-        onChange={handleChange}
-      />
 
-      <h3>Base inputs:</h3>
+  const blockStyle = { width: "300px", display: "inline-block", margin: "1em" };
+  return (
+    <>
+      <div style={blockStyle}>
+        <ParamInput
+          name={"text"}
+          value={vals.text}
+          attributes={{
+            type: "text",
+            default: "Hi"
+          }}
+          onChange={handleChange}
+        />
+      </div>
+      <div style={blockStyle}>
+        <ParamInput
+          name={"toggle"}
+          value={vals.toggle}
+          attributes={{
+            type: "boolean",
+            default: true
+          }}
+          onChange={handleChange}
+        />
+      </div>
+      <div style={blockStyle}>
+        <ParamInput
+          name={"number"}
+          value={vals.number}
+          attributes={{
+            type: "number",
+            default: 400
+          }}
+          onChange={handleChange}
+        />
+      </div>
+      <div style={blockStyle}>
+        <ParamInput
+          name={"range"}
+          value={vals.range}
+          attributes={{
+            type: "number",
+            default: 400,
+            min: 400,
+            max: 500,
+            step: 10
+          }}
+          onChange={handleChange}
+        />
+      </div>
+      <div style={blockStyle}>
+        <ParamInput
+          name={"slider"}
+          value={vals.slider}
+          attributes={{
+            type: "number",
+            default: 400,
+            min: 400,
+            max: 500,
+            step: 10,
+            slider: true
+          }}
+          onChange={handleChange}
+        />
+      </div>
+      <div style={blockStyle}>
+        <ParamInput
+          name={"colorHex"}
+          value={vals.colorHex}
+          attributes={{
+            type: "color",
+            model: "hex",
+            default: "#f62696"
+          }}
+          onChange={handleChange}
+        />
+      </div>
+      <div style={blockStyle}>
+        <ParamInput
+          name={"colorRgba"}
+          value={vals.colorRgba}
+          attributes={{
+            type: "color",
+            model: "rgba",
+            default: "rgba(200,120,34,1)"
+          }}
+          onChange={handleChange}
+        />
+      </div>
+      <div style={blockStyle}>
+        <ParamInput
+          name={"textOption"}
+          value={vals.textOption}
+          attributes={{
+            type: "text",
+            default: "Option 1",
+            options: ["Option 1", "Option 2", "Option 3"]
+          }}
+          onChange={handleChange}
+        />
+      </div>
+      <div style={blockStyle}>
+        <ParamInput
+          name={"numberOption"}
+          value={vals.numberOption}
+          attributes={{
+            type: "number",
+            default: 10,
+            options: [10, 13, 30]
+          }}
+          onChange={handleChange}
+        />
+      </div>
+      <div style={blockStyle}>
+        <ParamInput
+          name={"objectOption"}
+          value={vals.objectOption}
+          attributes={{
+            type: "object",
+            default: "first",
+            options: { first: {}, second: {} }
+          }}
+          onChange={handleChange}
+        />
+      </div>
+      {/* <h3>Base inputs:</h3>
 
       <span>Button</span>
       <Button>I'm a button</Button>
@@ -97,8 +160,8 @@ const App = () => {
       <span>Toggle</span>
       <Toggle status={true}>On</Toggle>
       <Toggle status={false}>Off</Toggle>
-      <TextInput label="Text input: "></TextInput>
-    </div>
+      <TextInput label="Text input: "></TextInput> */}
+    </>
   );
 };
 render(<App></App>, root);

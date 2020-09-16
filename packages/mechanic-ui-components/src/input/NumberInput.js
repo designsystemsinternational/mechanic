@@ -29,7 +29,7 @@ export const NumberInput = props => {
 
   const handleOnChange = useRef(event => {
     const { name, value } = event.target;
-    onChange && onChange(event, name, value);
+    onChange && onChange(event, name, parseFloat(value));
   });
 
   const rootClasses = classnames(css.root, {
@@ -50,10 +50,10 @@ export const NumberInput = props => {
             id={id}
             name={name}
             type={"range"}
-            value={value}
-            min={min}
-            max={max}
-            step={step}
+            value={"" + value}
+            min={"" + min}
+            max={"" + max}
+            step={"" + step}
             placeholder={placeholder}
             disabled={disabled}
             onFocus={() => setFocus(true)}
@@ -71,10 +71,10 @@ export const NumberInput = props => {
           id={id}
           name={name}
           type={"number"}
-          value={value}
-          min={min}
-          max={max}
-          step={step}
+          value={"" + value}
+          min={"" + min}
+          max={"" + max}
+          step={"" + step}
           placeholder={placeholder}
           disabled={disabled}
           onFocus={() => setFocus(true)}
@@ -104,10 +104,10 @@ NumberInput.defaultProps = {
 
 NumberInput.propTypes = {
   name: PropTypes.string,
-  value: PropTypes.string,
-  min: PropTypes.string,
-  max: PropTypes.string,
-  step: PropTypes.string,
+  value: PropTypes.number,
+  min: PropTypes.number,
+  max: PropTypes.number,
+  step: PropTypes.number,
   slider: PropTypes.bool,
   label: PropTypes.string,
   className: PropTypes.string,

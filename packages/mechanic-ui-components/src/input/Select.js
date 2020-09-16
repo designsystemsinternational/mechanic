@@ -10,6 +10,7 @@ export const Select = props => {
     children,
     className,
     onChange,
+    onBlur,
     defaultValue,
     disabled,
     error,
@@ -28,6 +29,11 @@ export const Select = props => {
     onChange && onChange(event, name, value);
   });
 
+  const handleOnBlur = useRef(() => {
+    onBlur && onBlur();
+    setFocus(false);
+  });
+
   const rootClasses = classnames(css.root, {
     [className]: className,
     [css.focus]: focus,
@@ -44,7 +50,7 @@ export const Select = props => {
         disabled={disabled}
         onChange={handleOnChange.current}
         onFocus={() => setFocus(true)}
-        onBlur={() => setFocus(false)}
+        onBlur={handleOnBlur.current}
         name={name}
         placeholder={placeholder}
         value={value}
@@ -78,6 +84,7 @@ Select.propTypes = {
   label: PropTypes.string,
   className: PropTypes.string,
   onChange: PropTypes.func,
+  onBlur: PropTypes.func,
   placeholder: PropTypes.string,
   required: PropTypes.bool
 };
