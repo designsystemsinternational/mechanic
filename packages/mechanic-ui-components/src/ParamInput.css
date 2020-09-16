@@ -1,10 +1,16 @@
+@import "variables.css";
+
 .root {
-  font-family: Menlo, "Courier New", monospace;
 
   & > label {
     display: block;
     margin-bottom: 0.5em;
     font-size: 0.75em;
+    font-family: Menlo, "Courier New", monospace;
+  }
+
+  & input[type="text"], & input[type="number"], & select, & button {
+    font-family: Menlo, "Courier New", monospace;
   }
 
   & > * {

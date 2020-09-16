@@ -129,3 +129,35 @@
     }
   }
 }
+
+.mechanic{
+
+  &.invalid {
+    & > input {
+      border: 1px solid var(--red);
+    }
+
+    & .range-wrapper [type=range] {
+      &::-webkit-slider-thumb {
+        border: 1px solid var(--red);
+      }
+
+
+      /* All the same stuff for Firefox */
+      &::-moz-range-thumb {
+        border: 1px solid var(--red);
+      }
+
+      /* All the same stuff for IE */
+      &::-ms-thumb {
+        border: 1px solid var(--red);
+      }
+    }
+  
+    & > .error {
+      background: var(--red);
+      box-sizing: border-box;
+      padding: 0.1em;
+    }
+  }
+}

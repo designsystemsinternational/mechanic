@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import PropTypes from "prop-types";
 import classnames from "classnames";
 import css from "./ParamInput.css";
@@ -10,14 +10,17 @@ import { ColorPicker } from "./input/ColorPicker";
 import { uid } from "./utils";
 
 export const ParamInput = ({ name, className, value, attributes, onChange, children }) => {
-  const [error, setError] = useState();
   const _id = useRef(uid("input"));
-  const { type, options } = attributes;
+  const { type, options, validation } = attributes;
   const _default = attributes["default"];
+
+  const actualValue = value === undefined ? _default : value;
+  const error = validation ? validation(actualValue) : null;
+
   const rootClasses = classnames(css.root, {
-    [className]: className
+    [className]: className,
+    [css.invalid]: error ? true : false
   });
-  const currentValue = value === undefined ? _default : value;
 
   if (options) {
     const arrayOfOptions = Array.isArray(options) ? options : Object.keys(options);
@@ -31,11 +34,10 @@ export const ParamInput = ({ name, className, value, attributes, onChange, child
         onChange={handleOnChange}
         name={name}
         label={name}
-        invalid={error}
+        value={"" + actualValue}
+        invalid={error ? true : false}
         error={error}
-        value={"" + currentValue}
-        // onBlur={() => setError(value != "default" ? value : null)}
-      >
+        variant="mechanic">
         {arrayOfOptions.map(value => (
           <option key={`$param-${name}-${value}`} value={value}>
             {value}
@@ -47,18 +49,41 @@ export const ParamInput = ({ name, className, value, attributes, onChange, child
   }
 
   if (type === "boolean") {
-    const v = value !== undefined ? value : _default;
     return (
       <div className={rootClasses}>
-        <label htmlFor={_id}>{name}</label>
+        <label htmlFor={_id.current}>{name}</label>
         <Toggle
           name={name}
-          id={_id}
-          status={currentValue}
-          onClick={e => onChange(e, name, !currentValue)}>
-          {currentValue ? "true" : "false"}
+          id={_id.current}
+          status={actualValue}
+          onClick={e => onChange(e, name, !actualValue)}
+          invalid={error ? true : false}
+          error={error}>
+          {actualValue ? "true" : "false"}
           {children}
         </Toggle>
+        {error && (
+          <div className={css.error} id={`error-${_id.current}`} aria-live="polite">
+            {error}
+          </div>
+        )}
+      </div>
+    );
+  }
+
+  if (type === "color") {
+    const { model } = attributes;
+    return (
+      <div className={rootClasses}>
+        <label htmlFor={_id.current}>{name}</label>
+        <ColorPicker
+          name={name}
+          id={_id.current}
+          value={actualValue}
+          model={model}
+          onChange={onChange}
+        />
+        {children}
       </div>
     );
   }
@@ -71,24 +96,16 @@ export const ParamInput = ({ name, className, value, attributes, onChange, child
         label={name}
         name={name}
         slider={slider}
-        value={currentValue}
+        value={actualValue}
         min={min}
         max={max}
         step={step}
-        onChange={onChange}>
+        onChange={onChange}
+        invalid={error ? true : false}
+        error={error}
+        variant="mechanic">
         {children}
       </NumberInput>
-    );
-  }
-
-  if (type === "color") {
-    const { model } = attributes;
-    return (
-      <div className={rootClasses}>
-        <label htmlFor={_id}>{name}</label>
-        <ColorPicker name={name} value={currentValue} model={model} onChange={onChange} />
-        {children}
-      </div>
     );
   }
 
@@ -97,8 +114,11 @@ export const ParamInput = ({ name, className, value, attributes, onChange, child
       className={rootClasses}
       label={name}
       name={name}
-      value={currentValue}
-      onChange={onChange}>
+      value={actualValue}
+      onChange={onChange}
+      invalid={error ? true : false}
+      error={error}
+      variant="mechanic">
       {children}
     </TextInput>
   );

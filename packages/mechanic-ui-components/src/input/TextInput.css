@@ -10,3 +10,18 @@
     border: 1px solid var(--text);
   }
 }
+
+.mechanic{
+
+  &.invalid {
+    & > input {
+      border: 1px solid var(--red);
+    }
+  
+    & > .error {
+      background: var(--red);
+      box-sizing: border-box;
+      padding: 0.1em;
+    }
+  }
+}

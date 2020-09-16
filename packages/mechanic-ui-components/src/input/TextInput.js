@@ -19,7 +19,8 @@ export const TextInput = props => {
     error,
     id = _id.current,
     invalid,
-    required
+    required,
+    variant
   } = props;
   const [focus, setFocus] = useState(false);
 
@@ -32,7 +33,8 @@ export const TextInput = props => {
     [className]: className,
     [css.invalid]: invalid,
     [css.disabled]: disabled,
-    [css.focus]: focus
+    [css.focus]: focus,
+    [css[variant]]: variant
   });
 
   return (
@@ -55,10 +57,8 @@ export const TextInput = props => {
         aria-invalid={invalid}
       />
       {invalid && error && (
-        <div className={css.errorWrapper}>
-          <span id={`error-${id}`} className={css.errorTxt} aria-live="polite">
-            {error}
-          </span>
+        <div className={css.error} id={`error-${id}`} aria-live="polite">
+          {error}
         </div>
       )}
     </div>
@@ -83,5 +83,6 @@ TextInput.propTypes = {
   onChange: PropTypes.func,
   onKeyPress: PropTypes.func,
   placeholder: PropTypes.string,
-  required: PropTypes.bool
+  required: PropTypes.bool,
+  variant: PropTypes.string
 };

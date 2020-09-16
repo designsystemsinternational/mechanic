@@ -32,7 +32,8 @@ const App = () => {
           value={vals.text}
           attributes={{
             type: "text",
-            default: "Hi"
+            default: "Hi",
+            validation: value => (value.length < 15 ? null : "Length must be less than 15")
           }}
           onChange={handleChange}
         />
@@ -43,7 +44,8 @@ const App = () => {
           value={vals.toggle}
           attributes={{
             type: "boolean",
-            default: true
+            default: true,
+            validation: value => (value ? null : "Must be true")
           }}
           onChange={handleChange}
         />
@@ -54,7 +56,8 @@ const App = () => {
           value={vals.number}
           attributes={{
             type: "number",
-            default: 400
+            default: 400,
+            validation: value => (value < 450 || value > 455 ? null : "Not in range")
           }}
           onChange={handleChange}
         />
@@ -68,7 +71,8 @@ const App = () => {
             default: 400,
             min: 400,
             max: 500,
-            step: 10
+            step: 10,
+            validation: value => (value < 430 || value > 465 ? null : "Not in range")
           }}
           onChange={handleChange}
         />
@@ -83,7 +87,8 @@ const App = () => {
             min: 400,
             max: 500,
             step: 10,
-            slider: true
+            slider: true,
+            validation: value => (value < 430 || value > 465 ? null : "Not in range")
           }}
           onChange={handleChange}
         />
@@ -119,7 +124,8 @@ const App = () => {
           attributes={{
             type: "text",
             default: "Option 1",
-            options: ["Option 1", "Option 2", "Option 3"]
+            options: ["Option 1", "Option 2", "Option 3"],
+            validation: value => (value === "Option 1" ? null : "Should be Option 1")
           }}
           onChange={handleChange}
         />

@@ -20,6 +20,7 @@ export const Select = props => {
     name,
     placeholder,
     required,
+    variant,
     value
   } = props;
   const [focus, setFocus] = useState(false);
@@ -34,12 +35,13 @@ export const Select = props => {
     setFocus(false);
   });
 
+  console.log(css);
   const rootClasses = classnames(css.root, {
     [className]: className,
     [css.focus]: focus,
-    [css.withLabel]: label,
     [css.invalid]: invalid,
-    [css.disabled]: disabled
+    [css.disabled]: disabled,
+    [css[variant]]: variant
   });
 
   return (
@@ -54,6 +56,7 @@ export const Select = props => {
         name={name}
         placeholder={placeholder}
         value={value}
+        invalid={error}
         aria-required={required}
         aria-describedby={`error-${id}`}
         aria-invalid={invalid}>
@@ -78,13 +81,14 @@ Select.propTypes = {
   value: PropTypes.string,
   children: PropTypes.node,
   disabled: PropTypes.bool,
-  error: PropTypes.string,
   id: PropTypes.string,
   invalid: PropTypes.bool,
+  error: PropTypes.string,
   label: PropTypes.string,
   className: PropTypes.string,
   onChange: PropTypes.func,
   onBlur: PropTypes.func,
   placeholder: PropTypes.string,
-  required: PropTypes.bool
+  required: PropTypes.bool,
+  variant: PropTypes.string
 };
