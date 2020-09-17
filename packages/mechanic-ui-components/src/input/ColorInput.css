@@ -26,11 +26,12 @@
 
 .swatch {
   display: inline-block;
+  width: 18px;
+  height: 18px;
   position: absolute;
   left: 1em;
-  top: 0.5em;
-  width: 18px;
-  height: calc(100% - 1em);
+  top: 50%;
+  transform: translateY(-50%);
 }
 
 .popover {
