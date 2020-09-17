@@ -1,9 +1,10 @@
-export { Button } from "./input/Button";
+export { Button } from "./buttons/Button";
+export { Toggle } from "./buttons/Toggle";
+export { BooleanInput } from "./input/BooleanInput";
 export { Checkbox } from "./input/Checkbox";
-export { ColorPicker } from "./input/ColorPicker";
+export { ColorInput } from "./input/ColorInput";
 export { TextInput } from "./input/TextInput";
 export { NumberInput } from "./input/NumberInput";
 export { Radio } from "./input/Radio";
 export { Select } from "./input/Select";
-export { Toggle } from "./input/Toggle";
 export { ParamInput } from "./ParamInput";

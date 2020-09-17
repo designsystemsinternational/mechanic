@@ -1,12 +1,13 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useRef } from "react";
 import PropTypes from "prop-types";
 import classnames from "classnames";
 import css from "./ParamInput.css";
 import { TextInput } from "./input/TextInput";
 import { NumberInput } from "./input/NumberInput";
+import { BooleanInput } from "./input/BooleanInput";
+import { OptionInput } from "./input/OptionInput";
 import { Select } from "./input/Select";
-import { Toggle } from "./input/Toggle";
-import { ColorPicker } from "./input/ColorPicker";
+import { ColorInput } from "./input/ColorInput";
 import { uid } from "./utils";
 
 export const ParamInput = ({ name, className, value, attributes, onChange, children }) => {
@@ -18,73 +19,59 @@ export const ParamInput = ({ name, className, value, attributes, onChange, child
   const error = validation ? validation(actualValue) : null;
 
   const rootClasses = classnames(css.root, {
-    [className]: className,
-    [css.invalid]: error ? true : false
+    [className]: className
   });
 
   if (options) {
-    const arrayOfOptions = Array.isArray(options) ? options : Object.keys(options);
-    const handleOnChange = event => {
-      const value = type === "number" ? parseFloat(event.target.value) : event.target.value;
-      onChange(event, name, value);
-    };
     return (
-      <Select
+      <OptionInput
         className={rootClasses}
-        onChange={handleOnChange}
+        onChange={onChange}
         name={name}
         label={name}
-        value={"" + actualValue}
+        value={actualValue}
+        type={type}
+        options={options}
         invalid={error ? true : false}
         error={error}
         variant="mechanic">
-        {arrayOfOptions.map(value => (
-          <option key={`$param-${name}-${value}`} value={value}>
-            {value}
-          </option>
-        ))}
         {children}
-      </Select>
+      </OptionInput>
     );
   }
 
   if (type === "boolean") {
     return (
-      <div className={rootClasses}>
-        <label htmlFor={_id.current}>{name}</label>
-        <Toggle
-          name={name}
-          id={_id.current}
-          status={actualValue}
-          onClick={e => onChange(e, name, !actualValue)}
-          invalid={error ? true : false}
-          error={error}>
-          {actualValue ? "true" : "false"}
-          {children}
-        </Toggle>
-        {error && (
-          <div className={css.error} id={`error-${_id.current}`} aria-live="polite">
-            {error}
-          </div>
-        )}
-      </div>
+      <BooleanInput
+        className={rootClasses}
+        onChange={onChange}
+        name={name}
+        label={name}
+        value={actualValue}
+        invalid={error ? true : false}
+        error={error}
+        variant="mechanic">
+        {children}
+      </BooleanInput>
     );
   }
 
   if (type === "color") {
     const { model } = attributes;
     return (
-      <div className={rootClasses}>
-        <label htmlFor={_id.current}>{name}</label>
-        <ColorPicker
-          name={name}
-          id={_id.current}
-          value={actualValue}
-          model={model}
-          onChange={onChange}
-        />
+      <ColorInput
+        className={rootClasses}
+        name={name}
+        label={name}
+        id={_id.current}
+        value={actualValue}
+        model={model}
+        onChange={onChange}
+        invalid={error ? true : false}
+        error={error}
+        variant="mechanic">
         {children}
-      </div>
+      </ColorInput>
     );
   }
 

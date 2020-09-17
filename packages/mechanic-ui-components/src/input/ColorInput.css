@@ -1,24 +1,27 @@
 .root {
-  height: 36px;
-  position: relative;
 }
 
 .button-container {
-  width: 100%;
-  height: 100%;
-  padding: 0.5em 1em;
   box-sizing: border-box;
+  width: 100%;
+  height: 36px;
   position: relative;
-  -webkit-appearance: none;
-  cursor: pointer;
-  padding: 0.5em 1em;
-  margin: 0;
-  font-family: inherit;
-  font-size: inherit;
-  font-weight: inherit;
-  -webkit-appearance: none;
-  background-color: white;
-  border: 1px solid var(--text);
+  & > button {
+    box-sizing: border-box;
+    width: 100%;
+    height: 36px;
+    padding: 0.5em 1em;
+    -webkit-appearance: none;
+    cursor: pointer;
+    padding: 0.5em 1em;
+    margin: 0;
+    font-family: inherit;
+    font-size: inherit;
+    font-weight: inherit;
+    -webkit-appearance: none;
+    background-color: white;
+    border: 1px solid var(--text);
+  }
 }
 
 .swatch {
@@ -54,4 +57,19 @@
   right: 0px;
   bottom: 0px;
   left: 0px;
+}
+
+.mechanic{
+
+  &.invalid {
+    & .button-container button {
+      border: 1px solid var(--red);
+    }
+    
+    & > .error {
+      background: var(--red);
+      box-sizing: border-box;
+      padding: 0.1em;
+    }
+  }
 }

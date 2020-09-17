@@ -1,0 +1,18 @@
+.root {
+
+}
+
+.mechanic{
+
+  &.invalid {
+    & > button {
+      border: 1px solid var(--red);
+    }
+    
+    & > .error {
+      background: var(--red);
+      box-sizing: border-box;
+      padding: 0.1em;
+    }
+  }
+}

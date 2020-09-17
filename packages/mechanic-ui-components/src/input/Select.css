@@ -22,13 +22,12 @@
   background-size: 0.65em auto, 100%;
 }
 
-.mechanic{
-
+.mechanic {
   &.invalid {
     & > select {
       border: 1px solid var(--red);
     }
-  
+
     & > .error {
       background: var(--red);
       box-sizing: border-box;

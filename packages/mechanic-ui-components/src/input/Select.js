@@ -35,7 +35,6 @@ export const Select = props => {
     setFocus(false);
   });
 
-  console.log(css);
   const rootClasses = classnames(css.root, {
     [className]: className,
     [css.focus]: focus,

@@ -46,7 +46,7 @@ export const NumberInput = props => {
       {label && <label htmlFor={id}>{label}</label>}
       {slider ? (
         <div className={css["range-wrapper"]}>
-          <span>{value}</span>
+          <span className={className.value}>{value}</span>
           <input
             autoComplete={autocomplete}
             id={id}

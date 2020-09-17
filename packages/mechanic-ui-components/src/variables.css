@@ -5,4 +5,6 @@
   --blue: #0f21c3;
   --red: #f04b17;
   --green: #21c30f;
+  --param-font: Menlo, "Courier New", monospace;
+  --error: #f04b17;
 }

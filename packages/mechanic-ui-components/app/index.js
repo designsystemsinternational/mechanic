@@ -100,7 +100,8 @@ const App = () => {
           attributes={{
             type: "color",
             model: "hex",
-            default: "#f62696"
+            default: "#f62696",
+            validation: value => (value[1] === "f" ? null : "Should have high red channel")
           }}
           onChange={handleChange}
         />
@@ -137,7 +138,8 @@ const App = () => {
           attributes={{
             type: "number",
             default: 10,
-            options: [10, 13, 30]
+            options: [10, 13, 30],
+            validation: value => (value < 20 ? null : "Should be less than 20")
           }}
           onChange={handleChange}
         />
@@ -149,7 +151,8 @@ const App = () => {
           attributes={{
             type: "object",
             default: "first",
-            options: { first: {}, second: {} }
+            options: { first: {}, second: {} },
+            validation: value => (value == "first" ? null : "Should be first")
           }}
           onChange={handleChange}
         />
