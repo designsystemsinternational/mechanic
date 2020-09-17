@@ -1,7 +1,5 @@
-@import "../variables.css";
-
 .root {
-  font-family: Menlo, "Courier New", monospace;
+  font-family: var(--mechanic-param-font);
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -28,6 +26,6 @@
   background-size: 1em 1em;
 
   &:hover {
-    border: 1px solid var(--dust-gray);
+    border: 1px solid var(--mechanic-dust-gray);
   }
 }

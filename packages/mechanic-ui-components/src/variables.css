@@ -1,10 +1,10 @@
 :root {
-  --text: #333;
-  --dust-gray: #f3f1f2;
-  --black: #231f20;
-  --blue: #0f21c3;
-  --red: #f04b17;
-  --green: #21c30f;
-  --param-font: Menlo, "Courier New", monospace;
-  --error: #f04b17;
+  --mechanic-text: #333;
+  --mechanic-dust-gray: #f3f1f2;
+  --mechanic-black: #231f20;
+  --mechanic-blue: #0f21c3;
+  --mechanic-red: #f04b17;
+  --mechanic-green: #21c30f;
+  --mechanic-param-font: Menlo, "Courier New", monospace;
+  --mechanic-error: #f04b17;
 }

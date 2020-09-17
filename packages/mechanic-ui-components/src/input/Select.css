@@ -9,7 +9,7 @@
   font-weight: inherit;
   box-sizing: border-box;
   padding: 0.5em 1.7em 0.5em 1em;
-  border: 1px solid var(--text);
+  border: 1px solid var(--mechanic-text);
   border-radius: 0;
   -moz-appearance: none;
   -webkit-appearance: none;
@@ -25,11 +25,11 @@
 .mechanic {
   &.invalid {
     & > select {
-      border: 1px solid var(--red);
+      border: 1px solid var(--mechanic-error);
     }
 
     & > .error {
-      background: var(--red);
+      background: var(--mechanic-error);
       box-sizing: border-box;
       padding: 0.1em;
     }

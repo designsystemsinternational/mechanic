@@ -12,12 +12,12 @@
   padding: 0.5em 1em;
   margin: 0;
   background-color: white;
-  border: 1px solid var(--text);
+  border: 1px solid var(--mechanic-text);
   &:not([disabled]) {
     cursor: pointer;
   }
   &:active:not([disabled]) {
-    background-color: var(--blue);
+    background-color: var(--mechanic-blue);
     color: white;
   }
 }
@@ -31,8 +31,8 @@
   width: 10px;
   height: 10px;
   border-radius: 50%;
-  background: var(--red);
+  background: var(--mechanic-red);
   &.on {
-    background: var(--green);
+    background: var(--mechanic-green);
   }
 }

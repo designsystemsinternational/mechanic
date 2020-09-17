@@ -7,19 +7,18 @@
     box-sizing: border-box;
     padding: 0.5em 1em;
     background-color: white;
-    border: 1px solid var(--text);
+    border: 1px solid var(--mechanic-text);
   }
 }
 
-.mechanic{
-
+.mechanic {
   &.invalid {
     & > input {
-      border: 1px solid var(--red);
+      border: 1px solid var(--mechanic-error);
     }
-  
+
     & > .error {
-      background: var(--red);
+      background: var(--mechanic-error);
       box-sizing: border-box;
       padding: 0.1em;
     }

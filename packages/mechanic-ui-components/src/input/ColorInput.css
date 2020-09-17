@@ -20,7 +20,7 @@
     font-weight: inherit;
     -webkit-appearance: none;
     background-color: white;
-    border: 1px solid var(--text);
+    border: 1px solid var(--mechanic-text);
   }
 }
 
@@ -44,7 +44,7 @@
   & > .chrome-picker {
     width: 100% !important;
     box-shadow: none !important;
-    border: 1px solid var(--text) !important;
+    border: 1px solid var(--mechanic-text) !important;
     border-top: none !important;
     border-radius: 0 !important;
     box-sizing: border-box !important;
@@ -59,15 +59,14 @@
   left: 0px;
 }
 
-.mechanic{
-
+.mechanic {
   &.invalid {
     & .button-container button {
-      border: 1px solid var(--red);
+      border: 1px solid var(--mechanic-error);
     }
-    
+
     & > .error {
-      background: var(--red);
+      background: var(--mechanic-error);
       box-sizing: border-box;
       padding: 0.1em;
     }

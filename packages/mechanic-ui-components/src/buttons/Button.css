@@ -12,9 +12,9 @@
   padding: 0.5em 1em;
   margin: 0;
   background-color: white;
-  border: 1px solid var(--text);
+  border: 1px solid var(--mechanic-text);
   &:active {
-    background-color: var(--blue);
+    background-color: var(--mechanic-blue);
     color: white;
   }
 }
