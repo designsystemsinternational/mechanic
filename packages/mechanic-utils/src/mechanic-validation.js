@@ -2,7 +2,9 @@ import seedrandom from "seedrandom";
 
 const isObject = obj => obj && typeof obj === "object";
 const hasKey = (obj, key) => obj.hasOwnProperty(key);
-const supportedTypes = ["string", "number", "boolean", "color"];
+const supportedTypes = { text: "string", number: "number", boolean: "boolean", color: "string" };
+const requiredKeys = ["type", "default"];
+const otherParams = { preset: true, scaleToFit: true };
 
 /**
  * Receives the parameter template and checks that it is valid
@@ -10,14 +12,42 @@ const supportedTypes = ["string", "number", "boolean", "color"];
  */
 const validateParams = params => {
   for (let param in params) {
-    if (!hasKey(params[param], "type")) {
-      return `Parameter ${param} must have ${key} property`;
+    for (let requiredKey of requiredKeys) {
+      if (!hasKey(params[param], requiredKey)) {
+        return `Parameter ${param} must have '${requiredKey}' property.`;
+      }
     }
-    if (!supportedTypes.includes(params[param].type)) {
-      return `Parameter of type ${params[param].type} not supported, expected: ${supportedTypes}`;
+
+    if (!hasKey(supportedTypes, params[param].type)) {
+      return `Parameter of type ${params[param].type} not supported, expected: ${Object.keys(
+        supportedTypes
+      )}.`;
     }
-    if (!hasKey(params[param], "default")) {
-      return `Parameter ${param} must have ${key} property`;
+
+    if (typeof params[param].default !== supportedTypes[params[param].type]) {
+      return `Default property value invalid for parameter ${param} of type ${
+        params[param].type
+      }. Expected to be ${supportedTypes[params[param].type]}.`;
+    }
+
+    if (hasKey(params[param], "validation") && typeof params[param].validation !== "function") {
+      return `Expected function in validation property in ${param}.`;
+    }
+
+    if (
+      hasKey(params[param], "options") &&
+      !Array.isArray(params[param].options) &&
+      typeof params[param].options !== "object"
+    ) {
+      return `Expected array or object in options property in ${param}. Received ${typeof params[
+        param
+      ].options}`;
+    } else if (hasKey(params[param], "options") && Array.isArray(params[param].options)) {
+      for (let option of params[param].options) {
+        if (typeof option !== supportedTypes[params[param].type]) {
+          return `Incorrect type of value in options array. Expected ${params[param].type}.`;
+        }
+      }
     }
   }
   return null;
@@ -30,12 +60,35 @@ const validateParams = params => {
  * @param {object} values - Values for some or all of the parameters
  */
 const validateValues = (params, values = {}) => {
-  // Validate that the size is specified in the template
-  if (hasKey(values, "size") && !hasKey(params.size, values.size)) {
-    return `Supplied size parameter is not available in the template: ${values.size}`;
+  for (let param in params) {
+    // Validate that values for options are specified in the template
+    if (hasKey(values, param) && hasKey(params[param], "options")) {
+      if (Array.isArray(params[param].options) && !params[param].options.includes(values[param])) {
+        return `Supplied ${param} parameter is not available in the template options: ${params[param].options}`;
+      } else if (
+        !Array.isArray(params[param].options) &&
+        !hasKey(params[param].options, values[param])
+      ) {
+        return `Supplied ${param} parameter (${
+          values[param]
+        }) is not available in the template options: ${Object.keys(params[param].options)}`;
+      }
+    }
+    // Run validation functions for values.
+    if (hasKey(values, param) && hasKey(params[param], "validation")) {
+      const error = params[param].validation(values[param]);
+      if (error !== null) {
+        return `Param validation error: ${error}`;
+      }
+    }
   }
 
-  // TODO: Check that there are not other values besides parameters and default params
+  // Check that there are not other values besides parameters and default params
+  for (let param in values) {
+    if (!hasKey(params, param) && !hasKey(otherParams, param)) {
+      return `Unexpected ${param} value not defined on template.`;
+    }
+  }
 
   return null;
 };
@@ -72,13 +125,8 @@ const prepareValues = (params, settings, values) => {
 
   // Params
   Object.entries(params).forEach(([name, param]) => {
-    if (!param.options) {
-      const val = values[name] === undefined ? param.default : values[name];
-      if (param.type === "number") {
-        vals[name] = parseFloat(val);
-      } else {
-        vals[name] = val;
-      }
+    if (!hasKey(param, "options")) {
+      vals[name] = values[name] === undefined ? param.default : values[name];
     } else {
       let val = values[name] || param.default;
       if (Array.isArray(param.options)) {
@@ -91,7 +139,7 @@ const prepareValues = (params, settings, values) => {
     }
   });
 
-  // Scale down to fit
+  // Scale down to fit if width and height are params
   if (values.scaleToFit && vals.width && vals.height) {
     const ratioWidth = values.scaleToFit.width ? values.scaleToFit.width / vals.width : 1;
     const ratioHeight = values.scaleToFit.height ? values.scaleToFit.height / vals.height : 1;

@@ -149,7 +149,7 @@ const App = () => {
           name={"objectOption"}
           value={vals.objectOption}
           attributes={{
-            type: "object",
+            type: "text",
             default: "first",
             options: { first: {}, second: {} },
             validation: value => (value == "first" ? null : "Should be first")

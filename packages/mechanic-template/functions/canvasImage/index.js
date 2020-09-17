@@ -35,7 +35,8 @@ export const handler = (params, mechanic) => {
 export const params = {
   width: {
     type: "number",
-    default: 400
+    default: 400,
+    validation: v => (v < 410 || v > 420 ? null : "Out of range")
   },
   height: {
     type: "number",
@@ -69,7 +70,7 @@ export const params = {
     slider: true
   },
   margin: {
-    type: "string",
+    type: "text",
     options: {
       even: { top: 100, bottom: 100, left: 100, right: 100 },
       flat: { top: 100, bottom: 100, left: 50, right: 50 },
