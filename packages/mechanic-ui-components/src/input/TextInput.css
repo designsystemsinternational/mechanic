@@ -11,6 +11,15 @@
   }
 }
 
+.invalid {
+}
+
+.disabled {
+}
+
+.focus {
+}
+
 .mechanic {
   &.invalid {
     & > input {

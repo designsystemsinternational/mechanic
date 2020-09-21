@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { render } from "react-dom";
-import { ParamInput, Button, Checkbox, TextInput, Radio, Select, Toggle } from "../src";
+import { ParamInput, TextInput, NumberInput, Select, Button, Toggle } from "../src";
 
 const root = document.getElementById("root");
 
@@ -26,6 +26,7 @@ const App = () => {
   const blockStyle = { width: "300px", display: "inline-block", margin: "1em" };
   return (
     <>
+      <h3>ParamInput component</h3>
       <div style={blockStyle}>
         <ParamInput
           name={"text"}
@@ -157,19 +158,34 @@ const App = () => {
           onChange={handleChange}
         />
       </div>
-      {/* <h3>Base inputs:</h3>
 
-      <span>Button</span>
-      <Button>I'm a button</Button>
-      <Select label="Select input: ">
-        <option>Option 1</option>
-        <option>Option 2</option>
-        <option>Option 3</option>
-      </Select>
-      <span>Toggle</span>
-      <Toggle status={true}>On</Toggle>
-      <Toggle status={false}>Off</Toggle>
-      <TextInput label="Text input: "></TextInput> */}
+      <h3>Buttons</h3>
+
+      <div style={blockStyle}>
+        <Button>I'm a button</Button>
+      </div>
+      <div style={blockStyle}>
+        <Toggle status={true}>Toggle On</Toggle>
+        <Toggle status={false}>Toggle Off</Toggle>
+      </div>
+
+      <h3>Inputs</h3>
+
+      <div style={blockStyle}>
+        <Select label="Select input: ">
+          <option>Option 1</option>
+          <option>Option 2</option>
+          <option>Option 3</option>
+        </Select>
+      </div>
+
+      <div style={blockStyle}>
+        <TextInput label="Text Input" placeholder="Write... "></TextInput>
+      </div>
+
+      <div style={blockStyle}>
+        <NumberInput label="Number Input" placeholder="Write... "></NumberInput>
+      </div>
     </>
   );
 };

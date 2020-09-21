@@ -1,29 +1,30 @@
 import React, { Fragment, useRef, useState } from "react";
 import PropTypes from "prop-types";
 import classnames from "classnames";
+import { uid } from "../uid";
 import { Select } from "../input/Select";
-import { uid } from "../utils";
 import css from "./OptionInput.css";
 
 export const OptionInput = props => {
-  const _id = useRef(uid("option"));
+  const _id = useRef(uid("option-input"));
   const {
-    children,
-    className,
-    onChange,
-    options,
-    defaultValue,
-    disabled,
-    error,
-    id = _id.current,
-    invalid,
-    label,
     name,
-    placeholder,
-    required,
-    variant,
+    type,
+    options,
     value,
-    type
+    children,
+    label,
+    id = _id.current,
+    className,
+    variant,
+    invalid,
+    error,
+    disabled,
+    required,
+    placeholder,
+    onChange,
+    onFocus,
+    onBlur
   } = props;
 
   const arrayOfOptions = Array.isArray(options) ? options : Object.keys(options);
@@ -35,23 +36,27 @@ export const OptionInput = props => {
 
   const rootClasses = classnames(css.root, {
     [className]: className,
+    [css[variant]]: variant,
     [css.focus]: focus,
     [css.invalid]: invalid,
-    [css.disabled]: disabled,
-    [css[variant]]: variant
+    [css.disabled]: disabled
   });
 
   return (
     <Select
-      className={rootClasses}
-      onChange={handleOnChange}
       name={name}
-      label={name}
+      value={value ? "" + value : value}
+      label={label}
       id={id}
-      value={"" + value}
+      className={rootClasses}
+      variant={variant}
       invalid={invalid}
       error={error}
-      variant={variant}>
+      required={required}
+      placeholder={placeholder}
+      onChange={handleOnChange}
+      onFocus={onFocus}
+      onBlur={onBlur}>
       {arrayOfOptions.map(value => (
         <option key={`option-${name}-${value}`} value={value}>
           {value}
@@ -62,20 +67,29 @@ export const OptionInput = props => {
   );
 };
 
+OptionInput.defaultProps = {
+  placeholder: "Select option...",
+  onChange: () => {},
+  onFocus: () => {},
+  onBlur: () => {}
+};
+
 OptionInput.propTypes = {
   name: PropTypes.string,
-  value: PropTypes.any,
   type: PropTypes.string,
   options: PropTypes.any,
+  value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   children: PropTypes.node,
-  disabled: PropTypes.bool,
+  label: PropTypes.string,
   id: PropTypes.string,
+  className: PropTypes.string,
+  variant: PropTypes.string,
   invalid: PropTypes.bool,
   error: PropTypes.string,
-  label: PropTypes.string,
-  className: PropTypes.string,
-  onChange: PropTypes.func,
-  placeholder: PropTypes.string,
+  disabled: PropTypes.bool,
   required: PropTypes.bool,
-  variant: PropTypes.string
+  placeholder: PropTypes.string,
+  onChange: PropTypes.func,
+  onFocus: PropTypes.func,
+  onBlur: PropTypes.func
 };

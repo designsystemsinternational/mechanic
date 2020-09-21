@@ -1,27 +1,27 @@
 import React, { Fragment, useRef, useState } from "react";
 import PropTypes from "prop-types";
 import classnames from "classnames";
-import { uid } from "../utils";
+import { uid } from "../uid";
 import css from "./Select.css";
 
 export const Select = props => {
   const _id = useRef(uid("select"));
   const {
-    children,
-    className,
-    onChange,
-    onBlur,
-    defaultValue,
-    disabled,
-    error,
-    id = _id.current,
-    invalid,
-    label,
     name,
-    placeholder,
-    required,
+    value,
+    children,
+    label,
+    id = _id.current,
+    className,
     variant,
-    value
+    invalid,
+    error,
+    disabled,
+    required,
+    placeholder,
+    onChange,
+    onFocus,
+    onBlur
   } = props;
   const [focus, setFocus] = useState(false);
 
@@ -30,32 +30,36 @@ export const Select = props => {
     onChange && onChange(event, name, value);
   });
 
-  const handleOnBlur = useRef(() => {
-    onBlur && onBlur();
+  const handleOnFocus = useRef(event => {
+    onFocus && onFocus(event);
+    setFocus(true);
+  });
+
+  const handleOnBlur = useRef(event => {
+    onBlur && onBlur(event);
     setFocus(false);
   });
 
   const rootClasses = classnames(css.root, {
     [className]: className,
+    [css[variant]]: variant,
     [css.focus]: focus,
     [css.invalid]: invalid,
-    [css.disabled]: disabled,
-    [css[variant]]: variant
+    [css.disabled]: disabled
   });
 
   return (
     <div className={rootClasses}>
       {label && <label htmlFor={id}>{label}</label>}
       <select
+        name={name}
+        value={value}
         id={id}
+        placeholder={placeholder}
         disabled={disabled}
         onChange={handleOnChange.current}
-        onFocus={() => setFocus(true)}
+        onFocus={handleOnFocus.current}
         onBlur={handleOnBlur.current}
-        name={name}
-        placeholder={placeholder}
-        value={value}
-        invalid={error}
         aria-required={required}
         aria-describedby={`error-${id}`}
         aria-invalid={invalid}>
@@ -72,22 +76,26 @@ export const Select = props => {
 };
 
 Select.defaultProps = {
-  placeholder: "Select..."
+  placeholder: "Select...",
+  onChange: () => {},
+  onFocus: () => {},
+  onBlur: () => {}
 };
 
 Select.propTypes = {
   name: PropTypes.string,
   value: PropTypes.string,
   children: PropTypes.node,
-  disabled: PropTypes.bool,
+  label: PropTypes.string,
   id: PropTypes.string,
+  className: PropTypes.string,
+  variant: PropTypes.string,
   invalid: PropTypes.bool,
   error: PropTypes.string,
-  label: PropTypes.string,
-  className: PropTypes.string,
-  onChange: PropTypes.func,
-  onBlur: PropTypes.func,
-  placeholder: PropTypes.string,
+  disabled: PropTypes.bool,
   required: PropTypes.bool,
-  variant: PropTypes.string
+  placeholder: PropTypes.string,
+  onChange: PropTypes.func,
+  onFocus: PropTypes.func,
+  onBlur: PropTypes.func
 };

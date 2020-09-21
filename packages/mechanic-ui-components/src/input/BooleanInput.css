@@ -1,6 +1,15 @@
 .root {
 }
 
+.invalid {
+}
+
+.disabled {
+}
+
+.focus {
+}
+
 .mechanic {
   &.invalid {
     & > button {

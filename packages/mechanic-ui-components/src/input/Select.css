@@ -22,6 +22,15 @@
   background-size: 0.65em auto, 100%;
 }
 
+.invalid {
+}
+
+.disabled {
+}
+
+.focus {
+}
+
 .mechanic {
   &.invalid {
     & > select {

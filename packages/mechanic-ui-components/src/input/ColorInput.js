@@ -1,7 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { ChromePicker } from "react-color";
 import PropTypes from "prop-types";
 import classnames from "classnames";
+import { uid } from "../uid";
+import { Button } from "../buttons/Button";
 import css from "./ColorInput.css";
 
 const colorToString = (color, model) => {
@@ -15,25 +17,30 @@ const colorToString = (color, model) => {
   return "#000";
 };
 
-export const ColorInput = ({
-  name,
-  model,
-  value,
-  label,
-  id,
-  invalid,
-  error,
-  className,
-  variant,
-  onChange,
-  disabled
-}) => {
+export const ColorInput = props => {
+  const _id = useRef(uid("boolean-input"));
+  const {
+    model,
+    name,
+    value,
+    label,
+    id = _id.current,
+    className,
+    variant,
+    invalid,
+    disabled,
+    error,
+    onChange,
+    onFocus,
+    onBlur
+  } = props;
   const [picking, setPicking] = useState(false);
 
   const classes = classnames(css.root, {
     [className]: className,
+    [css[variant]]: css[variant],
     [css.invalid]: invalid,
-    [css[variant]]: css[variant]
+    [css.disabled]: disabled
   });
 
   const handleClick = () => setPicking(picking => !picking);
@@ -45,11 +52,15 @@ export const ColorInput = ({
   return (
     <div className={classes}>
       {label && <label htmlFor={id}>{label}</label>}
-      <div className={css.buttonContainer}>
-        <button onClick={handleClick}>
+      <div
+        id={id}
+        className={css.buttonContainer}
+        aria-describedby={`error-${id}`}
+        aria-invalid={invalid}>
+        <Button onClick={handleClick} onFocus={onFocus} onBlur={onBlur}>
           <div className={css.swatch} style={{ backgroundColor: value }} />
           <span className={css.label}>{value}</span>
-        </button>
+        </Button>
         {picking && (
           <div className={css.popover}>
             <ChromePicker className={css.chromePicker} color={value} onChange={handleChange} />
@@ -66,21 +77,25 @@ export const ColorInput = ({
 };
 
 ColorInput.defaultProps = {
+  model: "rgba",
   onChange: () => {},
-  model: "rgba"
+  onFocus: () => {},
+  onBlur: () => {}
 };
 
 ColorInput.propTypes = {
+  model: PropTypes.string,
   name: PropTypes.string,
   value: PropTypes.string,
-  label: PropTypes.string,
   children: PropTypes.node,
+  label: PropTypes.string,
+  id: PropTypes.string,
   className: PropTypes.string,
+  variant: PropTypes.string,
   disabled: PropTypes.bool,
   error: PropTypes.string,
-  id: PropTypes.string,
   invalid: PropTypes.bool,
   onChange: PropTypes.func,
-  variant: PropTypes.string,
-  model: PropTypes.string
+  onFocus: PropTypes.func,
+  onBlur: PropTypes.func
 };

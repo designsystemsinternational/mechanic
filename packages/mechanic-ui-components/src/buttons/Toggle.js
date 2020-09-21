@@ -1,27 +1,48 @@
-import React from "react";
+import React, { useState, useRef } from "react";
 import PropTypes from "prop-types";
 import classnames from "classnames";
+import { uid } from "../uid";
 import css from "./Toggle.css";
 
-export const Toggle = ({
-  className,
-  id,
-  variant,
-  status,
-  onClick,
-  children,
-  disabled,
-  invalid,
-  error
-}) => {
+export const Toggle = props => {
+  const _id = useRef(uid("toggle"));
+  const {
+    status,
+    children,
+    id = _id.current,
+    className,
+    variant,
+    disabled,
+    onClick,
+    onFocus,
+    onBlur
+  } = props;
+  const [focus, setFocus] = useState(false);
   const classes = classnames(css.root, {
     [className]: className,
     [css[variant]]: css[variant],
-    [css.invalid]: invalid,
+    [css.focus]: focus,
     [css.disabled]: disabled
   });
+
+  const handleOnFocus = useRef(event => {
+    onFocus && onFocus(event);
+    setFocus(true);
+  });
+
+  const handleOnBlur = useRef(event => {
+    onBlur && onBlur(event);
+    setFocus(false);
+  });
+
   return (
-    <button className={classes} type="button" onClick={onClick} disabled={disabled}>
+    <button
+      id={id}
+      className={classes}
+      onClick={onClick}
+      onFocus={handleOnFocus.current}
+      onBlur={handleOnBlur.current}
+      disabled={disabled}>
       <div className={classnames(css.status, { [css.on]: status })} />
       <span className={css.label}>{children}</span>
     </button>
@@ -29,17 +50,19 @@ export const Toggle = ({
 };
 
 Toggle.defaultProps = {
-  onClick: () => {}
+  onClick: () => {},
+  onFocus: () => {},
+  onBlur: () => {}
 };
 
 Toggle.propTypes = {
-  children: PropTypes.node,
   status: PropTypes.bool.isRequired,
-  className: PropTypes.string,
+  children: PropTypes.node,
   id: PropTypes.string,
+  className: PropTypes.string,
+  variant: PropTypes.string,
   disabled: PropTypes.bool,
   onClick: PropTypes.func,
-  variant: PropTypes.string,
-  invalid: PropTypes.bool,
-  error: PropTypes.string
+  onFocus: PropTypes.func,
+  onBlur: PropTypes.func
 };

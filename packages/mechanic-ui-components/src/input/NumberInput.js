@@ -1,36 +1,48 @@
 import React, { useRef, useState } from "react";
 import PropTypes from "prop-types";
 import classnames from "classnames";
-import { uid } from "../utils";
+import { uid } from "../uid";
 import css from "./NumberInput.css";
 
 export const NumberInput = props => {
-  const _id = useRef(uid("input"));
+  const _id = useRef(uid("number-input"));
   const {
     name,
     value,
     label,
+    id = _id.current,
+    className,
+    variant,
+    invalid,
+    error,
+    disabled,
+    required,
+    placeholder,
+    autocomplete,
     min,
     max,
     step,
     slider,
-    placeholder,
     onChange,
     onKeyPress,
-    className,
-    disabled,
-    autocomplete,
-    error,
-    id = _id.current,
-    invalid,
-    required,
-    variant
+    onFocus,
+    onBlur
   } = props;
   const [focus, setFocus] = useState(false);
 
   const handleOnChange = useRef(event => {
     const { name, value } = event.target;
     onChange && onChange(event, name, parseFloat(value));
+  });
+
+  const handleOnFocus = useRef(event => {
+    onFocus && onFocus(event);
+    setFocus(true);
+  });
+
+  const handleOnBlur = useRef(event => {
+    onBlur && onBlur(event);
+    setFocus(false);
   });
 
   const rootClasses = classnames(css.root, {
@@ -48,19 +60,19 @@ export const NumberInput = props => {
         <div className={css["range-wrapper"]}>
           <span className={className.value}>{value}</span>
           <input
-            autoComplete={autocomplete}
-            id={id}
-            name={name}
             type={"range"}
-            value={"" + value}
-            min={"" + min}
-            max={"" + max}
-            step={"" + step}
-            placeholder={placeholder}
+            name={name}
+            value={value ? "" + value : value}
+            id={id}
             disabled={disabled}
-            onFocus={() => setFocus(true)}
-            onBlur={() => setFocus(false)}
+            placeholder={placeholder}
+            autoComplete={autocomplete}
+            min={min ? "" + min : min}
+            max={max ? "" + max : max}
+            step={step ? "" + step : step}
             onChange={handleOnChange.current}
+            onFocus={handleOnFocus.current}
+            onBlur={handleOnBlur.current}
             onKeyPress={onKeyPress}
             aria-required={required}
             aria-describedby={`error-${id}`}
@@ -69,19 +81,19 @@ export const NumberInput = props => {
         </div>
       ) : (
         <input
-          autoComplete={autocomplete}
-          id={id}
-          name={name}
           type={"number"}
-          value={"" + value}
-          min={"" + min}
-          max={"" + max}
-          step={"" + step}
-          placeholder={placeholder}
+          name={name}
+          value={value ? "" + value : value}
+          id={id}
           disabled={disabled}
-          onFocus={() => setFocus(true)}
-          onBlur={() => setFocus(false)}
+          placeholder={placeholder}
+          autoComplete={autocomplete}
+          min={min ? "" + min : min}
+          max={max ? "" + max : max}
+          step={step ? "" + step : step}
           onChange={handleOnChange.current}
+          onFocus={handleOnFocus.current}
+          onBlur={handleOnBlur.current}
           onKeyPress={onKeyPress}
           aria-required={required}
           aria-describedby={`error-${id}`}
@@ -99,26 +111,30 @@ export const NumberInput = props => {
 
 NumberInput.defaultProps = {
   onChange: () => {},
-  onKeyPress: () => {}
+  onKeyPress: () => {},
+  onFocus: () => {},
+  onBlur: () => {}
 };
 
 NumberInput.propTypes = {
   name: PropTypes.string,
-  value: PropTypes.number,
-  min: PropTypes.number,
-  max: PropTypes.number,
-  step: PropTypes.number,
-  slider: PropTypes.bool,
+  value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   label: PropTypes.string,
-  className: PropTypes.string,
-  autocomplete: PropTypes.string,
-  disabled: PropTypes.bool,
-  error: PropTypes.string,
   id: PropTypes.string,
+  className: PropTypes.string,
+  variant: PropTypes.string,
   invalid: PropTypes.bool,
+  error: PropTypes.string,
+  disabled: PropTypes.bool,
+  required: PropTypes.bool,
+  placeholder: PropTypes.string,
+  autocomplete: PropTypes.string,
+  min: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  max: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  step: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  slider: PropTypes.bool,
   onChange: PropTypes.func,
   onKeyPress: PropTypes.func,
-  placeholder: PropTypes.string,
-  required: PropTypes.bool,
-  variant: PropTypes.string
+  onFocus: PropTypes.func,
+  onBlur: PropTypes.func
 };

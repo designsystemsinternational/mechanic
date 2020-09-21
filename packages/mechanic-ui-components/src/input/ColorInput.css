@@ -1,6 +1,12 @@
 .root {
 }
 
+.invalid {
+}
+
+.disabled {
+}
+
 .button-container {
   box-sizing: border-box;
   width: 100%;

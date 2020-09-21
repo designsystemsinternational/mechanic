@@ -6,12 +6,11 @@ import { TextInput } from "./input/TextInput";
 import { NumberInput } from "./input/NumberInput";
 import { BooleanInput } from "./input/BooleanInput";
 import { OptionInput } from "./input/OptionInput";
-import { Select } from "./input/Select";
 import { ColorInput } from "./input/ColorInput";
-import { uid } from "./utils";
+import { uid } from "./uid";
 
 export const ParamInput = ({ name, className, value, attributes, onChange, children }) => {
-  const _id = useRef(uid("input"));
+  const _id = useRef(uid("param-input"));
   const { type, options, validation } = attributes;
   const _default = attributes["default"];
 

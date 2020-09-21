@@ -1,26 +1,28 @@
 import React, { useRef, useState } from "react";
 import PropTypes from "prop-types";
 import classnames from "classnames";
-import { uid } from "../utils";
+import { uid } from "../uid";
 import css from "./TextInput.css";
 
 export const TextInput = props => {
-  const _id = useRef(uid("input"));
+  const _id = useRef(uid("text-input"));
   const {
     name,
     value,
     label,
+    id = _id.current,
+    className,
+    variant,
+    invalid,
+    error,
+    disabled,
+    required,
     placeholder,
+    autocomplete,
     onChange,
     onKeyPress,
-    className,
-    disabled,
-    autocomplete,
-    error,
-    id = _id.current,
-    invalid,
-    required,
-    variant
+    onFocus,
+    onBlur
   } = props;
   const [focus, setFocus] = useState(false);
 
@@ -29,28 +31,38 @@ export const TextInput = props => {
     onChange && onChange(event, name, value);
   });
 
+  const handleOnFocus = useRef(event => {
+    onFocus && onFocus(event);
+    setFocus(true);
+  });
+
+  const handleOnBlur = useRef(event => {
+    onBlur && onBlur(event);
+    setFocus(false);
+  });
+
   const rootClasses = classnames(css.root, {
     [className]: className,
+    [css[variant]]: variant,
     [css.invalid]: invalid,
     [css.disabled]: disabled,
-    [css.focus]: focus,
-    [css[variant]]: variant
+    [css.focus]: focus
   });
 
   return (
     <div className={rootClasses}>
       {label && <label htmlFor={id}>{label}</label>}
       <input
-        autoComplete={autocomplete}
-        id={id}
-        name={name}
         type="text"
+        name={name}
         value={value}
-        placeholder={placeholder}
+        id={id}
         disabled={disabled}
-        onFocus={() => setFocus(true)}
-        onBlur={() => setFocus(false)}
+        placeholder={placeholder}
+        autoComplete={autocomplete}
         onChange={handleOnChange.current}
+        onFocus={handleOnFocus.current}
+        onBlur={handleOnBlur.current}
         onKeyPress={onKeyPress}
         aria-required={required}
         aria-describedby={`error-${id}`}
@@ -67,22 +79,26 @@ export const TextInput = props => {
 
 TextInput.defaultProps = {
   onChange: () => {},
-  onKeyPress: () => {}
+  onKeyPress: () => {},
+  onFocus: () => {},
+  onBlur: () => {}
 };
 
 TextInput.propTypes = {
   name: PropTypes.string,
   value: PropTypes.string,
   label: PropTypes.string,
-  className: PropTypes.string,
-  autocomplete: PropTypes.string,
-  disabled: PropTypes.bool,
-  error: PropTypes.string,
   id: PropTypes.string,
+  className: PropTypes.string,
+  variant: PropTypes.string,
   invalid: PropTypes.bool,
+  error: PropTypes.string,
+  disabled: PropTypes.bool,
+  required: PropTypes.bool,
+  placeholder: PropTypes.string,
+  autocomplete: PropTypes.string,
   onChange: PropTypes.func,
   onKeyPress: PropTypes.func,
-  placeholder: PropTypes.string,
-  required: PropTypes.bool,
-  variant: PropTypes.string
+  onFocus: PropTypes.func,
+  onBlur: PropTypes.func
 };
