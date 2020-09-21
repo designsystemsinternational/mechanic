@@ -1,132 +1,155 @@
+@import "../variables.css";
+
 .root {
+}
+
+.number-input {
+  margin: 0;
+  border: 1px solid var(--mechanic-text);
   box-sizing: border-box;
-  & > input[type="number"] {
-    font-family: inherit;
-    font-size: inherit;
-    font-weight: inherit;
-    box-sizing: border-box;
-    background-color: white;
-    padding: 0.5em 1em;
+  padding: 0.5em 1em;
+
+  background-color: var(--mechanic-background);
+
+  font-size: inherit;
+  font-family: inherit;
+  font-weight: inherit;
+
+  -moz-appearance: textfield;
+  &::-webkit-outer-spin-button,
+  &::-webkit-inner-spin-button {
+    -webkit-appearance: none;
     margin: 0;
+  }
+}
+
+.range-wrapper {
+  display: flex;
+
+  margin: 0;
+  box-sizing: border-box;
+  padding: 0.5em 0;
+
+  background-color: var(--mechanic-background);
+}
+
+.range-label {
+  flex: 0;
+
+  padding: 0 1em;
+}
+
+/* https://css-tricks.com/styling-cross-browser-compatible-range-inputs-css/ */
+.range-input {
+  flex: 1;
+
+  background: transparent; /* Otherwise white in Chrome */
+
+  -webkit-appearance: none; /* Hides the slider so that custom slider can be made */
+
+  /* Special styling for WebKit/Blink */
+  &::-webkit-slider-thumb {
+    margin-top: -14px; /* You need to specify a margin in Chrome, but in Firefox and IE it is automatic */
     border: 1px solid var(--mechanic-text);
-    -moz-appearance: textfield;
-    &::-webkit-outer-spin-button,
-    &::-webkit-inner-spin-button {
-      -webkit-appearance: none;
-      margin: 0;
-    }
+    border-radius: 0;
+    height: 36px;
+    width: 8px;
+
+    background: var(--mechanic-background);
+    cursor: pointer;
+
+    -webkit-appearance: none;
   }
 
-  & > .range-wrapper {
-    box-sizing: border-box;
-    background-color: white;
-    padding: 0.5em 0;
-    margin: 0;
-    display: flex;
-    & > span {
-      flex: 0;
-      padding: 0 1em;
-    }
-    /* https://css-tricks.com/styling-cross-browser-compatible-range-inputs-css/ */
-    & > input[type="range"] {
-      -webkit-appearance: none; /* Hides the slider so that custom slider can be made */
-      flex: 1;
-      background: transparent; /* Otherwise white in Chrome */
+  &:focus {
+    outline: none; /* Removes the blue border. Should probably do some kind of focus styling for accessibility reasons though. */
+  }
 
-      /* Special styling for WebKit/Blink */
-      &::-webkit-slider-thumb {
-        -webkit-appearance: none;
-        border: 1px solid var(--mechanic-text);
-        height: 36px;
-        width: 8px;
-        border-radius: 0;
-        background: #ffffff;
-        cursor: pointer;
-        margin-top: -14px; /* You need to specify a margin in Chrome, but in Firefox and IE it is automatic */
-      }
+  &::-ms-track {
+    /* Hides the slider so custom styles can be added */
+    border-color: transparent;
+    width: 100%;
 
-      &:focus {
-        outline: none; /* Removes the blue border. You should probably do some kind of focus styling for accessibility reasons though. */
-      }
+    background: transparent;
+    cursor: pointer;
 
-      &::-ms-track {
-        width: 100%;
-        cursor: pointer;
+    color: transparent;
+  }
 
-        /* Hides the slider so custom styles can be added */
-        background: transparent;
-        border-color: transparent;
-        color: transparent;
-      }
+  /* All the same stuff for Firefox */
+  &::-moz-range-thumb {
+    border: 1px solid var(--mechanic-text);
+    border-radius: 0;
+    height: 36px;
+    width: 8px;
 
-      /* All the same stuff for Firefox */
-      &::-moz-range-thumb {
-        border: 1px solid var(--mechanic-text);
-        height: 36px;
-        width: 8px;
-        border-radius: 0;
-        background: #ffffff;
-        cursor: pointer;
-      }
+    background: var(--mechanic-background);
+    cursor: pointer;
+  }
 
-      /* All the same stuff for IE */
-      &::-ms-thumb {
-        border: 1px solid var(--mechanic-text);
-        height: 36px;
-        width: 8px;
-        border-radius: 0;
-        background: #ffffff;
-        cursor: pointer;
-      }
+  /* All the same stuff for IE */
+  &::-ms-thumb {
+    border: 1px solid var(--mechanic-text);
+    border-radius: 0;
+    height: 36px;
+    width: 8px;
 
-      &::-webkit-slider-runnable-track {
-        width: 100%;
-        height: 2px;
-        cursor: pointer;
-        background: var(--mechanic-text);
-        border-radius: 0;
-        border: 1px solid var(--mechanic-text);
-      }
+    background: var(--mechanic-background);
+    cursor: pointer;
+  }
 
-      &:focus::-webkit-slider-runnable-track {
-        background: var(--mechanic-text);
-      }
+  &::-webkit-slider-runnable-track {
+    border: 1px solid var(--mechanic-text);
+    border-radius: 0;
+    width: 100%;
+    height: 1px;
 
-      &::-moz-range-track {
-        width: 100%;
-        height: 2px;
-        cursor: pointer;
-        background: var(--mechanic-text);
-        border-radius: 0;
-        border: 1px solid var(--mechanic-text);
-      }
+    background: var(--mechanic-text);
+    cursor: pointer;
+  }
 
-      &::-ms-track {
-        width: 100%;
-        height: 2px;
-        cursor: pointer;
-        background: transparent;
-        border-color: transparent;
-        border-width: 16px 0;
-        color: transparent;
-      }
-      &::-ms-fill-lower {
-        background: var(--mechanic-text);
-        border: 1px solid var(--mechanic-text);
-        border-radius: 2.6px;
-      }
-      &:focus::-ms-fill-lower {
-        background: var(--text);
-      }
-      &::-ms-fill-upper {
-        background: var(--text);
-        border: 1px solid var(--mechanic-text);
-        border-radius: 2.6px;
-      }
-      &:focus::-ms-fill-upper {
-        background: var(--mechanic-text);
-      }
-    }
+  &:focus::-webkit-slider-runnable-track {
+    background: var(--mechanic-text);
+  }
+
+  &::-moz-range-track {
+    border: 1px solid var(--mechanic-text);
+    border-radius: 0;
+    width: 100%;
+    height: 1px;
+
+    background: var(--mechanic-text);
+    cursor: pointer;
+  }
+
+  &::-ms-track {
+    border: 1px solid var(--mechanic-text);
+    border-radius: 0;
+    width: 100%;
+    height: 1px;
+
+    background: var(--mechanic-text);
+    cursor: pointer;
+
+    color: transparent;
+  }
+  &::-ms-fill-lower {
+    border: 1px solid var(--mechanic-text);
+    border-radius: 2.6px;
+
+    background: var(--mechanic-text);
+  }
+  &:focus::-ms-fill-lower {
+    background: var(--text);
+  }
+  &::-ms-fill-upper {
+    border: 1px solid var(--mechanic-text);
+    border-radius: 2.6px;
+
+    background: var(--text);
+  }
+  &:focus::-ms-fill-upper {
+    background: var(--mechanic-text);
   }
 }
 
@@ -139,13 +162,33 @@
 .focus {
 }
 
-.mechanic {
+.mechanic-param {
+  & > .label {
+    display: block;
+  
+    margin-bottom: 0.5em;
+    width: 100%;
+  
+    font-size: 0.75em;
+    font-family: var(--mechanic-param-font);
+  }
+
+  & > .number-input {
+    width: 100%;
+    
+    font-family: var(--mechanic-param-font);
+  }
+
+  & .range-label {
+    font-family: var(--mechanic-param-font);
+  }
+
   &.invalid {
     & > input {
       border: 1px solid var(--mechanic-error);
     }
 
-    & .range-wrapper [type="range"] {
+    & .range-wrapper .range-input {
       &::-webkit-slider-thumb {
         border: 1px solid var(--mechanic-error);
       }
@@ -162,9 +205,10 @@
     }
 
     & > .error {
-      background: var(--mechanic-error);
       box-sizing: border-box;
       padding: 0.1em;
+
+      background: var(--mechanic-error);
     }
   }
 }

@@ -50,11 +50,16 @@ export const Select = props => {
 
   return (
     <div className={rootClasses}>
-      {label && <label htmlFor={id}>{label}</label>}
+      {label && (
+        <label className={css.label} htmlFor={id}>
+          {label}
+        </label>
+      )}
       <select
         name={name}
         value={value}
         id={id}
+        className={css.select}
         placeholder={placeholder}
         disabled={disabled}
         onChange={handleOnChange.current}

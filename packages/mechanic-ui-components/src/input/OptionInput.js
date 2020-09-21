@@ -35,11 +35,7 @@ export const OptionInput = props => {
   };
 
   const rootClasses = classnames(css.root, {
-    [className]: className,
-    [css[variant]]: variant,
-    [css.focus]: focus,
-    [css.invalid]: invalid,
-    [css.disabled]: disabled
+    [className]: className
   });
 
   return (
@@ -52,6 +48,7 @@ export const OptionInput = props => {
       variant={variant}
       invalid={invalid}
       error={error}
+      disabled={disabled}
       required={required}
       placeholder={placeholder}
       onChange={handleOnChange}

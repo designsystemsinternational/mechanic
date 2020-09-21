@@ -32,10 +32,15 @@ export const BooleanInput = props => {
 
   return (
     <div className={rootClasses}>
-      {label && <label htmlFor={id}>{label}</label>}
+      {label && (
+        <label className={css.label} htmlFor={id}>
+          {label}
+        </label>
+      )}
       <Toggle
         name={name}
         id={id}
+        className={css.toggle}
         status={value}
         onClick={e => onChange(e, name, !value)}
         onFocus={onFocus}

@@ -186,6 +186,10 @@ const App = () => {
       <div style={blockStyle}>
         <NumberInput label="Number Input" placeholder="Write... "></NumberInput>
       </div>
+
+      <div style={blockStyle}>
+        <NumberInput label="Slider Number Input" slider min="100" max="200" step="5"></NumberInput>
+      </div>
     </>
   );
 };

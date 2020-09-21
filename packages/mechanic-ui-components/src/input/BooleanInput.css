@@ -1,3 +1,5 @@
+@import "../variables.css";
+
 .root {
 }
 
@@ -10,16 +12,33 @@
 .focus {
 }
 
-.mechanic {
+.mechanic-param {
+  & > .label {
+    display: block;
+
+    margin-bottom: 0.5em;
+    width: 100%;
+
+    font-size: 0.75em;
+    font-family: var(--mechanic-param-font);
+  }
+
+  & > .toggle {
+    width: 100%;
+    
+    font-family: var(--mechanic-param-font);
+  }
+
   &.invalid {
     & > button {
       border: 1px solid var(--mechanic-error);
     }
 
     & > .error {
-      background: var(--mechanic-error);
       box-sizing: border-box;
       padding: 0.1em;
+
+      background: var(--mechanic-error);
     }
   }
 }

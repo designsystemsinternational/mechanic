@@ -51,15 +51,19 @@ export const ColorInput = props => {
 
   return (
     <div className={classes}>
-      {label && <label htmlFor={id}>{label}</label>}
+      {label && (
+        <label className={css.label} htmlFor={id}>
+          {label}
+        </label>
+      )}
       <div
         id={id}
         className={css.buttonContainer}
         aria-describedby={`error-${id}`}
         aria-invalid={invalid}>
-        <Button onClick={handleClick} onFocus={onFocus} onBlur={onBlur}>
+        <Button className={css.button} onClick={handleClick} onFocus={onFocus} onBlur={onBlur}>
           <div className={css.swatch} style={{ backgroundColor: value }} />
-          <span className={css.label}>{value}</span>
+          <span>{value}</span>
         </Button>
         {picking && (
           <div className={css.popover}>

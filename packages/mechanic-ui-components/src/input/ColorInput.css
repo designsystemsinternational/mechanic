@@ -1,3 +1,5 @@
+@import "../variables.css";
+
 .root {
 }
 
@@ -8,74 +10,72 @@
 }
 
 .button-container {
-  box-sizing: border-box;
-  width: 100%;
-  height: 36px;
   position: relative;
-  & > button {
-    box-sizing: border-box;
-    width: 100%;
-    height: 36px;
-    padding: 0.5em 1em;
-    -webkit-appearance: none;
-    cursor: pointer;
-    padding: 0.5em 1em;
-    margin: 0;
-    font-family: inherit;
-    font-size: inherit;
-    font-weight: inherit;
-    -webkit-appearance: none;
-    background-color: white;
-    border: 1px solid var(--mechanic-text);
-  }
+}
+
+.button {
+  min-width: 240px;
+  height: 36px;
 }
 
 .swatch {
-  display: inline-block;
-  width: 18px;
-  height: 18px;
   position: absolute;
   left: 1em;
   top: 50%;
+
+  display: inline-block;
   transform: translateY(-50%);
+
+  width: 18px;
+  height: 18px;
 }
 
 .popover {
   position: absolute;
+  z-index: 2;
   top: 36px;
   left: 0;
-  right: 0;
-  width: 100%;
-  z-index: 2;
+
   padding-bottom: 30px;
+  width: 100%;
+
   & > .chrome-picker {
-    width: 100% !important;
     box-shadow: none !important;
     border: 1px solid var(--mechanic-text) !important;
     border-top: none !important;
     border-radius: 0 !important;
     box-sizing: border-box !important;
+    width: 100% !important;
   }
 }
 
-.cover {
-  position: fixed;
-  top: 0px;
-  right: 0px;
-  bottom: 0px;
-  left: 0px;
-}
+.mechanic-param {
+  & > .label {
+    display: block;
 
-.mechanic {
+    margin-bottom: 0.5em;
+    width: 100%;
+
+    font-size: 0.75em;
+    font-family: var(--mechanic-param-font);
+  }
+
+  & .button {
+    width: 100%;
+
+    font-family: var(--mechanic-param-font);
+  }
+
   &.invalid {
     & .button-container button {
       border: 1px solid var(--mechanic-error);
     }
 
     & > .error {
-      background: var(--mechanic-error);
       box-sizing: border-box;
       padding: 0.1em;
+
+      background: var(--mechanic-error);
     }
   }
 }

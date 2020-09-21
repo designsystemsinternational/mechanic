@@ -51,12 +51,17 @@ export const TextInput = props => {
 
   return (
     <div className={rootClasses}>
-      {label && <label htmlFor={id}>{label}</label>}
+      {label && (
+        <label className={css.label} htmlFor={id}>
+          {label}
+        </label>
+      )}
       <input
         type="text"
         name={name}
         value={value}
         id={id}
+        className={css.input}
         disabled={disabled}
         placeholder={placeholder}
         autoComplete={autocomplete}

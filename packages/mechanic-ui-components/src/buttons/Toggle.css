@@ -1,24 +1,33 @@
 @import "../variables.css";
 
 .root {
-  font-family: inherit;
-  font-size: inherit;
-  line-height: 1em;
-  font-weight: inherit;
-  box-sizing: border-box;
   position: relative;
-  -webkit-appearance: none;
+
+  margin: 0;
+  border: 1px solid var(--mechanic-text);
+  box-sizing: border-box;
   min-width: 120px;
   padding: 0.5em 1em;
-  margin: 0;
-  background-color: white;
-  border: 1px solid var(--mechanic-text);
+
+  background-color: var(--mechanic-background);
+
+  font-size: inherit;
+  line-height: 1em;
+  font-family: inherit;
+  font-weight: inherit;
+
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  appearance: none;
+
   &:not([disabled]) {
     cursor: pointer;
   }
+
   &:active:not([disabled]) {
     background-color: var(--mechanic-blue);
-    color: white;
+
+    color: var(--mechanic-background);
   }
 }
 

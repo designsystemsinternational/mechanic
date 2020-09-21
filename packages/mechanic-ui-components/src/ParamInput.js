@@ -33,7 +33,7 @@ export const ParamInput = ({ name, className, value, attributes, onChange, child
         options={options}
         invalid={error ? true : false}
         error={error}
-        variant="mechanic">
+        variant="mechanic-param">
         {children}
       </OptionInput>
     );
@@ -49,7 +49,7 @@ export const ParamInput = ({ name, className, value, attributes, onChange, child
         value={actualValue}
         invalid={error ? true : false}
         error={error}
-        variant="mechanic">
+        variant="mechanic-param">
         {children}
       </BooleanInput>
     );
@@ -68,7 +68,7 @@ export const ParamInput = ({ name, className, value, attributes, onChange, child
         onChange={onChange}
         invalid={error ? true : false}
         error={error}
-        variant="mechanic">
+        variant="mechanic-param">
         {children}
       </ColorInput>
     );
@@ -89,7 +89,7 @@ export const ParamInput = ({ name, className, value, attributes, onChange, child
         onChange={onChange}
         invalid={error ? true : false}
         error={error}
-        variant="mechanic">
+        variant="mechanic-param">
         {children}
       </NumberInput>
     );
@@ -104,7 +104,7 @@ export const ParamInput = ({ name, className, value, attributes, onChange, child
       onChange={onChange}
       invalid={error ? true : false}
       error={error}
-      variant="mechanic">
+      variant="mechanic-param">
       {children}
     </TextInput>
   );

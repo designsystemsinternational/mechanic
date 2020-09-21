@@ -55,15 +55,20 @@ export const NumberInput = props => {
 
   return (
     <div className={rootClasses}>
-      {label && <label htmlFor={id}>{label}</label>}
+      {label && (
+        <label className={css.label} htmlFor={id}>
+          {label}
+        </label>
+      )}
       {slider ? (
         <div className={css["range-wrapper"]}>
-          <span className={className.value}>{value}</span>
+          {value !== undefined && <span className={css.rangeLabel}>{value}</span>}
           <input
             type={"range"}
             name={name}
             value={value ? "" + value : value}
             id={id}
+            className={css.rangeInput}
             disabled={disabled}
             placeholder={placeholder}
             autoComplete={autocomplete}
@@ -85,6 +90,7 @@ export const NumberInput = props => {
           name={name}
           value={value ? "" + value : value}
           id={id}
+          className={css.numberInput}
           disabled={disabled}
           placeholder={placeholder}
           autoComplete={autocomplete}

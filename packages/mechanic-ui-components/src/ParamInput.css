@@ -1,22 +1,2 @@
-@import "variables.css";
-
 .root {
-  & > * {
-    width: 100%;
-  }
-
-  & > label:first-child {
-    display: block;
-    margin-bottom: 0.5em;
-    font-size: 0.75em;
-    font-family: var(--mechanic-param-font);
-  }
-
-  & input[type="text"],
-  & input[type="number"],
-  & select,
-  & button,
-  & span {
-    font-family: var(--mechanic-param-font);
-  }
 }

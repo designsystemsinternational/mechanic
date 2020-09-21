@@ -1,14 +1,18 @@
+@import "../variables.css";
+
 .root {
+}
+
+.input {
+  border: 1px solid var(--mechanic-text);
   box-sizing: border-box;
-  & > input {
-    font-family: inherit;
-    font-size: inherit;
-    font-weight: inherit;
-    box-sizing: border-box;
-    padding: 0.5em 1em;
-    background-color: white;
-    border: 1px solid var(--mechanic-text);
-  }
+  padding: 0.5em 1em;
+
+  background-color: var(--mechanic-background);
+
+  font-size: inherit;
+  font-family: inherit;
+  font-weight: inherit;
 }
 
 .invalid {
@@ -20,16 +24,33 @@
 .focus {
 }
 
-.mechanic {
+.mechanic-param {
+  & > .label {
+    display: block;
+
+    margin-bottom: 0.5em;
+    width: 100%;
+
+    font-size: 0.75em;
+    font-family: var(--mechanic-param-font);
+  }
+
+  & > .input {
+    width: 100%;
+    
+    font-family: var(--mechanic-param-font);
+  }
+
   &.invalid {
-    & > input {
+    & > .input {
       border: 1px solid var(--mechanic-error);
     }
 
     & > .error {
-      background: var(--mechanic-error);
       box-sizing: border-box;
       padding: 0.1em;
+
+      background: var(--mechanic-error);
     }
   }
 }
