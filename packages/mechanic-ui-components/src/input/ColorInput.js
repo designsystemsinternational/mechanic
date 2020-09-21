@@ -20,8 +20,8 @@ const colorToString = (color, model) => {
 export const ColorInput = props => {
   const _id = useRef(uid("boolean-input"));
   const {
-    model,
     name,
+    model,
     value,
     label,
     id = _id.current,
@@ -88,8 +88,8 @@ ColorInput.defaultProps = {
 };
 
 ColorInput.propTypes = {
-  model: PropTypes.string,
   name: PropTypes.string,
+  model: PropTypes.string,
   value: PropTypes.string,
   children: PropTypes.node,
   label: PropTypes.string,

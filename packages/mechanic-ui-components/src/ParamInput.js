@@ -10,7 +10,7 @@ import { ColorInput } from "./input/ColorInput";
 import { uid } from "./uid";
 
 export const ParamInput = ({ name, className, value, attributes, onChange, children }) => {
-  const _id = useRef(uid("param-input"));
+  const id = useRef(uid("param-input"));
   const { type, options, validation } = attributes;
   const _default = attributes["default"];
 
@@ -24,16 +24,17 @@ export const ParamInput = ({ name, className, value, attributes, onChange, child
   if (options) {
     return (
       <OptionInput
-        className={rootClasses}
-        onChange={onChange}
         name={name}
-        label={name}
-        value={actualValue}
         type={type}
         options={options}
+        value={actualValue}
+        label={name}
+        id={id.current}
+        className={rootClasses}
+        variant="mechanic-param"
+        onChange={onChange}
         invalid={error ? true : false}
-        error={error}
-        variant="mechanic-param">
+        error={error}>
         {children}
       </OptionInput>
     );
@@ -42,14 +43,15 @@ export const ParamInput = ({ name, className, value, attributes, onChange, child
   if (type === "boolean") {
     return (
       <BooleanInput
-        className={rootClasses}
-        onChange={onChange}
         name={name}
-        label={name}
         value={actualValue}
+        label={name}
+        id={id.current}
+        className={rootClasses}
+        variant="mechanic-param"
         invalid={error ? true : false}
         error={error}
-        variant="mechanic-param">
+        onChange={onChange}>
         {children}
       </BooleanInput>
     );
@@ -59,16 +61,16 @@ export const ParamInput = ({ name, className, value, attributes, onChange, child
     const { model } = attributes;
     return (
       <ColorInput
-        className={rootClasses}
         name={name}
-        label={name}
-        id={_id.current}
-        value={actualValue}
         model={model}
-        onChange={onChange}
+        value={actualValue}
+        label={name}
+        id={id.current}
+        className={rootClasses}
+        variant="mechanic-param"
         invalid={error ? true : false}
         error={error}
-        variant="mechanic-param">
+        onChange={onChange}>
         {children}
       </ColorInput>
     );
@@ -78,18 +80,19 @@ export const ParamInput = ({ name, className, value, attributes, onChange, child
     const { min, max, step, slider } = attributes;
     return (
       <NumberInput
-        className={rootClasses}
         label={name}
-        name={name}
-        slider={slider}
         value={actualValue}
+        name={name}
+        id={id.current}
+        className={rootClasses}
+        variant="mechanic-param"
+        invalid={error ? true : false}
+        error={error}
+        slider={slider}
         min={min}
         max={max}
         step={step}
-        onChange={onChange}
-        invalid={error ? true : false}
-        error={error}
-        variant="mechanic-param">
+        onChange={onChange}>
         {children}
       </NumberInput>
     );
@@ -97,14 +100,15 @@ export const ParamInput = ({ name, className, value, attributes, onChange, child
 
   return (
     <TextInput
-      className={rootClasses}
-      label={name}
       name={name}
       value={actualValue}
-      onChange={onChange}
+      label={name}
+      id={id.current}
+      className={rootClasses}
+      variant="mechanic-param"
       invalid={error ? true : false}
       error={error}
-      variant="mechanic-param">
+      onChange={onChange}>
       {children}
     </TextInput>
   );
