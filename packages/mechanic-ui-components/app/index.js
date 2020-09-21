@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { render } from "react-dom";
-import { ParamInput, TextInput, NumberInput, Select, Button, Toggle } from "../src";
+import { ParamInput, TextInput, NumberInput, ColorInput, Select, Button, Toggle } from "../src";
 
 const root = document.getElementById("root");
 
@@ -172,14 +172,6 @@ const App = () => {
       <h3>Inputs</h3>
 
       <div style={blockStyle}>
-        <Select label="Select input: ">
-          <option>Option 1</option>
-          <option>Option 2</option>
-          <option>Option 3</option>
-        </Select>
-      </div>
-
-      <div style={blockStyle}>
         <TextInput label="Text Input" placeholder="Write... "></TextInput>
       </div>
 
@@ -188,7 +180,28 @@ const App = () => {
       </div>
 
       <div style={blockStyle}>
+        <NumberInput
+          label="Range Input"
+          placeholder="Write... "
+          min="100"
+          max="200"
+          step="5"></NumberInput>
+      </div>
+
+      <div style={blockStyle}>
         <NumberInput label="Slider Number Input" slider min="100" max="200" step="5"></NumberInput>
+      </div>
+
+      <div style={blockStyle}>
+        <ColorInput value="rgba(100, 200, 200,1)"></ColorInput>
+      </div>
+
+      <div style={blockStyle}>
+        <Select label="Select input: ">
+          <option>Option 1</option>
+          <option>Option 2</option>
+          <option>Option 3</option>
+        </Select>
       </div>
     </>
   );
