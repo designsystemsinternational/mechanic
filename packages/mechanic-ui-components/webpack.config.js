@@ -18,29 +18,8 @@ module.exports = async (env, argv) => {
     exclude: /.+\/node_modules\/.+/
   };
 
-  const externalCss = {
-    test: /\.(css)$/,
-    include: [/.+\/node_modules\/.+/, /.+\/mechanic-ui-components\/.+/],
-    use: [isProduction ? MiniCssExtractPlugin.loader : "style-loader"].concat([
-      {
-        loader: "css-loader",
-        options: {
-          modules: false,
-          importLoaders: 1
-        }
-      },
-      {
-        loader: "postcss-loader",
-        options: {
-          sourceMap: true
-        }
-      }
-    ])
-  };
-
   const css = {
     test: /\.(css)$/,
-    exclude: [/.+\/node_modules\/.+/, /.+\/mechanic-ui-components\/.+/],
     use: [isProduction ? MiniCssExtractPlugin.loader : "style-loader"].concat([
       {
         loader: "css-loader",
@@ -79,19 +58,15 @@ module.exports = async (env, argv) => {
     }),
     new HtmlWebPackPlugin({
       template: "./app/index.html",
+      filename: "index.html",
       chunks: ["app"]
-    }),
-    new HtmlWebPackPlugin({
-      template: "./app/index.html",
-      filename: "functions.html",
-      chunks: ["functions"]
     })
   ].concat(
     isProduction
       ? [
           new CleanWebpackPlugin(),
           new MiniCssExtractPlugin({
-            filename: "[contenthash]-[name].css"
+            filename: "[name].css"
           })
         ]
       : [new webpack.HotModuleReplacementPlugin()]
@@ -117,21 +92,35 @@ Copied "${url}" to clipboard.
 `);
   }
 
+  let externals = {};
+  if (isProduction) {
+    // Don't bundle react or react-dom
+    (externals.react = {
+      commonjs: "react",
+      commonjs2: "react",
+      amd: "React",
+      root: "React"
+    }),
+      (externals["react-dom"] = {
+        commonjs: "react-dom",
+        commonjs2: "react-dom",
+        amd: "ReactDOM",
+        root: "ReactDOM"
+      });
+  }
+
   return {
     mode,
     devtool: isProduction ? "source-map" : "eval-source-map",
     entry: {
-      app: "./app/index.js",
-      functions: "./functions/index.js"
+      mechanic: "./src/index.js",
+      app: "./app/index.js"
     },
     output: {
       path: path.join(__dirname, "dist"),
       libraryTarget: "umd",
       publicPath: "/",
-      filename: isProduction ? "[contenthash]-[name].js" : "[hash]-[name].js",
-      chunkFilename: isProduction
-        ? "[contenthash]-[name].[id].chunk.js"
-        : "[hash]-[name].[id].chunk.js"
+      filename: "[name].js"
     },
     resolve: {
       extensions: [".js", ".jsx", ".json"],
@@ -139,8 +128,9 @@ Copied "${url}" to clipboard.
         react: path.resolve("./node_modules/react")
       }
     },
+    externals,
     module: {
-      rules: [js, css, externalCss]
+      rules: [js, css]
     },
     optimization,
     plugins,

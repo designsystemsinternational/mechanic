@@ -1,5 +1,5 @@
 /**
- * Am error class for Mechanic-related issues
+ * An error class for Mechanic-related issues
  */
 class MechanicError extends Error {
   constructor(message) {

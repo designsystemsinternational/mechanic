@@ -2,7 +2,7 @@ import { Mechanic } from "mechanic-utils";
 
 const root = document.getElementById("root");
 
-const run = (functionName, func, values, isPreview) => {
+export const run = (functionName, func, values, isPreview) => {
   root.innerHTML = "";
 
   const mechanic = new Mechanic(func.params, func.settings, values);
@@ -32,5 +32,3 @@ const run = (functionName, func, values, isPreview) => {
 
   func.handler(mechanic.values, { frame: onFrame, done: onDone });
 };
-
-export default run;
