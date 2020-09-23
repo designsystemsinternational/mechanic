@@ -2,14 +2,25 @@ import React, { useState, useRef, useEffect } from "react";
 import PropTypes from "prop-types";
 import classnames from "classnames";
 import Mousetrap from "mousetrap";
-import { Select } from "../components/input/Select";
-import { Button } from "../components/input/Button";
-import { Toggle } from "../components/input/Toggle";
-import { ParamInput } from "../components/ParamInput";
+
+import createPersistedState from "use-persisted-state";
+const useFunctionValues = createPersistedState("function-values");
+
+import { Button, Toggle, ParamInput } from "mechanic-ui-components";
+import "mechanic-ui-components/dist/mechanic.css";
+
 import css from "./Function.css";
 
 export const Function = ({ name, exports, children }) => {
-  const [values, setValues] = useState({ preset: "default" });
+  const [allValues, setAllValues] = useFunctionValues({});
+
+  const values = allValues[name] || { preset: "default" };
+  const setValues = assigFunc => {
+    setAllValues(allValues => {
+      return Object.assign({}, allValues, { [name]: assigFunc(allValues[name]) });
+    });
+  };
+
   const [scaleToFit, setScaleToFit] = useState(true);
 
   const mainRef = useRef();
@@ -85,39 +96,23 @@ export const Function = ({ name, exports, children }) => {
         <div className={css.line} />
         <div className={css.paramsWrapper}>
           <div className={css.params}>
-            <div className={css.param}>
-              <div className={classnames(css.row, css.strong)}>
-                <span className={classnames(css.grow, css.paramlabel)}>preset</span>
-              </div>
-              <div className={css.row}>
-                <Select
-                  className={css.grow}
-                  onChange={handleOnChange}
-                  name="preset"
-                  value={values.preset}>
-                  {presets.map(preset => (
-                    <option key={`preset-${preset}`} value={preset}>
-                      {preset}
-                    </option>
-                  ))}
-                </Select>
-              </div>
-            </div>
+            <ParamInput
+              className={css.param}
+              key="param-preset"
+              name="preset"
+              value={values.preset}
+              attributes={{ type: "string", options: presets, default: presets[0] }}
+              onChange={handleOnChange}
+            />
             {Object.entries(params).map(([name, param]) => (
-              <div key={`param-${name}`} className={css.param}>
-                <div className={classnames(css.row, css.strong)}>
-                  <span className={classnames(css.grow, css.paramlabel)}>{name}</span>
-                </div>
-                <div className={css.row}>
-                  <ParamInput
-                    className={css.grow}
-                    name={name}
-                    value={values[name]}
-                    options={param}
-                    onChange={handleOnChange}
-                  />
-                </div>
-              </div>
+              <ParamInput
+                className={css.param}
+                key={`param-${name}`}
+                name={name}
+                value={values[name]}
+                attributes={param}
+                onChange={handleOnChange}
+              />
             ))}
           </div>
         </div>

@@ -4,7 +4,7 @@ import { extractContexts } from "mechanic-utils";
 
 import { Function } from "./pages/Function";
 import { NotFound } from "./pages/NotFound";
-import { Nav } from "./components/Nav";
+import { Nav } from "./pages/Nav";
 
 const functionContext = require.context("../functions", true, /^(.{2,})\/index\.js$/);
 const { functions } = extractContexts(functionContext);

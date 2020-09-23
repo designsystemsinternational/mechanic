@@ -1,11 +1,16 @@
 {
-  "name": "@designsystemsinternational/mechanic-template",
+  "name": "@designsystemsinternational/mechanic-ui-components",
   "version": "0.0.1",
-  "main": "app/index.js",
+  "main": "dist/mechanic.js",
   "scripts": {
-    "start": "serve dist",
+    "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "webpack-dev-server --mode development",
-    "build": "webpack --mode production"
+    "build": "webpack --mode production",
+    "prepublish": "rm -rf ./dist && npm run build"
+  },
+  "peerDependencies": {
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1"
   },
   "devDependencies": {
     "@babel/cli": "^7.8.4",
@@ -44,14 +49,7 @@
     "webpack-dev-server": "^3.11.0"
   },
   "dependencies": {
-    "mechanic-engine-canvas": "../mechanic-engine-canvas",
-    "mechanic-engine-p5": "../mechanic-engine-p5",
-    "mechanic-engine-react": "../mechanic-engine-react",
-    "mechanic-ui-components": "../mechanic-ui-components",
     "mechanic-utils": "../mechanic-utils",
-    "mousetrap": "^1.6.5",
-    "p5": "^1.1.9",
-    "seedrandom": "^3.0.5",
-    "use-persisted-state": "^0.3.0"
+    "react-color": "^2.18.1"
   }
 }
