@@ -1,4 +1,3 @@
-import engine from "mechanic-engine-canvas";
 import { getColors } from "../utils/graphics";
 import {
   computeBaseBricks,
@@ -75,51 +74,56 @@ export const handler = (params, mechanic) => {
 };
 
 export const params = {
-  size: {
-    default: {
-      width: 500,
-      height: 111
-    },
-    bigger: {
-      width: 500,
-      height: 222
-    },
-    biggerr: {
-      width: 500,
-      height: 333
-    }
+  width: {
+    type: "number",
+    default: 500
+  },
+  height: {
+    type: "number",
+    default: 111
   },
   text: {
-    type: "string",
+    type: "text",
     default: "Whatever you want"
   },
   columns: {
-    type: "integer",
+    type: "number",
     default: 13
   },
   rows: {
-    type: "integer",
+    type: "number",
     default: 2
   },
   colors: {
-    type: "string",
+    type: "text",
     default: "#11457e,#d7141a,#f1f1f1"
   },
   offset: {
-    type: "integer",
+    type: "number",
     default: 0
   },
   duration: {
-    type: "integer",
+    type: "number",
     default: 10000
   },
   loops: {
-    type: "integer",
+    type: "number",
     default: 4
   }
 };
 
+export const presets = {
+  bigger: {
+    width: 500,
+    height: 222
+  },
+  biggerr: {
+    width: 500,
+    height: 333
+  }
+};
+
 export const settings = {
-  engine,
+  engine: require("mechanic-engine-canvas").run,
   animated: true
 };

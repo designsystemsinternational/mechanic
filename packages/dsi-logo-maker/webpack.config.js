@@ -18,8 +18,29 @@ module.exports = async (env, argv) => {
     exclude: /.+\/node_modules\/.+/
   };
 
+  const externalCss = {
+    test: /\.(css)$/,
+    include: [/.+\/node_modules\/.+/, /.+\/mechanic-ui-components\/.+/],
+    use: [isProduction ? MiniCssExtractPlugin.loader : "style-loader"].concat([
+      {
+        loader: "css-loader",
+        options: {
+          modules: false,
+          importLoaders: 1
+        }
+      },
+      {
+        loader: "postcss-loader",
+        options: {
+          sourceMap: true
+        }
+      }
+    ])
+  };
+
   const css = {
     test: /\.(css)$/,
+    exclude: [/.+\/node_modules\/.+/, /.+\/mechanic-ui-components\/.+/],
     use: [isProduction ? MiniCssExtractPlugin.loader : "style-loader"].concat([
       {
         loader: "css-loader",
@@ -119,7 +140,7 @@ Copied "${url}" to clipboard.
       }
     },
     module: {
-      rules: [js, css]
+      rules: [js, css, externalCss]
     },
     optimization,
     plugins,

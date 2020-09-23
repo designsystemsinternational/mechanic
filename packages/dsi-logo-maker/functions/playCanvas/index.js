@@ -1,4 +1,3 @@
-import engine from "mechanic-engine-canvas";
 import { getColors } from "../utils/graphics";
 import {
   computeBaseBricks,
@@ -58,15 +57,13 @@ export const handler = (params, mechanic) => {
 };
 
 export const params = {
-  size: {
-    default: {
-      width: 300,
-      height: 300
-    },
-    bigger: {
-      width: 500,
-      height: 500
-    }
+  width: {
+    type: "number",
+    default: 300
+  },
+  height: {
+    type: "number",
+    default: 300
   },
   allSameColors: {
     type: "boolean",
@@ -74,6 +71,14 @@ export const params = {
   }
 };
 
+export const presets = {
+  bigger: {
+    width: 500,
+    height: 500
+  }
+};
+
 export const settings = {
-  engine
+  engine: require("mechanic-engine-canvas").run,
+  usesRandom: true
 };

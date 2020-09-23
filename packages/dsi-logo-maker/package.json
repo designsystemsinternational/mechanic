@@ -47,6 +47,8 @@
     "mousetrap": "^1.6.5",
     "mechanic-utils": "../mechanic-utils",
     "mechanic-engine-canvas": "../mechanic-engine-canvas",
-    "mechanic-engine-react": "../mechanic-engine-react"
+    "mechanic-engine-react": "../mechanic-engine-react",
+    "mechanic-ui-components": "../mechanic-ui-components",
+    "use-persisted-state": "^0.3.0"
   }
 }

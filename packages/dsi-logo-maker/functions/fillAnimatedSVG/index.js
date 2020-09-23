@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useRef } from "react";
-import engine from "mechanic-engine-react";
 import { getColors } from "../utils/graphics";
 import {
   computeBaseBricks,
@@ -84,27 +83,30 @@ export const handler = ({ width, height, frame, done, logoWidth, logoRatio, dura
 };
 
 export const params = {
-  size: {
-    default: {
-      width: 200,
-      height: 200
-    }
+  width: {
+    type: "number",
+    default: 200
+  },
+  height: {
+    type: "number",
+    default: 200
   },
   logoWidth: {
-    type: "integer",
+    type: "number",
     default: 120
   },
   logoRatio: {
-    type: "integer",
+    type: "number",
     default: 9
   },
   duration: {
-    type: "integer",
+    type: "number",
     default: 2000
   }
 };
 
 export const settings = {
-  engine,
-  animated: true
+  engine: require("mechanic-engine-react").run,
+  animated: true,
+  usesRandom: true
 };

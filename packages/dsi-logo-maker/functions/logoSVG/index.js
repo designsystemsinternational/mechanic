@@ -1,5 +1,4 @@
 import React, { useEffect } from "react";
-import engine from "mechanic-engine-react";
 import { getColors, flagNames } from "../utils/graphics";
 import { computeBaseBricks, computeBlockGeometry, computeBlock } from "../utils/blocks";
 import { Block } from "../utils/blocks-components";
@@ -28,40 +27,46 @@ export const handler = ({ width, height, done, colorMode, flag, colors: colorsSt
 };
 
 export const params = {
-  size: {
-    default: {
-      width: 500,
-      height: 111
-    },
-    bigger: {
-      width: 1000,
-      height: 222
-    },
-    biggerr: {
-      width: 1500,
-      height: 333
-    }
+  width: {
+    type: "number",
+    default: 500
+  },
+  height: {
+    type: "number",
+    default: 111
   },
   colorMode: {
-    type: "string",
-    choices: ["Random Flag", "Pick Flag", "Custom Colors"],
+    type: "text",
+    options: ["Random Flag", "Pick Flag", "Custom Colors"],
     default: "Random Flag"
   },
   flag: {
-    type: "string",
-    choices: flagNames,
+    type: "text",
+    options: flagNames,
     default: flagNames[0]
   },
   colors: {
-    type: "string",
+    type: "text",
     default: "#11457e,#d7141a,#f1f1f1"
   },
   offset: {
-    type: "integer",
+    type: "number",
     default: 0
   }
 };
 
+export const presets = {
+  bigger: {
+    width: 1000,
+    height: 222
+  },
+  biggerr: {
+    width: 1500,
+    height: 333
+  }
+};
+
 export const settings = {
-  engine
+  engine: require("mechanic-engine-react").run,
+  usesRandom: true
 };

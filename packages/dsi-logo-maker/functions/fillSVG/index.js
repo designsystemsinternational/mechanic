@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useRef } from "react";
-import engine from "mechanic-engine-react";
 import { getColors } from "../utils/graphics";
 import {
   computeBaseBricks,
@@ -56,34 +55,40 @@ export const handler = ({ width, height, done, logoWidth, logoRatio }) => {
 };
 
 export const params = {
-  size: {
-    default: {
-      width: 300,
-      height: 300
-    },
-    bigger: {
-      width: 1000,
-      height: 1000
-    },
-    panoramic: {
-      width: 1000,
-      height: 250
-    },
-    long: {
-      width: 500,
-      height: 1000
-    }
+  width: {
+    type: "number",
+    default: 300
+  },
+  height: {
+    type: "number",
+    default: 300
   },
   logoWidth: {
-    type: "integer",
+    type: "number",
     default: 110
   },
   logoRatio: {
-    type: "integer",
+    type: "number",
     default: 9
   }
 };
 
+export const presets = {
+  bigger: {
+    width: 1000,
+    height: 1000
+  },
+  panoramic: {
+    width: 1000,
+    height: 250
+  },
+  long: {
+    width: 500,
+    height: 1000
+  }
+};
+
 export const settings = {
-  engine
+  engine: require("mechanic-engine-react").run,
+  usesRandom: true
 };
