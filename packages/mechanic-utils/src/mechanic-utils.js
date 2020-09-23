@@ -15,6 +15,10 @@ const svgToDataUrl = (el, serializer) => {
   return "data:image/svg+xml;charset=utf-8," + encodeURIComponent(str);
 };
 
+/**
+ * Extracts size of an SVG element
+ * @param {SVGElement} el - SVG element
+ */
 const extractSvgSize = el => {
   return { height: el.height.baseVal.value, width: el.width.baseVal.value };
 };
