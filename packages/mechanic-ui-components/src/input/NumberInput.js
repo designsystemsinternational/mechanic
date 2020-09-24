@@ -32,8 +32,8 @@ export const NumberInput = props => {
 
   const handleOnChange = useRef(event => {
     const { name, value } = event.target;
-    const parsedValue = parseFloat(value);
-    onChange && !isNaN(parsedValue) && onChange(event, name, parsedValue);
+    const parsedValue = value === "" ? 0 : parseFloat(value);
+    onChange && onChange(event, name, parsedValue);
   });
 
   const handleOnFocus = useRef(event => {
