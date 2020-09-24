@@ -1,7 +1,7 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import Mousetrap from "mousetrap";
 
-export const globalShortcut = function (command, handler, iframRef, overrideDefault = false) {
+export const useGlobalShortcut = function (command, handler, iframRef, overrideDefault = false) {
   const handlerFunction = () => {
     handler();
     return !overrideDefault;
@@ -17,7 +17,7 @@ export const globalShortcut = function (command, handler, iframRef, overrideDefa
   });
 };
 
-export const shortcut = function (element, command, handler, overrideDefault = false) {
+export const useShortcut = function (element, command, handler, overrideDefault = false) {
   const handlerFunction = () => {
     handler();
     return !overrideDefault;

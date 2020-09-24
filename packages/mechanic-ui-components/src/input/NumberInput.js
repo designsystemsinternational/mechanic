@@ -13,6 +13,7 @@ export const NumberInput = props => {
     id = _id.current,
     className,
     variant,
+    inputClass,
     invalid,
     error,
     disabled,
@@ -69,7 +70,7 @@ export const NumberInput = props => {
             name={name}
             value={value ? "" + value : value}
             id={id}
-            className={css.rangeInput}
+            className={classnames(css.rangeInput, inputClass)}
             disabled={disabled}
             placeholder={placeholder}
             autoComplete={autocomplete}
@@ -91,7 +92,7 @@ export const NumberInput = props => {
           name={name}
           value={value ? "" + value : value}
           id={id}
-          className={css.numberInput}
+          className={classnames(css.numberInput, inputClass)}
           disabled={disabled}
           placeholder={placeholder}
           autoComplete={autocomplete}
@@ -117,6 +118,7 @@ export const NumberInput = props => {
 };
 
 NumberInput.defaultProps = {
+  inputClass: "",
   onChange: () => {},
   onKeyPress: () => {},
   onFocus: () => {},
@@ -130,6 +132,7 @@ NumberInput.propTypes = {
   id: PropTypes.string,
   className: PropTypes.string,
   variant: PropTypes.string,
+  inputClass: PropTypes.string,
   invalid: PropTypes.bool,
   error: PropTypes.string,
   disabled: PropTypes.bool,

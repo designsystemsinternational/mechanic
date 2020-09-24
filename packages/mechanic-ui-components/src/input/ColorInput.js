@@ -27,6 +27,7 @@ export const ColorInput = props => {
     id = _id.current,
     className,
     variant,
+    inputClass,
     invalid,
     disabled,
     error,
@@ -61,7 +62,11 @@ export const ColorInput = props => {
         className={css.buttonContainer}
         aria-describedby={`error-${id}`}
         aria-invalid={invalid}>
-        <Button className={css.button} onClick={handleClick} onFocus={onFocus} onBlur={onBlur}>
+        <Button
+          className={classnames(css.button, inputClass)}
+          onClick={handleClick}
+          onFocus={onFocus}
+          onBlur={onBlur}>
           <div className={css.swatch} style={{ backgroundColor: value }} />
           <span>{value}</span>
         </Button>
@@ -82,6 +87,7 @@ export const ColorInput = props => {
 
 ColorInput.defaultProps = {
   model: "rgba",
+  inputClass: "",
   onChange: () => {},
   onFocus: () => {},
   onBlur: () => {}
@@ -96,6 +102,7 @@ ColorInput.propTypes = {
   id: PropTypes.string,
   className: PropTypes.string,
   variant: PropTypes.string,
+  inputClass: PropTypes.string,
   disabled: PropTypes.bool,
   error: PropTypes.string,
   invalid: PropTypes.bool,

@@ -17,6 +17,7 @@ export const OptionInput = props => {
     id = _id.current,
     className,
     variant,
+    inputClass,
     invalid,
     error,
     disabled,
@@ -46,6 +47,7 @@ export const OptionInput = props => {
       id={id}
       className={rootClasses}
       variant={variant}
+      inputClass={inputClass}
       invalid={invalid}
       error={error}
       disabled={disabled}
@@ -65,6 +67,7 @@ export const OptionInput = props => {
 };
 
 OptionInput.defaultProps = {
+  inputClass: "",
   placeholder: "Select option...",
   onChange: () => {},
   onFocus: () => {},
@@ -81,6 +84,7 @@ OptionInput.propTypes = {
   id: PropTypes.string,
   className: PropTypes.string,
   variant: PropTypes.string,
+  inputClass: PropTypes.string,
   invalid: PropTypes.bool,
   error: PropTypes.string,
   disabled: PropTypes.bool,

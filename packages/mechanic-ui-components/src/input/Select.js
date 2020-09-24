@@ -1,7 +1,6 @@
 import React, { Fragment, useRef, useState } from "react";
 import PropTypes from "prop-types";
 import classnames from "classnames";
-import { enablesShortcutsClass } from "../../utils/shortcut";
 import { uid } from "../uid";
 import css from "./Select.css";
 
@@ -11,10 +10,11 @@ export const Select = props => {
     name,
     value,
     children,
+    label,
     id = _id.current,
     className,
     variant,
-    allowShortcuts,
+    inputClass,
     invalid,
     error,
     disabled,
@@ -46,8 +46,7 @@ export const Select = props => {
     [css[variant]]: variant,
     [css.focus]: focus,
     [css.invalid]: invalid,
-    [css.disabled]: disabled,
-    [enablesShortcutsClass]: allowShortcuts
+    [css.disabled]: disabled
   });
 
   return (
@@ -61,7 +60,7 @@ export const Select = props => {
         name={name}
         value={value}
         id={id}
-        className={css.select}
+        className={classnames(css.select, inputClass)}
         placeholder={placeholder}
         disabled={disabled}
         onChange={handleOnChange.current}
@@ -83,8 +82,8 @@ export const Select = props => {
 };
 
 Select.defaultProps = {
+  inputClass: "false",
   placeholder: "Select...",
-  allowShortcuts: false,
   onChange: () => {},
   onFocus: () => {},
   onBlur: () => {}
@@ -98,7 +97,7 @@ Select.propTypes = {
   id: PropTypes.string,
   className: PropTypes.string,
   variant: PropTypes.string,
-  allowShortcuts: PropTypes.bool,
+  inputClass: PropTypes.string,
   invalid: PropTypes.bool,
   error: PropTypes.string,
   disabled: PropTypes.bool,

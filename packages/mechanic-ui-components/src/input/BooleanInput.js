@@ -15,6 +15,7 @@ export const BooleanInput = props => {
     id = _id.current,
     className,
     variant,
+    inputClass,
     disabled,
     invalid,
     error,
@@ -40,7 +41,7 @@ export const BooleanInput = props => {
       <Toggle
         name={name}
         id={id}
-        className={css.toggle}
+        className={classnames(css.toggle, inputClass)}
         status={value}
         onClick={e => onChange(e, name, !value)}
         onFocus={onFocus}
@@ -60,6 +61,7 @@ export const BooleanInput = props => {
 };
 
 BooleanInput.defaultProps = {
+  inputClass: "",
   onChange: () => {},
   onFocus: () => {},
   onBlur: () => {}
@@ -73,6 +75,7 @@ BooleanInput.propTypes = {
   id: PropTypes.string,
   className: PropTypes.string,
   variant: PropTypes.string,
+  inputClass: PropTypes.string,
   disabled: PropTypes.bool,
   invalid: PropTypes.bool,
   error: PropTypes.string,

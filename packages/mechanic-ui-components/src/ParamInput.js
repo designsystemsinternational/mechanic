@@ -9,7 +9,15 @@ import { OptionInput } from "./input/OptionInput";
 import { ColorInput } from "./input/ColorInput";
 import { uid } from "./uid";
 
-export const ParamInput = ({ name, className, value, attributes, onChange, children }) => {
+export const ParamInput = ({
+  name,
+  className,
+  value,
+  attributes,
+  onChange,
+  children,
+  inputClass
+}) => {
   const id = useRef(uid("param-input"));
   const { type, options, validation } = attributes;
   const _default = attributes["default"];
@@ -32,6 +40,7 @@ export const ParamInput = ({ name, className, value, attributes, onChange, child
         id={id.current}
         className={rootClasses}
         variant="mechanic-param"
+        inputClass={inputClass}
         onChange={onChange}
         invalid={error ? true : false}
         error={error}>
@@ -49,6 +58,7 @@ export const ParamInput = ({ name, className, value, attributes, onChange, child
         id={id.current}
         className={rootClasses}
         variant="mechanic-param"
+        inputClass={inputClass}
         invalid={error ? true : false}
         error={error}
         onChange={onChange}>
@@ -68,6 +78,7 @@ export const ParamInput = ({ name, className, value, attributes, onChange, child
         id={id.current}
         className={rootClasses}
         variant="mechanic-param"
+        inputClass={inputClass}
         invalid={error ? true : false}
         error={error}
         onChange={onChange}>
@@ -86,6 +97,7 @@ export const ParamInput = ({ name, className, value, attributes, onChange, child
         id={id.current}
         className={rootClasses}
         variant="mechanic-param"
+        inputClass={inputClass}
         invalid={error ? true : false}
         error={error}
         slider={slider}
@@ -106,6 +118,7 @@ export const ParamInput = ({ name, className, value, attributes, onChange, child
       id={id.current}
       className={rootClasses}
       variant="mechanic-param"
+      inputClass={inputClass}
       invalid={error ? true : false}
       error={error}
       onChange={onChange}>
@@ -115,7 +128,8 @@ export const ParamInput = ({ name, className, value, attributes, onChange, child
 };
 
 ParamInput.defaultProps = {
-  onChange: () => {}
+  onChange: () => {},
+  inputClass: ""
 };
 
 ParamInput.propTypes = {
@@ -124,5 +138,6 @@ ParamInput.propTypes = {
   name: PropTypes.string,
   className: PropTypes.string,
   value: PropTypes.any,
-  attributes: PropTypes.object
+  attributes: PropTypes.object,
+  inputClass: PropTypes.string
 };

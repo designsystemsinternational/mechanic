@@ -1,7 +1,6 @@
 import React, { useRef, useState } from "react";
 import PropTypes from "prop-types";
 import classnames from "classnames";
-import { enablesShortcutsClass } from "../../utils/shortcut";
 import { uid } from "../uid";
 import css from "./TextInput.css";
 
@@ -14,7 +13,7 @@ export const TextInput = props => {
     id = _id.current,
     className,
     variant,
-    allowShortcuts,
+    inputClass,
     invalid,
     error,
     disabled,
@@ -48,8 +47,7 @@ export const TextInput = props => {
     [css[variant]]: variant,
     [css.invalid]: invalid,
     [css.disabled]: disabled,
-    [css.focus]: focus,
-    [enablesShortcutsClass]: allowShortcuts
+    [css.focus]: focus
   });
 
   return (
@@ -64,7 +62,7 @@ export const TextInput = props => {
         name={name}
         value={value}
         id={id}
-        className={css.input}
+        className={classnames(css.input, inputClass)}
         disabled={disabled}
         placeholder={placeholder}
         autoComplete={autocomplete}
@@ -86,7 +84,7 @@ export const TextInput = props => {
 };
 
 TextInput.defaultProps = {
-  allowShortcuts: false,
+  inputClass: "",
   onChange: () => {},
   onKeyPress: () => {},
   onFocus: () => {},
@@ -100,7 +98,7 @@ TextInput.propTypes = {
   id: PropTypes.string,
   className: PropTypes.string,
   variant: PropTypes.string,
-  allowShortcuts: PropTypes.bool,
+  inputClass: PropTypes.string,
   invalid: PropTypes.bool,
   error: PropTypes.string,
   disabled: PropTypes.bool,

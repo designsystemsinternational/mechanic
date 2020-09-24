@@ -1,8 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import PropTypes from "prop-types";
 import classnames from "classnames";
-import { globalShortcut } from "../utils/shortcut";
-import Mousetrap from "mousetrap";
+import { useGlobalShortcut, enablesShortcutsClass } from "../utils/shortcuts";
 
 import createPersistedState from "use-persisted-state";
 const useFunctionValues = createPersistedState("function-values");
@@ -82,10 +81,10 @@ export const Function = ({ name, exports, children }) => {
     };
   }, [name]);
 
-  globalShortcut("mod+e", handleExport, iframe);
-  globalShortcut("mod+p", handlePreview, iframe, true);
-  globalShortcut("mod+f", () => setFastPreview(fastPreview => !fastPreview), iframe, true);
-  globalShortcut("mod+y", () => setShowPanel(showPanel => !showPanel), iframe);
+  useGlobalShortcut("mod+e", handleExport, iframe);
+  useGlobalShortcut("mod+p", handlePreview, iframe, true);
+  useGlobalShortcut("mod+f", () => setScaleToFit(scaleToFit => !scaleToFit), iframe, true);
+  useGlobalShortcut("mod+y", () => setShowPanel(showPanel => !showPanel), iframe, true);
 
   return (
     <div className={css.root}>
@@ -104,6 +103,7 @@ export const Function = ({ name, exports, children }) => {
                 value={values.preset}
                 attributes={{ type: "string", options: presets, default: presets[0] }}
                 onChange={handleOnChange}
+                inputClass={enablesShortcutsClass}
               />
               {Object.entries(params).map(([name, param]) => (
                 <ParamInput
@@ -113,6 +113,7 @@ export const Function = ({ name, exports, children }) => {
                   value={values[name]}
                   attributes={param}
                   onChange={handleOnChange}
+                  inputClass={enablesShortcutsClass}
                 />
               ))}
             </div>
