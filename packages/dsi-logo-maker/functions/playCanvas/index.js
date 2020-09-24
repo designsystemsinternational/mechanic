@@ -59,11 +59,13 @@ export const handler = (params, mechanic) => {
 export const params = {
   width: {
     type: "number",
-    default: 300
+    default: 300,
+    min: 100
   },
   height: {
     type: "number",
-    default: 300
+    default: 300,
+    min: 100
   },
   allSameColors: {
     type: "boolean",

@@ -3,17 +3,18 @@ import { computeBaseBricks, computeBlockGeometry, computeBlock } from "../utils/
 import { drawBlock } from "../utils/blocks-canvas";
 
 export const handler = (params, mechanic) => {
-  const { width, height, colorMode, flag, colors: colorsString, offset } = params;
+  const { width, ratio, colorMode, flag, firstColor, secondColor, thirdColor, offset } = params;
 
   const rows = 2;
   const cols = 13;
   const words = ["DESIGN", "SYSTEMS", "INTERNATIONAL"];
+  const height = Math.floor((width / ratio) * rows);
 
-  const colors = getColors(colorMode, flag, colorsString);
+  const colors = getColors(colorMode, flag, [firstColor, secondColor, thirdColor]);
   const blockGeometry = computeBlockGeometry(width, height, rows, cols);
   const baseBricks = computeBaseBricks(words, blockGeometry.fontSize);
 
-  const block = computeBlock(blockGeometry, baseBricks, offset);
+  const block = computeBlock(blockGeometry, baseBricks, Math.floor(offset * baseBricks.length));
   const position = { x: 0, y: 0 };
 
   const canvas = document.createElement("canvas");
@@ -31,11 +32,16 @@ export const handler = (params, mechanic) => {
 export const params = {
   width: {
     type: "number",
-    default: 500
+    default: 500,
+    min: 100
   },
-  height: {
+  ratio: {
     type: "number",
-    default: 111
+    default: 9,
+    max: 20,
+    slider: true,
+    min: 6,
+    step: 1
   },
   colorMode: {
     type: "text",
@@ -47,24 +53,39 @@ export const params = {
     options: flagNames,
     default: flagNames[0]
   },
-  colors: {
-    type: "text",
-    default: "#11457e,#d7141a,#f1f1f1"
+  firstColor: {
+    type: "color",
+    model: "hex",
+    default: "#11457e"
+  },
+  secondColor: {
+    type: "color",
+    model: "hex",
+    default: "#d7141a"
+  },
+  thirdColor: {
+    type: "color",
+    model: "hex",
+    default: "#f1f1f1"
   },
   offset: {
     type: "number",
-    default: 0
+    default: 0,
+    min: 0,
+    max: 1,
+    step: 0.05,
+    slider: true
   }
 };
 
 export const presets = {
   bigger: {
     width: 1000,
-    height: 222
+    ratio: 9
   },
   biggerr: {
     width: 1500,
-    height: 333
+    ratio: 9
   }
 };
 

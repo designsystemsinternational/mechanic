@@ -3,15 +3,16 @@ import { computeBaseBricks, computeBlockGeometry, computeBlock } from "../utils/
 import { drawBlock } from "../utils/blocks-canvas";
 
 export const handler = (params, mechanic) => {
-  const { width, height, text, columns: cols, rows, colors: colorsString, offset } = params;
+  const { width, ratio, text, columns: cols, rows, colors: colorsString, offset } = params;
 
   const words = text.split(" ").map(s => s.toUpperCase());
+  const colors = getColors("Custom Colors", null, colorsString.split(","));
+  const height = Math.floor((width / ratio) * rows);
 
-  const colors = getColors("Custom Colors", null, colorsString);
   const blockGeometry = computeBlockGeometry(width, height, rows, cols);
   const baseBricks = computeBaseBricks(words, blockGeometry.fontSize);
 
-  const block = computeBlock(blockGeometry, baseBricks, offset);
+  const block = computeBlock(blockGeometry, baseBricks, Math.floor(offset * baseBricks.length));
   const position = { x: 0, y: 0 };
 
   const canvas = document.createElement("canvas");
@@ -29,11 +30,16 @@ export const handler = (params, mechanic) => {
 export const params = {
   width: {
     type: "number",
-    default: 500
+    default: 500,
+    min: 100
   },
-  height: {
+  ratio: {
     type: "number",
-    default: 111
+    default: 9,
+    max: 20,
+    slider: true,
+    min: 6,
+    step: 1
   },
   text: {
     type: "text",
@@ -41,11 +47,15 @@ export const params = {
   },
   columns: {
     type: "number",
-    default: 13
+    default: 13,
+    min: 1,
+    step: 1
   },
   rows: {
     type: "number",
-    default: 2
+    default: 2,
+    min: 1,
+    step: 1
   },
   colors: {
     type: "text",
@@ -53,18 +63,22 @@ export const params = {
   },
   offset: {
     type: "number",
-    default: 0
+    default: 0,
+    min: 0,
+    max: 1,
+    step: 0.05,
+    slider: true
   }
 };
 
 export const presets = {
   bigger: {
     width: 500,
-    height: 222
+    ratio: 9
   },
   biggerr: {
     width: 500,
-    height: 333
+    ratio: 9
   }
 };
 

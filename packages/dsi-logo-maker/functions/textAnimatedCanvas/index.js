@@ -10,7 +10,7 @@ import { drawBlock } from "../utils/blocks-canvas";
 export const handler = (params, mechanic) => {
   const {
     width,
-    height,
+    ratio,
     text,
     columns: cols,
     rows,
@@ -21,8 +21,9 @@ export const handler = (params, mechanic) => {
   } = params;
 
   const words = text.split(" ").map(s => s.toUpperCase());
+  const height = Math.floor((width / ratio) * rows);
 
-  const colors = getColors("Custom Colors", null, colorsString);
+  const colors = getColors("Custom Colors", null, colorsString.split(","));
   const blockGeometry = computeBlockGeometry(width, height, rows, cols);
   const baseBricks = computeBaseBricks(words, blockGeometry.fontSize);
 
@@ -35,7 +36,7 @@ export const handler = (params, mechanic) => {
   const ctx = canvas.getContext("2d");
 
   const draw = () => {
-    const brickOffset = offset + internalOffset;
+    const brickOffset = Math.floor(offset * blocksByIndex.length) + internalOffset;
     const block = blocksByIndex[getIndexModule(brickOffset, blocksByIndex.length)];
 
     ctx.save();
@@ -76,11 +77,16 @@ export const handler = (params, mechanic) => {
 export const params = {
   width: {
     type: "number",
-    default: 500
+    default: 500,
+    min: 100
   },
-  height: {
+  ratio: {
     type: "number",
-    default: 111
+    default: 9,
+    max: 20,
+    slider: true,
+    min: 6,
+    step: 1
   },
   text: {
     type: "text",
@@ -88,11 +94,15 @@ export const params = {
   },
   columns: {
     type: "number",
-    default: 13
+    default: 13,
+    min: 1,
+    step: 1
   },
   rows: {
     type: "number",
-    default: 2
+    default: 2,
+    min: 1,
+    step: 1
   },
   colors: {
     type: "text",
@@ -100,26 +110,33 @@ export const params = {
   },
   offset: {
     type: "number",
-    default: 0
+    default: 0,
+    min: 0,
+    max: 1,
+    step: 0.05,
+    slider: true
   },
   duration: {
     type: "number",
-    default: 10000
+    default: 10000,
+    min: 1000,
+    step: 500
   },
   loops: {
     type: "number",
-    default: 4
+    default: 4,
+    min: 1
   }
 };
 
 export const presets = {
   bigger: {
     width: 500,
-    height: 222
+    ratio: 9
   },
   biggerr: {
     width: 500,
-    height: 333
+    ratio: 9
   }
 };
 

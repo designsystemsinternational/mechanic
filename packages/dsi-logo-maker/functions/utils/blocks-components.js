@@ -55,6 +55,5 @@ export const Unit = ({ blocks, blockIndex, animation, runtime, position, colors 
   }, [runtime]);
 
   const block = blocks[index];
-
   return <Block position={position} block={block} colors={colors} />;
 };

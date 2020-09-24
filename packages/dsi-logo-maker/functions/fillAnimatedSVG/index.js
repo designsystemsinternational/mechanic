@@ -85,23 +85,32 @@ export const handler = ({ width, height, frame, done, logoWidth, logoRatio, dura
 export const params = {
   width: {
     type: "number",
-    default: 200
+    default: 100,
+    min: 100
   },
   height: {
     type: "number",
-    default: 200
+    default: 200,
+    min: 100
   },
   logoWidth: {
     type: "number",
-    default: 120
+    default: 80,
+    min: 10
   },
   logoRatio: {
     type: "number",
-    default: 9
+    default: 9,
+    max: 20,
+    slider: true,
+    min: 6,
+    step: 1
   },
   duration: {
     type: "number",
-    default: 2000
+    default: 5000,
+    step: 500,
+    min: 1000
   }
 };
 

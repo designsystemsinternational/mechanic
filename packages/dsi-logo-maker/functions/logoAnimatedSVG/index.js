@@ -11,12 +11,14 @@ import { useDrawLoop } from "../utils/drawLoopHook";
 
 export const handler = ({
   width,
-  height,
+  ratio,
   frame,
   done,
   colorMode,
   flag,
-  colors: colorsString,
+  firstColor,
+  secondColor,
+  thirdColor,
   offset,
   duration,
   loops
@@ -33,13 +35,13 @@ export const handler = ({
   const rows = 2;
   const cols = 13;
   const words = ["DESIGN", "SYSTEMS", "INTERNATIONAL"];
+  const height = Math.floor((width / ratio) * rows);
 
   const { colors, blocksByIndex } = blockParams;
 
-  const brickIndex = offset + internalOffset;
+  const brickIndex = Math.floor(offset * blocksByIndex.length) + internalOffset;
 
   const position = { x: 0, y: 0 };
-  const block = blocksByIndex[getIndexModule(brickIndex, blocksByIndex.length)];
   const animation = {
     stepRate: (rows * cols * Math.floor(Math.random() * 4 + 1)) / duration,
     progress: 0,
@@ -47,7 +49,7 @@ export const handler = ({
   };
 
   useEffect(() => {
-    const colors = getColors(colorMode, flag, colorsString);
+    const colors = getColors(colorMode, flag, [firstColor, secondColor, thirdColor]);
     const blockGeometry = computeBlockGeometry(width, height, rows, cols);
     const baseBricks = computeBaseBricks(words, blockGeometry.fontSize);
     const blocksByIndex = precomputeBlocks(blockGeometry, baseBricks);
@@ -91,11 +93,16 @@ export const handler = ({
 export const params = {
   width: {
     type: "number",
-    default: 500
+    default: 500,
+    min: 100
   },
-  height: {
+  ratio: {
     type: "number",
-    default: 111
+    default: 9,
+    max: 20,
+    slider: true,
+    min: 6,
+    step: 1
   },
   colorMode: {
     type: "text",
@@ -107,32 +114,51 @@ export const params = {
     options: flagNames,
     default: flagNames[0]
   },
-  colors: {
-    type: "text",
-    default: "#11457e,#d7141a,#f1f1f1"
+  firstColor: {
+    type: "color",
+    model: "hex",
+    default: "#11457e"
+  },
+  secondColor: {
+    type: "color",
+    model: "hex",
+    default: "#d7141a"
+  },
+  thirdColor: {
+    type: "color",
+    model: "hex",
+    default: "#f1f1f1"
   },
   offset: {
     type: "number",
-    default: 0
+    default: 0,
+    min: 0,
+    max: 1,
+    step: 0.05,
+    slider: true
   },
   duration: {
     type: "number",
-    default: 10000
+    default: 5000,
+    step: 500,
+    min: 1000
   },
   loops: {
     type: "number",
-    default: 4
+    default: 4,
+    min: 1,
+    step: 1
   }
 };
 
 export const presets = {
   bigger: {
     width: 1000,
-    height: 222
+    ratio: 9
   },
   biggerr: {
     width: 1500,
-    height: 333
+    ratio: 9
   }
 };
 

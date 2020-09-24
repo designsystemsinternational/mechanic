@@ -11,9 +11,9 @@ export const glyphAdvanceWidth = (fontSize, char) => {
   return (glyph.advanceWidth / fontMetrics.unitsPerEm) * fontSize;
 };
 
-export function getColors(colorMode, flag, colorsString) {
+export function getColors(colorMode, flag, colorArray) {
   if (colorMode === "Custom Colors") {
-    return colorsString.split(",").map(genColorObject);
+    return colorArray.map(genColorObject);
   } else if (colorMode === "Pick Flag") {
     let f = getFlag(flag);
     return f.colors;

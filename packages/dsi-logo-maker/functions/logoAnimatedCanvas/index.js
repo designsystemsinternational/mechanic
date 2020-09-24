@@ -8,13 +8,26 @@ import {
 import { drawBlock } from "../utils/blocks-canvas";
 
 export const handler = (params, mechanic) => {
-  const { width, height, colorMode, flag, colors: colorsString, offset, duration, loops } = params;
+  const {
+    width,
+    ratio,
+    colorMode,
+    flag,
+    firstColor,
+    secondColor,
+    thirdColor,
+    offset,
+    duration,
+    loops
+  } = params;
 
   const rows = 2;
   const cols = 13;
   const words = ["DESIGN", "SYSTEMS", "INTERNATIONAL"];
 
-  const colors = getColors(colorMode, flag, colorsString);
+  const height = Math.floor((width / ratio) * rows);
+
+  const colors = getColors(colorMode, flag, [firstColor, secondColor, thirdColor]);
   const blockGeometry = computeBlockGeometry(width, height, rows, cols);
   const baseBricks = computeBaseBricks(words, blockGeometry.fontSize);
   const blocksByIndex = precomputeBlocks(blockGeometry, baseBricks);
@@ -26,7 +39,7 @@ export const handler = (params, mechanic) => {
   const ctx = canvas.getContext("2d");
 
   const draw = () => {
-    const brickOffset = offset + internalOffset;
+    const brickOffset = Math.floor(offset * blocksByIndex.length) + internalOffset;
     const block = blocksByIndex[getIndexModule(brickOffset, blocksByIndex.length)];
 
     ctx.save();
@@ -69,9 +82,13 @@ export const params = {
     type: "number",
     default: 500
   },
-  height: {
+  ratio: {
     type: "number",
-    default: 111
+    default: 9,
+    max: 20,
+    slider: true,
+    min: 6,
+    step: 1
   },
   colorMode: {
     type: "text",
@@ -83,32 +100,51 @@ export const params = {
     options: flagNames,
     default: flagNames[0]
   },
-  colors: {
-    type: "text",
-    default: "#11457e,#d7141a,#f1f1f1"
+  firstColor: {
+    type: "color",
+    model: "hex",
+    default: "#11457e"
+  },
+  secondColor: {
+    type: "color",
+    model: "hex",
+    default: "#d7141a"
+  },
+  thirdColor: {
+    type: "color",
+    model: "hex",
+    default: "#f1f1f1"
   },
   offset: {
     type: "number",
-    default: 0
+    default: 0,
+    min: 0,
+    max: 1,
+    step: 0.05,
+    slider: true
   },
   duration: {
     type: "number",
-    default: 10000
+    default: 5000,
+    step: 500,
+    min: 1000
   },
   loops: {
     type: "number",
-    default: 4
+    default: 4,
+    min: 1,
+    step: 1
   }
 };
 
 export const presets = {
   bigger: {
     width: 1000,
-    height: 222
+    ratio: 9
   },
   biggerr: {
     width: 1500,
-    height: 333
+    ratio: 9
   }
 };
 
