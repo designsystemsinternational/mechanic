@@ -48,6 +48,9 @@ const validateParams = params => {
           return `Incorrect type of value in options array. Expected ${params[param].type}.`;
         }
       }
+      if (!params[param].options.includes(params[param].default)) {
+        return `Default value ${params[param].default} for ${param} is not present in gieven options. `;
+      }
     }
   }
   return null;
