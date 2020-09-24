@@ -2,34 +2,60 @@ import React, { useState, useRef, useEffect } from "react";
 import PropTypes from "prop-types";
 import classnames from "classnames";
 import { globalShortcut } from "../utils/shortcut";
-import Select from "../components/input/Select";
-import Button from "../components/input/Button";
-import Toggle from "../components/input/Toggle";
-import ParamInput from "../components/ParamInput";
+import Mousetrap from "mousetrap";
+
+import createPersistedState from "use-persisted-state";
+const useFunctionValues = createPersistedState("function-values");
+
+import { Button, Toggle, ParamInput } from "mechanic-ui-components";
+import "mechanic-ui-components/dist/mechanic.css";
+
 import css from "./Function.css";
 
-const Function = ({ name, exports, children }) => {
-  const [values, setValues] = useState({});
-  const [fastPreview, setFastPreview] = useState(true);
+export const Function = ({ name, exports, children }) => {
+  const [allValues, setAllValues] = useFunctionValues({});
+
+  const values = allValues[name] || { preset: "default" };
+  const setValues = assigFunc => {
+    setAllValues(allValues => {
+      return Object.assign({}, allValues, { [name]: assigFunc(allValues[name]) });
+    });
+  };
+
+  const [scaleToFit, setScaleToFit] = useState(true);
   const [showPanel, setShowPanel] = useState(true);
 
   const mainRef = useRef();
   const randomSeed = useRef();
   const iframe = useRef();
 
-  const { params } = exports;
-  const { size, ...optional } = params;
-  const sizes = size !== undefined ? Object.keys(size) : [];
+  const { params, presets: otherPresets } = exports;
+  const presets = ["default"].concat(Object.keys(otherPresets ? otherPresets : {}));
 
   const handleOnChange = (e, name, value) => {
-    setValues(values => Object.assign({}, values, { [name]: value }));
+    const sources = [{ [name]: value }];
+    if (name === "preset") {
+      if (value === "default") {
+        sources.push(
+          Object.entries(params).reduce((source, param) => {
+            source[param[0]] = param[1].default;
+            return source;
+          }, {})
+        );
+      } else {
+        sources.push(otherPresets[value]);
+      }
+    }
+    setValues(values => Object.assign({}, values, ...sources));
   };
+
+  const canScale = params.width && params.height;
 
   const handlePreview = async () => {
     const vals = Object.assign({}, values);
-    if (fastPreview) {
+    if (canScale && scaleToFit) {
       const bounds = mainRef.current.getBoundingClientRect();
-      vals.scaleDownToFit = {
+      vals.scaleToFit = {
         width: bounds.width - 100,
         height: bounds.height - 100
       };
@@ -71,41 +97,23 @@ const Function = ({ name, exports, children }) => {
           <div className={css.line} />
           <div className={css.paramsWrapper}>
             <div className={css.params}>
-              {size && (
-                <div className={css.param}>
-                  <div className={classnames(css.row, css.strong)}>
-                    <span className={classnames(css.grow, css.paramlabel)}>size</span>
-                  </div>
-                  <div className={css.row}>
-                    <Select
-                      className={css.grow}
-                      onChange={handleOnChange}
-                      name="size"
-                      value={values.size || "default"}>
-                      {sizes.map(size => (
-                        <option key={`size-${size}`} value={size}>
-                          {size} ({params.size[size].width}x{params.size[size].height})
-                        </option>
-                      ))}
-                    </Select>
-                  </div>
-                </div>
-              )}
-              {Object.entries(optional).map(([name, param]) => (
-                <div key={`param-${name}`} className={css.param}>
-                  <div className={classnames(css.row, css.strong)}>
-                    <span className={classnames(css.grow, css.paramlabel)}>{name}</span>
-                  </div>
-                  <div className={css.row}>
-                    <ParamInput
-                      className={css.grow}
-                      name={name}
-                      value={values[name]}
-                      options={param}
-                      onChange={handleOnChange}
-                    />
-                  </div>
-                </div>
+              <ParamInput
+                className={css.param}
+                key="param-preset"
+                name="preset"
+                value={values.preset}
+                attributes={{ type: "string", options: presets, default: presets[0] }}
+                onChange={handleOnChange}
+              />
+              {Object.entries(params).map(([name, param]) => (
+                <ParamInput
+                  className={css.param}
+                  key={`param-${name}`}
+                  name={name}
+                  value={values[name]}
+                  attributes={param}
+                  onChange={handleOnChange}
+                />
               ))}
             </div>
           </div>
@@ -115,9 +123,14 @@ const Function = ({ name, exports, children }) => {
             <div className={classnames(css.row, css.strong)}>
               <Toggle
                 className={css.grow}
-                status={fastPreview}
-                onClick={() => setFastPreview(fastPreview => !fastPreview)}>
-                {fastPreview ? "Fast Preview On" : "Fast Preview Off"}
+                status={canScale && scaleToFit}
+                disabled={!canScale}
+                onClick={() => setScaleToFit(scaleToFit => !scaleToFit)}>
+                {canScale
+                  ? scaleToFit
+                    ? "Scale to fit On"
+                    : "Scale to fit Off"
+                  : "Params missing for scaling"}
               </Toggle>
             </div>
             <div className={css.sep} />
@@ -150,5 +163,3 @@ Function.propTypes = {
     settings: PropTypes.object.isRequired
   })
 };
-
-export default Function;

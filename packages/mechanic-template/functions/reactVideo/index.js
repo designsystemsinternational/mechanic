@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useRef } from "react";
-import engine from "mechanic-engine-react";
 
-export const handler = ({ width, height, frame, done, background, fill }) => {
+export const handler = ({ height, frame, done, background, fill }) => {
+  const width = height;
+
   const isPlaying = useRef(true);
   const frameCount = useDrawLoop(isPlaying.current);
 
@@ -29,26 +30,24 @@ export const handler = ({ width, height, frame, done, background, fill }) => {
 // We will probably do this with a webpack loader
 // We also need a nicer API to create this file
 export const params = {
-  size: {
-    default: {
-      width: 600,
-      height: 600
-    }
+  height: {
+    type: "number",
+    default: 600
   },
   background: {
-    type: "string",
+    type: "color",
     default: "red",
-    choices: ["red", "orange", "yellow"]
+    options: ["red", "orange", "yellow"]
   },
   fill: {
-    type: "string",
+    type: "color",
     default: "cyan",
-    choices: ["cyan", "blue", "green"]
+    options: ["cyan", "blue", "green"]
   }
 };
 
 export const settings = {
-  engine,
+  engine: require("mechanic-engine-react").run,
   animated: true
 };
 

@@ -1,5 +1,3 @@
-import engine from "mechanic-engine-canvas";
-
 export const handler = (params, mechanic) => {
   const {
     width,
@@ -9,11 +7,9 @@ export const handler = (params, mechanic) => {
     numberOfRects,
     hasOuterMargin,
     innerMargin,
-    topMargin,
-    bottomMargin,
-    leftMargin,
-    rightMargin
+    margin
   } = params;
+
   const canvas = document.createElement("canvas");
   canvas.width = width;
   canvas.height = height;
@@ -21,21 +17,14 @@ export const handler = (params, mechanic) => {
   ctx.fillStyle = primaryColor;
   ctx.fillRect(0, 0, width, height);
   ctx.fillStyle = secondaryColor;
-  const margin = {
-    top: hasOuterMargin ? topMargin : 0,
-    right: hasOuterMargin ? rightMargin : 0,
-    bottom: hasOuterMargin ? bottomMargin : 0,
-    left: hasOuterMargin ? leftMargin : 0
-  };
-  const rectWidth =
-    (width - margin.left - margin.right - innerMargin * (numberOfRects - 1)) / numberOfRects;
+  const top = hasOuterMargin ? margin.top : 0;
+  const right = hasOuterMargin ? margin.right : 0;
+  const bottom = hasOuterMargin ? margin.bottom : 0;
+  const left = hasOuterMargin ? margin.left : 0;
+
+  const rectWidth = (width - left - right - innerMargin * (numberOfRects - 1)) / numberOfRects;
   for (let index = 0; index < numberOfRects; index++) {
-    ctx.fillRect(
-      margin.left + index * (rectWidth + innerMargin),
-      margin.top,
-      rectWidth,
-      height - margin.top - margin.bottom
-    );
+    ctx.fillRect(left + index * (rectWidth + innerMargin), top, rectWidth, height - top - bottom);
   }
   mechanic.done(canvas);
 };
@@ -44,63 +33,68 @@ export const handler = (params, mechanic) => {
 // We will probably do this with a webpack loader
 // We also need a nicer API to create this file
 export const params = {
-  size: {
-    default: {
-      width: 400,
-      height: 300
-    },
-    medium: {
-      width: 800,
-      height: 600
-    },
-    large: {
-      width: 1600,
-      height: 1200
-    },
-    xlarge: {
-      width: 3200,
-      height: 2400
-    }
+  width: {
+    type: "number",
+    default: 400,
+    validation: v => (v < 410 || v > 420 ? null : "Out of range")
+  },
+  height: {
+    type: "number",
+    default: 300
   },
   primaryColor: {
-    type: "string",
+    type: "color",
+    model: "hex",
     default: "#FF0000"
   },
   secondaryColor: {
-    type: "string",
-    choices: ["#00FFFF", "#FF00FF", "#FFFF00"],
+    type: "color",
+    options: ["#00FFFF", "#FF00FF", "#FFFF00"],
     default: "#00FFFF"
   },
   numberOfRects: {
-    type: "integer",
-    default: 2
+    type: "number",
+    default: 2,
+    options: [2, 3, 4]
   },
   hasOuterMargin: {
     type: "boolean",
     default: true
   },
   innerMargin: {
-    type: "integer",
-    default: 10
+    type: "number",
+    default: 10,
+    min: 0,
+    max: 30,
+    step: 1,
+    slider: true
   },
-  topMargin: {
-    type: "integer",
-    default: 100
+  margin: {
+    type: "text",
+    options: {
+      even: { top: 100, bottom: 100, left: 100, right: 100 },
+      flat: { top: 100, bottom: 100, left: 50, right: 50 },
+      tall: { top: 50, bottom: 50, left: 100, right: 100 }
+    },
+    default: "even"
+  }
+};
+
+export const presets = {
+  medium: {
+    width: 800,
+    height: 600
   },
-  bottomMargin: {
-    type: "integer",
-    default: 100
+  large: {
+    width: 1600,
+    height: 1200
   },
-  leftMargin: {
-    type: "integer",
-    default: 100
-  },
-  rightMargin: {
-    type: "integer",
-    default: 100
+  xlarge: {
+    width: 3200,
+    height: 2400
   }
 };
 
 export const settings = {
-  engine
+  engine: require("mechanic-engine-canvas").run
 };

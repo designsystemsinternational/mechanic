@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
-import engine from "mechanic-engine-react";
 
-export const handler = ({ width, height, done, background, fill, hasInnerHole }) => {
+export const handler = ({ width, done, background, fill, hasInnerHole }) => {
+  const height = width;
   useEffect(() => {
     done();
   }, []);
@@ -34,21 +34,19 @@ export const handler = ({ width, height, done, background, fill, hasInnerHole })
 // We will probably do this with a webpack loader
 // We also need a nicer API to create this file
 export const params = {
-  size: {
-    default: {
-      width: 600,
-      height: 600
-    }
+  width: {
+    type: "number",
+    default: 600
   },
   background: {
-    type: "string",
+    type: "color",
     default: "red",
-    choices: ["red", "orange", "yellow"]
+    options: ["red", "orange", "yellow"]
   },
   fill: {
-    type: "string",
+    type: "color",
     default: "cyan",
-    choices: ["cyan", "blue", "green"]
+    options: ["cyan", "blue", "green"]
   },
   hasInnerHole: {
     type: "boolean",
@@ -57,5 +55,5 @@ export const params = {
 };
 
 export const settings = {
-  engine
+  engine: require("mechanic-engine-react").run
 };
