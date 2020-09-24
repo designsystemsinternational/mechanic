@@ -42,6 +42,10 @@ const validateParams = params => {
       return `Expected array or object in options property in ${param}. Received ${typeof params[
         param
       ].options}`;
+    } else if (hasKey(params[param], "options") && !Array.isArray(params[param].options)) {
+      if (!Object.keys(params[param].options).includes(params[param].default)) {
+        return `Default value ${params[param].default} for ${param} is not present in given options. `;
+      }
     } else if (hasKey(params[param], "options") && Array.isArray(params[param].options)) {
       for (let option of params[param].options) {
         if (typeof option !== supportedTypes[params[param].type]) {
