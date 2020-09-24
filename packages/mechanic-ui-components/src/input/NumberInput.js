@@ -63,7 +63,7 @@ export const NumberInput = props => {
       )}
       {slider ? (
         <div className={css["range-wrapper"]}>
-          {value !== undefined && <span className={css.rangeLabel}>{value}</span>}
+          {value !== undefined && <div className={css.rangeLabel}>{value}</div>}
           <input
             type={"range"}
             name={name}
