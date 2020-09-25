@@ -3,7 +3,7 @@ import _regeneratorRuntime from "@babel/runtime/regenerator";
 import _asyncToGenerator from "@babel/runtime/helpers/asyncToGenerator";
 import React from "react";
 import { render, unmountComponentAtNode } from "react-dom";
-import { Mechanic } from "mechanic-utils";
+import { Mechanic } from "@designsystemsinternational/mechanic-utils";
 var root = document.getElementById("root");
 export var run = function run(functionName, func, values, isPreview) {
   unmountComponentAtNode(root);
