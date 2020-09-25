@@ -1,5 +1,5 @@
 export const handler = (params, mechanic) => {
-  const r = params.height / 3;
+  const r = params.radius;
   const svg = `<svg width="${params.width}" height="${params.height}">
     <rect x="0" y="0" width="${params.width}" height="${params.height}" stroke="none" fill="red" />
     <ellipse cx="${params.width / 2}" cy="${
@@ -20,6 +20,10 @@ export const params = {
   height: {
     type: "number",
     default: 300
+  },
+  radius: {
+    type: "number",
+    default: 10
   }
 };
 
@@ -38,4 +42,6 @@ export const presets = {
   }
 };
 
-export const settings = {};
+export const settings = {
+  engine: require("mechanic-engine-svg").run
+};
