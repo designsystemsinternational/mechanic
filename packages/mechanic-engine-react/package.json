@@ -22,6 +22,6 @@
     "react-hot-loader": "^4.8.0"
   },
   "dependencies": {
-    "mechanic-utils": "../mechanic-utils"
+    "@designsystemsinternational/mechanic-utils": "^0.0.1"
   }
 }
