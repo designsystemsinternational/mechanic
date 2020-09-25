@@ -2,10 +2,9 @@
   "name": "@designsystemsinternational/mechanic-engine-p5",
   "version": "0.0.1",
   "main": "index.js",
-  "scripts": {
-  },
+  "scripts": {},
   "dependencies": {
-    "mechanic-utils": "../mechanic-utils",
+    "@designsystemsinternational/mechanic-utils": "^0.0.1",
     "p5": "^1.1.9"
   }
 }

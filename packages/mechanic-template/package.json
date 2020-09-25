@@ -7,6 +7,10 @@
     "dev": "webpack-dev-server --mode development",
     "build": "webpack --mode production"
   },
+  "peerDependencies": {
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1"
+  },
   "devDependencies": {
     "@babel/cli": "^7.8.4",
     "@babel/core": "^7.9.0",
@@ -29,8 +33,6 @@
     "postcss-preset-env": "^6.7.0",
     "prettier": "^2.0.5",
     "prop-types": "^15.7.2",
-    "react": "^16.13.1",
-    "react-dom": "^16.13.1",
     "react-hot-loader": "^4.8.0",
     "react-router": "^5.2.0",
     "react-router-dom": "^5.2.0",
@@ -44,13 +46,13 @@
     "webpack-dev-server": "^3.11.0"
   },
   "dependencies": {
-    "mechanic-engine-canvas": "../mechanic-engine-canvas",
-    "mechanic-engine-p5": "../mechanic-engine-p5",
-    "mechanic-engine-react": "../mechanic-engine-react",
-    "mechanic-ui-components": "../mechanic-ui-components",
-    "mechanic-utils": "../mechanic-utils",
+    "@designsystemsinternational/mechanic-engine-canvas": "^0.0.1",
+    "@designsystemsinternational/mechanic-engine-p5": "^0.0.1",
+    "@designsystemsinternational/mechanic-engine-react": "^0.0.1",
+    "@designsystemsinternational/mechanic-engine-svg": "^0.0.1",
+    "@designsystemsinternational/mechanic-ui-components": "^0.0.1",
+    "@designsystemsinternational/mechanic-utils": "^0.0.1",
     "mousetrap": "^1.6.5",
-    "p5": "^1.1.9",
     "seedrandom": "^3.0.5",
     "use-persisted-state": "^0.3.0"
   }

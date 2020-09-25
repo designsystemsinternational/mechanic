@@ -45,10 +45,10 @@
   },
   "dependencies": {
     "mousetrap": "^1.6.5",
-    "mechanic-utils": "../mechanic-utils",
-    "mechanic-engine-canvas": "../mechanic-engine-canvas",
-    "mechanic-engine-react": "../mechanic-engine-react",
-    "mechanic-ui-components": "../mechanic-ui-components",
+    "@designsystemsinternational/mechanic-engine-canvas": "^0.0.1",
+    "@designsystemsinternational/mechanic-engine-react": "^0.0.1",
+    "@designsystemsinternational/mechanic-ui-components": "^0.0.1",
+    "@designsystemsinternational/mechanic-utils": "^0.0.1",
     "use-persisted-state": "^0.3.0"
   }
 }

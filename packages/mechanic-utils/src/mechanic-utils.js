@@ -9,13 +9,18 @@ const svgToDataUrl = (el, serializer) => {
     str = str.replace(/^<svg/, '<svg xmlns="http://www.w3.org/2000/svg"');
   }
   if (!str.match(/^<svg[^>]+"http\:\/\/www\.w3\.org\/1999\/xlink"/)) {
-    str = str.replace(
-      /^<svg/,
-      '<svg xmlns:xlink="http://www.w3.org/1999/xlink"'
-    );
+    str = str.replace(/^<svg/, '<svg xmlns:xlink="http://www.w3.org/1999/xlink"');
   }
   str = '<?xml version="1.0" standalone="no"?>\r\n' + str;
   return "data:image/svg+xml;charset=utf-8," + encodeURIComponent(str);
+};
+
+/**
+ * Extracts size of an SVG element
+ * @param {SVGElement} el - SVG element
+ */
+const extractSvgSize = el => {
+  return { height: el.height.baseVal.value, width: el.width.baseVal.value };
 };
 
 /**
@@ -31,7 +36,7 @@ const dataUrlToCanvas = (dataUrl, canvas) =>
       ctx.drawImage(image, 0, 0);
       resolve();
     };
-    image.onerror = (e) => {
+    image.onerror = e => {
       reject(e);
     };
     image.src = dataUrl;
@@ -50,4 +55,4 @@ const getTimeStamp = () => {
   return `${year}-${month}-${day}-${hour}-${minute}`;
 };
 
-export { svgToDataUrl, dataUrlToCanvas, getTimeStamp };
+export { svgToDataUrl, extractSvgSize, dataUrlToCanvas, getTimeStamp };

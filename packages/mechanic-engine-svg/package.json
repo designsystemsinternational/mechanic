@@ -1,8 +1,9 @@
 {
-  "name": "@designsystemsinternational/mechanic-engine-canvas",
+  "name": "@designsystemsinternational/mechanic-engine-svg",
   "version": "0.0.1",
   "main": "index.js",
-  "scripts": {},
+  "scripts": {
+  },
   "dependencies": {
     "@designsystemsinternational/mechanic-utils": "^0.0.1"
   }

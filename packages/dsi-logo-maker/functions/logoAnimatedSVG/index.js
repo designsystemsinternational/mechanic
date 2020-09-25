@@ -163,7 +163,7 @@ export const presets = {
 };
 
 export const settings = {
-  engine: require("mechanic-engine-react").run,
+  engine: require("@designsystemsinternational/mechanic-engine-react").run,
   animated: true,
   usesRandom: true
 };

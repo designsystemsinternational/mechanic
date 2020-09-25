@@ -65,6 +65,6 @@ export const presets = {
 };
 
 export const settings = {
-  engine: require("mechanic-engine-p5").run,
+  engine: require("@designsystemsinternational/mechanic-engine-p5").run,
   animated: true
 };

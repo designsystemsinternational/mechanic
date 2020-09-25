@@ -123,10 +123,7 @@ Copied "${url}" to clipboard.
       filename: "[name].js"
     },
     resolve: {
-      extensions: [".js", ".jsx", ".json"],
-      alias: {
-        react: path.resolve("./node_modules/react")
-      }
+      extensions: [".js", ".jsx", ".json"]
     },
     externals,
     module: {
