@@ -19,7 +19,7 @@ export const run = (functionName, func, values, isPreview) => {
     root.innerHTML = el.trim();
     if (!isPreview) {
       await mechanic.done(root.childNodes[0]);
-      mechanic.download(`${functionName}-${getTimeStamp()}`);
+      mechanic.download(functionName);
     }
   };
 

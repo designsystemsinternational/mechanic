@@ -49,9 +49,9 @@
     "@designsystemsinternational/mechanic-engine-canvas": "^0.0.1",
     "@designsystemsinternational/mechanic-engine-p5": "^0.0.1",
     "@designsystemsinternational/mechanic-engine-react": "^0.0.1",
+    "@designsystemsinternational/mechanic-engine-svg": "^0.0.1",
     "@designsystemsinternational/mechanic-ui-components": "^0.0.1",
     "@designsystemsinternational/mechanic-utils": "^0.0.1",
-    "@designsystemsinternational/mechanic-engine-svg": "^0.0.1",
     "mousetrap": "^1.6.5",
     "seedrandom": "^3.0.5",
     "use-persisted-state": "^0.3.0"

@@ -1,6 +1,6 @@
 import { download } from "./download";
 import { WebMWriter } from "./webm-writer";
-import { svgToDataUrl, dataUrlToCanvas, getTimeStamp } from "./mechanic-utils";
+import { svgToDataUrl, extractSvgSize, dataUrlToCanvas, getTimeStamp } from "./mechanic-utils";
 import * as validation from "./mechanic-validation";
 import { MechanicError } from "./mechanic-error";
 
@@ -43,7 +43,7 @@ export class Mechanic {
   callbacks(frame, done) {
     return {
       frame,
-      done,
+      done
       //requestAnimationFrame:
     };
   }
@@ -54,9 +54,7 @@ export class Mechanic {
    */
   frame(el) {
     if (!this.settings.animated) {
-      throw new MechanicError(
-        "The frame() function can only be used for animations"
-      );
+      throw new MechanicError("The frame() function can only be used for animations");
     }
 
     const err = validation.validateEl(el);
@@ -72,12 +70,12 @@ export class Mechanic {
       if (this.settings.animated) {
         this.videoWriter = new WebMWriter({
           quality: 0.95,
-          frameRate: 60,
+          frameRate: 60
         });
       }
     }
 
-    if (isSVG(el)) {
+    if (validation.isSVG(el)) {
       // Because drawing an SVG to canvas is asynchronous,
       // We wait until the end to render it all.
       // TODO: This needs to be revisited.
@@ -85,6 +83,9 @@ export class Mechanic {
         this.svgFrames = [];
       }
       this.svgFrames.push(svgToDataUrl(el, this.serializer));
+      if (!this.svgSize) {
+        this.svgSize = extractSvgSize(el);
+      }
     } else {
       this.videoWriter.addFrame(el);
     }
@@ -97,6 +98,10 @@ export class Mechanic {
   async done(el) {
     if (!this.settings.animated) {
       if (validation.isSVG(el)) {
+        // This conditional is a patch to an error, needs to be revised:
+        if (!this.serializer) {
+          this.serializer = new XMLSerializer();
+        }
         this.svgData = svgToDataUrl(el, this.serializer);
       } else {
         this.canvasData = el.toDataURL();
@@ -106,8 +111,8 @@ export class Mechanic {
         // This is slow. We should figure out a way to draw into canvas on every frame
         // or at least do Promise.all
         const cacheCanvas = document.createElement("canvas");
-        cacheCanvas.width = this.values.width;
-        cacheCanvas.height = this.values.height;
+        cacheCanvas.width = this.svgSize.width;
+        cacheCanvas.height = this.svgSize.height;
         for (let i = 0; i < this.svgFrames.length; i++) {
           await dataUrlToCanvas(this.svgFrames[i], cacheCanvas);
           this.videoWriter.addFrame(cacheCanvas);
