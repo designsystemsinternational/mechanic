@@ -43,7 +43,7 @@ export class Mechanic {
   callbacks(frame, done) {
     return {
       frame,
-      done,
+      done
       //requestAnimationFrame:
     };
   }
@@ -54,9 +54,7 @@ export class Mechanic {
    */
   frame(el) {
     if (!this.settings.animated) {
-      throw new MechanicError(
-        "The frame() function can only be used for animations"
-      );
+      throw new MechanicError("The frame() function can only be used for animations");
     }
 
     const err = validation.validateEl(el);
@@ -72,7 +70,7 @@ export class Mechanic {
       if (this.settings.animated) {
         this.videoWriter = new WebMWriter({
           quality: 0.95,
-          frameRate: 60,
+          frameRate: 60
         });
       }
     }

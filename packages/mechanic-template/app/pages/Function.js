@@ -50,7 +50,7 @@ export const Function = ({ name, exports, children }) => {
         height: bounds.height - 100
       };
     }
-    iframe.current.contentWindow.run(name, vals, true);
+    randomSeed.current = iframe.current.contentWindow.run(name, vals, true);
   };
 
   const handleExport = async () => {

@@ -20,4 +20,5 @@ export const run = (functionName, func, values, isPreview) => {
     }
   };
   render(<Handler {...mechanic.values} frame={onFrame} done={onDone} />, root);
+  return mechanic;
 };

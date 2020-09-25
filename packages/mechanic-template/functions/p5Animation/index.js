@@ -2,6 +2,7 @@ export const handler = async (sketch, params, mechanic) => {
   const { width, height, primaryColor, secondaryColor, maxFrames } = params;
 
   let x = 0;
+  const y = height / 2;
   let frames = 0;
   sketch.setup = () => {
     sketch.createCanvas(width, height);
@@ -10,7 +11,7 @@ export const handler = async (sketch, params, mechanic) => {
   sketch.draw = () => {
     sketch.background(primaryColor);
     sketch.fill(secondaryColor);
-    sketch.rect(x, height / 2, width / 3, width / 3);
+    sketch.rect(x, y, width / 3, width / 3);
 
     x++;
 

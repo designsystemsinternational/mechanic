@@ -50,4 +50,5 @@ export var run = function run(functionName, func, values, isPreview) {
     frame: onFrame,
     done: onDone
   })), root);
+  return mechanic;
 };
