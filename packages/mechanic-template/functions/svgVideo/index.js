@@ -1,5 +1,5 @@
 export const handler = async (params, mechanic) => {
-  const r = params.width / 3;
+  const r = params.radius;
   let x = 0;
 
   const drawFrame = () => {
@@ -10,12 +10,10 @@ export const handler = async (params, mechanic) => {
       <ellipse cx="${x}" cy="${params.height / 2}" rx="${r}" ry="${r}" stroke="none" fill="cyan" />
     </svg>`;
 
-    mechanic.frame(svg);
-
-    x++;
-
-    if (x < params.width) {
-      mechanic.requestAnimationFrame(drawFrame);
+    if (x < params.width && x < params.maxFrames) {
+      mechanic.frame(svg);
+      x++;
+      window.requestAnimationFrame(drawFrame);
     } else {
       mechanic.done(svg);
     }
@@ -35,6 +33,14 @@ export const params = {
   height: {
     type: "number",
     default: 300
+  },
+  radius: {
+    type: "number",
+    default: 10
+  },
+  maxFrames: {
+    type: "number",
+    default: 100
   }
 };
 
@@ -54,5 +60,6 @@ export const presets = {
 };
 
 export const settings = {
+  engine: require("@designsystemsinternational/mechanic-engine-svg").run,
   animated: true
 };
