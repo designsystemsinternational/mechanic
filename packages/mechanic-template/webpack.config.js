@@ -134,10 +134,7 @@ Copied "${url}" to clipboard.
         : "[hash]-[name].[id].chunk.js"
     },
     resolve: {
-      extensions: [".js", ".jsx", ".json"],
-      alias: {
-        react: path.resolve("./node_modules/react")
-      }
+      extensions: [".js", ".jsx", ".json"]
     },
     module: {
       rules: [js, css, externalCss]

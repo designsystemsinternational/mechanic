@@ -4,6 +4,6 @@
   "main": "index.js",
   "scripts": {},
   "dependencies": {
-    "mechanic-utils": "../mechanic-utils"
+    "@designsystemsinternational/mechanic-utils": "^0.0.1"
   }
 }

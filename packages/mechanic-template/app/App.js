@@ -1,6 +1,6 @@
 import React from "react";
 import { Switch, Route, withRouter } from "react-router-dom";
-import { extractContexts } from "mechanic-utils";
+import { extractContexts } from "@designsystemsinternational/mechanic-utils";
 
 import { Function } from "./pages/Function";
 import { NotFound } from "./pages/NotFound";
