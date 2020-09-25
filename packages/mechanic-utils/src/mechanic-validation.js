@@ -4,7 +4,7 @@ const isObject = obj => obj && typeof obj === "object";
 const hasKey = (obj, key) => obj.hasOwnProperty(key);
 const supportedTypes = { text: "string", number: "number", boolean: "boolean", color: "string" };
 const requiredKeys = ["type", "default"];
-const otherParams = { preset: true, scaleToFit: true };
+const otherParams = { preset: true, scaleToFit: true, randomSeed: true };
 
 /**
  * Receives the parameter template and checks that it is valid

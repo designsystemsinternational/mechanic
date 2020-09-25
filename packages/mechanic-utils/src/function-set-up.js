@@ -6,10 +6,10 @@ import { MechanicError } from "./mechanic-error";
  * @param {function} context - webpack's require.context object,
  * used to require all index.js files in function folder.
  */
-const extractContexts = (context) => {
+const extractContexts = context => {
   const functions = {};
   const engines = {};
-  context.keys().forEach((k) => {
+  context.keys().forEach(k => {
     const key = path.dirname(k).split(path.sep).pop();
     functions[key] = context(k);
     const engine = functions[key].settings.engine;
@@ -24,11 +24,11 @@ const extractContexts = (context) => {
  * @param {function} context - webpack's require.context object,
  * used to require all index.js files in function folder.
  */
-const setUp = (context) => {
+const setUp = context => {
   console.log("Setting up!");
   const { functions, engines } = extractContexts(context);
   let curEngine = null;
-  window.initEngine = (functionName) => {
+  window.initEngine = functionName => {
     if (engines[functionName] === undefined) {
       window.run = () => {
         const p = document.createElement("p");
@@ -43,7 +43,8 @@ const setUp = (context) => {
       window.run = (functionName, values, isPreview) => {
         // TODO: Do performance stats here?
         const func = functions[functionName];
-        curEngine(functionName, func, values, isPreview);
+        const mechanic = curEngine(functionName, func, values, isPreview);
+        return mechanic ? mechanic : null;
       };
     }
   };

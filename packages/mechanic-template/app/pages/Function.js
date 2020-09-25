@@ -14,8 +14,8 @@ export const Function = ({ name, exports, children }) => {
   const [scaleToFit, setScaleToFit] = useState(true);
 
   const mainRef = useRef();
-  const randomSeed = useRef();
   const iframe = useRef();
+  const lastRun = useRef();
 
   const { params, presets: otherPresets } = exports;
   const presets = ["default"].concat(Object.keys(otherPresets ? otherPresets : {}));
@@ -50,13 +50,13 @@ export const Function = ({ name, exports, children }) => {
         height: bounds.height - 100
       };
     }
-    iframe.current.contentWindow.run(name, vals, true);
+    lastRun.current = iframe.current.contentWindow.run(name, vals, true);
   };
 
   const handleExport = async () => {
     const vals = Object.assign({}, values);
-    if (randomSeed.current) {
-      vals.randomSeed = randomSeed.current;
+    if (lastRun.current && lastRun.current.values) {
+      vals.randomSeed = lastRun.current.values.randomSeed;
     }
     iframe.current.contentWindow.run(name, vals);
   };

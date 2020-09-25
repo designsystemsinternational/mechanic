@@ -31,4 +31,5 @@ export const run = (functionName, func, values, isPreview) => {
   };
 
   func.handler(mechanic.values, { frame: onFrame, done: onDone });
+  return mechanic;
 };
