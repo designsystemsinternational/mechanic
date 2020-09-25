@@ -44,7 +44,7 @@ const setUp = context => {
         // TODO: Do performance stats here?
         const func = functions[functionName];
         const mechanic = curEngine(functionName, func, values, isPreview);
-        return mechanic ? mechanic.values.randomSeed : null;
+        return mechanic ? mechanic : null;
       };
     }
   };
