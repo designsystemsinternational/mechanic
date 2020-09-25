@@ -4,6 +4,6 @@
   "main": "index.js",
   "scripts": {},
   "dependencies": {
-    "mechanic-utils": "file:../mechanic-utils"
+    "mechanic-utils": "../mechanic-utils"
   }
 }

@@ -1,5 +1,3 @@
-@import "variables.css";
-
 *,
 *:before,
 *:after {
@@ -14,9 +12,10 @@ html {
 body {
   padding: 0;
   margin: 0;
+  
+  font-size: 14px;
+  font-family: Helvetica, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  font-family: Helvetica, sans-serif;
-  color: var(--text);
-  font-size: 14px;
+  color: var(--mechanic-text);
 }

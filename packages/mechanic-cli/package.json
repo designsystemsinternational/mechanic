@@ -8,7 +8,7 @@
     "mechanic": "cli.js"
   },
   "dependencies": {
-    "mechanic-template": "file:../mechanic-template",
+    "mechanic-template": "../mechanic-template",
     "chalk": "^4.1.0",
     "inquirer": "^7.3.3",
     "ora": "^4.0.5",

@@ -1319,4 +1319,4 @@ const WebMWriterClass = function (ArrayBufferDataStream, BlobBuffer) {
   };
 };
 
-export default WebMWriterClass(ArrayBufferDataStream, BlobBuffer);
+export const WebMWriter = WebMWriterClass(ArrayBufferDataStream, BlobBuffer);

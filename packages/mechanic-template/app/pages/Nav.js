@@ -2,7 +2,7 @@ import React from "react";
 import { useHistory } from "react-router-dom";
 import css from "./Nav.css";
 
-const Nav = ({ name, functionsNames }) => {
+export const Nav = ({ name, functionsNames }) => {
   const history = useHistory();
 
   return (
@@ -23,5 +23,3 @@ const Nav = ({ name, functionsNames }) => {
     </div>
   );
 };
-
-export default Nav;

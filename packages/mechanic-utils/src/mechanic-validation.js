@@ -1,30 +1,60 @@
 import seedrandom from "seedrandom";
 
-const isObject = (obj) => obj && typeof obj === "object";
+const isObject = obj => obj && typeof obj === "object";
 const hasKey = (obj, key) => obj.hasOwnProperty(key);
-const supportedTypes = ["string", "integer", "boolean"];
+const supportedTypes = { text: "string", number: "number", boolean: "boolean", color: "string" };
+const requiredKeys = ["type", "default"];
+const otherParams = { preset: true, scaleToFit: true };
 
 /**
  * Receives the parameter template and checks that it is valid
  * @param {object} params - Parameter template from the design function
  */
-const validateParams = (params) => {
-  if (!isObject(params.size)) {
-    return `Parameter template must have a size object`;
-  }
-  const { size, ...optionals } = params;
-  if (!isObject(size.default)) {
-    return `Parameter template must have default size`;
-  }
-  for (let param in optionals) {
-    if (!hasKey(optionals[param], "type")) {
-      return `Parameter ${param} must have ${key} property`;
+const validateParams = params => {
+  for (let param in params) {
+    for (let requiredKey of requiredKeys) {
+      if (!hasKey(params[param], requiredKey)) {
+        return `Parameter ${param} must have '${requiredKey}' property.`;
+      }
     }
-    if (!supportedTypes.includes(optionals[param].type)) {
-      return `Parameter of type ${optionals[param].type} not supported, expected: ${supportedTypes}`;
+
+    if (!hasKey(supportedTypes, params[param].type)) {
+      return `Parameter of type ${params[param].type} not supported, expected: ${Object.keys(
+        supportedTypes
+      )}.`;
     }
-    if (!hasKey(optionals[param], "default")) {
-      return `Parameter ${param} must have ${key} property`;
+
+    if (typeof params[param].default !== supportedTypes[params[param].type]) {
+      return `Default property value invalid for parameter ${param} of type ${
+        params[param].type
+      }. Expected to be ${supportedTypes[params[param].type]}.`;
+    }
+
+    if (hasKey(params[param], "validation") && typeof params[param].validation !== "function") {
+      return `Expected function in validation property in ${param}.`;
+    }
+
+    if (
+      hasKey(params[param], "options") &&
+      !Array.isArray(params[param].options) &&
+      typeof params[param].options !== "object"
+    ) {
+      return `Expected array or object in options property in ${param}. Received ${typeof params[
+        param
+      ].options}`;
+    } else if (hasKey(params[param], "options") && !Array.isArray(params[param].options)) {
+      if (!Object.keys(params[param].options).includes(params[param].default)) {
+        return `Default value ${params[param].default} for ${param} is not present in given options. `;
+      }
+    } else if (hasKey(params[param], "options") && Array.isArray(params[param].options)) {
+      for (let option of params[param].options) {
+        if (typeof option !== supportedTypes[params[param].type]) {
+          return `Incorrect type of value in options array. Expected ${params[param].type}.`;
+        }
+      }
+      if (!params[param].options.includes(params[param].default)) {
+        return `Default value ${params[param].default} for ${param} is not present in gieven options. `;
+      }
     }
   }
   return null;
@@ -37,12 +67,35 @@ const validateParams = (params) => {
  * @param {object} values - Values for some or all of the parameters
  */
 const validateValues = (params, values = {}) => {
-  // Validate that the size is specified in the template
-  if (hasKey(values, "size") && !hasKey(params.size, values.size)) {
-    return `Supplied size parameter is not available in the template: ${values.size}`;
+  for (let param in params) {
+    // Validate that values for options are specified in the template
+    if (hasKey(values, param) && hasKey(params[param], "options")) {
+      if (Array.isArray(params[param].options) && !params[param].options.includes(values[param])) {
+        return `Supplied ${param} parameter is not available in the template options: ${params[param].options}`;
+      } else if (
+        !Array.isArray(params[param].options) &&
+        !hasKey(params[param].options, values[param])
+      ) {
+        return `Supplied ${param} parameter (${
+          values[param]
+        }) is not available in the template options: ${Object.keys(params[param].options)}`;
+      }
+    }
+    // Run validation functions for values.
+    if (hasKey(values, param) && hasKey(params[param], "validation")) {
+      const error = params[param].validation(values[param]);
+      if (error !== null) {
+        return `Param validation error: ${error}`;
+      }
+    }
   }
 
-  // TODO: Check that there are not other values besides parameters and default params
+  // Check that there are not other values besides parameters and default params
+  for (let param in values) {
+    if (!hasKey(params, param) && !hasKey(otherParams, param)) {
+      return `Unexpected ${param} value not defined on template.`;
+    }
+  }
 
   return null;
 };
@@ -51,7 +104,7 @@ const validateValues = (params, values = {}) => {
  * Receives the settings from a function and validates it.
  * @param {object} settings - Design function settings
  */
-const validateSettings = (settings) => {
+const validateSettings = settings => {
   if (!hasKey(settings, "engine")) {
     return `The design function must have specify an engine in settings`;
   }
@@ -67,27 +120,7 @@ const validateSettings = (settings) => {
  * @param {object} values - Values for some or all of the parameters
  */
 const prepareValues = (params, settings, values) => {
-  // Size
-  const size = values.size || "default";
-  const vals = Object.assign({}, values, {
-    width: params.size[size].width,
-    height: params.size[size].height,
-  });
-
-  // Scale down to fit
-  if (values.scaleDownToFit) {
-    const ratioWidth = values.scaleDownToFit.width
-      ? values.scaleDownToFit.width / vals.width
-      : 1;
-    const ratioHeight = values.scaleDownToFit.height
-      ? values.scaleDownToFit.height / vals.height
-      : 1;
-    if (ratioWidth < 1 || ratioHeight < 1) {
-      const ratio = ratioWidth < ratioHeight ? ratioWidth : ratioHeight;
-      vals.width = Math.floor(vals.width * ratio);
-      vals.height = Math.floor(vals.height * ratio);
-    }
-  }
+  const vals = Object.assign({}, values);
 
   // Random seed
   if (settings.usesRandom) {
@@ -97,19 +130,32 @@ const prepareValues = (params, settings, values) => {
     seedrandom(vals.randomSeed, { global: true });
   }
 
-  // Other params
-
-  Object.keys(params).forEach((key) => {
-    if (key != "size") {
-      let val = values[key] === undefined ? params[key].default : values[key];
-      if (params[key].type == "integer") {
-        vals[key] = parseInt(val);
+  // Params
+  Object.entries(params).forEach(([name, param]) => {
+    if (!hasKey(param, "options")) {
+      vals[name] = values[name] === undefined ? param.default : values[name];
+    } else {
+      let val = values[name] || param.default;
+      if (Array.isArray(param.options)) {
+        const index = param.options.indexOf(val);
+        val = param.options[index];
       } else {
-        vals[key] = val;
+        val = param.options[val];
       }
+      vals[name] = val;
     }
   });
 
+  // Scale down to fit if width and height are params
+  if (values.scaleToFit && vals.width && vals.height) {
+    const ratioWidth = values.scaleToFit.width ? values.scaleToFit.width / vals.width : 1;
+    const ratioHeight = values.scaleToFit.height ? values.scaleToFit.height / vals.height : 1;
+    if (ratioWidth < 1 || ratioHeight < 1) {
+      const ratio = ratioWidth < ratioHeight ? ratioWidth : ratioHeight;
+      vals.width = Math.floor(vals.width * ratio);
+      vals.height = Math.floor(vals.height * ratio);
+    }
+  }
   return vals;
 };
 
@@ -117,7 +163,7 @@ const prepareValues = (params, settings, values) => {
  * Validates that a DOM element is SVG or Canvas
  * @param {object} el - A DOM element to check
  */
-const validateEl = (el) => {
+const validateEl = el => {
   if (el instanceof SVGElement || el instanceof HTMLCanvasElement) {
     return null;
   }
@@ -128,7 +174,7 @@ const validateEl = (el) => {
  * Checks whether a DOM element is instance of SVGElement
  * @param {object} el - A DOM element to check
  */
-const isSVG = (el) => el instanceof SVGElement;
+const isSVG = el => el instanceof SVGElement;
 
 export {
   isObject,
@@ -139,5 +185,5 @@ export {
   validateSettings,
   prepareValues,
   isSVG,
-  validateEl,
+  validateEl
 };

@@ -5,7 +5,7 @@ const root = document.getElementById("root");
 
 let p5Sketch;
 
-const run = (functionName, func, values, isPreview) => {
+export const run = (functionName, func, values, isPreview) => {
   if (p5Sketch) {
     p5Sketch.remove();
   }
@@ -28,5 +28,3 @@ const run = (functionName, func, values, isPreview) => {
     root
   );
 };
-
-export default run;
