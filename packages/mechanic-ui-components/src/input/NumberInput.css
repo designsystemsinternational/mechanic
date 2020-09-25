@@ -34,14 +34,19 @@
 }
 
 .range-label {
-  flex: 0;
+  flex: 0 0 90px;
 
+  box-sizing: border-box;
   padding: 0 1em;
+
+  overflow-x: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 /* https://css-tricks.com/styling-cross-browser-compatible-range-inputs-css/ */
 .range-input {
-  flex: 1;
+  flex: 1 1 auto;
 
   background: transparent; /* Otherwise white in Chrome */
 

@@ -85,9 +85,9 @@ const App = () => {
           attributes={{
             type: "number",
             default: 400,
-            min: 400,
+            min: -500,
             max: 500,
-            step: 10,
+            step: 0.5,
             slider: true,
             validation: value => (value < 430 || value > 465 ? null : "Not in range")
           }}
