@@ -27,39 +27,44 @@ export const handler = async (sketch, params, mechanic) => {
 // We will probably do this with a webpack loader
 // We also need a nicer API to create this file
 export const params = {
-  size: {
-    default: {
-      width: 400,
-      height: 300
-    },
-    medium: {
-      width: 800,
-      height: 600
-    },
-    large: {
-      width: 1600,
-      height: 1200
-    },
-    xlarge: {
-      width: 3200,
-      height: 2400
-    }
+  width: {
+    type: "number",
+    default: 400
+  },
+  height: {
+    type: "number",
+    default: 300
   },
   primaryColor: {
-    type: "string",
+    type: "color",
     default: "#FF0000"
   },
   secondaryColor: {
-    type: "string",
+    type: "color",
     default: "#00FFFF"
   },
   maxFrames: {
-    type: "integer",
+    type: "number",
     default: 100
   }
 };
 
+export const presets = {
+  medium: {
+    width: 800,
+    height: 600
+  },
+  large: {
+    width: 1600,
+    height: 1200
+  },
+  xlarge: {
+    width: 3200,
+    height: 2400
+  }
+};
+
 export const settings = {
-  engine: "p5",
+  engine: require("mechanic-engine-p5").run,
   animated: true
 };

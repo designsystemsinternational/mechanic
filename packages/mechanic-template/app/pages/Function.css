@@ -1,30 +1,34 @@
-@import "../variables.css";
-
 .root {
   display: flex;
+  
   height: 100%;
 }
 
 .main {
-  padding-left: 30px;
-  flex: 1;
-  height: 100%;
   display: flex;
   flex-direction: column;
+  
+  flex: 1;
+  height: 100%;
+  padding-left: 30px;
 }
 
 .iframe {
   flex-grow: 1;
+
   border: none;
 }
 
 .aside {
-  padding-left: 30px;
   flex: 0 0 300px;
-  border-right: 1px solid var(--dust-gray);
-  height: 100%;
+
   display: flex;
   flex-direction: column;
+
+  border-right: 1px solid var(--mechanic-dust-gray);
+  height: 100%;
+  padding-left: 30px;
+
   user-select: none;
 }
 
@@ -33,19 +37,21 @@
 }
 
 .sep {
-  height: 1em;
   flex-shrink: 0;
+
+  height: 1em;
 }
 
 .line {
   margin-right: 30px;
   margin-bottom: 1em;
-  border-bottom: 1px solid var(--dust-gray);
+  border-bottom: 1px solid var(--mechanic-dust-gray);
 }
 
 .row {
-  width: 100%;
   display: flex;
+
+  width: 100%;
 }
 
 .grow {
@@ -54,31 +60,40 @@
 
 .params-wrapper {
   position: relative;
+
   &:before,
   &:after {
     content: "";
+
     position: absolute;
     z-index: 100;
-    pointer-events: none;
     left: 0;
     right: 0;
+
+    pointer-events: none;
   }
   &:before {
     top: 0;
+
     height: 10px;
+
     background-image: linear-gradient(to top, rgba(255, 255, 255, 0), white);
   }
   &:after {
     bottom: 0;
+
     height: 30px;
+
     background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0), white);
   }
 }
 
 .params {
-  padding-right: 30px;
-  height: calc(100vh - 248px);
   overflow: auto;
+
+  height: calc(100vh - 248px);
+  padding-right: 30px;
+
   & > .param:first-child {
     padding-top: 10px;
   }
@@ -89,12 +104,6 @@
 
 .param {
   margin-bottom: 1em;
-  font-family: Menlo, "Courier New", monospace;
-}
-
-.paramlabel {
-  margin-bottom: 0.5em;
-  font-size: 0.75em;
 }
 
 .strong {
@@ -102,6 +111,7 @@
 }
 
 .blue-highlight {
-  background-color: var(--blue);
+  background-color: var(--mechanic-blue);
+  
   color: white;
 }

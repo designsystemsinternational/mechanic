@@ -20,33 +20,35 @@ export const handler = (params, mechanic) => {
 // We will probably do this with a webpack loader
 // We also need a nicer API to create this file
 export const params = {
-  size: {
-    default: {
-      width: 1600,
-      height: 1600
-    }
+  width: {
+    type: "number",
+    default: 1600
+  },
+  height: {
+    type: "number",
+    default: 1600
   },
   background: {
-    type: "string",
+    type: "color",
     default: "#333333"
   },
   color1: {
-    type: "string",
+    type: "color",
     default: "#FF00FF",
-    choices: ["#FF00FF", "#0000FF", "#FF0000"]
+    options: ["#FF00FF", "#0000FF", "#FF0000"]
   },
   color2: {
-    type: "string",
+    type: "color",
     default: "#0000FF",
-    choices: ["#FF00FF", "#0000FF", "#FF0000"]
+    options: ["#FF00FF", "#0000FF", "#FF0000"]
   },
   numberOfSquares: {
-    type: "integer",
+    type: "number",
     default: 2
   }
 };
 
 export const settings = {
-  engine: "canvas",
+  engine: require("mechanic-engine-canvas").run,
   usesRandom: true
 };

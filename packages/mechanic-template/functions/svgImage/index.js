@@ -13,30 +13,29 @@ export const handler = (params, mechanic) => {
 // We will probably do this with a webpack loader
 // We also need a nicer API to create this file
 export const params = {
-  size: {
-    default: {
-      width: 400,
-      height: 300
-    },
-    medium: {
-      width: 800,
-      height: 600
-    },
-    large: {
-      width: 1600,
-      height: 1200
-    },
-    xlarge: {
-      width: 3200,
-      height: 2400
-    }
+  width: {
+    type: "number",
+    default: 400
   },
-  radius: {
-    type: "integer",
-    default: 100
+  height: {
+    type: "number",
+    default: 300
   }
 };
 
-export const settings = {
-  engine: "svg"
+export const presets = {
+  medium: {
+    width: 800,
+    height: 600
+  },
+  large: {
+    width: 1600,
+    height: 1200
+  },
+  xlarge: {
+    width: 3200,
+    height: 2400
+  }
 };
+
+export const settings = {};
