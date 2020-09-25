@@ -32,8 +32,8 @@ export const NumberInput = props => {
 
   const handleOnChange = useRef(event => {
     const { name, value } = event.target;
-    const parsedValue = parseFloat(value);
-    onChange && !isNaN(parsedValue) && onChange(event, name, parsedValue);
+    const parsedValue = value === "" ? 0 : parseFloat(value);
+    onChange && onChange(event, name, parsedValue);
   });
 
   const handleOnFocus = useRef(event => {
@@ -63,7 +63,7 @@ export const NumberInput = props => {
       )}
       {slider ? (
         <div className={css["range-wrapper"]}>
-          {value !== undefined && <span className={css.rangeLabel}>{value}</span>}
+          {value !== undefined && <div className={css.rangeLabel}>{value}</div>}
           <input
             type={"range"}
             name={name}
