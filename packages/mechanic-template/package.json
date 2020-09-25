@@ -50,8 +50,6 @@
     "mechanic-ui-components": "../mechanic-ui-components",
     "mechanic-utils": "../mechanic-utils",
     "mousetrap": "^1.6.5",
-    "p5": "^1.1.9",
-    "seedrandom": "^3.0.5",
     "use-persisted-state": "^0.3.0"
   }
 }
