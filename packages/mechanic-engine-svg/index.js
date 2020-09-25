@@ -1,7 +1,10 @@
-const runSVG = (functionName, values, isPreview) => {
+import { Mechanic } from "mechanic-utils";
+
+const root = document.getElementById("root");
+
+export const run = (functionName, func, values, isPreview) => {
   root.innerHTML = "";
 
-  const func = functions[functionName];
   const mechanic = new Mechanic(func.params, func.settings, values);
 
   const onFrame = (el) => {

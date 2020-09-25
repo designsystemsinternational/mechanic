@@ -33,6 +33,14 @@ export const params = {
   height: {
     type: "number",
     default: 300
+  },
+  radius: {
+    type: "number",
+    default: 10
+  },
+  maxFrames: {
+    type: "number",
+    default: 100
   }
 };
 
@@ -52,5 +60,6 @@ export const presets = {
 };
 
 export const settings = {
+  engine: require("mechanic-engine-svg").run,
   animated: true
 };
