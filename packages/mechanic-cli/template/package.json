@@ -1,0 +1,14 @@
+{
+  "version": "1.0.0",
+  "scripts": {
+    "start": "mechanic start"
+  },
+  "peerDependencies": {
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1"
+  },
+  "dependencies": {
+    "@designsystemsinternational/mechanic-utils": "^0.0.1",
+    "@designsystemsinternational/mechanic-cli": "^0.0.1"
+  }
+}

@@ -1,75 +1,56 @@
-const chalk = require("chalk");
+const fs = require("fs-extra");
+const path = require("path");
+å;
 const inquirer = require("inquirer");
 const ora = require("ora");
+const { mechanicSpinner } = require("./utils/spinners");
 
-const templateOptions = [
-  { name: "Vanilla JS", type: "SVG" },
-  { name: "React", type: "SVG" },
-  { name: "D3", type: "SVG" },
-  { name: "Vanilla JS", type: "Canvas" },
-  { name: "p5.js", type: "Canvas" },
-  { name: "THREE.js", type: "Canvas" },
-];
+const templateDir = path.normalize(`${__dirname}/../template`);
 
-const red = chalk.bgHex("#D70000").white;
-const white = chalk.bgWhite.hex("#121212");
-const blue = chalk.bgHex("#0000AF").white;
-
-const DSI = [
-  { word: "DESIGN", color: red },
-  { word: "SYSTEMS", color: white },
-  { word: "INTERNATIONAL", color: blue },
-];
-
-const mechanic = [
-  { word: "MECHANIC", color: red },
-  { word: "MECHANIC", color: blue },
-];
-
-const spinnerFrames = (settings) => {
-  let length = 0;
-  let letterArray = [];
-  settings.forEach(({ word, color }) => {
-    length += word.length;
-    [...word].forEach((c) => letterArray.push(color(c)));
-  });
-  letterArray = letterArray.concat(letterArray);
-  const frames = [];
-  for (let index = 0; index < length; index++) {
-    const subLetters = letterArray.slice(index, index + length / 2 + 1);
-    frames.push(subLetters.reduce((acc, curr) => acc + curr, ""));
-  }
-  // console.log(frames);
-  return frames;
-};
-
-const dsiSpinner = {
-  interval: 80,
-  frames: spinnerFrames(DSI),
-};
-
-const mechanicSpinner = {
-  interval: 80,
-  frames: spinnerFrames(mechanic),
-};
-
-// Not sure what params will recieve.
-// TODO: Complete.
-const generateProjectTemplate = async (answers) => {
+const generateProjectTemplate = async ({ project, functionName, template }) => {
   const spinner = ora({
-    text: "Generating project template",
-    spinner: dsiSpinner,
+    text: "Generating mechanic project template",
+    spinner: mechanicSpinner,
   }).start();
 
-  // Simulated time passing.
-  await new Promise((resolve) =>
-    setTimeout(resolve, 5000 * (Math.random() + 1))
+  const directory = path.resolve(project);
+  const functionTemplatePath = path.normalize(
+    `${__dirname}/${template.dir}/index.js`
   );
+  const functionDir = path.join(directory, "functions", functionName);
+  await fs.mkdir(directory);
+  await fs.mkdir(path.join(directory, "functions"));
+  await fs.mkdir(functionDir);
+  await Promise.all([
+    ...["mechanic.config.js"].map((filename) =>
+      fs.copyFile(
+        path.join(templateDir, filename),
+        path.join(directory, filename.replace(/^_/, "."))
+      )
+    ),
+    (async () => {
+      let packageJson = await fs.readFile(
+        path.join(templateDir, "package.json"),
+        "utf8"
+      );
+      const packageObj = {
+        name: project,
+        ...JSON.parse(packageJson),
+      };
+      packageObj["dependencies"][`mechanic-engine-${template.engine}`] =
+        "^1.0.0";
+      await fs.writeFile(
+        path.join(directory, "package.json"),
+        JSON.stringify(packageObj, null, 2)
+      );
+    })(),
+    fs.copyFile(functionTemplatePath, path.join(functionDir, "index.js")),
+  ]);
 
   spinner.succeed();
 };
 
-// Not sure what params will recieve.
+// Not sure what params will receive.
 // TODO: Complete.
 const installDependencies = async (answers) => {
   const spinner = ora({
@@ -85,37 +66,97 @@ const installDependencies = async (answers) => {
   spinner.succeed();
 };
 
-const _new = async () => {
-  const answers = await inquirer.prompt([
-    {
-      name: "project",
-      type: "input",
-      message: "Name your project",
-      default: "my-project",
-    },
-    {
-      name: "template",
-      type: "list",
-      message: `Select template for your first design function
-(you can always create more with \`mechanic new function\`)`,
-      choices: templateOptions.map((option) => ({
-        name: `${option.name} (${option.type})`,
-        value: option,
-      })),
-    },
-    {
-      name: "functionName",
-      type: "input",
-      message: "Name your first function",
-      default: "my-function",
-    },
-  ]);
+const templateOptions = [
+  {
+    name: "Vanilla JS Image",
+    engine: "svg",
+    type: "SVG",
+    dir: "../template/functions/svgImage",
+  },
+  {
+    name: "Vanilla JS Animation",
+    engine: "svg",
+    type: "SVG",
+    dir: "../template/functions/svgVideo",
+  },
+  {
+    name: "Vanilla JS Image",
+    engine: "canvas",
+    type: "Canvas",
+    dir: "../template/functions/canvasImage",
+  },
+  {
+    name: "Vanilla JS Animation",
+    engine: "canvas",
+    type: "Canvas",
+    dir: "../template/functions/canvasVideo",
+  },
+  {
+    name: "React Image",
+    engine: "react",
+    type: "SVG",
+    dir: "../template/functions/reactImage",
+  },
+  {
+    name: "React Animation",
+    engine: "react",
+    type: "SVG",
+    dir: "../template/functions/reactVideo",
+  },
+  {
+    name: "p5.js Animation",
+    engine: "p5",
+    type: "Canvas",
+    dir: "../template/functions/p5Animation",
+  },
+];
 
+const questions = [
+  {
+    name: "project",
+    type: "input",
+    message: "Name your project",
+    default: "my-project",
+    validate: async (project) => {
+      const exists = await fs.pathExists(path.resolve(project));
+      return !exists
+        ? true
+        : "Directory already exists. Enter name that doesn't exists.";
+    },
+  },
+  {
+    name: "functionName",
+    type: "input",
+    message:
+      "Name your first design function (you can always create more with `mechanic new function`)",
+    default: "my-function",
+  },
+  {
+    name: "template",
+    type: "list",
+    message: `Select template for your first design function`,
+    choices: templateOptions.map((option) => ({
+      name: `${option.name} (${option.type})`,
+      value: option,
+    })),
+  },
+];
+
+const command = async (argv) => {
+  // TODO: mechanic new function
+  // if (argv._.length > 1 && argv._[1] == "function") {
+  //   console.log("FUNCTION");
+  // }
+  const answers = await inquirer.prompt(questions);
   await generateProjectTemplate(answers);
-
   await installDependencies(answers);
-
   console.log(`Done! Now run \`cd ${answers.project}\` and \`npm run dev\``);
 };
 
-module.exports = _new;
+module.exports = {
+  command: "new",
+  aliases: ["n"],
+  desc: "Creates new mechanic project skeleton",
+  builder: () => {},
+  handler: command,
+};

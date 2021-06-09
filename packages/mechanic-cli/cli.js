@@ -1,10 +1,13 @@
 #!/usr/bin/env node
 
-const _new = require("./commands/new");
-// More commands...
+const newCommand = require("./commands/new");
+const startCommand = require("./commands/start");
 
 require("yargs")
   .scriptName("mechanic")
-  .usage("$0 <cmd> [args]")
-  .command("new", "Creates new project skeleton", {}, _new)
-  .help().argv;
+  .usage("$0 <command> [args]")
+  .command(newCommand)
+  .command(startCommand)
+  .help()
+  .alias("h", "help")
+  .demandCommand(1, "").argv;
