@@ -50,9 +50,9 @@ const generateProjectTemplate = async ({ project, functionName, template }) => {
         ...JSON.parse(packageJson),
       };
       // Add to dependencies the selected engine
-      packageObj["dependencies"][
-        `@designsystemsinternational/mechanic-engine-${template.engine}`
-      ] = "^1.0.0";
+      // packageObj["dependencies"][
+      //   `@designsystemsinternational/mechanic-engine-${template.engine}`
+      // ] = "^1.0.0";
       // Write the resulting package
       await fs.writeFile(
         path.join(directory, "package.json"),
@@ -192,7 +192,11 @@ const command = async (argv) => {
   // Install dependencies in new project directory
   // await installDependencies(answers);
   // Done!
-  console.log(`Done! Now run \`cd ${answers.project}\` and \`npm run dev\``);
+  console.log(`Done! 🎉 Mechanic project created at ${answers.project}
+  To start you now can run:
+  - \`cd ${answers.project}\`
+  - \`npm run dev\`
+  `);
 };
 
 module.exports = {
