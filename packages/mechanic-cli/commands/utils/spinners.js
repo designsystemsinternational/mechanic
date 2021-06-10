@@ -41,7 +41,10 @@ const mechanicSpinner = {
   frames: spinnerFrames(mechanic),
 };
 
+const success = chalk.green.bold;
+
 module.exports = {
   dsiSpinner,
   mechanicSpinner,
+  success,
 };

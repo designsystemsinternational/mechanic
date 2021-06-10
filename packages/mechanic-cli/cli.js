@@ -1,13 +1,13 @@
 #!/usr/bin/env node
 
 const newCommand = require("./commands/new");
-const devCommand = require("./commands/dev");
+const serveCommand = require("./commands/serve");
 
 require("yargs")
   .scriptName("mechanic")
   .usage("$0 <command> [args]")
   .command(newCommand)
-  .command(devCommand)
+  .command(serveCommand)
   .help()
   .alias("h", "help")
   .demandCommand(1, "").argv;

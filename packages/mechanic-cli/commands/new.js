@@ -195,7 +195,7 @@ const command = async (argv) => {
   console.log(`Done! 🎉 Mechanic project created at ${answers.project}
   To start you now can run:
   - \`cd ${answers.project}\`
-  - \`npm run dev\`
+  - \`npm run serve\`
   `);
 };
 
