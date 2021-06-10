@@ -1,5 +1,6 @@
 const express = require("express");
 const path = require("path");
+const fs = require("fs-extra");
 
 const ora = require("ora");
 const { mechanicSpinner, success } = require("./utils/spinners");
@@ -10,8 +11,17 @@ const command = async (argv) => {
     spinner: mechanicSpinner,
   }).start();
 
-  // const port = args['--port'] ? args['--port'] : DEFAULT_PORT;
-  const port = 3000;
+  // Load config file
+  const { configPath } = argv;
+  const exists = await fs.pathExists(configPath);
+  if (!exists) {
+    spinner.fail(`Mechanic config file (${configPath}) not found`);
+    return;
+  }
+  const config = require(path.join(process.cwd(), configPath));
+
+  // Set port and express server
+  const port = config.port ? config.port : argv.port;
 
   let status = "start-server";
   const app = express();
@@ -29,7 +39,6 @@ const command = async (argv) => {
       });
     }
   });
-
   const { server } = await new Promise((resolve, reject) => {
     const server = app.listen(port, (error) => {
       if (error) {
@@ -38,24 +47,23 @@ const command = async (argv) => {
       return resolve({ server });
     });
   });
-  spinner.succeed(`Keystone server listening on port ${port}`);
+  spinner.succeed(`Server listening on port ${port}`);
 
+  // Load webpack middleware to load mechanic app
   // app.use(middlewares);
-  await new Promise((resolve) =>
-    setTimeout(resolve, 10000 * (Math.random() + 1))
-  );
-  status = "started";
-  spinner.succeed(
-    success(`Keystone instance is ready at http://localhost:${port} 🚀`)
-  );
+  // Time simulation for now
+  await new Promise((resolve) => setTimeout(resolve, 60000));
 
-  console.log(`Serve Done!`);
+  // Done!
+  status = "started";
+  spinner.succeed(success(`Mechanic app ready at http://localhost:${port}`));
 };
 
 module.exports = {
-  command: "Serve",
+  command: "serve [port] [configPath]",
   aliases: ["s"],
   desc: "Starts server for mechanic project",
-  builder: () => {},
+  builder: (yargs) =>
+    yargs.default("port", 3000).default("configPath", "mechanic.config.js"),
   handler: command,
 };
