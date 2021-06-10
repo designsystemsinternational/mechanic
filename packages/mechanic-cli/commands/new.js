@@ -1,5 +1,6 @@
 const fs = require("fs-extra");
 const path = require("path");
+const execa = require("execa");
 
 const inquirer = require("inquirer");
 const ora = require("ora");
@@ -66,20 +67,41 @@ const generateProjectTemplate = async ({ project, functionName, template }) => {
   spinner.succeed();
 };
 
-// Not sure what params will receive.
-// TODO: Complete.
-const installDependencies = async (answers) => {
+const installDependencies = async ({ project }) => {
+  // Start UI spinner
   const spinner = ora({
-    text: "Installing dependencies",
+    text: "Installing dependencies. This may take a few minutes.",
     spinner: mechanicSpinner,
   }).start();
 
-  // Simulated time passing.
-  await new Promise((resolve) =>
-    setTimeout(resolve, 5000 * (Math.random() + 1))
-  );
+  // Project directory
+  const cwd = path.resolve(project);
 
-  spinner.succeed();
+  try {
+    // Install with yarn
+    await execa("yarn", ["install"], { cwd });
+    // End success UI spinner
+    spinner.succeed("Installed dependencies with yarn.");
+    return "yarn";
+  } catch (err) {
+    if (err.failed) {
+      // Notify failure
+      spinner.warn("Failed to install with yarn.");
+      spinner.start("Trying with npm.");
+      try {
+        // Install with npm
+        await execa("npm", ["install"], { cwd });
+        // End success UI spinner
+        spinner.succeed("Installed dependencies with npm.");
+      } catch (npmErr) {
+        // Notify failure
+        spinner.fail("Failed to install with npm.");
+        throw npmErr;
+      }
+      return "npm";
+    }
+    throw err;
+  }
 };
 
 const templateOptions = [
@@ -168,7 +190,7 @@ const command = async (argv) => {
   // Generate new project directory and content files
   await generateProjectTemplate(answers);
   // Install dependencies in new project directory
-  await installDependencies(answers);
+  // await installDependencies(answers);
   // Done!
   console.log(`Done! Now run \`cd ${answers.project}\` and \`npm run dev\``);
 };
