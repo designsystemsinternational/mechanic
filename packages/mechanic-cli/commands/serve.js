@@ -73,8 +73,9 @@ const command = async (argv) => {
   spinner.succeed(`Server listening on port ${port}`);
 
   // Load webpack middleware to load mechanic app
-  app.use((req, res, next) => res.json(mechanicApp));
-  // app.use(middlewares);
+  const middleware = await mechanicApp.createMiddleware(functionsPath);
+  // app.use((req, res, next) => res.json(mechanicApp));
+  app.use([middleware]);
   // Time simulation for now
   // await new Promise((resolve) => setTimeout(resolve, 60000));
 
