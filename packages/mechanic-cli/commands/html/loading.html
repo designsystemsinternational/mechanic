@@ -10,21 +10,12 @@
       }
       body {
         align-items: center;
-        color: #172b4d;
         display: flex;
         flex-direction: column;
         font-family: sans-serif;
-        font-size: 15px;
         justify-content: center;
-        letter-spacing: -0.005em;
         margin: 0;
         padding: 0;
-        text-decoration-skip: ink;
-        text-rendering: optimizeLegibility;
-        -ms-overflow-style: -ms-autohiding-scrollbar;
-        -moz-font-feature-settings: "liga" on;
-        -moz-osx-font-smoothing: grayscale;
-        -webkit-font-smoothing: antialiased;
       }
 
       p {
@@ -298,11 +289,9 @@
       <p>This page will reload when app is ready</p>
     </div>
     <script>
-      const statusEl = document.querySelector("#status");
       let ready = false;
 
       function onReady() {
-        statusEl.innerHTML = "ready!";
         ready = true;
         location.reload(true);
       }
@@ -323,21 +312,6 @@
             }
             if (cancelled) {
               return;
-            }
-            switch (status) {
-              case "init-keystone": {
-                statusEl.innerHTML = "initialising...";
-                break;
-              }
-              case "db-connect": {
-                statusEl.innerHTML = "connecting to the database...";
-                break;
-              }
-              case "start-server":
-              default: {
-                statusEl.innerHTML = "loading...";
-                break;
-              }
             }
           });
         return () => {

@@ -33,11 +33,12 @@ const generateProjectTemplate = async ({ project, functionName, template }) => {
   // Copying content promises
   await Promise.all([
     // Copy array of files that get duplicated without change
-    ...["mechanic.config.js"].map((filename) =>
-      fs.copyFile(
-        path.join(templateDir, filename),
-        path.join(directory, filename.replace(/^_/, "."))
-      )
+    ...[path.join("functions", "index.js"), "mechanic.config.js"].map(
+      (filename) =>
+        fs.copyFile(
+          path.join(templateDir, filename),
+          path.join(directory, filename.replace(/^_/, "."))
+        )
     ),
     // Load package.json as object and add metadata
     (async () => {

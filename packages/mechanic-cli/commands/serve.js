@@ -2,23 +2,46 @@ const express = require("express");
 const path = require("path");
 const fs = require("fs-extra");
 
+const mechanicApp = require("@designsystemsinternational/mechanic-app");
+
 const ora = require("ora");
 const { mechanicSpinner, success } = require("./utils/spinners");
 
+const getConfig = async (configPath) => {
+  const exists = await fs.pathExists(configPath);
+  if (!exists) {
+    return;
+  }
+  return require(path.join(process.cwd(), configPath));
+};
+
+const getFunctionsPath = async () => {
+  const exists = await fs.pathExists(
+    path.join(process.cwd(), "functions", "index.js")
+  );
+  return exists ? path.join(process.cwd(), "functions", "index.js") : undefined;
+};
+
 const command = async (argv) => {
+  // Start UI spinner
   const spinner = ora({
     text: "Starting off server",
     spinner: mechanicSpinner,
   }).start();
 
   // Load config file
-  const { configPath } = argv;
-  const exists = await fs.pathExists(configPath);
-  if (!exists) {
+  const config = await getConfig(argv.configPath);
+  // Stop if no config file is found.
+  if (!config) {
     spinner.fail(`Mechanic config file (${configPath}) not found`);
     return;
   }
-  const config = require(path.join(process.cwd(), configPath));
+
+  const functionsPath = await getFunctionsPath();
+  if (!functionsPath) {
+    spinner.fail(`Functions directory index.js file not found`);
+    return;
+  }
 
   // Set port and express server
   const port = config.port ? config.port : argv.port;
@@ -50,9 +73,10 @@ const command = async (argv) => {
   spinner.succeed(`Server listening on port ${port}`);
 
   // Load webpack middleware to load mechanic app
+  app.use((req, res, next) => res.json(mechanicApp));
   // app.use(middlewares);
   // Time simulation for now
-  await new Promise((resolve) => setTimeout(resolve, 60000));
+  // await new Promise((resolve) => setTimeout(resolve, 60000));
 
   // Done!
   status = "started";

@@ -1,11 +1,7 @@
 {
   "version": "1.0.0",
   "scripts": {
-    "dev": "mechanic dev"
-  },
-  "peerDependencies": {
-    "react": "^16.13.1",
-    "react-dom": "^16.13.1"
+    "serve": "mechanic serve"
   },
   "dependencies": {
     "@designsystemsinternational/mechanic-utils": "^0.0.1",

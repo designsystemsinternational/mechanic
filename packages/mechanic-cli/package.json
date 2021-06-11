@@ -8,7 +8,8 @@
     "mechanic": "cli.js"
   },
   "dependencies": {
-    "@designsystemsinternational/mechanic-template": "^0.0.1",
+    "@designsystemsinternational/mechanic-app": "^0.0.1",
+    "@designsystemsinternational/mechanic-utils": "^0.0.1",
     "chalk": "^4.1.0",
     "inquirer": "^7.3.3",
     "ora": "^4.0.5",

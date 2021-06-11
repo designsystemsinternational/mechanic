@@ -1,0 +1,12 @@
+logs
+*.log
+npm-debug.log*
+lib-cov
+coverage
+node_modules/
+.npm
+.eslintcache
+.node_repl_history
+files
+dist
+.DS_Store
