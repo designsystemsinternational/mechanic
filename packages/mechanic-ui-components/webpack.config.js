@@ -7,6 +7,7 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin");
 const TerserPlugin = require("terser-webpack-plugin");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
+const BundleAnalyzerPlugin = require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
 
 module.exports = async (env, argv) => {
   const mode = argv.mode === "production" ? "production" : "development";
@@ -61,6 +62,7 @@ module.exports = async (env, argv) => {
       filename: "index.html",
       chunks: ["app"]
     })
+    // new BundleAnalyzerPlugin()
   ].concat(
     isProduction
       ? [
