@@ -8,6 +8,7 @@
     "mechanic": "cli.js"
   },
   "dependencies": {
+    "@designsystemsinternational/create-mechanic": "^0.0.1",
     "@designsystemsinternational/mechanic-app": "^0.0.1",
     "@designsystemsinternational/mechanic-utils": "^0.0.1",
     "chalk": "^4.1.0",

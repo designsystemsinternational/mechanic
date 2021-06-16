@@ -4,7 +4,7 @@
     "serve": "mechanic serve"
   },
   "dependencies": {
-    "@designsystemsinternational/mechanic-utils": "^0.0.1",
+    "@designsystemsinternational/mechanic": "^0.0.1",
     "@designsystemsinternational/mechanic-cli": "^0.0.1"
   }
 }

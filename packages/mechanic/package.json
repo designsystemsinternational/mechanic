@@ -1,0 +1,11 @@
+{
+  "name": "@designsystemsinternational/mechanic",
+  "version": "0.0.1",
+  "main": "/index.js",
+  "module": "src/index.js",
+  "scripts": {},
+  "dependencies": {
+    "seedrandom": "^3.0.5",
+    "esm": "^3.2.25"
+  }
+}

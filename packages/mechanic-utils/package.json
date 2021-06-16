@@ -1,11 +1,9 @@
 {
   "name": "@designsystemsinternational/mechanic-utils",
   "version": "0.0.1",
-  "main": "/index.js",
-  "module": "src/index.js",
+  "main": "index.js",
   "scripts": {},
   "dependencies": {
-    "seedrandom": "^3.0.5",
-    "esm": "^3.2.25"
+    "chalk": "^4.1.1"
   }
 }
