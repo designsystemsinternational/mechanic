@@ -54,9 +54,9 @@ const generateProjectTemplate = async ({ project, functionName, template }) => {
         ...JSON.parse(packageJson),
       };
       // Add to dependencies the selected engine
-      // packageObj["dependencies"][
-      //   `@designsystemsinternational/mechanic-engine-${template.engine}`
-      // ] = "^1.0.0";
+      packageObj["dependencies"][
+        `@designsystemsinternational/mechanic-engine-${template.engine}`
+      ] = "^0.0.1";
       // Write the resulting package
       await fs.writeFile(
         path.join(directory, "package.json"),

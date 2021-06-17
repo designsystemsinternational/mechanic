@@ -1,9 +1,13 @@
 const express = require("express");
+const webpack = require("webpack");
+const webpackDevMiddleware = require("webpack-dev-middleware");
 const path = require("path");
 const fs = require("fs-extra");
 
 const ora = require("ora");
-const { mechanicSpinner, success } = require("@designsystemsinternational/mechanic-utils");
+const {
+  spinners: { mechanicSpinner, success }
+} = require("@designsystemsinternational/mechanic-utils");
 
 const getConfig = async configPath => {
   const exists = await fs.pathExists(configPath);
@@ -67,17 +71,20 @@ const command = async argv => {
   spinner.succeed(`Server listening on port ${port}`);
 
   // Load webpack middleware to load mechanic app
-  // const middleware = await mechanicApp.createMiddleware(functionsPath);
-  // app.use((req, res, next) => res.json(mechanicApp));
-  // app.use([middleware]);
+  const webpackConfigGenerator = require("../../app/webpackConfigGenerator");
+  const webpackConfig = webpackConfigGenerator("dev");
+  const compiler = webpack(webpackConfig);
+  app.use(
+    webpackDevMiddleware(compiler, {
+      publicPath: webpackConfig.output.publicPath
+    })
+  );
   // Time simulation for now
-  await new Promise(resolve => setTimeout(resolve, 60000));
+  // await new Promise(resolve => setTimeout(resolve, 60000));
 
   // Done!
   status = "started";
   spinner.succeed(success(`Mechanic app ready at http://localhost:${port}`));
 };
 
-module.exports = {
-  serve: command
-};
+module.exports = command;

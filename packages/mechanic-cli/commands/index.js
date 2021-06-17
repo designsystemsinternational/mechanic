@@ -45,13 +45,14 @@ const buildLocalCommands = (cli, isMechanicProject) => {
       console.log(`loading local command from: ${cmdPath}`);
 
       const cmd = require(cmdPath);
-      if (cmd instanceof Function) {
+      if (typeof cmd === "function") {
         return cmd;
       }
 
-      return console.log(
+      console.log(
         `Handler for command "${command}" is not a function. Your ${mechanic} package might be corrupted, try reinstalling it and running the command again.`
       );
+      return () => {};
     } catch (err) {
       cli.showHelp();
       return console.log(
