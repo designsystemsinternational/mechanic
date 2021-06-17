@@ -2,6 +2,7 @@ const path = require("path");
 const resolveCwd = require("resolve-cwd");
 const newCommand = require("./new");
 const getDevCommand = require("./dev");
+const getBuildCommand = require("./build");
 
 const mechanic = "@designsystemsinternational/mechanic";
 
@@ -70,7 +71,9 @@ const buildLocalCommands = (cli, isMechanicProject) => {
     };
   };
 
-  cli.command(getDevCommand(getCommandHandler));
+  cli
+    .command(getDevCommand(getCommandHandler))
+    .command(getBuildCommand(getCommandHandler));
 };
 
 module.exports = () => {

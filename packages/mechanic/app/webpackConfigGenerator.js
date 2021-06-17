@@ -7,7 +7,7 @@ module.exports = mode => ({
   entry: path.resolve(__dirname, "./src/index.js"),
   // Where files should be sent once they are bundled
   output: {
-    path: path.join(__dirname, "dist"),
+    path: path.join(process.cwd(), "dist"),
     filename: "index.bundle.js",
     publicPath: "/"
   },
