@@ -1,39 +1,138 @@
 const path = require("path");
+const webpack = require("webpack");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const { CleanWebpackPlugin } = require("clean-webpack-plugin");
+const NodePolyfillPlugin = require("node-polyfill-webpack-plugin");
 
-module.exports = mode => ({
-  mode: mode === "dev" ? "development" : "production",
-  devtool: mode ? "source-map" : "eval-source-map",
-  entry: path.resolve(__dirname, "./src/index.js"),
-  // Where files should be sent once they are bundled
-  output: {
-    path: path.join(process.cwd(), "dist"),
-    filename: "index.bundle.js",
-    publicPath: "/"
-  },
-  // Rules of how webpack will take our files, compile & bundle them for the browser
-  module: {
-    rules: [
+module.exports = modeParam => {
+  const mode = modeParam === "dev" ? "development" : "production";
+  const isProduction = mode === "production";
+
+  const devtool = isProduction ? "source-map" : "eval-source-map";
+
+  const js = {
+    test: /\.(js|jsx)$/,
+    exclude: /.+\/node_modules\/.+/,
+    use: {
+      loader: require.resolve("babel-loader"),
+      options: {
+        presets: [require.resolve("@babel/preset-env"), require.resolve("@babel/preset-react")],
+        cacheDirectory: true
+      }
+    }
+  };
+
+  const externalCss = {
+    test: /\.(css)$/,
+    include: [/.+\/node_modules\/.+/, /.+\/mechanic-ui-components\/.+/],
+    use: [isProduction ? MiniCssExtractPlugin.loader : require.resolve("style-loader")].concat([
       {
-        test: /\.(js|jsx)$/,
-        exclude: /.+\/node_modules\/.+/,
-        use: {
-          loader: require.resolve("babel-loader"),
-          options: {
-            presets: [require.resolve("@babel/preset-env"), require.resolve("@babel/preset-react")],
-            cacheDirectory: true
-          }
+        loader: require.resolve("css-loader"),
+        options: {
+          modules: false,
+          importLoaders: 1
         }
       },
       {
-        test: /\.css$/,
-        use: [require.resolve("style-loader"), require.resolve("css-loader")]
+        loader: require.resolve("postcss-loader"),
+        options: {
+          sourceMap: true,
+          postcssOptions: {
+            plugins: [
+              [
+                require.resolve("postcss-preset-env"),
+                {
+                  stage: 0
+                }
+              ]
+            ]
+          }
+        }
       }
-    ]
-  },
-  plugins: [
+    ])
+  };
+
+  const css = {
+    test: /\.(css)$/,
+    exclude: [/.+\/node_modules\/.+/, /.+\/mechanic-ui-components\/.+/],
+    use: [isProduction ? MiniCssExtractPlugin.loader : require.resolve("style-loader")].concat([
+      {
+        loader: require.resolve("css-loader"),
+        options: {
+          modules: {
+            localIdentName: "[name]__[local]"
+          },
+          localsConvention: "camelCase",
+          importLoaders: 1
+        }
+      },
+      {
+        loader: require.resolve("postcss-loader"),
+        options: {
+          sourceMap: true,
+          postcssOptions: {
+            plugins: [
+              [
+                require.resolve("postcss-preset-env"),
+                {
+                  stage: 0
+                }
+              ]
+            ]
+          }
+        }
+      }
+    ])
+  };
+
+  const entry = {
+    app: path.resolve(__dirname, "./index.js"),
+    functions: path.resolve(process.cwd(), "./functions/index.js")
+  };
+  const output = {
+    path: path.join(process.cwd(), "dist"),
+    libraryTarget: "umd",
+    publicPath: "/",
+    filename: isProduction ? "[contenthash]-[name].js" : "[fullhash]-[name].js",
+    chunkFilename: isProduction
+      ? "[contenthash]-[name].[id].chunk.js"
+      : "[fullhash]-[name].[id].chunk.js"
+  };
+
+  const plugins = [
     new HtmlWebpackPlugin({
-      template: path.resolve(__dirname, "./src/index.html")
-    })
-  ]
-});
+      template: path.resolve(__dirname, "./index.html"),
+      chunks: ["app"]
+    }),
+    new HtmlWebpackPlugin({
+      template: path.resolve(__dirname, "./index.html"),
+      filename: "functions.html",
+      chunks: ["functions"]
+    }),
+    new NodePolyfillPlugin()
+  ].concat(
+    isProduction
+      ? [
+          new CleanWebpackPlugin(),
+          new MiniCssExtractPlugin({
+            filename: "[contenthash]-[name].css"
+          })
+        ]
+      : [new webpack.HotModuleReplacementPlugin()]
+  );
+
+  return {
+    mode,
+    devtool,
+    entry,
+    output,
+    resolve: {
+      extensions: [".js", ".jsx", ".json"]
+    },
+    module: {
+      rules: [js, css, externalCss]
+    },
+    plugins
+  };
+};

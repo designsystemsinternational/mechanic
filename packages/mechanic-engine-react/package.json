@@ -12,16 +12,16 @@
   },
   "devDependencies": {
     "@babel/cli": "^7.8.4",
-    "@babel/core": "^7.9.0",
+    "@babel/core": "^7.14.6",
     "@babel/plugin-transform-runtime": "^7.3.4",
-    "@babel/preset-env": "^7.9.0",
-    "@babel/preset-react": "^7.9.4",
+    "@babel/preset-env": "^7.14.5",
+    "@babel/preset-react": "^7.14.5",
     "@babel/runtime": "^7.9.2",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-hot-loader": "^4.8.0"
   },
   "dependencies": {
-    "@designsystemsinternational/mechanic-utils": "^0.0.1"
+    "@designsystemsinternational/mechanic": "^0.0.1"
   }
 }

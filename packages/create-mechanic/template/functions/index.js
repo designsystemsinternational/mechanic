@@ -1,5 +1,9 @@
-const { setUp } = require("@designsystemsinternational/mechanic-utils");
+const { setUp } = require("@designsystemsinternational/mechanic");
 
-const functionsContext = require.context("../functions", true, /^(.{2,})\/index\.js$/);
+const functionsContext = require.context(
+  "../functions",
+  true,
+  /^(.{2,})\/index\.js$/
+);
 
 setUp(functionsContext);

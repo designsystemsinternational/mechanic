@@ -1,6 +1,6 @@
 import React from "react";
 import { render, unmountComponentAtNode } from "react-dom";
-import { Mechanic } from "@designsystemsinternational/mechanic-utils";
+import { Mechanic } from "@designsystemsinternational/mechanic";
 
 const root = document.getElementById("root");
 

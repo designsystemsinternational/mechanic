@@ -4,10 +4,11 @@ const getPort = require("get-port");
 
 const HtmlWebPackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin");
+const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
 const TerserPlugin = require("terser-webpack-plugin");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const BundleAnalyzerPlugin = require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
+const NodePolyfillPlugin = require("node-polyfill-webpack-plugin");
 
 module.exports = async (env, argv) => {
   const mode = argv.mode === "production" ? "production" : "development";
@@ -45,10 +46,9 @@ module.exports = async (env, argv) => {
     ? {
         minimizer: [
           new TerserPlugin({
-            parallel: true,
-            sourceMap: true
+            parallel: true
           }),
-          new OptimizeCSSAssetsPlugin({})
+          new CssMinimizerPlugin({})
         ]
       }
     : {};
@@ -61,7 +61,8 @@ module.exports = async (env, argv) => {
       template: "./app/index.html",
       filename: "index.html",
       chunks: ["app"]
-    })
+    }),
+    new NodePolyfillPlugin()
     // new BundleAnalyzerPlugin()
   ].concat(
     isProduction
@@ -100,8 +101,8 @@ Copied "${url}" to clipboard.
     (externals.react = {
       commonjs: "react",
       commonjs2: "react",
-      amd: "React",
-      root: "React"
+      amd: "react",
+      root: "react"
     }),
       (externals["react-dom"] = {
         commonjs: "react-dom",
