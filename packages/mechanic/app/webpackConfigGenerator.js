@@ -86,6 +86,13 @@ module.exports = modeParam => {
     ])
   };
 
+  const functions = {
+    test: /FUNCTIONS/,
+    use: [
+      { loader: path.resolve(__dirname, "../src/function-loader.js"), options: { hey: "hey!" } }
+    ]
+  };
+
   const entry = {
     app: path.resolve(__dirname, "./index.js"),
     functions: path.resolve(process.cwd(), "./functions/index.js")
@@ -131,7 +138,7 @@ module.exports = modeParam => {
       extensions: [".js", ".jsx", ".json"]
     },
     module: {
-      rules: [js, css, externalCss]
+      rules: [js, css, externalCss, functions]
     },
     plugins
   };

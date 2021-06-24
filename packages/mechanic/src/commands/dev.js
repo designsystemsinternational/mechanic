@@ -79,8 +79,8 @@ const command = async argv => {
       publicPath: webpackConfig.output.publicPath
     })
   );
-  // Time simulation for now
-  // await new Promise(resolve => setTimeout(resolve, 60000));
+
+  await new Promise(resolve => setTimeout(resolve, 1000));
 
   // Done!
   status = "started";
