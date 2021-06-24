@@ -1,29 +1,26 @@
 import React from "react";
 import { Switch, Route, withRouter } from "react-router-dom";
-// import { extractContexts } from "../src";
+import { extractContexts } from "../src";
 
 import { Function } from "./pages/Function";
 import { NotFound } from "./pages/NotFound";
 import { Nav } from "./pages/Nav";
 
-import functions from "./FUNCTIONS";
+import functions2 from "./FUNCTIONS";
 
-// console.log(path.resolve(process.cwd(), "./functions/index.js"));
-
-// const functionContext = require.context("../functions", true, /^(.{2,})\/index\.js$/);
+// const functionContext = require.context(FUNCTIONS_PATH, true, /^(.{2,})\/index\.js$/);
 // const { functions } = extractContexts(functionContext);
 // const functionNames = Object.keys(functions);
-// const functions = {};
-// const functionNames = [];
+const functions = {};
+const functionNames = [];
 
 import css from "./App.css";
 
 const AppComponent = props => {
-  console.log({ functions });
   return (
     <div className={css.root}>
       <Switch>
-        {/* {functionNames.map((name, i) => (
+        {functionNames.map((name, i) => (
           <Route
             exact
             key={`route-${name}`}
@@ -34,7 +31,7 @@ const AppComponent = props => {
               </Function>
             )}
           />
-        ))} */}
+        ))}
         <Route component={NotFound} />
       </Switch>
     </div>

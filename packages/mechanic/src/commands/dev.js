@@ -17,9 +17,13 @@ const getConfig = async configPath => {
   return require(path.join(process.cwd(), configPath));
 };
 
-const getFunctionsPath = async () => {
-  const exists = await fs.pathExists(path.join(process.cwd(), "functions", "index.js"));
-  return exists ? path.join(process.cwd(), "functions", "index.js") : undefined;
+const getFunctionsPath = async (functionsPath, config) => {
+  const relativePath = functionsPath || config.functionsPath || "./functions";
+  const fullPath = path.resolve(relativePath);
+  console.log(relativePath);
+  console.log(fullPath);
+  const exists = await fs.pathExists(fullPath);
+  return exists ? fullPath : null;
 };
 
 const command = async argv => {
@@ -37,9 +41,9 @@ const command = async argv => {
     return;
   }
 
-  const functionsPath = await getFunctionsPath();
+  const functionsPath = await getFunctionsPath(argv.functionsPath, config);
   if (!functionsPath) {
-    spinner.fail(`Functions directory index.js file not found`);
+    spinner.fail(`Functions directory file not found`);
     return;
   }
 
@@ -72,7 +76,7 @@ const command = async argv => {
 
   // Load webpack middleware to load mechanic app
   const webpackConfigGenerator = require("../../app/webpackConfigGenerator");
-  const webpackConfig = webpackConfigGenerator("dev");
+  const webpackConfig = webpackConfigGenerator("dev", functionsPath);
   const compiler = webpack(webpackConfig);
   app.use(
     webpackDevMiddleware(compiler, {

@@ -1,7 +1,10 @@
 module.exports = (getCommandHandler) => ({
-  command: "build",
+  command: "build [configPath] [functionsPath]",
   aliases: ["b"],
   desc: "Builds local project",
-  builder: () => {},
+  builder: (yargs) =>
+    yargs
+      .default("configPath", "./mechanic.config.js")
+      .default("functionsPath", "./functions"),
   handler: getCommandHandler("build"),
 });

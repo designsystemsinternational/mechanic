@@ -5,12 +5,13 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const NodePolyfillPlugin = require("node-polyfill-webpack-plugin");
 
-module.exports = modeParam => {
+module.exports = (modeParam, functionsPath) => {
   const mode = modeParam === "dev" ? "development" : "production";
   const isProduction = mode === "production";
 
   const devtool = isProduction ? "source-map" : "eval-source-map";
 
+  // https://stackoverflow.com/questions/33527653/babel-6-regeneratorruntime-is-not-defined
   const js = {
     test: /\.(js|jsx)$/,
     exclude: /.+\/node_modules\/.+/,
@@ -95,7 +96,7 @@ module.exports = modeParam => {
 
   const entry = {
     app: path.resolve(__dirname, "./index.js"),
-    functions: path.resolve(process.cwd(), "./functions/index.js")
+    functions: path.resolve(__dirname, "./functions.js")
   };
   const output = {
     path: path.join(process.cwd(), "dist"),
@@ -116,6 +117,9 @@ module.exports = modeParam => {
       template: path.resolve(__dirname, "./index.html"),
       filename: "functions.html",
       chunks: ["functions"]
+    }),
+    new webpack.DefinePlugin({
+      FUNCTIONS_PATH: functionsPath
     }),
     new NodePolyfillPlugin()
   ].concat(
