@@ -34,7 +34,6 @@ module.exports = function () {
   });
 
   const result = `
-  console.log("HEEEEEY");
   module.exports = {
     ${requireFunctions}
   };

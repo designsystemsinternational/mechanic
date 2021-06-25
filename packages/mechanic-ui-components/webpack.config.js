@@ -8,7 +8,6 @@ const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
 const TerserPlugin = require("terser-webpack-plugin");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const BundleAnalyzerPlugin = require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
-const NodePolyfillPlugin = require("node-polyfill-webpack-plugin");
 
 module.exports = async (env, argv) => {
   const mode = argv.mode === "production" ? "production" : "development";
@@ -61,8 +60,7 @@ module.exports = async (env, argv) => {
       template: "./app/index.html",
       filename: "index.html",
       chunks: ["app"]
-    }),
-    new NodePolyfillPlugin()
+    })
     // new BundleAnalyzerPlugin()
   ].concat(
     isProduction
@@ -101,8 +99,8 @@ Copied "${url}" to clipboard.
     (externals.react = {
       commonjs: "react",
       commonjs2: "react",
-      amd: "react",
-      root: "react"
+      amd: "React",
+      root: "React"
     }),
       (externals["react-dom"] = {
         commonjs: "react-dom",
