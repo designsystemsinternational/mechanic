@@ -2,7 +2,7 @@ import React from "react";
 import { Switch, Route, withRouter } from "react-router-dom";
 import { extractContexts } from "../src";
 
-import { Function } from "./pages/Function";
+// import { Function } from "./pages/Function";
 import { NotFound } from "./pages/NotFound";
 import { Nav } from "./pages/Nav";
 
@@ -26,9 +26,10 @@ const AppComponent = props => {
             key={`route-${name}`}
             path={i == 0 ? ["/", `/${name}`] : `/${name}`}
             render={() => (
-              <Function name={name} exports={functions[name]}>
-                <Nav name={name} functionsNames={functionNames} />
-              </Function>
+              <></>
+              // <Function name={name} exports={functions[name]}>
+              //   <Nav name={name} functionsNames={functionNames} />
+              // </Function>
             )}
           />
         ))}

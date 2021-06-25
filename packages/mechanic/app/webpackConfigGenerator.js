@@ -18,8 +18,26 @@ module.exports = (modeParam, functionsPath) => {
     use: {
       loader: require.resolve("babel-loader"),
       options: {
-        presets: [require.resolve("@babel/preset-env"), require.resolve("@babel/preset-react")],
-        cacheDirectory: true
+        presets: [
+          [
+            require.resolve("@babel/preset-env"),
+            {
+              targets: {
+                browsers: ["last 2 versions", "ie >= 11"]
+              }
+            }
+          ],
+          require.resolve("@babel/preset-react")
+        ],
+        plugins: [
+          require.resolve("react-hot-loader/babel"),
+          require.resolve("@babel/plugin-transform-runtime")
+        ],
+        env: {
+          test: {
+            presets: [require.resolve("@babel/preset-env")]
+          }
+        }
       }
     }
   };
@@ -117,9 +135,6 @@ module.exports = (modeParam, functionsPath) => {
       template: path.resolve(__dirname, "./index.html"),
       filename: "functions.html",
       chunks: ["functions"]
-    }),
-    new webpack.DefinePlugin({
-      FUNCTIONS_PATH: functionsPath
     }),
     new NodePolyfillPlugin()
   ].concat(
