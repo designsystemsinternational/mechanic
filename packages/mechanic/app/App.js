@@ -6,13 +6,9 @@ import { extractContexts } from "../src";
 import { NotFound } from "./pages/NotFound";
 import { Nav } from "./pages/Nav";
 
-import functions2 from "./FUNCTIONS";
-
-// const functionContext = require.context(FUNCTIONS_PATH, true, /^(.{2,})\/index\.js$/);
-// const { functions } = extractContexts(functionContext);
-// const functionNames = Object.keys(functions);
-const functions = {};
-const functionNames = [];
+import functions from "./FUNCTIONS";
+const functionNames = Object.keys(functions);
+console.log({ functions, functionNames });
 
 import css from "./App.css";
 
@@ -28,7 +24,7 @@ const AppComponent = props => {
             render={() => (
               <></>
               // <Function name={name} exports={functions[name]}>
-              //   <Nav name={name} functionsNames={functionNames} />
+              // <Nav name={name} functionsNames={functionNames} />
               // </Function>
             )}
           />

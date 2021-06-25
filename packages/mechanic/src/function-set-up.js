@@ -24,9 +24,12 @@ const extractContexts = context => {
  * @param {function} context - webpack's require.context object,
  * used to require all index.js files in function folder.
  */
-const setUp = context => {
+const setUp = functions => {
   console.log("Setting up!");
-  const { functions, engines } = extractContexts(context);
+  const engines = {};
+  Object.keys(functions).forEach(
+    functionName => (engines[functionName] = functions[functionName].settings.engine)
+  );
   let curEngine = null;
   window.initEngine = functionName => {
     if (engines[functionName] === undefined) {

@@ -108,7 +108,7 @@ module.exports = (modeParam, functionsPath) => {
   const functions = {
     test: /FUNCTIONS/,
     use: [
-      { loader: path.resolve(__dirname, "../src/function-loader.js"), options: { hey: "hey!" } }
+      { loader: path.resolve(__dirname, "../src/function-loader.js"), options: { functionsPath } }
     ]
   };
 
