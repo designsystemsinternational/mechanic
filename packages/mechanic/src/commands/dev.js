@@ -20,8 +20,8 @@ const getConfig = async configPath => {
 const getFunctionsPath = async (functionsPath, config) => {
   const relativePath = functionsPath || config.functionsPath || "./functions";
   const fullPath = path.resolve(relativePath);
-  console.log(relativePath);
-  console.log(fullPath);
+  // console.log(relativePath);
+  // console.log(fullPath);
   const exists = await fs.pathExists(fullPath);
   return exists ? fullPath : null;
 };

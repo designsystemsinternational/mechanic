@@ -18,14 +18,14 @@ const walkSync = (dir, callback) => {
 
 module.exports = function () {
   const { functionsPath } = getOptions(this);
-  console.log({ functionsPath });
+  // console.log({ functionsPath });
 
   let requireFunctions = "";
 
   walkSync(functionsPath, (filename, filepath) => {
     if (filename === "index.js") {
       const functionName = path.dirname(filepath).split(path.sep).pop();
-      console.log({ functionName, filepath });
+      // console.log({ functionName, filepath });
       if (requireFunctions !== "") {
         requireFunctions += ",\n";
       }
@@ -39,9 +39,9 @@ module.exports = function () {
   };
   `;
 
-  console.log("----------- functions loader result ------------");
-  console.log(result);
-  console.log("------------------------------------------------");
+  // console.log("----------- functions loader result ------------");
+  // console.log(result);
+  // console.log("------------------------------------------------");
 
   return result;
 };

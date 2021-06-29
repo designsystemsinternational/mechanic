@@ -7,7 +7,6 @@ import { Nav } from "./pages/Nav";
 
 import functions from "./FUNCTIONS";
 const functionNames = Object.keys(functions);
-console.log({ functions, functionNames });
 
 import css from "./App.css";
 

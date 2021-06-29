@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "main": "index.js",
   "scripts": {},
-  "dependencies": {
+  "peerDependencies": {
     "@designsystemsinternational/mechanic": "^0.0.1"
   }
 }

@@ -5,8 +5,6 @@ import Mousetrap from "mousetrap";
 
 import { useValues } from "./value-persistance";
 
-// import uiComponents from "@designsystemsinternational/mechanic-ui-components/src/index";
-// console.log({ uiComponents });
 import {
   Button,
   Toggle,

@@ -118,7 +118,9 @@ module.exports = (modeParam, functionsPath) => {
   };
   const output = {
     path: path.join(process.cwd(), "dist"),
-    libraryTarget: "umd",
+    library: {
+      type: "umd"
+    },
     publicPath: "/",
     filename: isProduction ? "[contenthash]-[name].js" : "[fullhash]-[name].js",
     chunkFilename: isProduction
@@ -127,6 +129,9 @@ module.exports = (modeParam, functionsPath) => {
   };
 
   const plugins = [
+    new webpack.EnvironmentPlugin({
+      "process.env.NODE_ENV": mode
+    }),
     new HtmlWebpackPlugin({
       template: path.resolve(__dirname, "./index.html"),
       chunks: ["app"]
@@ -154,7 +159,11 @@ module.exports = (modeParam, functionsPath) => {
     entry,
     output,
     resolve: {
-      extensions: [".js", ".jsx", ".json"]
+      extensions: [".js", ".jsx", ".json"],
+      alias: {
+        react: path.resolve(__dirname, "..", "./node_modules/react"),
+        "react-dom": path.resolve(__dirname, "..", "./node_modules/react-dom")
+      }
     },
     module: {
       rules: [js, css, externalCss, functions]
