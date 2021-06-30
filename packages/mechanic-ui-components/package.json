@@ -1,7 +1,11 @@
 {
   "name": "@designsystemsinternational/mechanic-ui-components",
   "version": "0.0.1",
-  "module": "src/index.js",
+  "type": "module",
+  "exports": "./src/index.js",
+  "engines": {
+    "node": "^12.20.0 || ^14.13.1 || >=16.0.0"
+  },
   "scripts": {
     "dev": "webpack serve --mode development"
   },
