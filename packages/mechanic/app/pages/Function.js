@@ -5,13 +5,7 @@ import Mousetrap from "mousetrap";
 
 import { useValues } from "./value-persistance";
 
-import {
-  Button,
-  Toggle,
-  ParamInput
-} from "@designsystemsinternational/mechanic-ui-components/src/index";
-import "@designsystemsinternational/mechanic-ui-components/dist/mechanic.css";
-
+import { Button, Toggle, ParamInput } from "@designsystemsinternational/mechanic-ui-components";
 import css from "./Function.css";
 
 export const Function = ({ name, exports, children }) => {

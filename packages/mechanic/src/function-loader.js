@@ -39,9 +39,9 @@ module.exports = function () {
   };
   `;
 
-  // console.log("----------- functions loader result ------------");
-  // console.log(result);
-  // console.log("------------------------------------------------");
+  console.log("----------- functions loader result ------------");
+  console.log(result);
+  console.log("------------------------------------------------");
 
   return result;
 };

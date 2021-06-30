@@ -25,7 +25,8 @@ module.exports = (modeParam, functionsPath) => {
             {
               targets: {
                 browsers: ["last 2 versions", "ie >= 11"]
-              }
+              },
+              modules: false
             }
           ]
         ],
@@ -74,7 +75,7 @@ module.exports = (modeParam, functionsPath) => {
 
   const css = {
     test: /\.(css)$/,
-    exclude: [/.+\/node_modules\/.+/, /.+\/mechanic-ui-components\/.+/],
+    exclude: [/.+\/node_modules\/.+/],
     use: [isProduction ? MiniCssExtractPlugin.loader : require.resolve("style-loader")].concat([
       {
         loader: require.resolve("css-loader"),
@@ -166,7 +167,7 @@ module.exports = (modeParam, functionsPath) => {
       }
     },
     module: {
-      rules: [js, css, externalCss, functions]
+      rules: [js, css, functions]
     },
     plugins
   };
