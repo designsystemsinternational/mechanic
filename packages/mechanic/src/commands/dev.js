@@ -1,6 +1,8 @@
 const express = require("express");
 const webpack = require("webpack");
 const webpackDevMiddleware = require("webpack-dev-middleware");
+
+const history = require("connect-history-api-fallback");
 const path = require("path");
 const fs = require("fs-extra");
 
@@ -54,6 +56,7 @@ const command = async argv => {
   const app = express();
 
   app.use((req, res, next) => {
+    // console.log({ req });
     if (status === "started") {
       next();
     } else {
@@ -78,6 +81,7 @@ const command = async argv => {
   const webpackConfigGenerator = require("../../app/webpackConfigGenerator");
   const webpackConfig = webpackConfigGenerator("dev", functionsPath);
   const compiler = webpack(webpackConfig);
+  app.use(history());
   app.use(
     webpackDevMiddleware(compiler, {
       publicPath: webpackConfig.output.publicPath

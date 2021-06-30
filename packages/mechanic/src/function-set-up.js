@@ -7,7 +7,7 @@ import { MechanicError } from "./mechanic-error";
  * design functions export objects.
  */
 const setUp = functions => {
-  console.log("Setting up!");
+  console.info("Setting up design functions!");
   const engines = {};
   Object.keys(functions).forEach(
     functionName => (engines[functionName] = functions[functionName].settings.engine)
@@ -22,7 +22,7 @@ const setUp = functions => {
       };
       throw new MechanicError(`No defined engine for: ${functionName}`);
     } else if (engines[functionName] !== curEngine) {
-      console.log("Setting engine for:", functionName);
+      console.info("Setting mechanic engine for:", functionName);
       // TODO: Kill existing sketch if running?
       curEngine = engines[functionName];
       window.run = (functionName, values, isPreview) => {

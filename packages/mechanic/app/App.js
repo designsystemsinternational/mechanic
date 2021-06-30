@@ -10,7 +10,7 @@ const functionNames = Object.keys(functions);
 
 import css from "./App.css";
 
-const AppComponent = props => {
+const AppComponent = () => {
   return (
     <div className={css.root}>
       <Switch>
@@ -20,11 +20,9 @@ const AppComponent = props => {
             key={`route-${name}`}
             path={i == 0 ? ["/", `/${name}`] : `/${name}`}
             render={() => (
-              <>
-                <Function name={name} exports={functions[name]}>
-                  <Nav name={name} functionsNames={functionNames} />
-                </Function>
-              </>
+              <Function name={name} exports={functions[name]}>
+                <Nav name={name} functionsNames={functionNames} />
+              </Function>
             )}
           />
         ))}

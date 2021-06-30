@@ -66,7 +66,7 @@ export const Function = ({ name, exports, children }) => {
     };
     iframe.current.addEventListener("load", onLoad);
     return () => {
-      iframe.current.removeEventListener("load", onLoad);
+      if (iframe.current) iframe.current.removeEventListener("load", onLoad);
     };
   }, [name]);
 
