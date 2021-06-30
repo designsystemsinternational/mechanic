@@ -114,8 +114,20 @@ module.exports = (modeParam, functionsPath) => {
   };
 
   const entry = {
-    app: path.resolve(__dirname, "./index.js"),
-    functions: path.resolve(__dirname, "./functions.js")
+    app: isProduction
+      ? path.resolve(__dirname, "./index.js")
+      : [
+          path.resolve(__dirname, "./index.js")
+          // commented for now, seems to be issue in webpack5
+          // require.resolve("webpack-hot-middleware/client")
+        ],
+    functions: isProduction
+      ? path.resolve(__dirname, "./functions.js")
+      : [
+          path.resolve(__dirname, "./functions.js")
+          // commented for now, seems to be issue in webpack5
+          // require.resolve("webpack-hot-middleware/client")
+        ]
   };
   const output = {
     path: path.join(process.cwd(), "dist"),

@@ -1,7 +1,7 @@
 const express = require("express");
 const webpack = require("webpack");
 const webpackDevMiddleware = require("webpack-dev-middleware");
-
+const webpackHotMiddleware = require("webpack-hot-middleware");
 const history = require("connect-history-api-fallback");
 const path = require("path");
 const fs = require("fs-extra");
@@ -81,12 +81,14 @@ const command = async argv => {
   const webpackConfigGenerator = require("../../app/webpackConfigGenerator");
   const webpackConfig = webpackConfigGenerator("dev", functionsPath);
   const compiler = webpack(webpackConfig);
+  // https://stackoverflow.com/questions/43921770/webpack-dev-middleware-pass-through-for-all-routes
   app.use(history());
   app.use(
     webpackDevMiddleware(compiler, {
       publicPath: webpackConfig.output.publicPath
     })
   );
+  app.use(webpackHotMiddleware(compiler, { log: null }));
 
   await new Promise(resolve => setTimeout(resolve, 1000));
 
