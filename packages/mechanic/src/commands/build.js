@@ -1,24 +1,10 @@
 const webpack = require("webpack");
-const path = require("path");
-const fs = require("fs-extra");
+const { getConfig, getFunctionsPath } = require("./utils");
 
 const ora = require("ora");
 const {
   spinners: { mechanicSpinner, success }
 } = require("@designsystemsinternational/mechanic-utils");
-
-const getConfig = async configPath => {
-  const exists = await fs.pathExists(configPath);
-  if (!exists) {
-    return;
-  }
-  return require(path.join(process.cwd(), configPath));
-};
-
-const getFunctionsPath = async () => {
-  const exists = await fs.pathExists(path.join(process.cwd(), "functions", "index.js"));
-  return exists ? path.join(process.cwd(), "functions", "index.js") : undefined;
-};
 
 const command = async argv => {
   // Start UI spinner
@@ -27,10 +13,24 @@ const command = async argv => {
     spinner: mechanicSpinner
   }).start();
 
-  const webpackConfigGenerator = require("../../app/webpackConfigGenerator");
-  const config = webpackConfigGenerator("prod");
+  // Load config file
+  const config = await getConfig(argv.configPath);
+  // Stop if no config file is found.
+  if (!config) {
+    spinner.fail(`Mechanic config file (${configPath}) not found`);
+    return;
+  }
 
-  const compiler = webpack(config);
+  const functionsPath = await getFunctionsPath(argv.functionsPath, config);
+  if (!functionsPath) {
+    spinner.fail(`Functions directory file not found`);
+    return;
+  }
+
+  const webpackConfigGenerator = require("../../app/webpackConfigGenerator");
+  const webpackConfig = webpackConfigGenerator("prod", functionsPath);
+
+  const compiler = webpack(webpackConfig);
 
   compiler.run((err, stats) => {
     // [Stats Object](#stats-object) https://webpack.js.org/api/node/#stats-object

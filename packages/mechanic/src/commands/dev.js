@@ -4,29 +4,12 @@ const webpackDevMiddleware = require("webpack-dev-middleware");
 const webpackHotMiddleware = require("webpack-hot-middleware");
 const history = require("connect-history-api-fallback");
 const path = require("path");
-const fs = require("fs-extra");
+const { getConfig, getFunctionsPath } = require("./utils");
 
 const ora = require("ora");
 const {
   spinners: { mechanicSpinner, success }
 } = require("@designsystemsinternational/mechanic-utils");
-
-const getConfig = async configPath => {
-  const exists = await fs.pathExists(configPath);
-  if (!exists) {
-    return;
-  }
-  return require(path.join(process.cwd(), configPath));
-};
-
-const getFunctionsPath = async (functionsPath, config) => {
-  const relativePath = functionsPath || config.functionsPath || "./functions";
-  const fullPath = path.resolve(relativePath);
-  // console.log(relativePath);
-  // console.log(fullPath);
-  const exists = await fs.pathExists(fullPath);
-  return exists ? fullPath : null;
-};
 
 const command = async argv => {
   // Start UI spinner
