@@ -4,19 +4,14 @@ const path = require("path");
 const execa = require("execa");
 
 const inquirer = require("inquirer");
-const ora = require("ora");
 const {
-  spinners: { mechanicSpinner },
+  spinners: { mechanicSpinner: spinner },
 } = require("@designsystemsinternational/mechanic-utils");
 
 const templateDir = path.normalize(`${__dirname}/template`);
 
 const generateProjectTemplate = async ({ project, functionName, template }) => {
-  // Start UI spinner
-  const spinner = ora({
-    text: "Generating mechanic project template",
-    spinner: mechanicSpinner,
-  }).start();
+  spinner.start("Generating mechanic project template");
 
   // Make new directories
   const directory = path.resolve(project);
@@ -36,12 +31,11 @@ const generateProjectTemplate = async ({ project, functionName, template }) => {
   // Copying content promises
   await Promise.all([
     // Copy array of files that get duplicated without change
-    ...[path.join("functions", "index.js"), "mechanic.config.js"].map(
-      (filename) =>
-        fs.copyFile(
-          path.join(templateDir, filename),
-          path.join(directory, filename.replace(/^_/, "."))
-        )
+    ...["mechanic.config.js"].map((filename) =>
+      fs.copyFile(
+        path.join(templateDir, filename),
+        path.join(directory, filename.replace(/^_/, "."))
+      )
     ),
     // Load package.json as object and add metadata
     (async () => {
@@ -72,11 +66,7 @@ const generateProjectTemplate = async ({ project, functionName, template }) => {
 };
 
 const installDependencies = async ({ project }) => {
-  // Start UI spinner
-  const spinner = ora({
-    text: "Installing dependencies. This may take a few minutes.",
-    spinner: mechanicSpinner,
-  }).start();
+  spinner.start("Installing dependencies. This may take a few minutes.");
 
   // Project directory
   const cwd = path.resolve(project);

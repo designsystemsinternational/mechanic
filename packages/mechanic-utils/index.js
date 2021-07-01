@@ -51,6 +51,8 @@ const mechanicSpinner = ora({ spinner: mechanicSpinnerSettings });
 mechanicSpinner.succeed = text =>
   mechanicSpinner.stopAndPersist({ text, symbol: chalk.bgGreen(" ✔ ") });
 mechanicSpinner.fail = text => mechanicSpinner.stopAndPersist({ text, symbol: chalk.bgRed(" ✖ ") });
+mechanicSpinner.warn = text =>
+  mechanicSpinner.stopAndPersist({ text, symbol: chalk.bgYellow(" ⚠ ") });
 
 module.exports = {
   spinners: {
