@@ -50,7 +50,7 @@ const generateProjectTemplate = async ({ project, functionName, template }) => {
       // Add to dependencies the selected engine
       packageObj["dependencies"][
         `@designsystemsinternational/mechanic-engine-${template.engine}`
-      ] = "^0.0.1";
+      ] = "^0.0.4";
       // Write the resulting package
       await fs.writeFile(
         path.join(directory, "package.json"),
