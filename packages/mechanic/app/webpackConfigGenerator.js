@@ -17,7 +17,7 @@ module.exports = (modeParam, functionsPath, distDir) => {
     exclude: pathname => {
       return (
         pathname.includes("node_modules") &&
-        !pathname.includes(path.join("@designsystemsinternational", "mechanic-ui-components")) &&
+        !pathname.includes("@designsystemsinternational") &&
         !pathname.startsWith(__dirname)
       );
     },
