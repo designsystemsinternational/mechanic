@@ -1,6 +1,6 @@
 {
   "name": "@designsystemsinternational/mechanic-cli",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "scripts": {
     "cli": "node cli.js"
   },
@@ -8,8 +8,8 @@
     "mechanic": "cli.js"
   },
   "dependencies": {
-    "@designsystemsinternational/create-mechanic": "^0.0.4",
-    "@designsystemsinternational/mechanic-utils": "^0.0.4",
+    "@designsystemsinternational/create-mechanic": "^0.0.5",
+    "@designsystemsinternational/mechanic-utils": "^0.0.5",
     "chalk": "^4.1.1",
     "execa": "^5.1.1",
     "express": "^4.17.1",
