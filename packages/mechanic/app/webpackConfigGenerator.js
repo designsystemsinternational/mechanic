@@ -174,8 +174,8 @@ module.exports = (modeParam, functionsPath) => {
     resolve: {
       extensions: [".js", ".jsx", ".json"],
       alias: {
-        react: path.resolve(__dirname, "..", "./node_modules/react"),
-        "react-dom": path.resolve(__dirname, "..", "./node_modules/react-dom")
+        react: require.resolve("react"),
+        "react-dom": require.resolve("react-dom")
       }
     },
     module: {
