@@ -1,53 +1,17 @@
 {
   "name": "@designsystemsinternational/dsi-logo-maker",
   "version": "0.0.1",
-  "main": "app/index.js",
   "scripts": {
-    "start": "serve dist",
-    "dev": "webpack-dev-server --mode development",
-    "build": "webpack --mode production"
+    "dev": "mechanic dev",
+    "build": "mechanic build",
+    "serve": "mechanic serve"
   },
-  "devDependencies": {
-    "@babel/cli": "^7.8.4",
-    "@babel/core": "^7.14.6",
-    "@babel/plugin-transform-runtime": "^7.14.5",
-    "@babel/preset-env": "^7.14.5",
-    "@babel/preset-react": "^7.14.5",
-    "@babel/runtime": "^7.14.6",
-    "babel-loader": "^8.2.2",
-    "classnames": "^2.2.6",
-    "clean-webpack-plugin": "^3.0.0",
-    "css-loader": "^3.0.0",
-    "get-port": "^5.1.1",
-    "html-loader": "^1.1.0",
-    "html-webpack-plugin": "^5.3.1",
-    "identity-obj-proxy": "^3.0.0",
-    "immutable": "^4.0.0-rc.12",
-    "mini-css-extract-plugin": "^1.6.0",
-    "css-minimizer-webpack-plugin": "^3.0.1",
-    "postcss-loader": "^6.1.0",
-    "postcss-preset-env": "^6.7.0",
-    "prettier": "^2.0.5",
-    "prop-types": "^15.7.2",
-    "react": "^17.0.2",
-    "react-dom": "^17.0.2",
-    "react-hot-loader": "^4.13.0",
-    "react-router": "^5.2.0",
-    "react-router-dom": "^5.2.0",
-    "regenerator-runtime": "^0.13.1",
-    "serve": "^11.0.2",
-    "style-loader": "^2.0.0",
-    "stylelint-config-prettier": "^8.0.2",
-    "terser-webpack-plugin": "^5.1.3",
-    "webpack": "^5.39.1",
-    "webpack-cli": "^4.7.2",
-    "webpack-dev-server": "^3.11.2"
-  },
+  "devDependencies": {},
   "dependencies": {
+    "@babel/runtime": "^7.14.6",
+    "@designsystemsinternational/mechanic-cli": "^0.0.1",
+    "@designsystemsinternational/mechanic": "^0.0.1",
     "@designsystemsinternational/mechanic-engine-canvas": "^0.0.1",
-    "@designsystemsinternational/mechanic-engine-react": "^0.0.1",
-    "@designsystemsinternational/mechanic-ui-components": "^0.0.1",
-    "@designsystemsinternational/mechanic-utils": "^0.0.1",
-    "mousetrap": "^1.6.5"
+    "@designsystemsinternational/mechanic-engine-react": "^0.0.1"
   }
 }
