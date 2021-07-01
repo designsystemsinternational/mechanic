@@ -14,7 +14,13 @@ module.exports = (modeParam, functionsPath, distDir) => {
   // https://stackoverflow.com/questions/33527653/babel-6-regeneratorruntime-is-not-defined
   const js = {
     test: /\.(js|jsx)$/,
-    exclude: /.+\/node_modules\/.+/,
+    exclude: pathname => {
+      return (
+        pathname.includes("node_modules") &&
+        !pathname.includes(path.join("@designsystemsinternational", "mechanic-ui-components")) &&
+        !pathname.startsWith(__dirname)
+      );
+    },
     use: {
       loader: require.resolve("babel-loader"),
       options: {
@@ -75,7 +81,13 @@ module.exports = (modeParam, functionsPath, distDir) => {
 
   const css = {
     test: /\.(css)$/,
-    exclude: [/.+\/node_modules\/.+/],
+    exclude: pathname => {
+      return (
+        pathname.includes("node_modules") &&
+        !pathname.includes(path.join("@designsystemsinternational", "mechanic-ui-components")) &&
+        !pathname.startsWith(__dirname)
+      );
+    },
     use: [isProduction ? MiniCssExtractPlugin.loader : require.resolve("style-loader")].concat([
       {
         loader: require.resolve("css-loader"),
