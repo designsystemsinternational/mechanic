@@ -37,7 +37,7 @@ export const Function = ({ name, exports, children }) => {
     setValues(values => Object.assign({}, values, ...sources));
   };
 
-  const canScale = params.width && params.height;
+  const canScale = !!(params.width && params.height);
 
   const handlePreview = async () => {
     const vals = Object.assign({}, values);
