@@ -20,38 +20,42 @@ export const handler = ({ height, frame, done, background, fill }) => {
 
   return (
     <svg width={width} height={height}>
-      <rect x={0} y={0} width={width} height={height} stroke="none" fill={background} />
+      <rect
+        x={0}
+        y={0}
+        width={width}
+        height={height}
+        stroke="none"
+        fill={background}
+      />
       <ellipse cx={x} cy={height / 2} rx={r} ry={r} stroke="none" fill={fill} />
     </svg>
   );
 };
 
-// This will need to be parsed into a JSON file for the API
-// We will probably do this with a webpack loader
-// We also need a nicer API to create this file
 export const params = {
   height: {
     type: "number",
-    default: 600
+    default: 600,
   },
   background: {
     type: "color",
     default: "red",
-    options: ["red", "orange", "yellow"]
+    options: ["red", "orange", "yellow"],
   },
   fill: {
     type: "color",
     default: "cyan",
-    options: ["cyan", "blue", "green"]
-  }
+    options: ["cyan", "blue", "green"],
+  },
 };
 
 export const settings = {
   engine: require("@designsystemsinternational/mechanic-engine-react").run,
-  animated: true
+  animated: true,
 };
 
-const useDrawLoop = isPlaying => {
+const useDrawLoop = (isPlaying) => {
   const raf = useRef();
   const [frameCount, setFrameCount] = useState(0);
 
@@ -63,7 +67,7 @@ const useDrawLoop = isPlaying => {
     }
 
     const draw = () => {
-      setFrameCount(cur => cur + 1);
+      setFrameCount((cur) => cur + 1);
       raf.current = requestAnimationFrame(draw);
     };
 

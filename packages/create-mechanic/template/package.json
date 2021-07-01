@@ -2,7 +2,8 @@
   "version": "1.0.0",
   "scripts": {
     "dev": "mechanic dev",
-    "build": "mechanic build"
+    "build": "mechanic build",
+    "serve": "mechanic serve"
   },
   "dependencies": {
     "@designsystemsinternational/mechanic": "^0.0.1",

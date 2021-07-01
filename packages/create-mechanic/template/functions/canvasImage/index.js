@@ -7,7 +7,7 @@ export const handler = (params, mechanic) => {
     numberOfRects,
     hasOuterMargin,
     innerMargin,
-    margin
+    margin,
   } = params;
 
   const canvas = document.createElement("canvas");
@@ -22,44 +22,47 @@ export const handler = (params, mechanic) => {
   const bottom = hasOuterMargin ? margin.bottom : 0;
   const left = hasOuterMargin ? margin.left : 0;
 
-  const rectWidth = (width - left - right - innerMargin * (numberOfRects - 1)) / numberOfRects;
+  const rectWidth =
+    (width - left - right - innerMargin * (numberOfRects - 1)) / numberOfRects;
   for (let index = 0; index < numberOfRects; index++) {
-    ctx.fillRect(left + index * (rectWidth + innerMargin), top, rectWidth, height - top - bottom);
+    ctx.fillRect(
+      left + index * (rectWidth + innerMargin),
+      top,
+      rectWidth,
+      height - top - bottom
+    );
   }
   mechanic.done(canvas);
 };
 
-// This will need to be parsed into a JSON file for the API
-// We will probably do this with a webpack loader
-// We also need a nicer API to create this file
 export const params = {
   width: {
     type: "number",
     default: 400,
-    validation: v => (v < 410 || v > 420 ? null : "Out of range")
+    validation: (v) => (v < 410 || v > 420 ? null : "Out of range"),
   },
   height: {
     type: "number",
-    default: 300
+    default: 300,
   },
   primaryColor: {
     type: "color",
     model: "hex",
-    default: "#FF0000"
+    default: "#FF0000",
   },
   secondaryColor: {
     type: "color",
     options: ["#00FFFF", "#FF00FF", "#FFFF00"],
-    default: "#00FFFF"
+    default: "#00FFFF",
   },
   numberOfRects: {
     type: "number",
     default: 2,
-    options: [2, 3, 4]
+    options: [2, 3, 4],
   },
   hasOuterMargin: {
     type: "boolean",
-    default: true
+    default: true,
   },
   innerMargin: {
     type: "number",
@@ -67,34 +70,34 @@ export const params = {
     min: 0,
     max: 30,
     step: 1,
-    slider: true
+    slider: true,
   },
   margin: {
     type: "text",
     options: {
       even: { top: 100, bottom: 100, left: 100, right: 100 },
       flat: { top: 100, bottom: 100, left: 50, right: 50 },
-      tall: { top: 50, bottom: 50, left: 100, right: 100 }
+      tall: { top: 50, bottom: 50, left: 100, right: 100 },
     },
-    default: "even"
-  }
+    default: "even",
+  },
 };
 
 export const presets = {
   medium: {
     width: 800,
-    height: 600
+    height: 600,
   },
   large: {
     width: 1600,
-    height: 1200
+    height: 1200,
   },
-  xlarge: {
+  xLarge: {
     width: 3200,
-    height: 2400
-  }
+    height: 2400,
+  },
 };
 
 export const settings = {
-  engine: require("@designsystemsinternational/mechanic-engine-canvas").run
+  engine: require("@designsystemsinternational/mechanic-engine-canvas").run,
 };
