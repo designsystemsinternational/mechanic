@@ -1,13 +1,13 @@
 {
   "name": "@designsystemsinternational/mechanic-engine-p5",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "type": "module",
   "exports": "./index.js",
   "engines": {
     "node": "^12.20.0 || ^14.13.1 || >=16.0.0"
   },
   "dependencies": {
-    "@designsystemsinternational/mechanic": "^0.0.3",
+    "@designsystemsinternational/mechanic": "^0.0.4",
     "p5": "^1.1.9"
   },
   "gitHead": "72540367e35f7c65bc111779ceb4c59ea0e1a5fb"
