@@ -9,5 +9,6 @@
   "scripts": {},
   "peerDependencies": {
     "@designsystemsinternational/mechanic": "^0.0.1"
-  }
+  },
+  "gitHead": "0b760ff2d97669c95f0e6f9e0f217ed0b6a77afe"
 }
