@@ -1,6 +1,6 @@
 {
   "name": "@designsystemsinternational/mechanic-engine-react",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "type": "module",
   "exports": "./index.js",
   "engines": {
@@ -11,6 +11,6 @@
     "react-dom": "^17.0.2"
   },
   "dependencies": {
-    "@designsystemsinternational/mechanic": "^0.0.1"
+    "@designsystemsinternational/mechanic": "^0.0.2"
   }
 }
