@@ -1,6 +1,6 @@
 {
   "name": "@designsystemsinternational/mechanic",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "module": "src/index.js",
   "scripts": {
     "start": "node ./scripts/start.js",
