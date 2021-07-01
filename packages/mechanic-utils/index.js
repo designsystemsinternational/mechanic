@@ -1,4 +1,5 @@
 const chalk = require("chalk");
+const ora = require("ora");
 
 const spinnerFrames = settings => {
   let length = 0;
@@ -26,7 +27,7 @@ const dsi = [
   { word: "INTERNATIONAL", color: blue }
 ];
 
-const dsiSpinner = {
+const dsiSpinnerSetting = {
   interval: 80,
   frames: spinnerFrames(dsi)
 };
@@ -36,17 +37,28 @@ const mechanic = [
   { word: "MECHANIC", color: blue }
 ];
 
-const mechanicSpinner = {
+const mechanicSpinnerSettings = {
   interval: 80,
   frames: spinnerFrames(mechanic)
 };
 
 const success = chalk.green.bold;
+const fail = chalk.red.bold;
+
+const dsiSpinner = ora({ spinner: dsiSpinnerSetting });
+const mechanicSpinner = ora({ spinner: mechanicSpinnerSettings });
+
+mechanicSpinner.succeed = text =>
+  mechanicSpinner.stopAndPersist({ text, symbol: chalk.bgGreen(" ✔ ") });
+mechanicSpinner.fail = text => mechanicSpinner.stopAndPersist({ text, symbol: chalk.bgRed(" ✖ ") });
 
 module.exports = {
   spinners: {
     dsiSpinner,
-    mechanicSpinner,
-    success
+    mechanicSpinner
+  },
+  colors: {
+    success,
+    fail
   }
 };

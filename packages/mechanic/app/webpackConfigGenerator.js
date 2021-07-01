@@ -5,7 +5,7 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const NodePolyfillPlugin = require("node-polyfill-webpack-plugin");
 
-module.exports = (modeParam, functionsPath) => {
+module.exports = (modeParam, functionsPath, distDir) => {
   const mode = modeParam === "dev" ? "development" : "production";
   const isProduction = mode === "production";
 
@@ -129,8 +129,11 @@ module.exports = (modeParam, functionsPath) => {
           // require.resolve("webpack-hot-middleware/client")
         ]
   };
+  const outputPath = distDir
+    ? path.resolve(process.cwd(), distDir)
+    : path.join(process.cwd(), "dist");
   const output = {
-    path: path.join(process.cwd(), "dist"),
+    path: outputPath,
     library: {
       type: "umd"
     },
