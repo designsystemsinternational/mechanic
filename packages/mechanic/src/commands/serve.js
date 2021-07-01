@@ -1,11 +1,7 @@
 const express = require("express");
-const webpack = require("webpack");
-const webpackDevMiddleware = require("webpack-dev-middleware");
-const webpackHotMiddleware = require("webpack-hot-middleware");
 const history = require("connect-history-api-fallback");
-const webpackConfigGenerator = require("../../app/webpackConfigGenerator");
 const path = require("path");
-const { getConfig, getFunctionsPath } = require("./utils");
+const { getConfig } = require("./utils");
 
 const ora = require("ora");
 const {
@@ -24,12 +20,6 @@ const command = async argv => {
   // Stop if no config file is found.
   if (!config) {
     spinner.fail(`Mechanic config file (${configPath}) not found`);
-    return;
-  }
-
-  const functionsPath = await getFunctionsPath(argv.functionsPath, config);
-  if (!functionsPath) {
-    spinner.fail(`Functions directory file not found`);
     return;
   }
 
@@ -60,17 +50,9 @@ const command = async argv => {
   });
   spinner.succeed(`Server listening on port ${port}`);
 
-  // Load webpack middleware to load mechanic app
-  const webpackConfig = webpackConfigGenerator("dev", functionsPath);
-  const compiler = webpack(webpackConfig);
-  // https://stackoverflow.com/questions/43921770/webpack-dev-middleware-pass-through-for-all-routes
+  // // https://stackoverflow.com/questions/43921770/webpack-dev-middleware-pass-through-for-all-routes
   app.use(history());
-  app.use(
-    webpackDevMiddleware(compiler, {
-      publicPath: webpackConfig.output.publicPath
-    })
-  );
-  app.use(webpackHotMiddleware(compiler, { log: null }));
+  app.use(express.static(path.resolve(process.cwd(), "./dist")));
 
   await new Promise(resolve => setTimeout(resolve, 1000));
 

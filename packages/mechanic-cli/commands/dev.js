@@ -1,7 +1,7 @@
 module.exports = (getCommandHandler) => ({
   command: "dev [port] [configPath] [functionsPath]",
   aliases: ["d"],
-  desc: "Starts local server for mechanic project",
+  desc: "Starts local dev server for mechanic project",
   builder: (yargs) =>
     yargs
       .default("port", 3000)

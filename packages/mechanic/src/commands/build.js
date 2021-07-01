@@ -1,5 +1,6 @@
 const webpack = require("webpack");
 const { getConfig, getFunctionsPath } = require("./utils");
+const webpackConfigGenerator = require("../../app/webpackConfigGenerator");
 
 const ora = require("ora");
 const {
@@ -27,9 +28,7 @@ const command = async argv => {
     return;
   }
 
-  const webpackConfigGenerator = require("../../app/webpackConfigGenerator");
   const webpackConfig = webpackConfigGenerator("prod", functionsPath);
-
   const compiler = webpack(webpackConfig);
 
   compiler.run((err, stats) => {
