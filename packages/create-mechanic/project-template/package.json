@@ -1,11 +1,11 @@
 {
-  "version": "1.0.0",
+  "version": "0.0.0",
   "scripts": {
     "dev": "mechanic dev",
     "build": "mechanic build",
     "serve": "mechanic serve"
   },
-  "dependencies": {
+  "devDependencies": {
     "@designsystemsinternational/mechanic": "latest",
     "@designsystemsinternational/mechanic-cli": "latest"
   }

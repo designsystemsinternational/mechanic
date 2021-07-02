@@ -1,75 +1,63 @@
-// exposes functionality to create
 const fs = require("fs-extra");
 const path = require("path");
 const execa = require("execa");
-
 const inquirer = require("inquirer");
 const {
   spinners: { mechanicSpinner: spinner },
+  logo: { mechanic: logo },
 } = require("@designsystemsinternational/mechanic-utils");
 
-const templateDir = path.normalize(`${__dirname}/template`);
+const {
+  generateFunctionTemplate,
+  getFunctionQuestions,
+} = require("./new-function");
 
-const generateProjectTemplate = async ({ project, functionName, template }) => {
-  spinner.start("Generating mechanic project template");
+const projectTemplateDir = path.normalize(`${__dirname}/project-template`);
+const generateProjectTemplate = async (projectName) => {
+  spinner.start("Generating mechanic project directory...");
 
   // Make new directories
-  const directory = path.resolve(project);
+  const directory = path.resolve(projectName);
   await fs.mkdir(directory); // Main
   await fs.mkdir(path.join(directory, "functions")); // Functions folder
-  const functionDir = path.join(directory, "functions", functionName);
-  await fs.mkdir(functionDir); // Design function folder
-
-  // Path of template file to copy
-  const functionTemplatePath = path.join(
-    templateDir,
-    "functions",
-    template.dir,
-    "index.js"
-  );
 
   // Copying content promises
   await Promise.all([
     // Copy array of files that get duplicated without change
-    ...["mechanic.config.js"].map((filename) =>
-      fs.copyFile(
-        path.join(templateDir, filename),
-        path.join(directory, filename.replace(/^_/, "."))
-      )
+    ...["mechanic.config.js", "_gitignore", "package.json", "README.md"].map(
+      (filename) =>
+        fs.copyFile(
+          path.join(projectTemplateDir, filename),
+          path.join(directory, filename.replace(/^_/, "."))
+        )
     ),
-    // Load package.json as object and add metadata
+    // Modifications
     (async () => {
-      let packageJson = await fs.readFile(
-        path.join(templateDir, "package.json"),
+      const packageJson = await fs.readFile(
+        path.join(directory, "package.json"),
         "utf8"
       );
       const packageObj = {
-        name: project, // Adds name of project
+        name: projectName, // Adds name of project
         ...JSON.parse(packageJson),
       };
-      // Add to dependencies the selected engine
-      packageObj["dependencies"][
-        `@designsystemsinternational/mechanic-engine-${template.engine}`
-      ] = "latest";
       // Write the resulting package
       await fs.writeFile(
         path.join(directory, "package.json"),
         JSON.stringify(packageObj, null, 2)
       );
     })(),
-    // Copy template design function with different names
-    fs.copyFile(functionTemplatePath, path.join(functionDir, "index.js")),
   ]);
 
   // End UI spinner
-  spinner.succeed();
+  spinner.succeed("Mechanic project directory created!");
 };
 
-const installDependencies = async ({ project }) => {
+const installDependencies = async (projectName) => {
   spinner.start("Installing dependencies. This may take a few minutes.");
 
   // Project directory
-  const cwd = path.resolve(project);
+  const cwd = path.resolve(projectName);
 
   try {
     // Install with yarn
@@ -98,95 +86,54 @@ const installDependencies = async ({ project }) => {
   }
 };
 
-const templateOptions = [
-  {
-    name: "Vanilla JS Image",
-    engine: "svg",
-    type: "SVG",
-    dir: "svgImage",
-  },
-  {
-    name: "Vanilla JS Animation",
-    engine: "svg",
-    type: "SVG",
-    dir: "svgVideo",
-  },
-  {
-    name: "Vanilla JS Image",
-    engine: "canvas",
-    type: "Canvas",
-    dir: "canvasImage",
-  },
-  {
-    name: "Vanilla JS Animation",
-    engine: "canvas",
-    type: "Canvas",
-    dir: "canvasVideo",
-  },
-  {
-    name: "React Image",
-    engine: "react",
-    type: "SVG",
-    dir: "reactImage",
-  },
-  {
-    name: "React Animation",
-    engine: "react",
-    type: "SVG",
-    dir: "reactVideo",
-  },
-  {
-    name: "p5.js Animation",
-    engine: "p5",
-    type: "Canvas",
-    dir: "p5Animation",
-  },
-];
-
-const questions = [
-  {
-    name: "project",
-    type: "input",
-    message: "Name your project",
-    default: "my-project",
-    validate: async (project) => {
-      const exists = await fs.pathExists(path.resolve(project));
-      return !exists
-        ? true
-        : "Directory already exists. Enter name that doesn't exists.";
+const getQuestions = (initialAnswers) => ({
+  project: [
+    {
+      name: "project",
+      type: "input",
+      message: "Name your project",
+      default: initialAnswers.project || "my-project",
+      validate: async (project) => {
+        const exists = await fs.pathExists(path.resolve(project));
+        return !exists
+          ? true
+          : "Directory already exists. Enter name that doesn't exists.";
+      },
     },
-  },
-  {
-    name: "functionName",
-    type: "input",
-    message:
-      "Name your first design function (you can always create more with `mechanic new function`)",
-    default: "my-function",
-  },
-  {
-    name: "template",
-    type: "list",
-    message: `Select template for your first design function`,
-    choices: templateOptions.map((option) => ({
-      name: `${option.name} (${option.type})`,
-      value: option,
-    })),
-  },
-];
+  ],
+  function: getFunctionQuestions(initialAnswers),
+});
 
-const command = async () => {
-  // Ask user for customization input
-  const answers = await inquirer.prompt(questions);
-  // Generate new project directory and content files
-  await generateProjectTemplate(answers);
+const command = async (argv) => {
+  const project = argv._[0];
+  const template = argv.template || argv.t;
+  const example = argv.example || argv.e;
+  const questions = getQuestions({ project, template, example });
+
+  // Welcome to mechanic!
+  console.log(logo, "\n");
+  if (project || template || example) {
+    console.log("Received arguments loaded as defaults");
+  }
+
+  // Confirm and generate project
+  const { project: projectName } = await inquirer.prompt(questions.project);
+  await generateProjectTemplate(projectName);
+
+  // Confirm and generate new project directory and content files
+  const functionAnswers = await inquirer.prompt(questions.function);
+  await generateFunctionTemplate(projectName, functionAnswers);
+
   // Install dependencies in new project directory
-  await installDependencies(answers);
+  await installDependencies(projectName);
+
   // Done!
-  console.log(`Done! 🎉 Mechanic project created at ${answers.project}
-  To start you now can run:
-  - \`cd ${answers.project}\`
-  - \`npm run dev\`
-  `);
+  console.log(`Done! Mechanic project created at ${projectName}
+To start you now can run:
+> \`cd ${projectName}\`
+> \`npm run dev\`
+`);
+  console.log(logo);
 };
 
 module.exports = {

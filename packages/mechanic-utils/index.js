@@ -62,5 +62,8 @@ module.exports = {
   colors: {
     success,
     fail
+  },
+  logo: {
+    mechanic: `${blue("MECHANIC")}\n${red("MECHANIC")}`
   }
 };

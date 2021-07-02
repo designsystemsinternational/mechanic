@@ -120,9 +120,7 @@ module.exports = (modeParam, functionsPath, distDir) => {
 
   const functions = {
     test: /FUNCTIONS/,
-    use: [
-      { loader: path.resolve(__dirname, "../src/function-loader.js"), options: { functionsPath } }
-    ]
+    use: [{ loader: path.resolve(__dirname, "./function-loader.js"), options: { functionsPath } }]
   };
 
   const entry = {

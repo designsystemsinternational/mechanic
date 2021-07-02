@@ -1,3 +1,4 @@
+const cli = require("yargs");
 const path = require("path");
 const resolveCwd = require("resolve-cwd");
 const {
@@ -102,18 +103,18 @@ const buildLocalCommands = (cli, isMechanicProject) => {
 };
 
 module.exports = () => {
-  const cli = require("yargs");
   cli
     .scriptName("mechanic")
     .usage("Usage: $0 <command> [options]")
-    .help()
-    .alias("h", "help")
-    .version()
-    .alias("v", "version")
     .command(newCommand);
 
   const isMechanicProject = getIsMechanicProject();
   buildLocalCommands(cli, isMechanicProject);
 
-  return cli.demandCommand(1, "").argv;
+  return cli
+    .demandCommand()
+    .help()
+    .alias("h", "help")
+    .version()
+    .alias("v", "version").argv;
 };
