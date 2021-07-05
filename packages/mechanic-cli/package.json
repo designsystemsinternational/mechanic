@@ -1,6 +1,6 @@
 {
   "name": "@designsystemsinternational/mechanic-cli",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "scripts": {
     "cli": "node cli.js"
   },
@@ -8,11 +8,11 @@
     "mechanic": "cli.js"
   },
   "dependencies": {
-    "@designsystemsinternational/create-mechanic": "^0.1.1",
-    "@designsystemsinternational/mechanic-utils": "^0.1.0",
+    "@designsystemsinternational/create-mechanic": "^0.2.0",
+    "@designsystemsinternational/mechanic-utils": "^0.2.0",
     "inquirer": "^8.1.1",
-    "yargs": "^17.0.1",
-    "resolve-cwd": "^3.0.0"
+    "resolve-cwd": "^3.0.0",
+    "yargs": "^17.0.1"
   },
   "gitHead": "72540367e35f7c65bc111779ceb4c59ea0e1a5fb"
 }
