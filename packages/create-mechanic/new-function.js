@@ -7,7 +7,7 @@ const {
 const functionExampleOptions = require("./function-examples");
 const functionTemplateOptions = require("./function-templates");
 
-const getFunctionQuestions = (initialAnswers) => [
+const getFunctionQuestions = (initialAnswers, config = {}) => [
   {
     name: "base",
     type: "list",
@@ -46,19 +46,32 @@ const getFunctionQuestions = (initialAnswers) => [
     type: "input",
     message:
       "Name your first design function (you can always create more with `mechanic new function`)",
-    default: "my-function",
+    default: initialAnswers.functionName || "my-function",
+    validate: async (functionName) => {
+      const exists = await fs.pathExists(
+        path.resolve(config.functionsPath || "functions", functionName)
+      );
+      return !exists
+        ? true
+        : "Directory already exists. Enter name that doesn't exists.";
+    },
   },
 ];
 
 const generateFunctionTemplate = async (
   projectName,
-  { base, template, example, functionName }
+  { base, template, example, functionName },
+  config = {}
 ) => {
   spinner.start("Adding design function to project...");
 
   // Create design function folder
   const directory = path.resolve(projectName);
-  const newFunctionDir = path.join(directory, "functions", functionName);
+  const newFunctionDir = path.join(
+    directory,
+    config.functionsPath || "functions",
+    functionName
+  );
   await fs.mkdir(newFunctionDir);
 
   // Path of template directory to copy
@@ -107,6 +120,7 @@ const generateFunctionTemplate = async (
 
   // End UI spinner
   spinner.succeed(`Design function "${functionName}" added to project!`);
+  return newFunctionDir;
 };
 
 module.exports = { generateFunctionTemplate, getFunctionQuestions };

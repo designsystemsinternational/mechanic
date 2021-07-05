@@ -5,6 +5,7 @@ const inquirer = require("inquirer");
 const {
   spinners: { mechanicSpinner: spinner },
   logo: { mechanic: logo },
+  colors: { success },
 } = require("@designsystemsinternational/mechanic-utils");
 
 const {
@@ -128,7 +129,7 @@ const command = async (argv) => {
   await installDependencies(projectName);
 
   // Done!
-  console.log(`Done! Mechanic project created at ${projectName}
+  console.log(`Done! Mechanic project created at ${success(projectName)}
 To start you now can run:
 > \`cd ${projectName}\`
 > \`npm run dev\`
@@ -138,4 +139,5 @@ To start you now can run:
 
 module.exports = {
   create: command,
+  installDependencies,
 };

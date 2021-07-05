@@ -5,28 +5,11 @@ const {
   colors: { fail },
 } = require("@designsystemsinternational/mechanic-utils");
 
+const { mechanic, getIsMechanicProject } = require("./utils");
 const newCommand = require("./new");
 const getDevCommand = require("./dev");
 const getBuildCommand = require("./build");
 const getServeCommand = require("./serve");
-
-const mechanic = "@designsystemsinternational/mechanic";
-
-const getIsMechanicProject = () => {
-  let isMechanicProject = false;
-
-  try {
-    const { dependencies, devDependencies } = require(path.resolve(
-      "./package.json"
-    ));
-    isMechanicProject =
-      (dependencies && dependencies[mechanic]) ||
-      (devDependencies && devDependencies[mechanic]);
-  } catch (err) {
-    /* ignore */
-  }
-  return !!isMechanicProject;
-};
 
 const buildLocalCommands = (cli, isMechanicProject) => {
   const directory = path.resolve(".");
