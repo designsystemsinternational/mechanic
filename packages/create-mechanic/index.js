@@ -13,7 +13,7 @@ const {
   getFunctionQuestions,
 } = require("./new-function");
 
-const projectTemplateDir = path.normalize(`${__dirname}/project-template`);
+const projectTemplateDir = path.join(__dirname, "project-template");
 const generateProjectTemplate = async (projectName) => {
   spinner.start("Generating mechanic project directory...");
 
@@ -25,22 +25,21 @@ const generateProjectTemplate = async (projectName) => {
   // Copying content promises
   await Promise.all([
     // Copy array of files that get duplicated without change
-    ...["mechanic.config.js", "_gitignore", "package.json", "README.md"].map(
-      (filename) =>
-        fs.copyFile(
-          path.join(projectTemplateDir, filename),
-          path.join(directory, filename.replace(/^_/, "."))
-        )
+    ...["mechanic.config.js", "_gitignore", "README.md"].map((filename) =>
+      fs.copyFile(
+        path.join(projectTemplateDir, filename),
+        path.join(directory, filename.replace(/^_/, "."))
+      )
     ),
     // Modifications
     (async () => {
-      const packageJson = await fs.readFile(
-        path.join(directory, "package.json"),
+      const packageJson = await fs.readJson(
+        path.join(projectTemplateDir, "package.json"),
         "utf8"
       );
       const packageObj = {
         name: projectName, // Adds name of project
-        ...JSON.parse(packageJson),
+        ...packageJson,
       };
       // Write the resulting package
       await fs.writeFile(
