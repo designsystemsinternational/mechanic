@@ -1,6 +1,6 @@
 {
   "name": "@designsystemsinternational/dsi-logo-maker",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "scripts": {
     "dev": "mechanic dev",
     "build": "mechanic build",
@@ -9,7 +9,7 @@
   "dependencies": {
     "@babel/runtime": "^7.14.6",
     "@designsystemsinternational/mechanic": "^0.2.0",
-    "@designsystemsinternational/mechanic-cli": "^0.2.0",
+    "@designsystemsinternational/mechanic-cli": "^0.2.1",
     "@designsystemsinternational/mechanic-engine-canvas": "^0.2.0",
     "@designsystemsinternational/mechanic-engine-react": "^0.2.0"
   },
