@@ -4,7 +4,8 @@
   "main": "index.js",
   "scripts": {},
   "dependencies": {
-    "chalk": "^4.1.1"
+    "chalk": "^4.1.1",
+    "ora": "^5.4.1"
   },
   "gitHead": "72540367e35f7c65bc111779ceb4c59ea0e1a5fb"
 }

@@ -74,6 +74,8 @@ const command = async argv => {
   );
   app.use(webpackHotMiddleware(compiler, { log: null }));
 
+  // Allow the spinner time to flush its output to the console.
+  await new Promise(resolve => setTimeout(resolve, 2000));
   // Done!
   status = "started";
   spinner.succeed(success(`Mechanic app ready at http://localhost:${port}`));
