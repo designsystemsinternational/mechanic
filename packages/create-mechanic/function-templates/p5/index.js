@@ -9,8 +9,8 @@ export const handler = (sketch, params, mechanic) => {
   };
 
   sketch.draw = () => {
-    sketch.background(primaryColor);
-    sketch.fill(secondaryColor);
+    sketch.background("red");
+    sketch.fill("blue");
     sketch.rect(x, y, width / 3, width / 3);
 
     x++;

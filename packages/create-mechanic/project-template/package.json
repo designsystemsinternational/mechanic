@@ -3,7 +3,8 @@
   "scripts": {
     "dev": "mechanic dev",
     "build": "mechanic build",
-    "serve": "mechanic serve"
+    "serve": "mechanic serve",
+    "new": "mechanic new function"
   },
   "devDependencies": {
     "@designsystemsinternational/mechanic": "latest",
