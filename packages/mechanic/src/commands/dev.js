@@ -31,7 +31,7 @@ const command = async argv => {
     spinner.fail(`Design functions directory file not found`);
     return;
   } else {
-    spinner.succeed(`Design functions directory found: ${success(argv.functionsPath)}`);
+    spinner.succeed(`Design functions directory found: ${success(functionsPath)}`);
   }
 
   spinner.start("Starting off server...");
