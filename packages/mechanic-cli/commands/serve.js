@@ -4,6 +4,19 @@ module.exports = (getCommandHandler) => ({
   desc: "Starts local server for built mechanic project",
   builder: (yargs) =>
     yargs
+      .options({
+        port: {
+          description: "Custom port to serve app",
+        },
+        configPath: {
+          type: "string",
+          description: "Path to mechanic config file",
+        },
+        distDir: {
+          type: "string",
+          description: "Custom build directory",
+        },
+      })
       .default("port", 3000)
       .default("configPath", "./mechanic.config.js")
       .default("distDir", "./dist"),

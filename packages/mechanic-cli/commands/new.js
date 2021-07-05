@@ -6,6 +6,7 @@ const {
 } = require("@designsystemsinternational/mechanic-utils");
 const {
   create,
+  options,
   installDependencies,
 } = require("@designsystemsinternational/create-mechanic");
 const {
@@ -51,33 +52,37 @@ const newFunctionCommand = async (argv) => {
     functionAnswers,
     config
   );
-  await installDependencies(".");
+  const { install } = await inquirer.prompt([
+    {
+      name: "install",
+      type: "confirm",
+      message: "Do you wish to install dependencies right away?",
+      default: true,
+    },
+  ]);
+  if (install) {
+    await installDependencies(".");
+  }
   // Done!
-  console.log(`Done! Design function created at ${success(functionDir)}
-To start you now can run:
+  console.log(`\nDone! Design function created at ${success(functionDir)}
+To start you now can run:${install ? "" : "\n> `npm i`"}
 > \`npm run dev\`
 `);
   console.log(logo);
 };
 
 module.exports = {
-  command: "new",
+  command: "new projectName",
   aliases: ["n"],
-  desc: "Creates new mechanic project ",
+  desc: "Creates new mechanic project and design function",
   builder: (yargs) =>
-    yargs
-      .option("template", { aliases: ["t"] })
-      .option("example", { aliases: ["e"] })
-      .command({
-        command: "function",
-        aliases: ["f"],
-        desc: "Creates new mechanic design function in existing mechanic project",
-        builder: (yargs) =>
-          yargs
-            .option("template", { aliases: ["t"] })
-            .option("example", { aliases: ["e"] }),
-        handler: newFunctionCommand,
-      }),
+    yargs.options(options).command({
+      command: "function",
+      aliases: ["f"],
+      desc: "Creates new mechanic design function in existing mechanic project",
+      builder: (yargs) => yargs,
+      handler: newFunctionCommand,
+    }),
   handler: (argv) => {
     argv._ = argv._.slice(1);
     create(argv);

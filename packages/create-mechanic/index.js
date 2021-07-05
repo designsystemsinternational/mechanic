@@ -125,18 +125,42 @@ const command = async (argv) => {
   await generateFunctionTemplate(projectName, functionAnswers);
 
   // Install dependencies in new project directory
-  await installDependencies(projectName);
+  const { install } = await inquirer.prompt([
+    {
+      name: "install",
+      type: "confirm",
+      message: "Do you wish to install dependencies right away?",
+      default: true,
+    },
+  ]);
+  if (install) {
+    await installDependencies(projectName);
+  }
 
   // Done!
-  console.log(`Done! Mechanic project created at ${success(projectName)}
+  console.log(`\nDone! Mechanic project created at ${success(projectName)}
 To start you now can run:
-> \`cd ${projectName}\`
+> \`cd ${projectName}\`${install ? "" : "\n> `npm i`"}
 > \`npm run dev\`
 `);
   console.log(logo);
 };
 
+const options = {
+  template: {
+    alias: "t",
+    type: "string",
+    description: "Use certain template for first design function",
+  },
+  example: {
+    alias: "e",
+    type: "string",
+    description: "Use certain example as base for first design function",
+  },
+};
+
 module.exports = {
   create: command,
+  options,
   installDependencies,
 };
