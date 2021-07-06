@@ -10,3 +10,4 @@ node_modules/
 files
 dist
 .DS_Store
+.vscode/

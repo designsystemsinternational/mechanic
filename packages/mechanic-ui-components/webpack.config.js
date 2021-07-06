@@ -3,15 +3,10 @@ const webpack = require("webpack");
 const getPort = require("get-port");
 
 const HtmlWebPackPlugin = require("html-webpack-plugin");
-const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin");
-const TerserPlugin = require("terser-webpack-plugin");
-const { CleanWebpackPlugin } = require("clean-webpack-plugin");
+const BundleAnalyzerPlugin = require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
 
 module.exports = async (env, argv) => {
-  const mode = argv.mode === "production" ? "production" : "development";
-  const isProduction = mode === "production";
-
+  const mode = "development";
   const js = {
     test: /\.(jsx?)$/,
     use: ["babel-loader"],
@@ -20,7 +15,7 @@ module.exports = async (env, argv) => {
 
   const css = {
     test: /\.(css)$/,
-    use: [isProduction ? MiniCssExtractPlugin.loader : "style-loader"].concat([
+    use: ["style-loader"].concat([
       {
         loader: "css-loader",
         options: {
@@ -40,18 +35,6 @@ module.exports = async (env, argv) => {
     ])
   };
 
-  const optimization = isProduction
-    ? {
-        minimizer: [
-          new TerserPlugin({
-            parallel: true,
-            sourceMap: true
-          }),
-          new OptimizeCSSAssetsPlugin({})
-        ]
-      }
-    : {};
-
   const plugins = [
     new webpack.EnvironmentPlugin({
       "process.env.NODE_ENV": mode
@@ -60,60 +43,33 @@ module.exports = async (env, argv) => {
       template: "./app/index.html",
       filename: "index.html",
       chunks: ["app"]
-    })
-  ].concat(
-    isProduction
-      ? [
-          new CleanWebpackPlugin(),
-          new MiniCssExtractPlugin({
-            filename: "[name].css"
-          })
-        ]
-      : [new webpack.HotModuleReplacementPlugin()]
-  );
+    }),
+    new BundleAnalyzerPlugin(),
+    new webpack.HotModuleReplacementPlugin()
+  ];
 
   const devServer = {
     port: process.env.PORT || (await getPort({ port: 3000 })),
     host: "0.0.0.0",
     disableHostCheck: true,
     historyApiFallback: true,
-    hot: !isProduction
+    hot: true
   };
 
-  if (!isProduction) {
-    const url = `http://${devServer.host}:${devServer.port}`;
-    const pbcopy = require("child_process").spawn("pbcopy");
-    pbcopy.stdin.write(url);
-    pbcopy.stdin.end();
-    console.log(`
+  const url = `http://${devServer.host}:${devServer.port}`;
+  const pbcopy = require("child_process").spawn("pbcopy");
+  pbcopy.stdin.write(url);
+  pbcopy.stdin.end();
+  console.log(`
 ******************************************
 Copied "${url}" to clipboard.
 ******************************************
 `);
-  }
-
-  let externals = {};
-  if (isProduction) {
-    // Don't bundle react or react-dom
-    (externals.react = {
-      commonjs: "react",
-      commonjs2: "react",
-      amd: "React",
-      root: "React"
-    }),
-      (externals["react-dom"] = {
-        commonjs: "react-dom",
-        commonjs2: "react-dom",
-        amd: "ReactDOM",
-        root: "ReactDOM"
-      });
-  }
 
   return {
     mode,
-    devtool: isProduction ? "source-map" : "eval-source-map",
+    devtool: "eval-source-map",
     entry: {
-      mechanic: "./src/index.js",
       app: "./app/index.js"
     },
     output: {
@@ -125,11 +81,9 @@ Copied "${url}" to clipboard.
     resolve: {
       extensions: [".js", ".jsx", ".json"]
     },
-    externals,
     module: {
       rules: [js, css]
     },
-    optimization,
     plugins,
     devServer
   };

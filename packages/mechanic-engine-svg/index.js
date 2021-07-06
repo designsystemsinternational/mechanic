@@ -1,4 +1,4 @@
-import { Mechanic } from "@designsystemsinternational/mechanic-utils";
+import { Mechanic } from "@designsystemsinternational/mechanic";
 
 const root = document.getElementById("root");
 

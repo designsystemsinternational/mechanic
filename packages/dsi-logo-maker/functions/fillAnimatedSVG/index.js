@@ -1,18 +1,26 @@
 import React, { useState, useEffect, useRef } from "react";
-import { getColors } from "../utils/graphics";
+import { getColors } from "../../utils/graphics";
 import {
   computeBaseBricks,
   computeBlockGeometry,
   precomputeBlocks,
-  getIndexModule
-} from "../utils/blocks";
-import { Unit } from "../utils/blocks-components";
-import { useDrawLoop } from "../utils/drawLoopHook";
+  getIndexModule,
+} from "../../utils/blocks";
+import { Unit } from "../../utils/blocks-components";
+import { useDrawLoop } from "../../utils/drawLoopHook";
 
-export const handler = ({ width, height, frame, done, logoWidth, logoRatio, duration }) => {
+export const handler = ({
+  width,
+  height,
+  frame,
+  done,
+  logoWidth,
+  logoRatio,
+  duration,
+}) => {
   const [blockParams, setBlockParams] = useState({
     blocksByIndex: [],
-    blockConfigs: []
+    blockConfigs: [],
   });
 
   const isPlaying = useRef(false);
@@ -25,7 +33,12 @@ export const handler = ({ width, height, frame, done, logoWidth, logoRatio, dura
 
   useEffect(() => {
     let colors = getColors("Random Flag");
-    const blockGeometry = computeBlockGeometry(logoWidth, logoHeight, rows, cols);
+    const blockGeometry = computeBlockGeometry(
+      logoWidth,
+      logoHeight,
+      rows,
+      cols
+    );
     const baseBricks = computeBaseBricks(words, blockGeometry.fontSize);
     const blocksByIndex = precomputeBlocks(blockGeometry, baseBricks);
 
@@ -38,7 +51,7 @@ export const handler = ({ width, height, frame, done, logoWidth, logoRatio, dura
       const animation = {
         stepRate: (rows * cols * Math.floor(Math.random() * 4 + 1)) / duration,
         progress: 0,
-        duration
+        duration,
       };
       blockConfigs.push({ position, blockIndex, colors, animation });
       position = { ...position };
@@ -76,7 +89,8 @@ export const handler = ({ width, height, frame, done, logoWidth, logoRatio, dura
             blockIndex={blockIndex}
             colors={colors}
             animation={animation}
-            runtime={runtime}></Unit>
+            runtime={runtime}
+          ></Unit>
         ))}
     </svg>
   );
@@ -86,17 +100,17 @@ export const params = {
   width: {
     type: "number",
     default: 100,
-    min: 100
+    min: 100,
   },
   height: {
     type: "number",
     default: 200,
-    min: 100
+    min: 100,
   },
   logoWidth: {
     type: "number",
     default: 80,
-    min: 10
+    min: 10,
   },
   logoRatio: {
     type: "number",
@@ -104,18 +118,18 @@ export const params = {
     max: 20,
     slider: true,
     min: 6,
-    step: 1
+    step: 1,
   },
   duration: {
     type: "number",
     default: 5000,
     step: 500,
-    min: 1000
-  }
+    min: 1000,
+  },
 };
 
 export const settings = {
   engine: require("@designsystemsinternational/mechanic-engine-react").run,
   animated: true,
-  usesRandom: true
+  usesRandom: true,
 };

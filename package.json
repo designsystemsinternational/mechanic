@@ -2,10 +2,12 @@
   "name": "root",
   "private": true,
   "devDependencies": {
-    "lerna": "^3.22.1"
+    "lerna": "^4.0.0"
   },
   "scripts": {
     "bootstrap": "lerna bootstrap --hoist",
-    "test": "lerna run test --stream"
+    "test": "lerna run test --stream",
+    "nuke": "rm -r node_modules; for d in packages/*/node_modules; do echo $d; rm -r $d; done",
+    "publish": "lerna publish"
   }
 }

@@ -1,121 +1,90 @@
-const chalk = require("chalk");
+const path = require("path");
 const inquirer = require("inquirer");
-const ora = require("ora");
+const {
+  colors: { fail, success },
+  logo: { mechanic: logo },
+} = require("@designsystemsinternational/mechanic-utils");
+const {
+  create,
+  options,
+  installDependencies,
+} = require("@designsystemsinternational/create-mechanic");
+const {
+  generateFunctionTemplate,
+  getFunctionQuestions,
+} = require("@designsystemsinternational/create-mechanic/new-function");
 
-const templateOptions = [
-  { name: "Vanilla JS", type: "SVG" },
-  { name: "React", type: "SVG" },
-  { name: "D3", type: "SVG" },
-  { name: "Vanilla JS", type: "Canvas" },
-  { name: "p5.js", type: "Canvas" },
-  { name: "THREE.js", type: "Canvas" },
-];
+const { mechanic, getIsMechanicProject } = require("./utils");
 
-const red = chalk.bgHex("#D70000").white;
-const white = chalk.bgWhite.hex("#121212");
-const blue = chalk.bgHex("#0000AF").white;
-
-const DSI = [
-  { word: "DESIGN", color: red },
-  { word: "SYSTEMS", color: white },
-  { word: "INTERNATIONAL", color: blue },
-];
-
-const mechanic = [
-  { word: "MECHANIC", color: red },
-  { word: "MECHANIC", color: blue },
-];
-
-const spinnerFrames = (settings) => {
-  let length = 0;
-  let letterArray = [];
-  settings.forEach(({ word, color }) => {
-    length += word.length;
-    [...word].forEach((c) => letterArray.push(color(c)));
-  });
-  letterArray = letterArray.concat(letterArray);
-  const frames = [];
-  for (let index = 0; index < length; index++) {
-    const subLetters = letterArray.slice(index, index + length / 2 + 1);
-    frames.push(subLetters.reduce((acc, curr) => acc + curr, ""));
+const newFunctionCommand = async (argv) => {
+  const isMechanicProject = getIsMechanicProject();
+  if (!isMechanicProject) {
+    console.log(
+      fail("Not mechanic project: ") +
+        `new function can only be run inside mechanic project.`
+    );
+    console.log(
+      `Either the current working directory does not contain a valid package.json or ` +
+        `'${mechanic}' is not specified as a dependency \n`
+    );
+    return;
   }
-  // console.log(frames);
-  return frames;
-};
 
-const dsiSpinner = {
-  interval: 80,
-  frames: spinnerFrames(DSI),
-};
+  const config = require(path.resolve("mechanic.config.js"));
 
-const mechanicSpinner = {
-  interval: 80,
-  frames: spinnerFrames(mechanic),
-};
-
-// Not sure what params will recieve.
-// TODO: Complete.
-const generateProjectTemplate = async (answers) => {
-  const spinner = ora({
-    text: "Generating project template",
-    spinner: dsiSpinner,
-  }).start();
-
-  // Simulated time passing.
-  await new Promise((resolve) =>
-    setTimeout(resolve, 5000 * (Math.random() + 1))
+  const functionName = argv._[2];
+  const template = argv.template || argv.t;
+  const example = argv.example || argv.e;
+  const questions = getFunctionQuestions(
+    { functionName, template, example },
+    config
   );
 
-  spinner.succeed();
-};
+  console.log(logo, "\n");
+  if (functionName || template || example) {
+    console.log("Received arguments loaded as defaults");
+  }
 
-// Not sure what params will recieve.
-// TODO: Complete.
-const installDependencies = async (answers) => {
-  const spinner = ora({
-    text: "Installing dependencies",
-    spinner: mechanicSpinner,
-  }).start();
-
-  // Simulated time passing.
-  await new Promise((resolve) =>
-    setTimeout(resolve, 5000 * (Math.random() + 1))
+  // Confirm and generate new project directory and content files
+  const functionAnswers = await inquirer.prompt(questions);
+  const functionDir = await generateFunctionTemplate(
+    ".",
+    functionAnswers,
+    config
   );
-
-  spinner.succeed();
-};
-
-const _new = async () => {
-  const answers = await inquirer.prompt([
+  const { install } = await inquirer.prompt([
     {
-      name: "project",
-      type: "input",
-      message: "Name your project",
-      default: "my-project",
-    },
-    {
-      name: "template",
-      type: "list",
-      message: `Select template for your first design function
-(you can always create more with \`mechanic new function\`)`,
-      choices: templateOptions.map((option) => ({
-        name: `${option.name} (${option.type})`,
-        value: option,
-      })),
-    },
-    {
-      name: "functionName",
-      type: "input",
-      message: "Name your first function",
-      default: "my-function",
+      name: "install",
+      type: "confirm",
+      message: "Do you wish to install dependencies right away?",
+      default: true,
     },
   ]);
-
-  await generateProjectTemplate(answers);
-
-  await installDependencies(answers);
-
-  console.log(`Done! Now run \`cd ${answers.project}\` and \`npm run dev\``);
+  if (install) {
+    await installDependencies(".");
+  }
+  // Done!
+  console.log(`\nDone! Design function created at ${success(functionDir)}
+To start you now can run:${install ? "" : "\n> `npm i`"}
+> \`npm run dev\`
+`);
+  console.log(logo);
 };
 
-module.exports = _new;
+module.exports = {
+  command: "new projectName",
+  aliases: ["n"],
+  desc: "Creates new mechanic project and design function",
+  builder: (yargs) =>
+    yargs.options(options).command({
+      command: "function",
+      aliases: ["f"],
+      desc: "Creates new mechanic design function in existing mechanic project",
+      builder: (yargs) => yargs,
+      handler: newFunctionCommand,
+    }),
+  handler: (argv) => {
+    argv._ = argv._.slice(1);
+    create(argv);
+  },
+};

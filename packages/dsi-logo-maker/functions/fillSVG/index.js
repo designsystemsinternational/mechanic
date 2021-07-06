@@ -1,12 +1,12 @@
 import React, { useState, useEffect, useRef } from "react";
-import { getColors } from "../utils/graphics";
+import { getColors } from "../../utils/graphics";
 import {
   computeBaseBricks,
   computeBlockGeometry,
   precomputeBlocks,
-  getIndexModule
-} from "../utils/blocks";
-import { Block } from "../utils/blocks-components";
+  getIndexModule,
+} from "../../utils/blocks";
+import { Block } from "../../utils/blocks-components";
 
 export const handler = ({ width, height, done, logoWidth, logoRatio }) => {
   const rows = 2;
@@ -24,7 +24,8 @@ export const handler = ({ width, height, done, logoWidth, logoRatio }) => {
   let brickOffset = 0;
 
   while (position.y < height) {
-    const block = blocksByIndex[getIndexModule(brickOffset, blocksByIndex.length)];
+    const block =
+      blocksByIndex[getIndexModule(brickOffset, blocksByIndex.length)];
     blockConfigs.push({ position, block, colors });
     position = { ...position };
     if (position.x + block.width < width) {
@@ -48,7 +49,8 @@ export const handler = ({ width, height, done, logoWidth, logoRatio }) => {
           key={`${position.x}-${position.y}`}
           position={position}
           block={block}
-          colors={colors}></Block>
+          colors={colors}
+        ></Block>
       ))}
     </svg>
   );
@@ -58,17 +60,17 @@ export const params = {
   width: {
     type: "number",
     default: 300,
-    min: 100
+    min: 100,
   },
   height: {
     type: "number",
     default: 300,
-    min: 100
+    min: 100,
   },
   logoWidth: {
     type: "number",
     default: 80,
-    min: 10
+    min: 10,
   },
   logoRatio: {
     type: "number",
@@ -76,26 +78,26 @@ export const params = {
     max: 20,
     slider: true,
     min: 6,
-    step: 1
-  }
+    step: 1,
+  },
 };
 
 export const presets = {
   bigger: {
     width: 1000,
-    height: 1000
+    height: 1000,
   },
   panoramic: {
     width: 1000,
-    height: 250
+    height: 250,
   },
   long: {
     width: 500,
-    height: 1000
-  }
+    height: 1000,
+  },
 };
 
 export const settings = {
   engine: require("@designsystemsinternational/mechanic-engine-react").run,
-  usesRandom: true
+  usesRandom: true,
 };

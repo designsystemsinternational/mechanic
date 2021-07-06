@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+    <title>Mechanic</title>
+    <style type="text/css">
+      html,
+      body {
+        height: 100vh;
+      }
+      body {
+        align-items: center;
+        display: flex;
+        flex-direction: column;
+        font-family: sans-serif;
+        justify-content: center;
+        margin: 0;
+        padding: 0;
+      }
+
+      p {
+        margin-top: 1;
+      }
+      .container {
+        margin-top: -4vh;
+        padding-left: 1em;
+        padding-right: 1em;
+        text-align: center;
+      }
+
+      .logo {
+        font-weight: 800;
+        font-size: 60px;
+        letter-spacing: -0em;
+        max-width: 70vw;
+      }
+
+      .logo textPath {
+        dominant-baseline: middle;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <svg class="logo" viewBox="0 0 400 130" width="400">
+        <g>
+          <ellipse
+            cx="65.5"
+            cy="65"
+            rx="32.5"
+            ry="32.5"
+            stroke-width="65"
+            stroke="#ff2f00"
+            fill="none"
+          ></ellipse>
+          <ellipse
+            cx="334.5"
+            cy="65"
+            rx="32.5"
+            ry="32.5"
+            stroke-width="65"
+            stroke="#ff2f00"
+            fill="none"
+          ></ellipse>
+          <ellipse
+            cx="334.5"
+            cy="65"
+            rx="32.5"
+            ry="32.5"
+            stroke-width="65"
+            stroke="#0f21c3"
+            fill="none"
+            stroke-dasharray="102.10176124166827"
+            stroke-dashoffset="153.1526418625024"
+          >
+            <animate
+              id="right1"
+              attributeName="stroke-dashoffset"
+              from="153.1526418625024"
+              to="51.050880620834135"
+              begin="top1.end"
+              dur="0.9013583258813319s"
+              fill="freeze"
+            ></animate>
+            <animate
+              id="right2"
+              attributeName="stroke-dashoffset"
+              from="255.25440310417068"
+              to="153.1526418625024"
+              begin="top3.end"
+              dur="0.9013583258813319s"
+              fill="freeze"
+            ></animate>
+          </ellipse>
+          <ellipse
+            cx="65.5"
+            cy="65"
+            rx="32.5"
+            ry="32.5"
+            stroke-width="65"
+            stroke="#0f21c3"
+            fill="none"
+            stroke-dasharray="102.10176124166827"
+            stroke-dashoffset="255.25440310417068"
+          >
+            <animate
+              id="left1"
+              attributeName="stroke-dashoffset"
+              from="255.25440310417068"
+              to="153.1526418625024"
+              begin="bot1.end"
+              dur="0.9013583258813319s"
+              fill="freeze"
+            ></animate>
+            <animate
+              id="left2"
+              attributeName="stroke-dashoffset"
+              from="153.1526418625024"
+              to="51.050880620834135"
+              begin="bot3.end"
+              dur="0.9013583258813319s"
+              fill="freeze"
+            ></animate>
+          </ellipse>
+          <ellipse
+            cx="65.5"
+            cy="65"
+            rx="32.5"
+            ry="32.5"
+            stroke-width="65"
+            stroke="#0f21c3"
+            fill="none"
+            stroke-dasharray="102.10176124166827"
+            stroke-dashoffset="153.1526418625024"
+          >
+            <animate
+              attributeName="stroke-dashoffset"
+              from="153.1526418625024"
+              to="51.050880620834135"
+              begin="fakeBot.end"
+              dur="0.9013583258813319s"
+              fill="freeze"
+            ></animate>
+          </ellipse>
+          <rect
+            x="65"
+            y="0"
+            width="270"
+            height="130"
+            stroke="none"
+            fill="#ff2f00"
+          ></rect>
+          <rect x="65" y="0" width="0" height="65" fill="#0f21c3">
+            <animate
+              id="top1"
+              attributeName="width"
+              from="0"
+              to="270"
+              begin="0.1s;left1.end"
+              dur="3.0986416741186678s"
+              fill="freeze"
+            ></animate>
+            <animate
+              id="top2"
+              attributeName="x"
+              from="65"
+              to="340"
+              begin="4.15s;left2.end"
+              dur="3.0986416741186678s"
+            ></animate>
+            )}
+            <animate
+              id="top3"
+              attributeName="width"
+              from="270"
+              to="0"
+              begin="top2.begin"
+              dur="3.0986416741186678s"
+              fill="freeze"
+            ></animate>
+          </rect>
+          <rect x="65" y="65" width="0" height="65" fill="#0f21c3">
+            <animate
+              id="bot1"
+              attributeName="x"
+              from="335"
+              to="65"
+              begin="right1.end"
+              dur="3.0986416741186678s"
+            ></animate>
+            <animate
+              id="bot2"
+              attributeName="width"
+              from="0"
+              to="270"
+              begin="right1.end"
+              dur="3.0986416741186678s"
+              fill="freeze"
+            ></animate>
+            <animate
+              id="bot3"
+              attributeName="width"
+              from="270"
+              to="0"
+              begin="right2.end"
+              dur="3.0986416741186678s"
+              fill="freeze"
+            ></animate>
+          </rect>
+          <rect x="65" y="65" width="270" height="65" fill="#0f21c3">
+            <animate
+              id="fakeBot"
+              attributeName="width"
+              from="270"
+              to="0"
+              begin="0.1s"
+              dur="3.0986416741186678s"
+              fill="freeze"
+            ></animate>
+          </rect>
+        </g>
+        <g>
+          <path
+            id="track1"
+            fill="none"
+            stroke="none"
+            transform="translate(40,40)"
+            d="M 25,0 h 270 a 25 25 0 0 1 0 50 H 25 a 25 25 0 0 1 0 -50"
+          ></path>
+          <path
+            id="track2"
+            fill="none"
+            stroke="none"
+            transform="translate(40,40)"
+            d="M 295,50 H 25 a 25 25 0 0 1 0 -50 h 270 a 25 25 0 0 1 0 50"
+          ></path>
+        </g>
+        <g>
+          <text fill="white">
+            <textPath href="#track1">
+              MECHANIC
+              <animate
+                id="txt1"
+                attributeName="startOffset"
+                from="0"
+                to="697.0796326794897"
+                begin="0s"
+                dur="8s"
+                repeatCount="indefinite"
+              ></animate>
+            </textPath>
+            <textPath href="#track2">
+              MECHANIC
+              <animate
+                attributeName="startOffset"
+                from="-348.53981633974485"
+                to="348.53981633974485"
+                begin="txt1.begin"
+                dur="8s"
+                repeatCount="indefinite"
+              ></animate>
+            </textPath>
+            <textPath href="#track2">
+              MECHANIC
+              <animate
+                attributeName="startOffset"
+                from="0"
+                to="697.0796326794897"
+                begin="txt1.begin"
+                dur="8s"
+                repeatCount="indefinite"
+              ></animate>
+            </textPath>
+            <textPath href="#track1">
+              MECHANIC
+              <animate
+                attributeName="startOffset"
+                from="-348.53981633974485"
+                to="348.53981633974485"
+                begin="txt1.begin"
+                dur="8s"
+                repeatCount="indefinite"
+              ></animate>
+            </textPath>
+          </text>
+        </g>
+      </svg>
+
+      <p>This page will reload when app is ready</p>
+    </div>
+    <script>
+      let ready = false;
+
+      function onReady() {
+        ready = true;
+        location.reload(true);
+      }
+
+      function checkAndSetStatus() {
+        let cancelled = false;
+        fetch("/", { headers: { Accept: "application/json" } })
+          .then((result) => result.json())
+          .catch((error) => {
+            // We can get back an error "Cannot parse JSON" when a HTML
+            // response is returned, so we assume the server is ready
+            onReady();
+          })
+          .then(({ loading, status } = {}) => {
+            if (!loading) {
+              onReady();
+              return;
+            }
+            if (cancelled) {
+              return;
+            }
+          });
+        return () => {
+          cancelled = true;
+        };
+      }
+
+      let cancelLastCall = checkAndSetStatus();
+      const interval = setInterval(() => {
+        cancelLastCall();
+        if (ready) {
+          clearInterval(interval);
+          return;
+        }
+        cancelLastCall = checkAndSetStatus();
+      }, 500);
+    </script>
+  </body>
+</html>

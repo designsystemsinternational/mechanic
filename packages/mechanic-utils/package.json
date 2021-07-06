@@ -1,10 +1,11 @@
 {
   "name": "@designsystemsinternational/mechanic-utils",
-  "version": "0.0.1",
-  "main": "src/index.js",
-  "scripts": {
-  },
+  "version": "0.2.0",
+  "main": "index.js",
+  "scripts": {},
   "dependencies": {
-    "seedrandom": "^3.0.5"
-  }
+    "chalk": "^4.1.1",
+    "ora": "^5.4.1"
+  },
+  "gitHead": "72540367e35f7c65bc111779ceb4c59ea0e1a5fb"
 }

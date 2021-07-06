@@ -1,10 +1,14 @@
 {
   "name": "@designsystemsinternational/mechanic-engine-svg",
-  "version": "0.0.1",
-  "main": "index.js",
-  "scripts": {
+  "version": "0.2.0",
+  "type": "module",
+  "exports": "./index.js",
+  "engines": {
+    "node": "^12.20.0 || ^14.13.1 || >=16.0.0"
   },
+  "scripts": {},
   "dependencies": {
-    "@designsystemsinternational/mechanic-utils": "^0.0.1"
-  }
+    "@designsystemsinternational/mechanic": "^0.2.0"
+  },
+  "gitHead": "72540367e35f7c65bc111779ceb4c59ea0e1a5fb"
 }
