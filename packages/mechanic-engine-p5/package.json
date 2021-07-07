@@ -27,6 +27,11 @@
   ],
   "type": "module",
   "exports": "./index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/designsystemsinternational/mechanic",
+    "directory": "packages/mechanic-engine-p5"
+  },
   "dependencies": {
     "@designsystemsinternational/mechanic": "^0.2.0",
     "p5": "^1.1.9"

@@ -26,6 +26,11 @@
     }
   ],
   "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/designsystemsinternational/mechanic",
+    "directory": "packages/mechanic-utils"
+  },
   "scripts": {},
   "dependencies": {
     "chalk": "^4.1.1",

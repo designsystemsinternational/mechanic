@@ -27,7 +27,11 @@
   ],
   "type": "module",
   "exports": "./index.js",
-  "scripts": {},
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/designsystemsinternational/mechanic",
+    "directory": "packages/mechanic-engine-svg"
+  },
   "dependencies": {
     "@designsystemsinternational/mechanic": "^0.2.0"
   },

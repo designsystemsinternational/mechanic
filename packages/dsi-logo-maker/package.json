@@ -25,6 +25,11 @@
       "url": "https://designsystems.international"
     }
   ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/designsystemsinternational/mechanic",
+    "directory": "packages/dsi-logo-maker"
+  },
   "scripts": {
     "dev": "mechanic dev",
     "build": "mechanic build",

@@ -28,6 +28,11 @@
   "bin": {
     "mechanic": "cli.js"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/designsystemsinternational/mechanic",
+    "directory": "packages/mechanic-cli"
+  },
   "scripts": {
     "cli": "node cli.js"
   },
