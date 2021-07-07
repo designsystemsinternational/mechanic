@@ -1,11 +1,15 @@
-const path = require("path");
-const webpack = require("webpack");
-const getPort = require("get-port");
+import path, { dirname } from "path";
+import { fileURLToPath } from "url";
+import webpack from "webpack";
+import getPort from "get-port";
+import { spawn } from "child_process";
 
-const HtmlWebPackPlugin = require("html-webpack-plugin");
-const BundleAnalyzerPlugin = require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
+import HtmlWebPackPlugin from "html-webpack-plugin";
+import { BundleAnalyzerPlugin } from "webpack-bundle-analyzer";
 
-module.exports = async (env, argv) => {
+const __dirname = dirname(fileURLToPath(import.meta.url));
+
+export default async (env, argv) => {
   const mode = "development";
   const js = {
     test: /\.(jsx?)$/,
@@ -57,7 +61,8 @@ module.exports = async (env, argv) => {
   };
 
   const url = `http://${devServer.host}:${devServer.port}`;
-  const pbcopy = require("child_process").spawn("pbcopy");
+
+  const pbcopy = spawn("pbcopy");
   pbcopy.stdin.write(url);
   pbcopy.stdin.end();
   console.log(`
