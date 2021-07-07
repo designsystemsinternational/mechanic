@@ -72,7 +72,7 @@ To start you now can run:${install ? "" : "\n> `npm i`"}
 };
 
 module.exports = {
-  command: "new projectName",
+  command: "new",
   aliases: ["n"],
   desc: "Creates new mechanic project and design function",
   builder: (yargs) =>
