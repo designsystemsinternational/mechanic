@@ -2,11 +2,28 @@
   "name": "@designsystemsinternational/create-mechanic",
   "version": "0.2.2",
   "description": "Create Mechanic projects.",
+  "author": {
+    "name": "Fernando Florenzano Hernández",
+    "email": "i@designsystems.international",
+    "url": "https://designsystems.international"
+  },
+  "contributors": [
+    {
+      "name": "Rune Skjoldborg Madsen",
+      "email": "i@designsystems.international",
+      "url": "https://designsystems.international"
+    },
+    {
+      "name": "Martin Bravo",
+      "email": "i@designsystems.international",
+      "url": "https://designsystems.international"
+    }
+  ],
+  "bin": "cli.js",
   "main": "index.js",
   "scripts": {
     "start": "node cli.js"
   },
-  "bin": "cli.js",
   "dependencies": {
     "@designsystemsinternational/mechanic-utils": "^0.2.0",
     "execa": "^5.1.1",

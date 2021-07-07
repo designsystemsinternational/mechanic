@@ -2,6 +2,23 @@
   "name": "@designsystemsinternational/mechanic-ui-components",
   "version": "0.2.0",
   "description": "UI component library for Mechanic's app.",
+  "author": {
+    "name": "Fernando Florenzano Hernández",
+    "email": "i@designsystems.international",
+    "url": "https://designsystems.international"
+  },
+  "contributors": [
+    {
+      "name": "Rune Skjoldborg Madsen",
+      "email": "i@designsystems.international",
+      "url": "https://designsystems.international"
+    },
+    {
+      "name": "Martin Bravo",
+      "email": "i@designsystems.international",
+      "url": "https://designsystems.international"
+    }
+  ],
   "type": "module",
   "exports": "./src/index.js",
   "engines": {

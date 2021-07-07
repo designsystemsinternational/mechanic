@@ -2,6 +2,23 @@
   "name": "@designsystemsinternational/dsi-logo-maker",
   "version": "0.2.2",
   "description": "DSI Logo Maker based on Mechanic.",
+  "author": {
+    "name": "Fernando Florenzano Hernández",
+    "email": "i@designsystems.international",
+    "url": "https://designsystems.international"
+  },
+  "contributors": [
+    {
+      "name": "Rune Skjoldborg Madsen",
+      "email": "i@designsystems.international",
+      "url": "https://designsystems.international"
+    },
+    {
+      "name": "Martin Bravo",
+      "email": "i@designsystems.international",
+      "url": "https://designsystems.international"
+    }
+  ],
   "scripts": {
     "dev": "mechanic dev",
     "build": "mechanic build",

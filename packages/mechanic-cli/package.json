@@ -2,11 +2,28 @@
   "name": "@designsystemsinternational/mechanic-cli",
   "version": "0.2.2",
   "description": "CLI to interact with Mechanic.",
-  "scripts": {
-    "cli": "node cli.js"
+  "author": {
+    "name": "Fernando Florenzano Hernández",
+    "email": "i@designsystems.international",
+    "url": "https://designsystems.international"
   },
+  "contributors": [
+    {
+      "name": "Rune Skjoldborg Madsen",
+      "email": "i@designsystems.international",
+      "url": "https://designsystems.international"
+    },
+    {
+      "name": "Martin Bravo",
+      "email": "i@designsystems.international",
+      "url": "https://designsystems.international"
+    }
+  ],
   "bin": {
     "mechanic": "cli.js"
+  },
+  "scripts": {
+    "cli": "node cli.js"
   },
   "dependencies": {
     "@designsystemsinternational/create-mechanic": "^0.2.2",
