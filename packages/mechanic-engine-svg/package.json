@@ -2,12 +2,17 @@
   "name": "@designsystemsinternational/mechanic-engine-svg",
   "version": "0.2.0",
   "description": "Mechanic engine that powers string SVG usage.",
+  "license": "MIT",
   "homepage": "https://github.com/designsystemsinternational/mechanic#readme",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/designsystemsinternational/mechanic",
+    "directory": "packages/mechanic-engine-p5"
+  },
   "bugs": {
     "url": "https://github.com/designsystemsinternational/mechanic/issues",
     "email": "i@designsystems.international"
   },
-  "license": "MIT",
   "author": {
     "name": "Rune Skjoldborg Madsen",
     "email": "i@designsystems.international",
@@ -27,11 +32,6 @@
   ],
   "type": "module",
   "exports": "./index.js",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/designsystemsinternational/mechanic",
-    "directory": "packages/mechanic-engine-svg"
-  },
   "dependencies": {
     "@designsystemsinternational/mechanic": "^0.2.0"
   },

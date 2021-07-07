@@ -2,12 +2,17 @@
   "name": "@designsystemsinternational/mechanic-engine-react",
   "version": "0.2.0",
   "description": "Mechanic engine that powers React SVG declaration.",
+  "license": "MIT",
   "homepage": "https://github.com/designsystemsinternational/mechanic#readme",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/designsystemsinternational/mechanic",
+    "directory": "packages/mechanic-engine-react"
+  },
   "bugs": {
     "url": "https://github.com/designsystemsinternational/mechanic/issues",
     "email": "i@designsystems.international"
   },
-  "license": "MIT",
   "author": {
     "name": "Rune Skjoldborg Madsen",
     "email": "i@designsystems.international",
@@ -25,13 +30,11 @@
       "url": "https://designsystems.international"
     }
   ],
+  "files": [
+    "index.js"
+  ],
   "type": "module",
   "exports": "./index.js",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/designsystemsinternational/mechanic",
-    "directory": "packages/mechanic-engine-react"
-  },
   "peerDependencies": {
     "react": "^17.0.2",
     "react-dom": "^17.0.2"
