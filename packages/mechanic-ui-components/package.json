@@ -2,12 +2,17 @@
   "name": "@designsystemsinternational/mechanic-ui-components",
   "version": "0.2.0",
   "description": "UI component library for Mechanic's app.",
+  "license": "MIT",
   "homepage": "https://github.com/designsystemsinternational/mechanic#readme",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/designsystemsinternational/mechanic",
+    "directory": "packages/mechanic-ui-components"
+  },
   "bugs": {
     "url": "https://github.com/designsystemsinternational/mechanic/issues",
     "email": "i@designsystems.international"
   },
-  "license": "MIT",
   "author": {
     "name": "Fernando Florenzano Hernández",
     "email": "i@designsystems.international",
@@ -25,22 +30,16 @@
       "url": "https://designsystems.international"
     }
   ],
+  "files": [
+    "src"
+  ],
   "type": "module",
   "exports": "./src/index.js",
-  "engines": {
-    "node": "^12.20.0 || ^14.13.1 || >=16.0.0"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/designsystemsinternational/mechanic",
-    "directory": "packages/mechanic-ui-components"
-  },
   "scripts": {
     "dev": "webpack serve --mode development"
   },
-  "peerDependencies": {
-    "react": "^17.0.2",
-    "react-dom": "^17.0.2"
+  "dependencies": {
+    "react-color": "^2.19.3"
   },
   "devDependencies": {
     "@babel/cli": "^7.8.4",
@@ -79,8 +78,12 @@
     "webpack-cli": "^4.7.2",
     "webpack-dev-server": "^3.11.2"
   },
-  "dependencies": {
-    "react-color": "^2.19.3"
+  "peerDependencies": {
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2"
+  },
+  "engines": {
+    "node": "^12.20.0 || ^14.13.1 || >=16.0.0"
   },
   "gitHead": "72540367e35f7c65bc111779ceb4c59ea0e1a5fb"
 }

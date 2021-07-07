@@ -2,12 +2,17 @@
   "name": "@designsystemsinternational/mechanic",
   "version": "0.2.0",
   "description": "Mechanic is a framework to build assets built on web code.",
+  "license": "MIT",
   "homepage": "https://github.com/designsystemsinternational/mechanic#readme",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/designsystemsinternational/mechanic",
+    "directory": "packages/mechanic"
+  },
   "bugs": {
     "url": "https://github.com/designsystemsinternational/mechanic/issues",
     "email": "i@designsystems.international"
   },
-  "license": "MIT",
   "author": {
     "name": "Rune Skjoldborg Madsen",
     "email": "i@designsystems.international",
@@ -25,16 +30,12 @@
       "url": "https://designsystems.international"
     }
   ],
-  "module": "src/index.js",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/designsystemsinternational/mechanic",
-    "directory": "packages/mechanic"
-  },
-  "devDependencies": {
-    "prettier": "^2.0.5",
-    "stylelint-config-prettier": "^8.0.2"
-  },
+  "files": [
+    "src",
+    "app"
+  ],
+  "type": "module",
+  "exports": "./src/index.js",
   "dependencies": {
     "@babel/core": "^7.14.6",
     "@babel/plugin-transform-runtime": "^7.14.5",
@@ -69,6 +70,10 @@
     "webpack": "^5.39.1",
     "webpack-dev-middleware": "^5.0.0",
     "webpack-hot-middleware": "^2.25.0"
+  },
+  "devDependencies": {
+    "prettier": "^2.0.5",
+    "stylelint-config-prettier": "^8.0.2"
   },
   "gitHead": "72540367e35f7c65bc111779ceb4c59ea0e1a5fb"
 }
