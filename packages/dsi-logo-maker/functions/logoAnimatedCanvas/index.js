@@ -99,7 +99,7 @@ export const params = {
   colorMode: {
     type: "text",
     options: ["Random Flag", "Pick Flag", "Custom Colors"],
-    default: "randomFlag",
+    default: "Random Flag",
   },
   flag: {
     type: "text",
