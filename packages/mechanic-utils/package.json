@@ -30,9 +30,14 @@
       "url": "https://designsystems.international"
     }
   ],
+  "files": [
+    "index.js"
+  ],
   "type": "commonjs",
   "exports": "./index.js",
-  "scripts": {},
+  "scripts": {
+    "test": "node ./test.js"
+  },
   "dependencies": {
     "chalk": "^4.1.1",
     "ora": "^5.4.1"
