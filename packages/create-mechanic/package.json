@@ -2,12 +2,17 @@
   "name": "@designsystemsinternational/create-mechanic",
   "version": "0.2.2",
   "description": "Create Mechanic projects.",
+  "license": "MIT",
   "homepage": "https://github.com/designsystemsinternational/mechanic#readme",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/designsystemsinternational/mechanic",
+    "directory": "packages/create-mechanic"
+  },
   "bugs": {
     "url": "https://github.com/designsystemsinternational/mechanic/issues",
     "email": "i@designsystems.international"
   },
-  "license": "MIT",
   "author": {
     "name": "Fernando Florenzano Hernández",
     "email": "i@designsystems.international",
@@ -25,13 +30,19 @@
       "url": "https://designsystems.international"
     }
   ],
-  "bin": "cli.js",
-  "main": "index.js",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/designsystemsinternational/mechanic",
-    "directory": "packages/create-mechanic"
+  "files": [
+    "index.js",
+    "new-function.js",
+    "cli.js",
+    "function-*",
+    "project-template"
+  ],
+  "type": "commonjs",
+  "exports": {
+    ".": "./index.js",
+    "./new-function": "./new-function.js"
   },
+  "bin": "cli.js",
   "scripts": {
     "start": "node cli.js"
   },
