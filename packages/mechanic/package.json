@@ -35,7 +35,10 @@
     "app"
   ],
   "type": "module",
-  "exports": "./src/index.js",
+  "exports": {
+    ".": "./src/index.js",
+    "./src/commands/*": "./src/commands/*.js"
+  },
   "dependencies": {
     "@babel/core": "^7.14.6",
     "@babel/plugin-transform-runtime": "^7.14.5",
