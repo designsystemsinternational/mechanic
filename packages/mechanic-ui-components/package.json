@@ -2,6 +2,7 @@
   "name": "@designsystemsinternational/mechanic-ui-components",
   "version": "0.2.0",
   "description": "UI component library for Mechanic's app.",
+  "homepage": "https://github.com/designsystemsinternational/mechanic#readme",
   "author": {
     "name": "Fernando Florenzano Hernández",
     "email": "i@designsystems.international",

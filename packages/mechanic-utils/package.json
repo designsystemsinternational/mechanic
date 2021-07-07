@@ -2,6 +2,7 @@
   "name": "@designsystemsinternational/mechanic-utils",
   "version": "0.2.0",
   "description": "Custom CLI util definitions for Mechanic packages.",
+  "homepage": "https://github.com/designsystemsinternational/mechanic#readme",
   "author": {
     "name": "Fernando Florenzano Hernández",
     "email": "i@designsystems.international",

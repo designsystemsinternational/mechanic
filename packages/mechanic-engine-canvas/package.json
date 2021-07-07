@@ -2,6 +2,7 @@
   "name": "@designsystemsinternational/mechanic-engine-canvas",
   "version": "0.2.0",
   "description": "Mechanic engine that powers the Canvas API.",
+  "homepage": "https://github.com/designsystemsinternational/mechanic#readme",
   "author": {
     "name": "Rune Skjoldborg Madsen",
     "email": "i@designsystems.international",
