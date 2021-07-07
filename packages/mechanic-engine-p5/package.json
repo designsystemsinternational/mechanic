@@ -1,6 +1,6 @@
 {
   "name": "@designsystemsinternational/mechanic-engine-p5",
-  "version": "0.2.4",
+  "version": "0.2.5",
   "description": "Mechanic engine that powers p5.js.",
   "license": "MIT",
   "homepage": "https://github.com/designsystemsinternational/mechanic#readme",
@@ -36,7 +36,7 @@
   "type": "module",
   "exports": "./index.js",
   "dependencies": {
-    "@designsystemsinternational/mechanic": "^0.2.4",
+    "@designsystemsinternational/mechanic": "^0.2.5",
     "p5": "^1.1.9"
   },
   "engines": {
