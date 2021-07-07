@@ -1,6 +1,7 @@
 {
   "name": "@designsystemsinternational/mechanic-ui-components",
   "version": "0.2.0",
+  "description": "UI component library for Mechanic's app.",
   "type": "module",
   "exports": "./src/index.js",
   "engines": {

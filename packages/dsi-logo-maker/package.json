@@ -1,6 +1,7 @@
 {
   "name": "@designsystemsinternational/dsi-logo-maker",
   "version": "0.2.2",
+  "description": "DSI Logo Maker based on Mechanic.",
   "scripts": {
     "dev": "mechanic dev",
     "build": "mechanic build",

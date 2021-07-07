@@ -1,6 +1,7 @@
 {
   "name": "@designsystemsinternational/mechanic-engine-canvas",
   "version": "0.2.0",
+  "description": "Mechanic engine that powers the Canvas API.",
   "type": "module",
   "exports": "./index.js",
   "engines": {

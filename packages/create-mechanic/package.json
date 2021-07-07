@@ -1,6 +1,7 @@
 {
   "name": "@designsystemsinternational/create-mechanic",
   "version": "0.2.2",
+  "description": "Create Mechanic projects.",
   "main": "index.js",
   "scripts": {
     "start": "node cli.js"

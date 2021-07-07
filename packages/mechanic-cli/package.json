@@ -1,6 +1,7 @@
 {
   "name": "@designsystemsinternational/mechanic-cli",
   "version": "0.2.2",
+  "description": "CLI to interact with Mechanic.",
   "scripts": {
     "cli": "node cli.js"
   },

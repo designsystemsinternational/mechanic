@@ -1,6 +1,7 @@
 {
   "name": "@designsystemsinternational/mechanic-utils",
   "version": "0.2.0",
+  "description": "Custom CLI util definitions for Mechanic packages.",
   "main": "index.js",
   "scripts": {},
   "dependencies": {

@@ -1,6 +1,7 @@
 {
   "name": "@designsystemsinternational/mechanic-engine-svg",
   "version": "0.2.0",
+  "description": "Mechanic engine that powers string SVG usage.",
   "type": "module",
   "exports": "./index.js",
   "engines": {
