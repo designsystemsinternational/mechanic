@@ -34,7 +34,7 @@
     "src",
     "app"
   ],
-  "type": "module",
+  "type": "commonjs",
   "exports": {
     ".": "./src/index.js",
     "./src/commands/*": "./src/commands/*.js"
