@@ -1,15 +1,49 @@
 {
   "name": "@designsystemsinternational/mechanic-cli",
-  "version": "0.2.2",
-  "scripts": {
-    "cli": "node cli.js"
+  "version": "0.2.3",
+  "description": "CLI to interact with Mechanic.",
+  "license": "MIT",
+  "homepage": "https://github.com/designsystemsinternational/mechanic#readme",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/designsystemsinternational/mechanic",
+    "directory": "packages/mechanic-cli"
   },
+  "bugs": {
+    "url": "https://github.com/designsystemsinternational/mechanic/issues",
+    "email": "i@designsystems.international"
+  },
+  "author": {
+    "name": "Fernando Florenzano Hernández",
+    "email": "i@designsystems.international",
+    "url": "https://designsystems.international"
+  },
+  "contributors": [
+    {
+      "name": "Rune Skjoldborg Madsen",
+      "email": "i@designsystems.international",
+      "url": "https://designsystems.international"
+    },
+    {
+      "name": "Martin Bravo",
+      "email": "i@designsystems.international",
+      "url": "https://designsystems.international"
+    }
+  ],
+  "files": [
+    "cli.js",
+    "commands"
+  ],
+  "type": "commonjs",
   "bin": {
     "mechanic": "cli.js"
   },
+  "scripts": {
+    "start": "node cli.js"
+  },
   "dependencies": {
-    "@designsystemsinternational/create-mechanic": "^0.2.2",
-    "@designsystemsinternational/mechanic-utils": "^0.2.0",
+    "@designsystemsinternational/create-mechanic": "^0.2.3",
+    "@designsystemsinternational/mechanic-utils": "^0.2.3",
     "inquirer": "^8.1.1",
     "resolve-cwd": "^3.0.0",
     "yargs": "^17.0.1"

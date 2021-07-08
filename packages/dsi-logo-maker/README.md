@@ -1,3 +1,10 @@
-# DSI Logo Maker using mechanic!
+# DSI Logo Maker based on mechanic
 
-HOW TO USE HERE!
+## Usage
+
+Run:
+
+```
+npm i
+npm run dev
+```

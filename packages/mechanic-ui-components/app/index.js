@@ -1,6 +1,14 @@
 import React, { useState } from "react";
 import { render } from "react-dom";
-import { ParamInput, TextInput, NumberInput, ColorInput, Select, Button, Toggle } from "../src";
+import {
+  ParamInput,
+  TextInput,
+  NumberInput,
+  ColorInput,
+  Select,
+  Button,
+  Toggle
+} from "../src/index.js";
 
 const root = document.getElementById("root");
 

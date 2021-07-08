@@ -1,5 +1,6 @@
 {
   "name": "root",
+  "description": "This is a monorepo with all the open-source code for Mechanic",
   "private": true,
   "devDependencies": {
     "lerna": "^4.0.0"

@@ -1,4 +1,5 @@
 const path = require("path");
+
 const mechanic = "@designsystemsinternational/mechanic";
 
 const getIsMechanicProject = () => {
