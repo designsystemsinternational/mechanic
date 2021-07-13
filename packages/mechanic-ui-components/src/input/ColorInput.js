@@ -2,8 +2,8 @@ import React, { useState, useRef } from "react";
 import { ChromePicker } from "react-color";
 import PropTypes from "prop-types";
 import classnames from "classnames";
-import { uid } from "../uid";
-import { Button } from "../buttons/Button";
+import { uid } from "../uid.js";
+import { Button } from "../buttons/Button.js";
 import css from "./ColorInput.css";
 
 const colorToString = (color, model) => {

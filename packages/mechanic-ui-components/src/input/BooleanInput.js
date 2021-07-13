@@ -1,8 +1,8 @@
 import React, { useRef } from "react";
 import PropTypes from "prop-types";
 import classnames from "classnames";
-import { uid } from "../uid";
-import { Toggle } from "../buttons/Toggle";
+import { uid } from "../uid.js";
+import { Toggle } from "../buttons/Toggle.js";
 import css from "./BooleanInput.css";
 
 export const BooleanInput = props => {

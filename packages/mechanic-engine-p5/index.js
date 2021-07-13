@@ -1,4 +1,4 @@
-import { Mechanic } from "mechanic-utils";
+import { Mechanic } from "@designsystemsinternational/mechanic";
 import p5 from "p5";
 
 const root = document.getElementById("root");
@@ -15,11 +15,11 @@ export const run = (functionName, func, values, isPreview) => {
       mechanic.frame(root.childNodes[0]);
     }
   };
-  const onDone = async () => {
+  const onDone = async (name) => {
     p5Sketch.noLoop();
     if (!isPreview) {
       await mechanic.done(root.childNodes[0]);
-      mechanic.download(functionName);
+      mechanic.download(name || functionName);
     }
   };
   p5Sketch = new p5(
@@ -27,4 +27,5 @@ export const run = (functionName, func, values, isPreview) => {
       func.handler(sketch, mechanic.values, { frame: onFrame, done: onDone }),
     root
   );
+  return mechanic;
 };

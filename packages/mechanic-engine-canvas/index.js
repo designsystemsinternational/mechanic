@@ -1,4 +1,4 @@
-import { Mechanic } from "mechanic-utils";
+import { Mechanic } from "@designsystemsinternational/mechanic";
 
 const root = document.getElementById("root");
 
@@ -19,16 +19,17 @@ export const run = (functionName, func, values, isPreview) => {
     }
   };
 
-  const onDone = async (el) => {
+  const onDone = async (el, name) => {
     if (!isElAdded) {
       isElAdded = true;
       root.appendChild(el);
     }
     if (!isPreview) {
       await mechanic.done(el);
-      mechanic.download(functionName);
+      mechanic.download(name || functionName);
     }
   };
 
   func.handler(mechanic.values, { frame: onFrame, done: onDone });
+  return mechanic;
 };

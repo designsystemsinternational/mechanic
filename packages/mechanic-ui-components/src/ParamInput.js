@@ -2,12 +2,12 @@ import React, { useRef } from "react";
 import PropTypes from "prop-types";
 import classnames from "classnames";
 import css from "./ParamInput.css";
-import { TextInput } from "./input/TextInput";
-import { NumberInput } from "./input/NumberInput";
-import { BooleanInput } from "./input/BooleanInput";
-import { OptionInput } from "./input/OptionInput";
-import { ColorInput } from "./input/ColorInput";
-import { uid } from "./uid";
+import { TextInput } from "./input/TextInput.js";
+import { NumberInput } from "./input/NumberInput.js";
+import { BooleanInput } from "./input/BooleanInput.js";
+import { OptionInput } from "./input/OptionInput.js";
+import { ColorInput } from "./input/ColorInput.js";
+import { uid } from "./uid.js";
 
 export const ParamInput = ({
   name,

@@ -1,8 +1,8 @@
 import React, { Fragment, useRef, useState } from "react";
 import PropTypes from "prop-types";
 import classnames from "classnames";
-import { uid } from "../uid";
-import { Select } from "../input/Select";
+import { uid } from "../uid.js";
+import { Select } from "../input/Select.js";
 import css from "./OptionInput.css";
 
 export const OptionInput = props => {

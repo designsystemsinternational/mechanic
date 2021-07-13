@@ -1,10 +1,45 @@
 {
   "name": "@designsystemsinternational/mechanic-engine-canvas",
-  "version": "0.0.1",
-  "main": "index.js",
-  "scripts": {
+  "version": "0.2.7",
+  "description": "Mechanic engine that powers the Canvas API.",
+  "license": "MIT",
+  "homepage": "https://github.com/designsystemsinternational/mechanic#readme",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/designsystemsinternational/mechanic",
+    "directory": "packages/mechanic-engine-canvas"
   },
+  "bugs": {
+    "url": "https://github.com/designsystemsinternational/mechanic/issues",
+    "email": "i@designsystems.international"
+  },
+  "author": {
+    "name": "Rune Skjoldborg Madsen",
+    "email": "i@designsystems.international",
+    "url": "https://designsystems.international"
+  },
+  "contributors": [
+    {
+      "name": "Fernando Florenzano Hernández",
+      "email": "i@designsystems.international",
+      "url": "https://designsystems.international"
+    },
+    {
+      "name": "Martin Bravo",
+      "email": "i@designsystems.international",
+      "url": "https://designsystems.international"
+    }
+  ],
+  "files": [
+    "index.js"
+  ],
+  "type": "module",
+  "exports": "./index.js",
   "dependencies": {
-    "mechanic-utils": "../mechanic-utils"
-  }
+    "@designsystemsinternational/mechanic": "^0.2.7"
+  },
+  "engines": {
+    "node": "^12.20.0 || ^14.13.1 || >=16.0.0"
+  },
+  "gitHead": "72540367e35f7c65bc111779ceb4c59ea0e1a5fb"
 }
