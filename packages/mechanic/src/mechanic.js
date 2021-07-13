@@ -106,7 +106,6 @@ export class Mechanic {
         // This is slow. We should figure out a way to draw into canvas on every frame
         // or at least do Promise.all
         const cacheCanvas = document.createElement("canvas");
-        cacheCanvas.setAttribute("id", "mechanic-cache-canvas");
         cacheCanvas.width = this.svgSize.width;
         cacheCanvas.height = this.svgSize.height;
         for (let i = 0; i < this.svgFrames.length; i++) {
@@ -115,10 +114,6 @@ export class Mechanic {
         }
       }
       this.videoData = await this.videoWriter.complete();
-      if (validation.isSVG(el)) {
-        const cacheCanvas = document.getElementById("mechanic-cache-canvas");
-        cacheCanvas.remove();
-      }
     }
     this.isDone = true;
   }
