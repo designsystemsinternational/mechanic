@@ -9,6 +9,7 @@
     "bootstrap": "lerna bootstrap --hoist",
     "test": "lerna run test --stream",
     "nuke": "rm -r node_modules; for d in packages/*/node_modules; do echo $d; rm -r $d; done",
-    "publish": "lerna publish"
+    "publish": "lerna publish",
+    "publish:local": "lerna exec -- yalc push"
   }
 }

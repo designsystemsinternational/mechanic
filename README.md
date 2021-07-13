@@ -50,6 +50,17 @@ To get started, clone this repo.
 
 Then run, `npm run bootstrap`. This will symlink all the dependencies together and run `npm i` inside each package. Running `npm i` inside a package folder will not work.
 
+That should be enough to test certain individual package functionality, but to test mechanic projects with local package versions, we use [`yalc`](https://github.com/wclr/yalc).
+
+`npm link` falls short to reproduce package dependencies resolution as projects would by installing from the npm registry. `yalc` can locally publish packages as it would to the npm registry, to then use in local projects.
+
+To do this, first install `yalc` globally.
+To publish all packages in the repo, run `npm run publish:local`. To publish an individual package, run `yalc push` from its directory or `yalc push ./packages/[package]`. Run any of these commands when you wish to update the published content.
+
+Then in the project to test the package(s), before installing dependencies run `yalc add [package]` for all packages you wish to test. Then install normally with `npm i`.
+
+For any other needs, check [`yalc's documentation](https://github.com/wclr/yalc).
+
 ## Publish
 
 Run `npm run publish`
