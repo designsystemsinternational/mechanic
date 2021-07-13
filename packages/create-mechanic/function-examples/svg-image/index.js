@@ -42,5 +42,5 @@ export const presets = {
 };
 
 export const settings = {
-  engine: require("@designsystemsinternational/mechanic-engine-svg").run,
+  engine: require("@designsystemsinternational/mechanic-engine-svg"),
 };

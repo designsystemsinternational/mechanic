@@ -9,7 +9,7 @@ import { MechanicError } from "./mechanic-error";
 const setUp = functions => {
   const engines = {};
   Object.keys(functions).forEach(
-    functionName => (engines[functionName] = functions[functionName].settings.engine)
+    functionName => (engines[functionName] = functions[functionName].settings.engine?.run)
   );
   let curEngine = null;
   window.run = () => {

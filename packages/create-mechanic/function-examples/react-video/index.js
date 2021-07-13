@@ -51,7 +51,7 @@ export const params = {
 };
 
 export const settings = {
-  engine: require("@designsystemsinternational/mechanic-engine-react").run,
+  engine: require("@designsystemsinternational/mechanic-engine-react"),
   animated: true,
 };
 
