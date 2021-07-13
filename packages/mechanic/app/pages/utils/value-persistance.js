@@ -1,5 +1,5 @@
 // https://github.com/imbhargav5/rooks/blob/master/packages/shared/useLocalstorageState.ts
-import { useState, useEffect, useCallback, useRef, Dispatch, SetStateAction } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 
 function getValueFromLocalStorage(key) {
   if (typeof localStorage === "undefined") {

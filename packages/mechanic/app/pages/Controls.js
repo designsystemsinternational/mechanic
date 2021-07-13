@@ -1,14 +1,15 @@
 import React, { useState, useRef, useEffect } from "react";
 import PropTypes from "prop-types";
 import classnames from "classnames";
-import Mousetrap from "mousetrap";
 
-import { useValues } from "./value-persistance";
+import { useValues } from "./utils/value-persistance";
+import { useShortcuts } from "./utils/useShortcuts";
 
 import { Button, Toggle, ParamInput } from "@designsystemsinternational/mechanic-ui-components";
-import css from "./Function.css";
+import css from "./Controls.css";
 
-export const Function = ({ name, exports, children }) => {
+export const Controls = ({ name, exports, children }) => {
+  console.log({ name });
   const [scaleToFit, setScaleToFit] = useState(true);
 
   const mainRef = useRef();
@@ -40,6 +41,7 @@ export const Function = ({ name, exports, children }) => {
   const canScale = !!(params.width && params.height);
 
   const handlePreview = async () => {
+    if (iframe.current.contentWindow.run === undefined) return;
     const vals = Object.assign({}, values);
     if (canScale && scaleToFit) {
       const bounds = mainRef.current.getBoundingClientRect();
@@ -52,6 +54,7 @@ export const Function = ({ name, exports, children }) => {
   };
 
   const handleExport = async () => {
+    if (iframe.current.contentWindow.run === undefined) return;
     const vals = Object.assign({}, values);
     if (lastRun.current && lastRun.current.values) {
       vals.randomSeed = lastRun.current.values.randomSeed;
@@ -61,21 +64,21 @@ export const Function = ({ name, exports, children }) => {
 
   // Init engine when the name of the function changes
   useEffect(() => {
-    const onLoad = () => {
+    let onLoad;
+    if (iframe.current && iframe.current.contentWindow && iframe.current.contentWindow.initEngine) {
       iframe.current.contentWindow.initEngine(name);
-    };
-    iframe.current.addEventListener("load", onLoad);
+    } else if (iframe.current && iframe.current.contentWindow) {
+      onLoad = () => {
+        iframe.current.contentWindow.initEngine(name);
+      };
+      iframe.current.addEventListener("load", onLoad);
+    }
     return () => {
-      if (iframe.current) iframe.current.removeEventListener("load", onLoad);
+      if (iframe.current && onLoad) iframe.current.removeEventListener("load", onLoad);
     };
   }, [name]);
 
-  useEffect(() => {
-    Mousetrap.bind("command+e", handleExport);
-    return () => {
-      Mousetrap.unbind("command+e");
-    };
-  });
+  useShortcuts(handleExport);
 
   return (
     <div className={css.root}>
