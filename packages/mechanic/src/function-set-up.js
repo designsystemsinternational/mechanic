@@ -31,8 +31,13 @@ const setUp = functions => {
       window.run = (functionName, values, isPreview) => {
         // TODO: Do performance stats here?
         const func = functions[functionName];
-        const mechanic = curEngine(functionName, func, values, isPreview);
-        return mechanic ? mechanic : null;
+        try {
+          const mechanic = curEngine(functionName, func, values, isPreview);
+          return mechanic ? mechanic : null;
+        } catch (error) {
+          alert("There was an error running the engine and/or function. Check the console!");
+          throw error;
+        }
       };
     }
   };
