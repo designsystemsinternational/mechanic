@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { getIndexModule } from "./blocks";
-const Brick = ({ brick, block, colors }) => {
-  const { x, w, char, charX } = brick;
+const Brick = ({ brick, block, colors, stroke }) => {
+  const { x, w, char, charX, isWordFirst, isWordLast } = brick;
   const { background, blackOrWhite } = colors[brick.color % colors.length];
   const { fontYOffset: charY, rowHeight: h, fontSize } = block;
   return (
@@ -13,8 +13,11 @@ const Brick = ({ brick, block, colors }) => {
         strokeWidth="1"
         stroke={background}
       ></rect>
+      {isWordFirst && stroke && (
+        <rect x={-2.5} width={5} height={h} fill={stroke}></rect>
+      )}
       <text
-        fill={blackOrWhite}
+        fill={stroke || blackOrWhite}
         fontSize={fontSize}
         fontFamily={`F, Helvetica, Sans-Serif`}
         x={charX}
@@ -26,24 +29,36 @@ const Brick = ({ brick, block, colors }) => {
   );
 };
 
-const Row = ({ row, block, colors }) => {
+const Row = ({ row, block, colors, stroke }) => {
   const { rowIndex, bricks } = row;
   return (
     <g transform={`translate(0 ${rowIndex * block.rowHeight})`}>
       {bricks.map((brick, i) => (
-        <Brick key={i} brick={brick} block={block} colors={colors}></Brick>
+        <Brick
+          key={i}
+          brick={brick}
+          block={block}
+          colors={colors}
+          stroke={stroke}
+        ></Brick>
       ))}
     </g>
   );
 };
 
-export const Block = ({ position, block, colors }) => {
+export const Block = ({ position, block, colors, stroke }) => {
   const { x, y } = position;
   const { rows } = block;
   return (
     <g transform={`translate(${x} ${y})`}>
       {rows.map((row) => (
-        <Row key={row.rowIndex} row={row} block={block} colors={colors}></Row>
+        <Row
+          key={row.rowIndex}
+          row={row}
+          block={block}
+          colors={colors}
+          stroke={stroke}
+        ></Row>
       ))}
     </g>
   );
