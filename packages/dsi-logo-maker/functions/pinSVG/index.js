@@ -1,23 +1,23 @@
+import React, { useEffect } from "react";
 import { getColors, flagNames } from "../../utils/graphics";
 import {
   computeBaseBricks,
   computeBlockGeometry,
   computeBlock,
 } from "../../utils/blocks";
-import { drawBlock } from "../../utils/blocks-canvas";
+import { Block } from "../../utils/blocks-components";
 
-export const handler = (params, mechanic) => {
-  const {
-    width,
-    ratio,
-    colorMode,
-    flag,
-    firstColor,
-    secondColor,
-    thirdColor,
-    offset,
-  } = params;
-
+export const handler = ({
+  width,
+  ratio,
+  done,
+  colorMode,
+  flag,
+  firstColor,
+  secondColor,
+  thirdColor,
+  offset,
+}) => {
   const rows = 2;
   const cols = 13;
   const words = ["DESIGN", "SYSTEMS", "INTERNATIONAL"];
@@ -28,6 +28,7 @@ export const handler = (params, mechanic) => {
     secondColor,
     thirdColor,
   ]);
+  const position = { x: 0, y: 0 };
   const blockGeometry = computeBlockGeometry(width, height, rows, cols);
   const baseBricks = computeBaseBricks(words, blockGeometry.fontSize);
 
@@ -36,23 +37,46 @@ export const handler = (params, mechanic) => {
     baseBricks,
     Math.floor(offset * baseBricks.length)
   );
-  const position = { x: 0, y: 0 };
 
-  const canvas = document.createElement("canvas");
-  canvas.width = width;
-  canvas.height = height;
-  const ctx = canvas.getContext("2d");
+  useEffect(() => {
+    done(colorMode !== "Custom Colors" ? `${flag}-${offset}` : null);
+  }, []);
 
-  ctx.save();
-  ctx.clearRect(0, 0, blockGeometry.width, blockGeometry.height);
-  drawBlock(ctx, { position, block, colors });
-  ctx.restore();
-  mechanic.done(
-    canvas,
-    colorMode !== "Custom Colors" ? `${flag}-${offset}` : null
+  return (
+    <svg width={width} height={height}>
+      <defs>
+        <linearGradient id="Gradient1" x1="0" x2="0" y1="0" y2="1">
+          <stop offset="0%" stopColor="#cfb53b" />
+          <stop offset="50%" stopColor="#fff0ab" />
+          <stop offset="100%" stopColor="#cfb53b" />
+        </linearGradient>
+      </defs>
+      <Block
+        position={position}
+        block={block}
+        colors={colors}
+        stroke={"url(#Gradient1)"}
+      ></Block>
+      <rect
+        width={width}
+        height={height}
+        fill="none"
+        stroke="url(#Gradient1)"
+        strokeWidth="10"
+        strokeLinecap="square"
+      ></rect>
+      <line
+        x1={0}
+        y1={height / 2 - 2.5}
+        x2={width}
+        y2={height / 2 - 2.5}
+        strokeWidth="5"
+        stroke={"#fff0ab"}
+        strokeLinecap="square"
+      ></line>
+    </svg>
   );
 };
-
 export const params = {
   width: {
     type: "number",
@@ -103,17 +127,17 @@ export const params = {
 };
 
 export const presets = {
-  bigger: {
+  big: {
     width: 1000,
     ratio: 9,
   },
-  evenBigger: {
+  bigger: {
     width: 1500,
     ratio: 9,
   },
 };
 
 export const settings = {
-  engine: require("@designsystemsinternational/mechanic-engine-canvas"),
+  engine: require("@designsystemsinternational/mechanic-engine-react"),
   usesRandom: true,
 };

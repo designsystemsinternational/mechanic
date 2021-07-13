@@ -51,6 +51,6 @@ export const params = {
 };
 
 export const settings = {
-  engine: require("@designsystemsinternational/mechanic-engine-canvas").run,
+  engine: require("@designsystemsinternational/mechanic-engine-canvas"),
   usesRandom: true,
 };

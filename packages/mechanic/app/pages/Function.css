@@ -1,22 +1,7 @@
 .root {
   display: flex;
-  
+
   height: 100%;
-}
-
-.main {
-  display: flex;
-  flex-direction: column;
-  
-  flex: 1;
-  height: 100%;
-  padding-left: 30px;
-}
-
-.iframe {
-  flex-grow: 1;
-
-  border: none;
 }
 
 .aside {
@@ -30,6 +15,21 @@
   padding-left: 30px;
 
   user-select: none;
+}
+
+.main {
+  display: flex;
+  flex-direction: column;
+
+  flex: 1;
+  height: 100%;
+  padding-left: 30px;
+}
+
+.iframe {
+  flex-grow: 1;
+
+  border: none;
 }
 
 .section {
@@ -112,6 +112,6 @@
 
 .blue-highlight {
   background-color: var(--mechanic-blue);
-  
+
   color: white;
 }

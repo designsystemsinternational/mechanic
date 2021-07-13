@@ -98,6 +98,6 @@ export const presets = {
 };
 
 export const settings = {
-  engine: require("@designsystemsinternational/mechanic-engine-react").run,
+  engine: require("@designsystemsinternational/mechanic-engine-react"),
   usesRandom: true,
 };

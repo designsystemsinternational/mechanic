@@ -19,14 +19,14 @@ export const run = (functionName, func, values, isPreview) => {
     }
   };
 
-  const onDone = async (el) => {
+  const onDone = async (el, name) => {
     if (!isElAdded) {
       isElAdded = true;
       root.appendChild(el);
     }
     if (!isPreview) {
       await mechanic.done(el);
-      mechanic.download(functionName);
+      mechanic.download(name || functionName);
     }
   };
 

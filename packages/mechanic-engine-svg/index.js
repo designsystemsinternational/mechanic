@@ -15,11 +15,11 @@ export const run = (functionName, func, values, isPreview) => {
     }
   };
 
-  const onDone = async (el) => {
+  const onDone = async (el, name) => {
     root.innerHTML = el.trim();
     if (!isPreview) {
       await mechanic.done(root.childNodes[0]);
-      mechanic.download(functionName);
+      mechanic.download(name || functionName);
     }
   };
 

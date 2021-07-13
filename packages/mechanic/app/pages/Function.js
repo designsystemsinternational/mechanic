@@ -1,23 +1,24 @@
 import React, { useState, useRef, useEffect } from "react";
 import PropTypes from "prop-types";
 import classnames from "classnames";
-import Mousetrap from "mousetrap";
 
-import { useValues } from "./value-persistance";
+import { useValues } from "./utils/value-persistance";
+import { useShortcuts } from "./utils/useShortcuts";
 
 import { Button, Toggle, ParamInput } from "@designsystemsinternational/mechanic-ui-components";
 import css from "./Function.css";
 
 export const Function = ({ name, exports, children }) => {
+  const [iframeLoaded, setIframeLoaded] = useState(false);
   const [scaleToFit, setScaleToFit] = useState(true);
 
   const mainRef = useRef();
   const iframe = useRef();
   const lastRun = useRef();
 
-  const { params, presets: otherPresets } = exports;
-  const presets = ["default"].concat(Object.keys(otherPresets ? otherPresets : {}));
-
+  const { params, presets: exportedPresets } = exports;
+  const presets = ["default"].concat(Object.keys(exportedPresets ? exportedPresets : {}));
+  const canScale = !!(params.width && params.height);
   const [values, setValues] = useValues(name, params);
 
   const handleOnChange = (e, name, value) => {
@@ -31,51 +32,45 @@ export const Function = ({ name, exports, children }) => {
           }, {})
         );
       } else {
-        sources.push(otherPresets[value]);
+        sources.push(exportedPresets[value]);
       }
     }
     setValues(values => Object.assign({}, values, ...sources));
   };
 
-  const canScale = !!(params.width && params.height);
-
   const handlePreview = async () => {
-    const vals = Object.assign({}, values);
+    const valuesCopy = Object.assign({}, values);
     if (canScale && scaleToFit) {
       const bounds = mainRef.current.getBoundingClientRect();
-      vals.scaleToFit = {
+      valuesCopy.scaleToFit = {
         width: bounds.width - 100,
         height: bounds.height - 100
       };
     }
-    lastRun.current = iframe.current.contentWindow.run(name, vals, true);
+    lastRun.current = iframe.current.contentWindow?.run?.(name, valuesCopy, true);
   };
 
   const handleExport = async () => {
-    const vals = Object.assign({}, values);
-    if (lastRun.current && lastRun.current.values) {
-      vals.randomSeed = lastRun.current.values.randomSeed;
+    const valuesCopy = Object.assign({}, values);
+    if (lastRun.current?.values) {
+      valuesCopy.randomSeed = lastRun.current.values.randomSeed;
     }
-    iframe.current.contentWindow.run(name, vals);
+    iframe.current.contentWindow?.run?.(name, valuesCopy);
   };
 
   // Init engine when the name of the function changes
   useEffect(() => {
     const onLoad = () => {
-      iframe.current.contentWindow.initEngine(name);
+      setIframeLoaded(true);
+      iframe.current.contentWindow?.initEngine?.(name);
     };
-    iframe.current.addEventListener("load", onLoad);
+    iframe.current?.addEventListener?.("load", onLoad);
     return () => {
-      if (iframe.current) iframe.current.removeEventListener("load", onLoad);
+      iframe.current?.removeEventListener?.("load", onLoad);
     };
   }, [name]);
 
-  useEffect(() => {
-    Mousetrap.bind("command+e", handleExport);
-    return () => {
-      Mousetrap.unbind("command+e");
-    };
-  });
+  useShortcuts(handleExport);
 
   return (
     <div className={css.root}>
@@ -124,14 +119,17 @@ export const Function = ({ name, exports, children }) => {
           </div>
           <div className={css.sep} />
           <div className={classnames(css.row, css.strong)}>
-            <Button className={css.grow} onClick={handlePreview}>
-              Preview
+            <Button className={css.grow} onClick={handlePreview} disabled={!iframeLoaded}>
+              {iframeLoaded ? "Preview" : "Loading content"}
             </Button>
           </div>
           <div className={css.sep} />
           <div className={classnames(css.row, css.strong)}>
-            <Button className={classnames(css.grow, css.blueHighlight)} onClick={handleExport}>
-              Export
+            <Button
+              className={classnames(css.grow, { [css.blueHighlight]: iframeLoaded })}
+              onClick={handleExport}
+              disabled={!iframeLoaded}>
+              {iframeLoaded ? "Export" : "Loading content"}
             </Button>
           </div>
         </div>

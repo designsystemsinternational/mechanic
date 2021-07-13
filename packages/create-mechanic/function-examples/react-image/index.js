@@ -8,8 +8,22 @@ export const handler = ({ width, done, background, fill, hasInnerHole }) => {
   }, []);
   return (
     <svg width={width} height={height}>
-      <rect x={0} y={0} width={width} height={height} stroke="none" fill={background} />
-      <ellipse cx={width / 2} cy={height / 2} rx={radius} ry={radius} stroke="none" fill={fill} />
+      <rect
+        x={0}
+        y={0}
+        width={width}
+        height={height}
+        stroke="none"
+        fill={background}
+      />
+      <ellipse
+        cx={width / 2}
+        cy={height / 2}
+        rx={radius}
+        ry={radius}
+        stroke="none"
+        fill={fill}
+      />
       {hasInnerHole && (
         <ellipse
           cx={width / 2}
@@ -30,24 +44,24 @@ export const handler = ({ width, done, background, fill, hasInnerHole }) => {
 export const params = {
   width: {
     type: "number",
-    default: 600
+    default: 600,
   },
   background: {
     type: "color",
     default: "red",
-    options: ["red", "orange", "yellow"]
+    options: ["red", "orange", "yellow"],
   },
   fill: {
     type: "color",
     default: "cyan",
-    options: ["cyan", "blue", "green"]
+    options: ["cyan", "blue", "green"],
   },
   hasInnerHole: {
     type: "boolean",
-    default: false
-  }
+    default: false,
+  },
 };
 
 export const settings = {
-  engine: require("@designsystemsinternational/mechanic-engine-react").run
+  engine: require("@designsystemsinternational/mechanic-engine-react"),
 };

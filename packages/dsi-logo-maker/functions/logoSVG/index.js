@@ -39,7 +39,7 @@ export const handler = ({
   );
 
   useEffect(() => {
-    done();
+    done(colorMode !== "Custom Colors" ? `${flag}-${offset}` : null);
   }, []);
 
   return (
@@ -92,7 +92,7 @@ export const params = {
     default: 0,
     min: 0,
     max: 1,
-    step: 0.05,
+    step: 0.02,
     slider: true,
   },
 };
@@ -102,13 +102,13 @@ export const presets = {
     width: 1000,
     ratio: 9,
   },
-  biggerr: {
+  evenBigger: {
     width: 1500,
     ratio: 9,
   },
 };
 
 export const settings = {
-  engine: require("@designsystemsinternational/mechanic-engine-react").run,
+  engine: require("@designsystemsinternational/mechanic-engine-react"),
   usesRandom: true,
 };

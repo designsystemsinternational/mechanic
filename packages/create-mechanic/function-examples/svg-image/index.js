@@ -1,12 +1,10 @@
 export const handler = (params, mechanic) => {
-  const r = params.radius;
-  const svg = `<svg width="${params.width}" height="${params.height}">
-    <rect x="0" y="0" width="${params.width}" height="${
-    params.height
-  }" stroke="none" fill="red" />
-    <ellipse cx="${params.width / 2}" cy="${params.height / 2}" rx="${
-    width / 2
-  }" ry="${width / 2}" stroke="none" fill="cyan" />
+  const { width, height, radius: r } = params;
+  const svg = `<svg width="${width}" height="${height}">
+    <rect x="0" y="0" width="${width}" height="${height}" stroke="none" fill="red" />
+    <ellipse cx="${width / 2}" cy="${
+    height / 2
+  }" rx="${r}" ry="${r}" stroke="none" fill="cyan" />
   </svg>`;
   mechanic.done(svg);
 };
@@ -42,5 +40,5 @@ export const presets = {
 };
 
 export const settings = {
-  engine: require("@designsystemsinternational/mechanic-engine-svg").run,
+  engine: require("@designsystemsinternational/mechanic-engine-svg"),
 };

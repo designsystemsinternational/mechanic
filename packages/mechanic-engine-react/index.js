@@ -13,10 +13,10 @@ export const run = (functionName, func, values, isPreview) => {
       mechanic.frame(root.childNodes[0]);
     }
   };
-  const onDone = async () => {
+  const onDone = async (name) => {
     if (!isPreview) {
       await mechanic.done(root.childNodes[0]);
-      mechanic.download(functionName);
+      mechanic.download(name || functionName);
     }
   };
   render(<Handler {...mechanic.values} frame={onFrame} done={onDone} />, root);

@@ -15,11 +15,11 @@ export const run = (functionName, func, values, isPreview) => {
       mechanic.frame(root.childNodes[0]);
     }
   };
-  const onDone = async () => {
+  const onDone = async (name) => {
     p5Sketch.noLoop();
     if (!isPreview) {
       await mechanic.done(root.childNodes[0]);
-      mechanic.download(functionName);
+      mechanic.download(name || functionName);
     }
   };
   p5Sketch = new p5(

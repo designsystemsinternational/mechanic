@@ -7,12 +7,16 @@ import { MechanicError } from "./mechanic-error";
  * design functions export objects.
  */
 const setUp = functions => {
-  console.info("Setting up design functions!");
   const engines = {};
   Object.keys(functions).forEach(
-    functionName => (engines[functionName] = functions[functionName].settings.engine)
+    functionName => (engines[functionName] = functions[functionName].settings.engine?.run)
   );
   let curEngine = null;
+  window.run = () => {
+    alert(
+      "The engine and/or function may still be loading, try again in a bit. If this keeps happening, post an issue!"
+    );
+  };
   window.initEngine = functionName => {
     if (engines[functionName] === undefined) {
       window.run = () => {
@@ -23,16 +27,21 @@ const setUp = functions => {
       throw new MechanicError(`No defined engine for: ${functionName}`);
     } else if (engines[functionName] !== curEngine) {
       console.info("Setting mechanic engine for:", functionName);
-      // TODO: Kill existing sketch if running?
       curEngine = engines[functionName];
       window.run = (functionName, values, isPreview) => {
         // TODO: Do performance stats here?
         const func = functions[functionName];
-        const mechanic = curEngine(functionName, func, values, isPreview);
-        return mechanic ? mechanic : null;
+        try {
+          const mechanic = curEngine(functionName, func, values, isPreview);
+          return mechanic ? mechanic : null;
+        } catch (error) {
+          alert("There was an error running the engine and/or function. Check the console!");
+          throw error;
+        }
       };
     }
   };
+  console.info("Design function definitions set.");
 };
 
 export { setUp };
