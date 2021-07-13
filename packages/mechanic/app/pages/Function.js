@@ -1,10 +1,9 @@
 import React, { useState, useRef, useEffect } from "react";
 import PropTypes from "prop-types";
 import classnames from "classnames";
-import { useGlobalShortcut, enablesShortcutsClass } from "./utils/shortcuts";
 
+import { useGlobalShortcut, enablesShortcutsClass } from "./utils/useShortcuts";
 import { useValues } from "./utils/value-persistance";
-import { useShortcuts } from "./utils/useShortcuts";
 
 import { Button, Toggle, ParamInput } from "@designsystemsinternational/mechanic-ui-components";
 import css from "./Function.css";
@@ -76,7 +75,6 @@ export const Function = ({ name, exports, children }) => {
   useGlobalShortcut("mod+p", handlePreview, iframe, true);
   useGlobalShortcut("mod+f", () => setScaleToFit(scaleToFit => !scaleToFit), iframe, true);
   useGlobalShortcut("mod+y", () => setShowPanel(showPanel => !showPanel), iframe, true);
-  useShortcuts(handleExport);
 
   return (
     <div className={css.root}>
