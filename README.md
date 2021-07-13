@@ -54,12 +54,12 @@ That should be enough to test certain individual package functionality, but to t
 
 `npm link` falls short to reproduce package dependencies resolution as projects would by installing from the npm registry. `yalc` can locally publish packages as it would to the npm registry, to then use in local projects.
 
-To do this, fisrt install `yalc` globally.
+To do this, first install `yalc` globally.
 To publish all packages in the repo, run `npm run publish:local`. To publish an individual package, run `yalc push` from its directory or `yalc push ./packages/[package]`. Run any of these commands when you wish to update the published content.
 
 Then in the project to test the package(s), before installing dependencies run `yalc add [package]` for all packages you wish to test. Then install normally with `npm i`.
 
-For any other needs, check [`yalk`'s documentation](https://github.com/wclr/yalc).
+For any other needs, check [`yalc's documentation](https://github.com/wclr/yalc).
 
 ## Publish
 
