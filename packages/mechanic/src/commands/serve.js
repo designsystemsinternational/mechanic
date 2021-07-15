@@ -17,7 +17,7 @@ const command = async argv => {
     spinner.fail(`Mechanic config file (${configPath}) not found`);
     return;
   } else {
-    spinner.succeed(`Mechanic config file loaded: ${success(configPath)}`);
+    spinner.succeed(`Mechanic config file loaded: ${success(path.relative(".", configPath))}`);
   }
   const distDir = path.normalize(
     argv.distDir !== "./dist" ? argv.distDir : config.distDir || "./dist"

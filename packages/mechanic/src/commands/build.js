@@ -17,7 +17,7 @@ const command = async argv => {
     spinner.fail(`Mechanic config file (${configPath}) not found`);
     return;
   } else {
-    spinner.succeed(`Mechanic config file loaded: ${success(configPath)}`);
+    spinner.succeed(`Mechanic config file loaded: ${success(path.relative(".", configPath))}`);
   }
 
   // Seek functions path
@@ -27,7 +27,9 @@ const command = async argv => {
     spinner.fail(`Design functions directory file not found`);
     return;
   } else {
-    spinner.succeed(`Design functions directory found: ${success(functionsPath)}`);
+    spinner.succeed(
+      `Design functions directory found: ${success(path.relative(".", functionsPath))}`
+    );
   }
 
   const distDir = path.normalize(argv.distDir !== "./dist" ? argv.distDir : config.distDir);
