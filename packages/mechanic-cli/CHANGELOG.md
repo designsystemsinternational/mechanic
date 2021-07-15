@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### Changed
+
+- Improved path default values with normalized values
+
 ## 0.2.7 - 2021-07-13
 
 First logged release

@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- Improved path usage through normalization
+- Fixed Windows bug when requiring modules without POSIX format.
+
 ## [0.2.7] - 2021-07-13
 
 First logged release
