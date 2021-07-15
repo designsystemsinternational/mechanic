@@ -1,10 +1,10 @@
+const path = require("path");
 const express = require("express");
 const webpack = require("webpack");
 const webpackDevMiddleware = require("webpack-dev-middleware");
 const webpackHotMiddleware = require("webpack-hot-middleware");
 const history = require("connect-history-api-fallback");
 const webpackConfigGenerator = require("../../app/webpackConfigGenerator");
-const path = require("path");
 const { getConfig, getFunctionsPath } = require("./utils");
 
 const {
@@ -15,13 +15,13 @@ const {
 const command = async argv => {
   // Load config file
   spinner.start("Loading mechanic config file...");
-  const config = await getConfig(argv.configPath);
+  const { config, configPath } = await getConfig(argv.configPath);
   // Stop if no config file is found.
   if (!config) {
-    spinner.fail(`Mechanic config file (${argv.configPath}) not found`);
+    spinner.fail(`Mechanic config file (${configPath}) not found`);
     return;
   } else {
-    spinner.succeed(`Mechanic config file loaded: ${success(argv.configPath)}`);
+    spinner.succeed(`Mechanic config file loaded: ${success(path.relative(".", configPath))}`);
   }
 
   // Seek functions path
@@ -31,7 +31,9 @@ const command = async argv => {
     spinner.fail(`Design functions directory file not found`);
     return;
   } else {
-    spinner.succeed(`Design functions directory found: ${success(functionsPath)}`);
+    spinner.succeed(
+      `Design functions directory found: ${success(path.relative(".", functionsPath))}`
+    );
   }
 
   spinner.start("Starting off server...");

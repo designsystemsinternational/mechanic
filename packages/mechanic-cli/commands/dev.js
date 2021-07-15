@@ -1,3 +1,4 @@
+const path = require("path");
 module.exports = (getCommandHandler) => ({
   command: "dev [port] [configPath] [functionsPath]",
   aliases: ["d"],
@@ -18,7 +19,7 @@ module.exports = (getCommandHandler) => ({
         },
       })
       .default("port", 3000)
-      .default("configPath", "./mechanic.config.js")
-      .default("functionsPath", "./functions"),
+      .default("configPath", path.normalize("./mechanic.config.js"))
+      .default("functionsPath", path.normalize("./functions")),
   handler: getCommandHandler("dev"),
 });
