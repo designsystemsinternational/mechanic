@@ -18,18 +18,17 @@ const walkSync = (dir, callback) => {
 
 module.exports = function () {
   const { functionsPath } = getOptions(this);
-  // console.log({ functionsPath });
 
   let requireFunctions = "";
 
   walkSync(functionsPath, (filename, filepath) => {
     if (filename === "index.js") {
       const functionName = path.dirname(filepath).split(path.sep).pop();
-      // console.log({ functionName, filepath });
+      const requirePath = filepath.split(path.sep).join("/");
       if (requireFunctions !== "") {
         requireFunctions += ",\n";
       }
-      requireFunctions += `"${functionName}": require("${filepath}")`;
+      requireFunctions += `"${functionName}": require("${requirePath}")`;
     }
   });
 
