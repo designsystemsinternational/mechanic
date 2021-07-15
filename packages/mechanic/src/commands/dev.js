@@ -15,13 +15,13 @@ const {
 const command = async argv => {
   // Load config file
   spinner.start("Loading mechanic config file...");
-  const config = await getConfig(argv.configPath);
+  const { config, configPath } = await getConfig(argv.configPath);
   // Stop if no config file is found.
   if (!config) {
-    spinner.fail(`Mechanic config file (${argv.configPath}) not found`);
+    spinner.fail(`Mechanic config file (${configPath}) not found`);
     return;
   } else {
-    spinner.succeed(`Mechanic config file loaded: ${success(argv.configPath)}`);
+    spinner.succeed(`Mechanic config file loaded: ${success(configPath)}`);
   }
 
   // Seek functions path

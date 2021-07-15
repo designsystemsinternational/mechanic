@@ -1,3 +1,4 @@
+const path = require("path");
 const webpack = require("webpack");
 const { getConfig, getFunctionsPath } = require("./utils");
 const webpackConfigGenerator = require("../../app/webpackConfigGenerator");
@@ -10,13 +11,13 @@ const {
 const command = async argv => {
   // Load config file
   spinner.start("Loading mechanic config file...");
-  const config = await getConfig(argv.configPath);
+  const { config, configPath } = await getConfig(argv.configPath);
   // Stop if no config file is found.
   if (!config) {
-    spinner.fail(`Mechanic config file (${argv.configPath}) not found`);
+    spinner.fail(`Mechanic config file (${configPath}) not found`);
     return;
   } else {
-    spinner.succeed(`Mechanic config file loaded: ${success(argv.configPath)}`);
+    spinner.succeed(`Mechanic config file loaded: ${success(configPath)}`);
   }
 
   // Seek functions path
@@ -26,10 +27,10 @@ const command = async argv => {
     spinner.fail(`Design functions directory file not found`);
     return;
   } else {
-    spinner.succeed(`Design functions directory found: ${success(argv.functionsPath)}`);
+    spinner.succeed(`Design functions directory found: ${success(functionsPath)}`);
   }
 
-  const distDir = argv.distDir !== "./dist" ? argv.distDir : config.distDir;
+  const distDir = path.normalize(argv.distDir !== "./dist" ? argv.distDir : config.distDir);
 
   spinner.start("Loading webpack compilation...");
   const webpackConfig = webpackConfigGenerator("prod", functionsPath, distDir);

@@ -2,12 +2,12 @@ const path = require("path");
 const fs = require("fs-extra");
 
 const getConfig = async argvConfigPath => {
-  const configPath = path.join(process.cwd(), argvConfigPath);
+  const configPath = path.resolve(argvConfigPath);
   const exists = await fs.pathExists(configPath);
   if (!exists) {
     return;
   }
-  return require(configPath);
+  return { config: require(configPath), configPath };
 };
 
 const getFunctionsPath = async (functionsPath, config) => {

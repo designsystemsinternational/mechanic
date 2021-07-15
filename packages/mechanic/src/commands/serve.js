@@ -1,6 +1,6 @@
+const path = require("path");
 const express = require("express");
 const history = require("connect-history-api-fallback");
-const path = require("path");
 const { getConfig } = require("./utils");
 
 const {
@@ -11,15 +11,17 @@ const {
 const command = async argv => {
   // Load config file
   spinner.start("Loading mechanic config file...");
-  const config = await getConfig(argv.configPath);
+  const { config, configPath } = await getConfig(argv.configPath);
   // Stop if no config file is found.
   if (!config) {
-    spinner.fail(`Mechanic config file (${argv.configPath}) not found`);
+    spinner.fail(`Mechanic config file (${configPath}) not found`);
     return;
   } else {
-    spinner.succeed(`Mechanic config file loaded: ${success(argv.configPath)}`);
+    spinner.succeed(`Mechanic config file loaded: ${success(configPath)}`);
   }
-  const distDir = argv.distDir !== "./dist" ? argv.distDir : config.distDir || "./dist";
+  const distDir = path.normalize(
+    argv.distDir !== "./dist" ? argv.distDir : config.distDir || "./dist"
+  );
 
   spinner.start("Starting off server...");
   // Set port and express server
@@ -50,7 +52,7 @@ const command = async argv => {
   spinner.start(`Serving built app at ${distDir}...`);
   // // https://stackoverflow.com/questions/43921770/webpack-dev-middleware-pass-through-for-all-routes
   app.use(history());
-  app.use(express.static(path.resolve(process.cwd(), distDir)));
+  app.use(express.static(path.resolve(distDir)));
 
   // Done!
   status = "started";
