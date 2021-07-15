@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.2.8] - 2021-07-15
+
 ### Changed
 
 - Improved path usage through normalization
@@ -16,5 +18,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 First logged release
 
-[unreleased]: https://github.com/designsystemsinternational/mechanic/compare/v0.2.7...main
+[unreleased]: https://github.com/designsystemsinternational/mechanic/compare/v0.2.8...main
+[0.2.8]: https://github.com/designsystemsinternational/mechanic/releases/tag/v0.2.8
 [0.2.7]: https://github.com/designsystemsinternational/mechanic/releases/tag/v0.2.7
