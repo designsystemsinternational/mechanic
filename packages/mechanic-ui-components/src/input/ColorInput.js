@@ -61,7 +61,12 @@ export const ColorInput = props => {
         className={css.buttonContainer}
         aria-describedby={`error-${id}`}
         aria-invalid={invalid}>
-        <Button className={css.button} onClick={handleClick} onFocus={onFocus} onBlur={onBlur}>
+        <Button
+          className={css.button}
+          onClick={handleClick}
+          onFocus={onFocus}
+          onBlur={onBlur}
+          disabled={disabled}>
           <div className={css.swatch} style={{ backgroundColor: value }} />
           <span>{value}</span>
         </Button>

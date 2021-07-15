@@ -162,6 +162,66 @@
 }
 
 .disabled {
+  & .number-input {
+    border: 1px solid var(--mechanic-gray);
+  }
+
+  & .range-input {
+    &::-webkit-slider-thumb {
+      border: 1px solid var(--mechanic-gray);
+      cursor: default;
+    }
+
+    &::-ms-track {
+      cursor: default;
+    }
+
+    &::-moz-range-thumb {
+      border: 1px solid var(--mechanic-gray);
+      cursor: default;
+    }
+
+    &::-ms-thumb {
+      border: 1px solid var(--mechanic-gray);
+      cursor: default;
+    }
+
+    &::-webkit-slider-runnable-track {
+      border: 1px solid var(--mechanic-gray);
+      background: var(--mechanic-gray);
+      cursor: default;
+    }
+
+    &:focus::-webkit-slider-runnable-track {
+      background: var(--mechanic-gray);
+    }
+
+    &::-moz-range-track {
+      border: 1px solid var(--mechanic-gray);
+      background: var(--mechanic-gray);
+      cursor: default;
+    }
+
+    &::-ms-track {
+      border: 1px solid var(--mechanic-gray);
+      background: var(--mechanic-gray);
+      cursor: default;
+    }
+    &::-ms-fill-lower {
+      border: 1px solid var(--mechanic-gray);
+      background: var(--mechanic-gray);
+    }
+    &:focus::-ms-fill-lower {
+      background: var(--mechanic-gray);
+    }
+    &::-ms-fill-upper {
+      border: 1px solid var(--mechanic-gray);
+      background: var(--mechanic-gray);
+    }
+    &:focus::-ms-fill-upper {
+      background: var(--mechanic-gray);
+    }
+  }
 }
 
 .focus {
@@ -170,17 +230,17 @@
 .mechanic-param {
   & > .label {
     display: block;
-  
+
     margin-bottom: 0.5em;
     width: 100%;
-  
+
     font-size: 0.75em;
     font-family: var(--mechanic-param-font);
   }
 
   & > .number-input {
     width: 100%;
-    
+
     font-family: var(--mechanic-param-font);
   }
 

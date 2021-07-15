@@ -9,11 +9,14 @@ import { OptionInput } from "./input/OptionInput.js";
 import { ColorInput } from "./input/ColorInput.js";
 import { uid } from "./uid.js";
 
-export const ParamInput = ({ name, className, value, attributes, onChange, children }) => {
+export const ParamInput = ({ name, className, values, attributes, onChange, children }) => {
   const id = useRef(uid("param-input"));
-  const { type, options, validation } = attributes;
+  const { type, options, validation, editable } = attributes;
   const _default = attributes["default"];
 
+  const value = values[name];
+  const isEditable =
+    editable === undefined ? true : typeof editable === "function" ? editable(values) : editable;
   const actualValue = value === undefined ? _default : value;
   const error = validation ? validation(actualValue) : null;
 
@@ -32,9 +35,10 @@ export const ParamInput = ({ name, className, value, attributes, onChange, child
         id={id.current}
         className={rootClasses}
         variant="mechanic-param"
-        onChange={onChange}
         invalid={error ? true : false}
-        error={error}>
+        error={error}
+        disabled={!isEditable}
+        onChange={onChange}>
         {children}
       </OptionInput>
     );
@@ -51,6 +55,7 @@ export const ParamInput = ({ name, className, value, attributes, onChange, child
         variant="mechanic-param"
         invalid={error ? true : false}
         error={error}
+        disabled={!isEditable}
         onChange={onChange}>
         {children}
       </BooleanInput>
@@ -70,6 +75,7 @@ export const ParamInput = ({ name, className, value, attributes, onChange, child
         variant="mechanic-param"
         invalid={error ? true : false}
         error={error}
+        disabled={!isEditable}
         onChange={onChange}>
         {children}
       </ColorInput>
@@ -88,6 +94,7 @@ export const ParamInput = ({ name, className, value, attributes, onChange, child
         variant="mechanic-param"
         invalid={error ? true : false}
         error={error}
+        disabled={!isEditable}
         slider={slider}
         min={min}
         max={max}
@@ -108,6 +115,7 @@ export const ParamInput = ({ name, className, value, attributes, onChange, child
       variant="mechanic-param"
       invalid={error ? true : false}
       error={error}
+      disabled={!isEditable}
       onChange={onChange}>
       {children}
     </TextInput>
@@ -123,6 +131,6 @@ ParamInput.propTypes = {
   onChange: PropTypes.func,
   name: PropTypes.string,
   className: PropTypes.string,
-  value: PropTypes.any,
+  values: PropTypes.any,
   attributes: PropTypes.object
 };
