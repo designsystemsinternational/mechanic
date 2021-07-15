@@ -1,3 +1,4 @@
+const path = require("path");
 module.exports = (getCommandHandler) => ({
   command: "build [configPath] [functionsPath] [distDir]",
   aliases: ["b"],
@@ -18,8 +19,8 @@ module.exports = (getCommandHandler) => ({
           description: "Custom build directory",
         },
       })
-      .default("configPath", "./mechanic.config.js")
-      .default("functionsPath", "./functions")
-      .default("distDir", "./dist"),
+      .default("configPath", path.normalize("./mechanic.config.js"))
+      .default("functionsPath", path.normalize("./functions"))
+      .default("distDir", path.normalize("./dist")),
   handler: getCommandHandler("build"),
 });
