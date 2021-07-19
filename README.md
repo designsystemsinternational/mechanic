@@ -14,7 +14,7 @@
 To start using right away and create a new Mechanic project, run the following:
 
 ```
-$ npm init @designsystemsinternational/mechanic@latest mechanic-project
+npm init @designsystemsinternational/mechanic@latest mechanic-project
 ```
 
 This will build a new base Mechanic project, with one **design function**! Follow the CLI instructions to customize, install and start running.
@@ -59,7 +59,7 @@ To publish all packages in the repo, run `npm run publish:local`. To publish an 
 
 Then in the project to test the package(s), before installing dependencies run `yalc add [package]` for all packages you wish to test. Then install normally with `npm i`.
 
-For any other needs, check [`yalc's documentation](https://github.com/wclr/yalc).
+For any other needs, check [`yalc`'s documentation](https://github.com/wclr/yalc).
 
 ## Publish
 
