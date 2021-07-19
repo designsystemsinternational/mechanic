@@ -166,6 +166,10 @@
     border: 1px solid var(--mechanic-gray);
   }
 
+  & .range-wrapper {
+    color: var(--mechanic-gray);
+  }
+
   & .range-input {
     &::-webkit-slider-thumb {
       border: 1px solid var(--mechanic-gray);
