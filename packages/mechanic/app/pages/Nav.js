@@ -7,19 +7,25 @@ export const Nav = ({ name, functionsNames }) => {
 
   return (
     <div className={css.root}>
-      <span className={css.funclabel}>{name}</span>
-      <select
-        className={css.navigationSelect}
-        onChange={({ target }) => history.push(target.value)}
-        name={name}
-        value={name}>
-        <option key="disabled" disabled>
-          Select...
-        </option>
-        {functionsNames.map(name => (
-          <option key={`route-${name}`}>{name}</option>
-        ))}
-      </select>
+      <label className={css.label} htmlFor="navigation-select">
+        Design Functions
+      </label>
+      <div className={css.selectContainer}>
+        <span className={css.functionLabel}>{name}</span>
+        <select
+          id="navigation-select"
+          className={css.navigationSelect}
+          onChange={({ target }) => history.push(target.value)}
+          name={name}
+          value={name}>
+          <option key="disabled" disabled>
+            Select...
+          </option>
+          {functionsNames.map(name => (
+            <option key={`route-${name}`}>{name}</option>
+          ))}
+        </select>
+      </div>
     </div>
   );
 };
