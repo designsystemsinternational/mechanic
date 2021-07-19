@@ -39,7 +39,16 @@ const validateParams = params => {
       return `Expected function in validation property in ${param}.`;
     }
 
-    // TODO: Add "Check that 'when' property is function"
+    // Check that 'editable' property is function
+    if (
+      hasKey(params[param], "editable") &&
+      typeof params[param].editable !== "function" &&
+      typeof params[param].editable !== "boolean"
+    ) {
+      return `Expected function or boolean in editable property in ${param}. Got ${typeof params[
+        param
+      ].editable}.`;
+    }
 
     // Check that 'options' property
     if (hasKey(params[param], "options")) {

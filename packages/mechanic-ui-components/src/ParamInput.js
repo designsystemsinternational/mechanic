@@ -16,7 +16,7 @@ export const ParamInput = ({ name, className, values, attributes, onChange, chil
 
   const value = values[name];
   const isEditable =
-    editable === undefined ? true : typeof editable === "function" ? editable(values) : editable;
+    editable === undefined ? true : typeof editable === "function" ? !!editable(values) : editable;
   const actualValue = value === undefined ? _default : value;
   const error = validation ? validation(actualValue) : null;
 
