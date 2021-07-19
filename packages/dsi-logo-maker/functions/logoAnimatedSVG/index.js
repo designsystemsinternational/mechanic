@@ -118,21 +118,25 @@ export const params = {
     type: "text",
     options: flagNames,
     default: flagNames[0],
+    editable: (params) => params.colorMode === "Pick Flag",
   },
   firstColor: {
     type: "color",
     model: "hex",
     default: "#11457e",
+    editable: (params) => params.colorMode === "Custom Colors",
   },
   secondColor: {
     type: "color",
     model: "hex",
     default: "#d7141a",
+    editable: (params) => params.colorMode === "Custom Colors",
   },
   thirdColor: {
     type: "color",
     model: "hex",
     default: "#f1f1f1",
+    editable: (params) => params.colorMode === "Custom Colors",
   },
   offset: {
     type: "number",
