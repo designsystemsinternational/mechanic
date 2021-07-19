@@ -13,7 +13,7 @@ import {
 const root = document.getElementById("root");
 
 const App = () => {
-  const [vals, setVals] = useState({
+  const [values, setValues] = useState({
     text: "Hello world",
     toggle: true,
     number: 400,
@@ -28,17 +28,18 @@ const App = () => {
 
   const handleChange = (e, name, value) => {
     console.info(name, typeof value, value);
-    setVals(vals => Object.assign({}, vals, { [name]: value }));
+    setValues(values => Object.assign({}, values, { [name]: value }));
   };
 
   const blockStyle = { width: "300px", display: "inline-block", margin: "1em" };
+  const twoBlockStyle = { width: "600px", display: "inline-block", margin: "1em" };
   return (
     <>
       <h3>ParamInput component</h3>
       <div style={blockStyle}>
         <ParamInput
           name={"text"}
-          value={vals.text}
+          values={values}
           attributes={{
             type: "text",
             default: "Hi",
@@ -50,7 +51,7 @@ const App = () => {
       <div style={blockStyle}>
         <ParamInput
           name={"toggle"}
-          value={vals.toggle}
+          values={values}
           attributes={{
             type: "boolean",
             default: true,
@@ -62,7 +63,7 @@ const App = () => {
       <div style={blockStyle}>
         <ParamInput
           name={"number"}
-          value={vals.number}
+          values={values}
           attributes={{
             type: "number",
             default: 400,
@@ -74,7 +75,7 @@ const App = () => {
       <div style={blockStyle}>
         <ParamInput
           name={"range"}
-          value={vals.range}
+          values={values}
           attributes={{
             type: "number",
             default: 400,
@@ -89,7 +90,7 @@ const App = () => {
       <div style={blockStyle}>
         <ParamInput
           name={"slider"}
-          value={vals.slider}
+          values={values}
           attributes={{
             type: "number",
             default: 400,
@@ -105,7 +106,7 @@ const App = () => {
       <div style={blockStyle}>
         <ParamInput
           name={"colorHex"}
-          value={vals.colorHex}
+          values={values}
           attributes={{
             type: "color",
             model: "hex",
@@ -118,7 +119,7 @@ const App = () => {
       <div style={blockStyle}>
         <ParamInput
           name={"colorRgba"}
-          value={vals.colorRgba}
+          values={values}
           attributes={{
             type: "color",
             model: "rgba",
@@ -130,7 +131,7 @@ const App = () => {
       <div style={blockStyle}>
         <ParamInput
           name={"textOption"}
-          value={vals.textOption}
+          values={values}
           attributes={{
             type: "text",
             default: "Option 1",
@@ -143,7 +144,7 @@ const App = () => {
       <div style={blockStyle}>
         <ParamInput
           name={"numberOption"}
-          value={vals.numberOption}
+          values={values}
           attributes={{
             type: "number",
             default: 10,
@@ -156,7 +157,7 @@ const App = () => {
       <div style={blockStyle}>
         <ParamInput
           name={"objectOption"}
-          value={vals.objectOption}
+          values={values}
           attributes={{
             type: "text",
             default: "first",
@@ -167,14 +168,157 @@ const App = () => {
         />
       </div>
 
-      <h3>Buttons</h3>
+      <h3>Editable ParamInput components</h3>
 
-      <div style={blockStyle}>
-        <Button>I'm a button</Button>
+      <div style={twoBlockStyle}>
+        <ParamInput
+          name={"text"}
+          values={values}
+          attributes={{
+            type: "text",
+            default: "Hi"
+          }}
+          onChange={handleChange}
+        />
       </div>
-      <div style={blockStyle}>
-        <Toggle status={true}>Toggle On</Toggle>
-        <Toggle status={false}>Toggle Off</Toggle>
+      <div style={twoBlockStyle}>
+        <ParamInput
+          name={"text"}
+          values={values}
+          attributes={{
+            type: "text",
+            default: "Hi",
+            editable: false
+          }}
+          onChange={handleChange}
+        />
+      </div>
+      <div style={twoBlockStyle}>
+        <ParamInput
+          name={"toggle"}
+          values={values}
+          attributes={{
+            type: "boolean",
+            default: true
+          }}
+          onChange={handleChange}
+        />
+      </div>
+      <div style={twoBlockStyle}>
+        <ParamInput
+          name={"toggle"}
+          values={values}
+          attributes={{
+            type: "boolean",
+            default: true,
+            editable: false
+          }}
+          onChange={handleChange}
+        />
+      </div>
+      <div style={twoBlockStyle}>
+        <ParamInput
+          name={"number"}
+          values={values}
+          attributes={{
+            type: "number",
+            default: 400
+          }}
+          onChange={handleChange}
+        />
+      </div>
+      <div style={twoBlockStyle}>
+        <ParamInput
+          name={"number"}
+          values={values}
+          attributes={{
+            type: "number",
+            default: 400,
+            editable: false
+          }}
+          onChange={handleChange}
+        />
+      </div>
+      <div style={twoBlockStyle}>
+        <ParamInput
+          name={"slider"}
+          values={values}
+          attributes={{
+            type: "number",
+            default: 400,
+            min: -500,
+            max: 500,
+            step: 0.5,
+            slider: true
+          }}
+          onChange={handleChange}
+        />
+      </div>
+      <div style={twoBlockStyle}>
+        <ParamInput
+          name={"slider"}
+          values={values}
+          attributes={{
+            type: "number",
+            default: 400,
+            min: -500,
+            max: 500,
+            step: 0.5,
+            slider: true,
+            editable: false
+          }}
+          onChange={handleChange}
+        />
+      </div>
+      <div style={twoBlockStyle}>
+        <ParamInput
+          name={"colorHex"}
+          values={values}
+          attributes={{
+            type: "color",
+            model: "hex",
+            default: "#f62696"
+          }}
+          onChange={handleChange}
+        />
+      </div>
+      <div style={twoBlockStyle}>
+        <ParamInput
+          name={"colorHex"}
+          values={values}
+          attributes={{
+            type: "color",
+            model: "hex",
+            default: "#f62696",
+            editable: false
+          }}
+          onChange={handleChange}
+        />
+      </div>
+      <div style={twoBlockStyle}>
+        <ParamInput
+          name={"textOption"}
+          values={values}
+          attributes={{
+            type: "text",
+            default: "Option 1",
+            options: ["Option 1", "Option 2", "Option 3"]
+          }}
+          onChange={handleChange}
+        />
+      </div>
+      <div style={twoBlockStyle}>
+        <ParamInput
+          name={"textOption"}
+          values={values}
+          attributes={{
+            type: "text",
+            default: "Option 1",
+            options: ["Option 1", "Option 2", "Option 3"],
+            editable: false
+          }}
+          onChange={handleChange}
+        />
       </div>
 
       <h3>Inputs</h3>
@@ -210,6 +354,16 @@ const App = () => {
           <option>Option 2</option>
           <option>Option 3</option>
         </Select>
+      </div>
+
+      <h3>Buttons</h3>
+
+      <div style={blockStyle}>
+        <Button>I'm a button</Button>
+      </div>
+      <div style={blockStyle}>
+        <Toggle status={true}>Toggle On</Toggle>
+        <Toggle status={false}>Toggle Off</Toggle>
       </div>
     </>
   );
