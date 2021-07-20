@@ -42,6 +42,7 @@ export const BooleanInput = props => {
         id={id}
         className={css.toggle}
         status={value}
+        disabled={disabled}
         onClick={e => onChange(e, name, !value)}
         onFocus={onFocus}
         onBlur={onBlur}

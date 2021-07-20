@@ -85,7 +85,7 @@ export const Function = ({ name, exports, children }) => {
               className={css.param}
               key="param-preset"
               name="preset"
-              value={values.preset}
+              values={values}
               attributes={{ type: "string", options: presets, default: presets[0] }}
               onChange={handleOnChange}
             />
@@ -94,7 +94,7 @@ export const Function = ({ name, exports, children }) => {
                 className={css.param}
                 key={`param-${name}`}
                 name={name}
-                value={values[name]}
+                values={values}
                 attributes={param}
                 onChange={handleOnChange}
               />
@@ -135,7 +135,12 @@ export const Function = ({ name, exports, children }) => {
         </div>
       </aside>
       <main className={css.main} ref={mainRef}>
-        <iframe src="functions.html" className={css.iframe} ref={iframe} />
+        <iframe
+          title={`Design function ${name} document.`}
+          src="functions.html"
+          className={css.iframe}
+          ref={iframe}
+        />
       </main>
     </div>
   );

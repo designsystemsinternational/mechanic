@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Support for `"editable"` property in params. It disables the input in case of non editable result.
+
+### Changed
+
+- `ParamInput` component doesn't receive single `value` prop, but `values` prop with the whole object of values.
+
 ## [0.2.8] - 2021-07-15
 
 ### Changed

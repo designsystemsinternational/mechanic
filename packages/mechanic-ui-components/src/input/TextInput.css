@@ -19,6 +19,9 @@
 }
 
 .disabled {
+  & .input {
+    border: 1px solid var(--mechanic-gray);
+  }
 }
 
 .focus {
@@ -37,7 +40,7 @@
 
   & > .input {
     width: 100%;
-    
+
     font-family: var(--mechanic-param-font);
   }
 

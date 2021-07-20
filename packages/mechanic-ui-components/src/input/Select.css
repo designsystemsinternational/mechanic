@@ -30,6 +30,10 @@
 }
 
 .disabled {
+  & .select {
+    border: 1px solid var(--mechanic-gray);
+    background-image: none;
+  }
 }
 
 .focus {

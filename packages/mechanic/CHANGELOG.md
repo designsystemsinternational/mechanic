@@ -7,6 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### Added
+
+- Added validation of new `"editable"` param property.
+
+### Changed
+
+- Added title to HTML of main app, title to iframe, and a label to design function select for navigation.
+- Updated prop pass for `ParamInput` components.
+
 ## [0.2.8] - 2021-07-15
 
 ### Changed
