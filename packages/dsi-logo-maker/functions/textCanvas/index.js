@@ -92,7 +92,7 @@ export const presets = {
     width: 500,
     ratio: 9,
   },
-  biggerr: {
+  evenBigger: {
     width: 500,
     ratio: 9,
   },
@@ -100,5 +100,4 @@ export const presets = {
 
 export const settings = {
   engine: require("@designsystemsinternational/mechanic-engine-canvas"),
-  usesRandom: true,
 };
