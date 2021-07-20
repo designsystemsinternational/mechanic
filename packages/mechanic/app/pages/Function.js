@@ -11,6 +11,7 @@ import css from "./Function.css";
 export const Function = ({ name, exports, children }) => {
   const [iframeLoaded, setIframeLoaded] = useState(false);
   const [scaleToFit, setScaleToFit] = useState(true);
+  const [autoRefreshOn, setAutoRefreshOn] = useState(true);
 
   const mainRef = useRef();
   const iframe = useRef();
@@ -49,6 +50,10 @@ export const Function = ({ name, exports, children }) => {
     }
     lastRun.current = iframe.current.contentWindow?.run?.(name, valuesCopy, true);
   };
+
+  useEffect(() => {
+    if (autoRefreshOn) handlePreview();
+  });
 
   const handleExport = async () => {
     const valuesCopy = Object.assign({}, values);
@@ -115,6 +120,16 @@ export const Function = ({ name, exports, children }) => {
                   ? "Scale to fit On"
                   : "Scale to fit Off"
                 : "Params missing for scaling"}
+            </Toggle>
+          </div>
+          <div className={css.sep} />
+          <div className={classnames(css.row, css.strong)}>
+            <Toggle
+              className={css.grow}
+              status={autoRefreshOn}
+              onClick={() => setAutoRefreshOn(autoRefreshOn => !autoRefreshOn)}
+              disabled={!iframeLoaded}>
+              {iframeLoaded ? "Auto-refresh" : "Loading content"}
             </Toggle>
           </div>
           <div className={css.sep} />
