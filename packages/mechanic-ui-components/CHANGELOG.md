@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 - `ParamInput` component doesn't receive single `value` prop, but `values` prop with the whole object of values. This enables the `"editable"` function evaluation.
+- Tweaked flex settings for slider input to fit smaller containers.
 
 ## 0.2.7 - 2021-07-13
 

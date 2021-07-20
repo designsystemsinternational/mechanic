@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - Added validation of new `"editable"` param property.
+- Adds "Auto-refresh" toggle to app that enables automatic function call when inputs are changed. It also preserves random seeds when run is automatic.
 
 ### Changed
 

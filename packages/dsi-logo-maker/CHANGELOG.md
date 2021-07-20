@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### Changes
+
+- Renamed some functions presets to existing words.
+- Removed `usesRandom` setting from functions that didn't use it.
+
 ## 0.2.7 - 2021-07-13
 
 First logged release
