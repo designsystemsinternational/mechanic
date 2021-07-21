@@ -67,7 +67,9 @@ const validateParams = params => {
         // All values should be consistent with the param type
         for (let option in options) {
           if (typeof options[option] !== supportedTypes[paramType]) {
-            return `Incorrect type of value in options object. Expected ${paramType}.`;
+            return `Incorrect type of value ${option} (${typeof options[
+              option
+            ]}) in options object for ${paramName}. Expected ${paramType}.`;
           }
         }
       }
@@ -80,7 +82,7 @@ const validateParams = params => {
         // All values should be consistent with the param type
         for (let option of options) {
           if (typeof option !== supportedTypes[paramType]) {
-            return `Incorrect type of value ${option} (${typeof option}) in options array. Expected ${paramType}.`;
+            return `Incorrect type of value ${option} (${typeof option}) in options array for ${paramName}. Expected ${paramType}.`;
           }
         }
       }
