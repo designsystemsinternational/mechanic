@@ -1,11 +1,7 @@
 const path = require("path");
 const express = require("express");
-const webpack = require("webpack");
-const webpackDevMiddleware = require("webpack-dev-middleware");
-const webpackHotMiddleware = require("webpack-hot-middleware");
 const history = require("connect-history-api-fallback");
-const webpackConfigGenerator = require("../../app/webpackConfigGenerator");
-const { getConfig, getFunctionsPath } = require("./utils");
+const { getConfig } = require("./utils.cjs");
 
 const {
   spinners: { mechanicSpinner: spinner },
@@ -23,25 +19,16 @@ const command = async argv => {
   } else {
     spinner.succeed(`Mechanic config file loaded: ${success(path.relative(".", configPath))}`);
   }
-
-  // Seek functions path
-  spinner.start("Seeking design function directory...");
-  const functionsPath = await getFunctionsPath(argv.functionsPath, config);
-  if (!functionsPath) {
-    spinner.fail(`Design functions directory file not found`);
-    return;
-  } else {
-    spinner.succeed(
-      `Design functions directory found: ${success(path.relative(".", functionsPath))}`
-    );
-  }
+  const distDir = path.normalize(
+    argv.distDir !== "./dist" ? argv.distDir : config.distDir || "./dist"
+  );
 
   spinner.start("Starting off server...");
   // Set port and express server
   const port = config.port ? config.port : argv.port;
   const app = express();
-
   let status = "start-server";
+
   app.use((req, res, next) => {
     if (status === "started") {
       next();
@@ -62,26 +49,14 @@ const command = async argv => {
     });
   });
   spinner.succeed(`Server listening on port ${port}`);
-  spinner.start("Loading webpack compilation...");
-
-  // Load webpack middleware to load mechanic app
-  const webpackConfig = webpackConfigGenerator("dev", functionsPath);
-  const compiler = webpack(webpackConfig);
-  // https://stackoverflow.com/questions/43921770/webpack-dev-middleware-pass-through-for-all-routes
+  spinner.start(`Serving built app at ${distDir}...`);
+  // // https://stackoverflow.com/questions/43921770/webpack-dev-middleware-pass-through-for-all-routes
   app.use(history());
-  app.use(
-    webpackDevMiddleware(compiler, {
-      publicPath: webpackConfig.output.publicPath
-    })
-  );
-  app.use(webpackHotMiddleware(compiler, { log: null }));
+  app.use(express.static(path.resolve(distDir)));
 
-  // Allow the spinner time to flush its output to the console.
-  await new Promise(resolve => setTimeout(resolve, 2000));
   // Done!
   status = "started";
-  spinner.succeed(success(`Mechanic app ready at http://localhost:${port}`));
-  console.log();
+  spinner.succeed(success(`Serving mechanic app (${distDir}) at http://localhost:${port}`));
 };
 
 module.exports = command;

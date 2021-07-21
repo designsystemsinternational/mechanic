@@ -1,1 +1,1 @@
-export { Mechanic } from "./mechanic";
+export { Mechanic } from "./mechanic.js";

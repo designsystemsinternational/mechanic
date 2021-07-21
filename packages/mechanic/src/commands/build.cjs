@@ -1,7 +1,7 @@
 const path = require("path");
 const webpack = require("webpack");
-const { getConfig, getFunctionsPath } = require("./utils");
-const webpackConfigGenerator = require("../../app/webpackConfigGenerator");
+const { getConfig, getFunctionsPath } = require("./utils.cjs");
+const webpackConfigGenerator = require("../../app/webpackConfigGenerator.cjs");
 
 const {
   spinners: { mechanicSpinner: spinner },
