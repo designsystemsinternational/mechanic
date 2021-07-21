@@ -91,7 +91,7 @@
 .params {
   overflow: auto;
 
-  height: calc(100vh - 248px);
+  height: calc(100vh - 306px);
   padding-right: 30px;
 
   & > .param:first-child {

@@ -11,12 +11,17 @@ import css from "./Function.css";
 export const Function = ({ name, exports, children }) => {
   const [iframeLoaded, setIframeLoaded] = useState(false);
   const [scaleToFit, setScaleToFit] = useState(true);
+  const [autoRefreshOn, setAutoRefreshOn] = useState(true);
 
   const mainRef = useRef();
   const iframe = useRef();
   const lastRun = useRef();
 
-  const { params, presets: exportedPresets } = exports;
+  const {
+    params,
+    presets: exportedPresets,
+    settings: { usesRandom }
+  } = exports;
   const presets = ["default"].concat(Object.keys(exportedPresets ? exportedPresets : {}));
   const canScale = !!(params.width && params.height);
   const [values, setValues] = useValues(name, params);
@@ -38,25 +43,39 @@ export const Function = ({ name, exports, children }) => {
     setValues(values => Object.assign({}, values, ...sources));
   };
 
-  const handlePreview = async () => {
+  const prepareValues = (useScale, useRandomSeed) => {
     const valuesCopy = Object.assign({}, values);
-    if (canScale && scaleToFit) {
+    if (useScale && canScale && scaleToFit) {
       const bounds = mainRef.current.getBoundingClientRect();
       valuesCopy.scaleToFit = {
         width: bounds.width - 100,
         height: bounds.height - 100
       };
     }
+    if (useRandomSeed && lastRun.current?.values) {
+      valuesCopy.randomSeed = lastRun.current.values.randomSeed;
+    }
+    return valuesCopy;
+  };
+
+  const handlePreview = async () => {
+    const valuesCopy = prepareValues(true, false);
+    lastRun.current = iframe.current.contentWindow?.run?.(name, valuesCopy, true);
+  };
+
+  const handleAutoPreview = async () => {
+    const valuesCopy = prepareValues(true, true);
     lastRun.current = iframe.current.contentWindow?.run?.(name, valuesCopy, true);
   };
 
   const handleExport = async () => {
-    const valuesCopy = Object.assign({}, values);
-    if (lastRun.current?.values) {
-      valuesCopy.randomSeed = lastRun.current.values.randomSeed;
-    }
+    const valuesCopy = prepareValues(false, true);
     iframe.current.contentWindow?.run?.(name, valuesCopy);
   };
+
+  useEffect(() => {
+    if (autoRefreshOn) handleAutoPreview();
+  });
 
   // Init engine when the name of the function changes
   useEffect(() => {
@@ -119,8 +138,18 @@ export const Function = ({ name, exports, children }) => {
           </div>
           <div className={css.sep} />
           <div className={classnames(css.row, css.strong)}>
+            <Toggle
+              className={css.grow}
+              status={autoRefreshOn}
+              onClick={() => setAutoRefreshOn(autoRefreshOn => !autoRefreshOn)}
+              disabled={!iframeLoaded}>
+              {iframeLoaded ? "Auto-refresh" : "Loading content"}
+            </Toggle>
+          </div>
+          <div className={css.sep} />
+          <div className={classnames(css.row, css.strong)}>
             <Button className={css.grow} onClick={handlePreview} disabled={!iframeLoaded}>
-              {iframeLoaded ? "Preview" : "Loading content"}
+              {iframeLoaded ? (usesRandom ? "Preview / Randomize" : "Preview") : "Loading content"}
             </Button>
           </div>
           <div className={css.sep} />

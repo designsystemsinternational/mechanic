@@ -136,7 +136,7 @@ export const presets = {
     width: 500,
     ratio: 9,
   },
-  biggerr: {
+  evenBigger: {
     width: 500,
     ratio: 9,
   },
