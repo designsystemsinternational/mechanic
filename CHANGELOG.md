@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## 0.2.10 - 2021-07-21
+
+### Changed
+
+- Added extra information log for "options" field in param validation.
+
+## 0.2.9 - 2021-07-21
+
 ### Added
 
 - Support for `"editable"` property in params. It disables the input in case of non editable result.
@@ -26,6 +34,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 First logged release
 
-[unreleased]: https://github.com/designsystemsinternational/mechanic/compare/v0.2.8...main
+[unreleased]: https://github.com/designsystemsinternational/mechanic/compare/v0.2.10...main
+[0.2.10]: https://github.com/designsystemsinternational/mechanic/releases/tag/v0.2.10
+[0.2.9]: https://github.com/designsystemsinternational/mechanic/releases/tag/v0.2.9
 [0.2.8]: https://github.com/designsystemsinternational/mechanic/releases/tag/v0.2.8
 [0.2.7]: https://github.com/designsystemsinternational/mechanic/releases/tag/v0.2.7
