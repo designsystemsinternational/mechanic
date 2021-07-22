@@ -2,8 +2,15 @@ import seedrandom from "seedrandom";
 
 const isObject = obj => !!(obj && typeof obj === "object");
 const hasKey = (obj, key) => obj.hasOwnProperty(key);
-const supportedTypes = { text: "string", number: "number", boolean: "boolean", color: "string" };
+const supportedTypes = {
+  text: "string",
+  number: "number",
+  boolean: "boolean",
+  color: "string",
+  image: "undefined"
+};
 const requiredKeys = ["type", "default"];
+const requiredKeysExceptions = { image: ["default"] };
 const otherParams = { preset: true, scaleToFit: true, randomSeed: true };
 
 /**
@@ -18,7 +25,13 @@ const validateParams = params => {
 
     // Check for all required properties
     for (let requiredKey of requiredKeys) {
-      if (!hasKey(param, requiredKey)) {
+      if (
+        !hasKey(param, requiredKey) &&
+        !(
+          hasKey(requiredKeysExceptions, paramType) &&
+          requiredKeysExceptions[paramType].includes(requiredKey)
+        )
+      ) {
         return `Parameter ${paramName} must have '${requiredKey}' property.`;
       }
     }
