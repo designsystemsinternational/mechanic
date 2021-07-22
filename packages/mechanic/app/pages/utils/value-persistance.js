@@ -18,6 +18,7 @@ function saveValueToLocalStorage(key, value) {
   if (typeof localStorage === "undefined") {
     return null;
   }
+  console.log({ key, value, newValue: JSON.stringify(value) });
   return localStorage.setItem(key, JSON.stringify(value));
 }
 
@@ -109,6 +110,8 @@ const useValues = (name, params) => {
   const setValues = assignFunc => {
     setAllValues(allValues => {
       const newFunctionValues = filterUnusedValues(allValues[name], params);
+      console.log({ allValues, newFunctionValues });
+      console.log("use", Object.assign({}, allValues, { [name]: assignFunc(newFunctionValues) }));
       return Object.assign({}, allValues, { [name]: assignFunc(newFunctionValues) });
     });
   };

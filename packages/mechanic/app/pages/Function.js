@@ -26,8 +26,11 @@ export const Function = ({ name, exports, children }) => {
   const canScale = !!(params.width && params.height);
   const [values, setValues] = useValues(name, params);
 
+  console.log({ values });
+
   const handleOnChange = (e, name, value) => {
     const sources = [{ [name]: value }];
+    console.log({ sources });
     if (name === "preset") {
       if (value === "default") {
         sources.push(
@@ -40,6 +43,7 @@ export const Function = ({ name, exports, children }) => {
         sources.push(exportedPresets[value]);
       }
     }
+    console.log("toSet", Object.assign({}, values, ...sources));
     setValues(values => Object.assign({}, values, ...sources));
   };
 
