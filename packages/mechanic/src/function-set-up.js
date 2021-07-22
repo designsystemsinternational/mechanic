@@ -1,4 +1,4 @@
-import { MechanicError } from "./mechanic-error";
+import { MechanicError } from "./mechanic-error.js";
 
 /**
  * Sets up iframe's window functions that call

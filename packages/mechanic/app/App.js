@@ -1,9 +1,9 @@
 import React from "react";
 import { Switch, Route, withRouter } from "react-router-dom";
 
-import { Function } from "./pages/Function";
-import { NotFound } from "./pages/NotFound";
-import { Nav } from "./pages/Nav";
+import { Function } from "./pages/Function.js";
+import { NotFound } from "./pages/NotFound.js";
+import { Nav } from "./pages/Nav.js";
 
 import functions from "./FUNCTIONS";
 const functionNames = Object.keys(functions);

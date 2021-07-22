@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## 0.2.10 - 2021-07-21
+
+### Changed
+
+- Added extra information log for "options" field in param validation.
+
+## 0.2.9 - 2021-07-21
+
 ### Added
 
 - Added validation of new `"editable"` param property.
@@ -16,6 +24,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Added title to HTML of main app, title to iframe, and a label to design function select for navigation.
 - Updated prop pass for `ParamInput` components.
+- Adapted `mechanic` partially as an ES module package
 
 ## [0.2.8] - 2021-07-15
 

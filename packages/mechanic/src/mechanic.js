@@ -1,8 +1,8 @@
-import { download } from "./download";
-import { WebMWriter } from "./webm-writer";
-import { svgToDataUrl, extractSvgSize, dataUrlToCanvas, getTimeStamp } from "./mechanic-utils";
-import * as validation from "./mechanic-validation";
-import { MechanicError } from "./mechanic-error";
+import { download } from "./download.js";
+import { WebMWriter } from "./webm-writer.js";
+import { svgToDataUrl, extractSvgSize, dataUrlToCanvas, getTimeStamp } from "./mechanic-utils.js";
+import * as validation from "./mechanic-validation.js";
+import { MechanicError } from "./mechanic-error.js";
 
 /**
  * A class to run Mechanic design functions

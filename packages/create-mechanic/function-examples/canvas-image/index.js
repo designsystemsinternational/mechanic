@@ -7,8 +7,14 @@ export const handler = (params, mechanic) => {
     numberOfRects,
     hasOuterMargin,
     innerMargin,
-    margin,
+    margin: marginOption,
   } = params;
+
+  const margin = {
+    even: { top: 100, bottom: 100, left: 100, right: 100 },
+    flat: { top: 100, bottom: 100, left: 50, right: 50 },
+    tall: { top: 50, bottom: 50, left: 100, right: 100 },
+  }[marginOption];
 
   const canvas = document.createElement("canvas");
   canvas.width = width;
@@ -74,11 +80,7 @@ export const params = {
   },
   margin: {
     type: "text",
-    options: {
-      even: { top: 100, bottom: 100, left: 100, right: 100 },
-      flat: { top: 100, bottom: 100, left: 50, right: 50 },
-      tall: { top: 50, bottom: 50, left: 100, right: 100 },
-    },
+    options: ["even", "tall", "flat"],
     default: "even",
   },
 };

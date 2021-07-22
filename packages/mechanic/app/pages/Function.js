@@ -2,8 +2,8 @@ import React, { useState, useRef, useEffect } from "react";
 import PropTypes from "prop-types";
 import classnames from "classnames";
 
-import { useValues } from "./utils/value-persistance";
-import { useShortcuts } from "./utils/useShortcuts";
+import { useValues } from "./utils/value-persistance.js";
+import { useShortcuts } from "./utils/useShortcuts.js";
 
 import { Button, Toggle, ParamInput } from "@designsystemsinternational/mechanic-ui-components";
 import css from "./Function.css";
