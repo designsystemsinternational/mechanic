@@ -14,6 +14,7 @@ const root = document.getElementById("root");
 
 const App = () => {
   const [values, setValues] = useState({
+    image: null,
     text: "Hello world",
     toggle: true,
     number: 400,
@@ -35,6 +36,18 @@ const App = () => {
   const twoBlockStyle = { width: "600px", display: "inline-block", margin: "1em" };
   return (
     <>
+      <div style={blockStyle}>
+        <ParamInput
+          name={"image"}
+          values={values}
+          attributes={{
+            type: "image",
+            multiple: true,
+            validation: value => null
+          }}
+          onChange={handleChange}
+        />
+      </div>
       <h3>ParamInput component</h3>
       <div style={blockStyle}>
         <ParamInput

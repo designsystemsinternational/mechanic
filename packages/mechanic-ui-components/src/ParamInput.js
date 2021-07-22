@@ -7,6 +7,7 @@ import { NumberInput } from "./input/NumberInput.js";
 import { BooleanInput } from "./input/BooleanInput.js";
 import { OptionInput } from "./input/OptionInput.js";
 import { ColorInput } from "./input/ColorInput.js";
+import { ImageInput } from "./input/ImageInput.js";
 import { uid } from "./uid.js";
 
 export const ParamInput = ({ name, className, values, attributes, onChange, children }) => {
@@ -41,6 +42,26 @@ export const ParamInput = ({ name, className, values, attributes, onChange, chil
         onChange={onChange}>
         {children}
       </OptionInput>
+    );
+  }
+
+  if (type === "image") {
+    const { multiple } = attributes;
+    return (
+      <ImageInput
+        name={name}
+        value={actualValue}
+        label={name}
+        id={id.current}
+        className={rootClasses}
+        variant="mechanic-param"
+        invalid={error ? true : false}
+        error={error}
+        multiple={multiple}
+        disabled={!isEditable}
+        onChange={onChange}>
+        {children}
+      </ImageInput>
     );
   }
 
