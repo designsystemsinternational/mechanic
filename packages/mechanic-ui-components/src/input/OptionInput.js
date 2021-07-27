@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import classnames from "classnames";
 import { uid } from "../uid.js";
 import { Select } from "../input/Select.js";
-import css from "./OptionInput.css";
+import * as css from "./OptionInput.module.css";
 
 export const OptionInput = props => {
   const _id = useRef(uid("option-input"));

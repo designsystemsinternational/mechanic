@@ -24,9 +24,10 @@ export default async (env, argv) => {
         loader: "css-loader",
         options: {
           modules: {
-            localIdentName: "[name]__[local]"
+            localIdentName: "[name]__[local]",
+            namedExport: true,
+            exportLocalsConvention: "camelCaseOnly"
           },
-          localsConvention: "camelCase",
           importLoaders: 1
         }
       },
