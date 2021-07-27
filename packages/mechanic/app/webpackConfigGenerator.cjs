@@ -93,9 +93,10 @@ module.exports = (modeParam, functionsPath, distDir) => {
         loader: require.resolve("css-loader"),
         options: {
           modules: {
-            localIdentName: "[name]__[local]"
+            localIdentName: "[name]__[local]",
+            namedExport: true,
+            exportLocalsConvention: "camelCaseOnly"
           },
-          localsConvention: "camelCase",
           importLoaders: 1
         }
       },

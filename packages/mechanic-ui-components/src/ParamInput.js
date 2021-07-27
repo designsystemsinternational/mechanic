@@ -1,7 +1,7 @@
 import React, { useRef } from "react";
 import PropTypes from "prop-types";
 import classnames from "classnames";
-import css from "./ParamInput.css";
+import * as css from "./ParamInput.module.css";
 import { TextInput } from "./input/TextInput.js";
 import { NumberInput } from "./input/NumberInput.js";
 import { BooleanInput } from "./input/BooleanInput.js";
@@ -35,7 +35,7 @@ export const ParamInput = ({ name, className, values, attributes, onChange, chil
         label={name}
         id={id.current}
         className={rootClasses}
-        variant="mechanic-param"
+        variant="mechanicParam"
         invalid={error ? true : false}
         error={error}
         disabled={!isEditable}
@@ -73,7 +73,7 @@ export const ParamInput = ({ name, className, values, attributes, onChange, chil
         label={name}
         id={id.current}
         className={rootClasses}
-        variant="mechanic-param"
+        variant="mechanicParam"
         invalid={error ? true : false}
         error={error}
         disabled={!isEditable}
@@ -93,7 +93,7 @@ export const ParamInput = ({ name, className, values, attributes, onChange, chil
         label={name}
         id={id.current}
         className={rootClasses}
-        variant="mechanic-param"
+        variant="mechanicParam"
         invalid={error ? true : false}
         error={error}
         disabled={!isEditable}
@@ -112,7 +112,7 @@ export const ParamInput = ({ name, className, values, attributes, onChange, chil
         name={name}
         id={id.current}
         className={rootClasses}
-        variant="mechanic-param"
+        variant="mechanicParam"
         invalid={error ? true : false}
         error={error}
         disabled={!isEditable}
@@ -133,7 +133,7 @@ export const ParamInput = ({ name, className, values, attributes, onChange, chil
       label={name}
       id={id.current}
       className={rootClasses}
-      variant="mechanic-param"
+      variant="mechanicParam"
       invalid={error ? true : false}
       error={error}
       disabled={!isEditable}
