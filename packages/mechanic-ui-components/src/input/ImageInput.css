@@ -21,11 +21,22 @@
 .loadedImages {
   display: flex;
   flex-grow: 1;
+  position: relative;
+}
+
+.imageItem {
 }
 
 .thumbnail {
-  height: 15px;
+  height: 20px;
   margin-right: 5px;
+}
+
+.preview {
+  position: absolute;
+  left: 0px;
+  bottom: 25px;
+  width: 150px;
 }
 
 .input {

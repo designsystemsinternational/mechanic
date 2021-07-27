@@ -91,6 +91,7 @@ export const params = {
   },
   image: {
     type: "image",
+    multiple: true,
   },
 };
 

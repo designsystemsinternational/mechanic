@@ -5,6 +5,21 @@ import { uid } from "../uid.js";
 import { Button } from "../index.js";
 import css from "./ImageInput.css";
 
+const ImageItem = ({ file }) => {
+  const [showPreview, setShowPreview] = useState(false);
+  return (
+    <div className={css.imageItem}>
+      <img
+        className={css.thumbnail}
+        src={URL.createObjectURL(file)}
+        onMouseEnter={() => setShowPreview(true)}
+        onMouseLeave={() => setShowPreview(false)}
+      />
+      {showPreview && <img className={css.preview} src={URL.createObjectURL(file)} />}
+    </div>
+  );
+};
+
 export const ImageInput = props => {
   const _id = useRef(uid("text-input"));
   const {
@@ -61,9 +76,7 @@ export const ImageInput = props => {
   if (value) {
     console.log({ value });
     for (const file of value) {
-      loadedImages.push(
-        <img className={css.thumbnail} key={file.name} src={URL.createObjectURL(file)} />
-      );
+      loadedImages.push(<ImageItem key={file.name} file={file} />);
     }
   }
 
