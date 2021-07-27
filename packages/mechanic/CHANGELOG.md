@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### Changed
+
+- Internal app constructions now uses named exports for CSS Modules.
+
 ## 0.2.10 - 2021-07-21
 
 ### Changed

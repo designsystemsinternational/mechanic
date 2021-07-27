@@ -11,6 +11,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- UI components and app now use named exports for CSS Modules.
+
+### Changed
+
 - Added extra information log for "options" field in param validation.
 
 ## 0.2.9 - 2021-07-21
