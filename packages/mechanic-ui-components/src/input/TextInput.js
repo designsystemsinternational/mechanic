@@ -2,7 +2,7 @@ import React, { useRef, useState } from "react";
 import PropTypes from "prop-types";
 import classnames from "classnames";
 import { uid } from "../uid.js";
-import * as css from "./TextInput.css";
+import * as css from "./TextInput.module.css";
 
 export const TextInput = props => {
   const _id = useRef(uid("text-input"));

@@ -8,7 +8,7 @@ import { Nav } from "./pages/Nav.js";
 import functions from "./FUNCTIONS";
 const functionNames = Object.keys(functions);
 
-import * as css from "./App.css";
+import * as css from "./App.module.css";
 
 const AppComponent = () => {
   return (

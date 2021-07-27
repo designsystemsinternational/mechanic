@@ -1,7 +1,7 @@
 import React, { useRef } from "react";
 import PropTypes from "prop-types";
 import classnames from "classnames";
-import * as css from "./ParamInput.css";
+import * as css from "./ParamInput.module.css";
 import { TextInput } from "./input/TextInput.js";
 import { NumberInput } from "./input/NumberInput.js";
 import { BooleanInput } from "./input/BooleanInput.js";

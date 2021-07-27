@@ -2,7 +2,7 @@ import React, { useRef, useState } from "react";
 import PropTypes from "prop-types";
 import classnames from "classnames";
 import { uid } from "../uid.js";
-import * as css from "./NumberInput.css";
+import * as css from "./NumberInput.module.css";
 
 export const NumberInput = props => {
   const _id = useRef(uid("number-input"));
