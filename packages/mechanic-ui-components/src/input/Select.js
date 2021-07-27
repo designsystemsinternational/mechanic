@@ -2,7 +2,7 @@ import React, { Fragment, useRef, useState } from "react";
 import PropTypes from "prop-types";
 import classnames from "classnames";
 import { uid } from "../uid.js";
-import css from "./Select.css";
+import * as css from "./Select.css";
 
 export const Select = props => {
   const _id = useRef(uid("select"));

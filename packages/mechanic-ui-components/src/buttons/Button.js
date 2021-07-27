@@ -2,7 +2,7 @@ import React, { useState, useRef } from "react";
 import PropTypes from "prop-types";
 import classnames from "classnames";
 import { uid } from "../uid.js";
-import css from "./Button.css";
+import * as css from "./Button.css";
 
 export const Button = props => {
   const _id = useRef(uid("button"));

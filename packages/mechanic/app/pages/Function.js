@@ -6,7 +6,7 @@ import { useValues } from "./utils/value-persistance.js";
 import { useShortcuts } from "./utils/useShortcuts.js";
 
 import { Button, Toggle, ParamInput } from "@designsystemsinternational/mechanic-ui-components";
-import css from "./Function.css";
+import * as css from "./Function.css";
 
 export const Function = ({ name, exports, children }) => {
   const [iframeLoaded, setIframeLoaded] = useState(false);

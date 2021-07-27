@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import classnames from "classnames";
 import { uid } from "../uid.js";
 import { Toggle } from "../buttons/Toggle.js";
-import css from "./BooleanInput.css";
+import * as css from "./BooleanInput.css";
 
 export const BooleanInput = props => {
   const _id = useRef(uid("boolean-input"));

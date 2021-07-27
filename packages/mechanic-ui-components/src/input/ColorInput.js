@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import classnames from "classnames";
 import { uid } from "../uid.js";
 import { Button } from "../buttons/Button.js";
-import css from "./ColorInput.css";
+import * as css from "./ColorInput.css";
 
 const colorToString = (color, model) => {
   if (model === "hex") {
