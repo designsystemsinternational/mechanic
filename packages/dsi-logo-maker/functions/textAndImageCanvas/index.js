@@ -1,13 +1,12 @@
-import React, { useState, useEffect, useRef } from "react";
 import { getColors } from "../../utils/graphics";
 import {
   computeBaseBricks,
   computeBlockGeometry,
   computeBlock,
 } from "../../utils/blocks";
-import { Block } from "../../utils/blocks-components";
+import { drawBlock } from "../../utils/blocks-canvas";
 
-export const handler = (params) => {
+export const handler = (params, mechanic) => {
   const {
     width,
     ratio,
@@ -17,16 +16,12 @@ export const handler = (params) => {
     colors: colorsString,
     offset,
     image,
-    done,
   } = params;
-
-  const [href, setHref] = useState("");
 
   const words = text.split(" ").map((s) => s.toUpperCase());
   const colors = getColors("Custom Colors", null, colorsString.split(","));
   const height = Math.floor((width / ratio) * rows);
 
-  const position = { x: image ? height : 0, y: 0 };
   const blockGeometry = computeBlockGeometry(width, height, rows, cols);
   const baseBricks = computeBaseBricks(words, blockGeometry.fontSize);
 
@@ -35,35 +30,27 @@ export const handler = (params) => {
     baseBricks,
     Math.floor(offset * baseBricks.length)
   );
+  const position = { x: image ? height : 0, y: 0 };
 
-  useEffect(() => {
-    if (image) {
-      const reader = new FileReader();
+  const canvas = document.createElement("canvas");
+  canvas.width = width + height;
+  canvas.height = height;
+  const ctx = canvas.getContext("2d");
 
-      reader.readAsDataURL(image);
+  ctx.save();
+  ctx.clearRect(0, 0, blockGeometry.width, blockGeometry.height);
+  drawBlock(ctx, { position, block, colors });
+  ctx.restore();
 
-      reader.onload = function () {
-        setHref(reader.result);
-      };
-
-      reader.onerror = function () {
-        console.error(reader.error);
-      };
-    }
-  }, []);
-
-  useEffect(() => {
-    if (!image || href !== "") {
-      done();
-    }
-  }, [image, href]);
-
-  return (
-    <svg width={width + (image ? height : 0)} height={height}>
-      <image href={href} height={height}></image>
-      <Block position={position} block={block} colors={colors}></Block>
-    </svg>
-  );
+  const img = new Image();
+  img.onload = function () {
+    ctx.drawImage(img, 0, 0, height, height);
+    mechanic.done(canvas);
+  };
+  img.src = image ? URL.createObjectURL(image) : "";
+  if (!image) {
+    mechanic.done(canvas);
+  }
 };
 
 export const params = {
@@ -117,11 +104,10 @@ export const params = {
 export const presets = {
   bigger: {
     width: 500,
-    height: 500,
+    ratio: 9,
   },
 };
 
 export const settings = {
-  engine: require("@designsystemsinternational/mechanic-engine-react"),
-  usesRandom: true,
+  engine: require("@designsystemsinternational/mechanic-engine-canvas"),
 };
