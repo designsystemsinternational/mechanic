@@ -1,5 +1,26 @@
-// https://github.com/imbhargav5/rooks/blob/master/packages/shared/useLocalstorageState.ts
 import { useState, useEffect, useCallback, useRef } from "react";
+
+const copySerializable = obj => {
+  if (typeof obj !== "object") {
+    return obj;
+  }
+  const copy = {};
+  for (const key in obj) {
+    if (!(obj[key] instanceof File || obj[key] instanceof FileList)) {
+      copy[key] = copySerializable(obj[key]);
+    }
+  }
+  return copy;
+};
+
+// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify#using_json.stringify
+const stringify = obj => {
+  const copy = copySerializable(obj);
+  return JSON.stringify(copy);
+};
+
+// Adapted from
+// https://github.com/imbhargav5/rooks/blob/master/packages/shared/useLocalstorageState.ts
 
 function getValueFromLocalStorage(key) {
   if (typeof localStorage === "undefined") {
@@ -18,8 +39,7 @@ function saveValueToLocalStorage(key, value) {
   if (typeof localStorage === "undefined") {
     return null;
   }
-  console.log({ key, value, newValue: JSON.stringify(value) });
-  return localStorage.setItem(key, JSON.stringify(value));
+  return localStorage.setItem(key, stringify(value));
 }
 
 /**
@@ -91,9 +111,7 @@ function useLocalStorageState(key, initialState) {
   return [value, setValue, remove];
 }
 
-// End
-
-const filterUnusedValues = (object, reference) =>
+const cleanValues = (object, reference) =>
   object
     ? Object.entries(object)
         .filter(entry => entry[0] in reference || entry[0] === "preset")
@@ -106,13 +124,11 @@ const filterUnusedValues = (object, reference) =>
 const useValues = (name, params) => {
   const [allValues, setAllValues] = useLocalStorageState("function-values", {});
 
-  const values = filterUnusedValues(allValues[name], params);
+  const values = cleanValues(allValues[name], params);
   const setValues = assignFunc => {
     setAllValues(allValues => {
-      const newFunctionValues = filterUnusedValues(allValues[name], params);
-      console.log({ allValues, newFunctionValues });
-      console.log("use", Object.assign({}, allValues, { [name]: assignFunc(newFunctionValues) }));
-      return Object.assign({}, allValues, { [name]: assignFunc(newFunctionValues) });
+      const newValues = assignFunc(cleanValues(allValues[name], params));
+      return Object.assign({}, allValues, { [name]: newValues });
     });
   };
   return [values, setValues];

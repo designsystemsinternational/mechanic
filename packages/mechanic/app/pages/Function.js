@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import PropTypes from "prop-types";
 import classnames from "classnames";
 
-import { useValues } from "./utils/value-persistance.js";
+import { useValues } from "./utils/useValues.js";
 import { useShortcuts } from "./utils/useShortcuts.js";
 
 import { Button, Toggle, ParamInput } from "@designsystemsinternational/mechanic-ui-components";
@@ -26,16 +26,13 @@ export const Function = ({ name, exports, children }) => {
   const canScale = !!(params.width && params.height);
   const [values, setValues] = useValues(name, params);
 
-  console.log({ values });
-
   const handleOnChange = (e, name, value) => {
     const sources = [{ [name]: value }];
-    console.log({ sources });
     if (name === "preset") {
       if (value === "default") {
         sources.push(
           Object.entries(params).reduce((source, param) => {
-            source[param[0]] = param[1].default;
+            if (param[1].default) source[param[0]] = param[1].default;
             return source;
           }, {})
         );
@@ -43,7 +40,6 @@ export const Function = ({ name, exports, children }) => {
         sources.push(exportedPresets[value]);
       }
     }
-    console.log("toSet", Object.assign({}, values, ...sources));
     setValues(values => Object.assign({}, values, ...sources));
   };
 
