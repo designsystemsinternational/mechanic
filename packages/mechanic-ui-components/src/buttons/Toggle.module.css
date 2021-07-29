@@ -51,6 +51,7 @@
 
 .disabled {
   border: 1px solid var(--mechanic-gray);
+  color: var(--mechanic-disabled);
 }
 
 .focus {
