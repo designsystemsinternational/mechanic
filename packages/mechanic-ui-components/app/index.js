@@ -393,11 +393,11 @@ const App = () => {
       </div>
 
       <div className={css.simpleBlock}>
-        <ColorInput value="rgba(100, 200, 200,1)"></ColorInput>
+        <ColorInput label="Color Input" value="rgba(100, 200, 200,1)"></ColorInput>
       </div>
 
       <div className={css.simpleBlock}>
-        <Select label="Select input: ">
+        <Select label="Select Input">
           <option>Option 1</option>
           <option>Option 2</option>
           <option>Option 3</option>
@@ -405,7 +405,7 @@ const App = () => {
       </div>
 
       <div className={css.simpleBlock}>
-        <ImageInput />
+        <ImageInput label="Image Input" />
       </div>
 
       <h3>Buttons</h3>
