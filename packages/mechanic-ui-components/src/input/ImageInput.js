@@ -1,21 +1,20 @@
-import React, { useRef, useState } from "react";
+import React, { useCallback, useRef, useState } from "react";
 import PropTypes from "prop-types";
 import classnames from "classnames";
 import { uid } from "../uid.js";
 import { Button } from "../index.js";
-import css from "./ImageInput.css";
+import * as css from "./ImageInput.module.css";
 
-const ImageItem = ({ file }) => {
-  const [showPreview, setShowPreview] = useState(false);
+const ImageItem = ({ file, onPreview }) => {
+  const src = useRef(URL.createObjectURL(file));
   return (
     <div className={css.imageItem}>
       <img
         className={css.thumbnail}
-        src={URL.createObjectURL(file)}
-        onMouseEnter={() => setShowPreview(true)}
-        onMouseLeave={() => setShowPreview(false)}
+        src={src.current}
+        onMouseEnter={() => onPreview(src.current)}
+        onMouseLeave={() => onPreview(null)}
       />
-      {showPreview && <img className={css.preview} src={URL.createObjectURL(file)} />}
     </div>
   );
 };
@@ -44,10 +43,13 @@ export const ImageInput = props => {
   } = props;
   const ref = useRef();
   const [focus, setFocus] = useState(false);
+  const [preview, setPreview] = useState(null);
+
+  const handleChangePreview = useCallback(value => setPreview(value), [setPreview]);
 
   const handleOnChange = useRef(event => {
     const { name, files } = event.target;
-    onChange && onChange(event, name, files);
+    onChange && onChange(event, name, multiple ? files : files[0]);
   });
 
   const handleOnFocus = useRef(event => {
@@ -60,7 +62,7 @@ export const ImageInput = props => {
     setFocus(false);
   });
 
-  const handleButtonClick = event => {
+  const handleButtonClick = () => {
     ref.current?.click();
   };
 
@@ -72,11 +74,21 @@ export const ImageInput = props => {
     [css.focus]: focus
   });
 
+  // Check overflow property and how it behaves: https://developer.mozilla.org/en-US/docs/Web/CSS/overflow
+  // Consider taking preview out from items and have a single preview element
+
   const loadedImages = [];
   if (value) {
-    console.log({ value });
-    for (const file of value) {
-      loadedImages.push(<ImageItem key={file.name} file={file} />);
+    if (multiple) {
+      for (const file of value) {
+        loadedImages.push(
+          <ImageItem key={file.name} file={file} onPreview={handleChangePreview} />
+        );
+      }
+    } else {
+      loadedImages.push(
+        <ImageItem key={value.name} file={value} onPreview={handleChangePreview} />
+      );
     }
   }
 
@@ -88,6 +100,7 @@ export const ImageInput = props => {
         </label>
       )}
       <div className={css.container}>
+        {preview && <img className={css.preview} src={preview} />}
         <div className={css.loadedImages}>{loadedImages}</div>
         <input
           type="file"

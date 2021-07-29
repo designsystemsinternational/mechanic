@@ -1,0 +1,12 @@
+.simpleBlock {
+  width: 300px;
+  display: inline-block;
+  vertical-align: text-top;
+  margin: 1em;
+}
+
+.pairBlock {
+  width: 600px;
+  display: inline-block;
+  margin: 1em;
+}

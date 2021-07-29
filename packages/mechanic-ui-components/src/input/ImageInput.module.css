@@ -6,11 +6,11 @@
 .container {
   display: flex;
   justify-content: space-between;
+  position: relative;
 
   border: 1px solid var(--mechanic-text);
   box-sizing: border-box;
-  padding: 0.5em 1em;
-
+  padding: 15px 1em 0 1em;
   background-color: var(--mechanic-background);
 
   font-size: inherit;
@@ -21,7 +21,8 @@
 .loadedImages {
   display: flex;
   flex-grow: 1;
-  position: relative;
+  overflow-x: auto;
+  height: 35px;
 }
 
 .imageItem {
@@ -35,7 +36,7 @@
 .preview {
   position: absolute;
   left: 0px;
-  bottom: 25px;
+  bottom: 40px;
   width: 150px;
 }
 
@@ -47,9 +48,8 @@
 }
 
 .browseButton {
-  padding: 0;
-  width: 18px;
-  height: 18px;
+  padding: 0 5px;
+  height: 20px;
 }
 
 .invalid {
@@ -75,14 +75,14 @@
     font-family: var(--mechanic-param-font);
   }
 
-  & > .input {
+  & > .container {
     width: 100%;
 
     font-family: var(--mechanic-param-font);
   }
 
   &.invalid {
-    & > .input {
+    & > .container {
       border: 1px solid var(--mechanic-error);
     }
 
