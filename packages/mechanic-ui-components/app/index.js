@@ -6,6 +6,7 @@ import {
   NumberInput,
   ColorInput,
   Select,
+  ImageInput,
   Button,
   Toggle
 } from "../src/index.js";
@@ -344,6 +345,29 @@ const App = () => {
           onChange={handleChange}
         />
       </div>
+      <div className={css.pairBlock}>
+        <ParamInput
+          name={"singleImage"}
+          values={values}
+          attributes={{
+            type: "image",
+            multiple: false
+          }}
+          onChange={handleChange}
+        />
+      </div>
+      <div className={css.pairBlock}>
+        <ParamInput
+          name={"singleImage"}
+          values={values}
+          attributes={{
+            type: "image",
+            multiple: false,
+            editable: false
+          }}
+          onChange={handleChange}
+        />
+      </div>
 
       <h3>Inputs</h3>
 
@@ -378,6 +402,10 @@ const App = () => {
           <option>Option 2</option>
           <option>Option 3</option>
         </Select>
+      </div>
+
+      <div className={css.simpleBlock}>
+        <ImageInput />
       </div>
 
       <h3>Buttons</h3>

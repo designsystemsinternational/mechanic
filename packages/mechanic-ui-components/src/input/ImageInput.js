@@ -82,12 +82,20 @@ export const ImageInput = props => {
     if (multiple) {
       for (const file of value) {
         loadedImages.push(
-          <ImageItem key={file.name} file={file} onPreview={handleChangePreview} />
+          <ImageItem
+            key={file.name}
+            file={file}
+            onPreview={!disabled ? handleChangePreview : () => {}}
+          />
         );
       }
     } else {
       loadedImages.push(
-        <ImageItem key={value.name} file={value} onPreview={handleChangePreview} />
+        <ImageItem
+          key={value.name}
+          file={value}
+          onPreview={!disabled ? handleChangePreview : () => {}}
+        />
       );
     }
   }
@@ -122,7 +130,7 @@ export const ImageInput = props => {
           aria-describedby={`error-${id}`}
           aria-invalid={invalid}
         />
-        <Button className={css.browseButton} onClick={handleButtonClick}>
+        <Button className={css.browseButton} onClick={handleButtonClick} disabled={disabled}>
           +
         </Button>
       </div>

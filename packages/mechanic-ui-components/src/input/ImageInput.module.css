@@ -56,7 +56,7 @@
 }
 
 .disabled {
-  & .input {
+  & .container {
     border: 1px solid var(--mechanic-gray);
   }
 }
