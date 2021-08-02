@@ -168,7 +168,7 @@
   }
 
   & .range-wrapper {
-    color: #6d6d6d;
+    color: var(--mechanic-disabled);
   }
 
   & .range-input {

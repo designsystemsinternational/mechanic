@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import PropTypes from "prop-types";
 import classnames from "classnames";
 
-import { useValues } from "./utils/value-persistance.js";
+import { useValues } from "./utils/useValues.js";
 import { useShortcuts } from "./utils/useShortcuts.js";
 
 import { Button, Toggle, ParamInput } from "@designsystemsinternational/mechanic-ui-components";
@@ -32,7 +32,7 @@ export const Function = ({ name, exports, children }) => {
       if (value === "default") {
         sources.push(
           Object.entries(params).reduce((source, param) => {
-            source[param[0]] = param[1].default;
+            if (param[1].default) source[param[0]] = param[1].default;
             return source;
           }, {})
         );

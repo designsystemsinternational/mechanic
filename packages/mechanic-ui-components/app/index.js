@@ -6,11 +6,12 @@ import {
   NumberInput,
   ColorInput,
   Select,
+  ImageInput,
   Button,
   Toggle
 } from "../src/index.js";
 
-const root = document.getElementById("root");
+import * as css from "./index.css";
 
 const App = () => {
   const [values, setValues] = useState({
@@ -23,7 +24,9 @@ const App = () => {
     colorRgba: "rgba(200,120,34,1)",
     textOption: "Option 1",
     numberOption: 10,
-    objectOption: "first"
+    objectOption: "first",
+    singleImage: null,
+    multipleImages: null
   });
 
   const handleChange = (e, name, value) => {
@@ -31,12 +34,10 @@ const App = () => {
     setValues(values => Object.assign({}, values, { [name]: value }));
   };
 
-  const blockStyle = { width: "300px", display: "inline-block", margin: "1em" };
-  const twoBlockStyle = { width: "600px", display: "inline-block", margin: "1em" };
   return (
     <>
       <h3>ParamInput component</h3>
-      <div style={blockStyle}>
+      <div className={css.simpleBlock}>
         <ParamInput
           name={"text"}
           values={values}
@@ -48,7 +49,7 @@ const App = () => {
           onChange={handleChange}
         />
       </div>
-      <div style={blockStyle}>
+      <div className={css.simpleBlock}>
         <ParamInput
           name={"toggle"}
           values={values}
@@ -60,7 +61,7 @@ const App = () => {
           onChange={handleChange}
         />
       </div>
-      <div style={blockStyle}>
+      <div className={css.simpleBlock}>
         <ParamInput
           name={"number"}
           values={values}
@@ -72,7 +73,7 @@ const App = () => {
           onChange={handleChange}
         />
       </div>
-      <div style={blockStyle}>
+      <div className={css.simpleBlock}>
         <ParamInput
           name={"range"}
           values={values}
@@ -87,7 +88,7 @@ const App = () => {
           onChange={handleChange}
         />
       </div>
-      <div style={blockStyle}>
+      <div className={css.simpleBlock}>
         <ParamInput
           name={"slider"}
           values={values}
@@ -103,7 +104,7 @@ const App = () => {
           onChange={handleChange}
         />
       </div>
-      <div style={blockStyle}>
+      <div className={css.simpleBlock}>
         <ParamInput
           name={"colorHex"}
           values={values}
@@ -116,7 +117,7 @@ const App = () => {
           onChange={handleChange}
         />
       </div>
-      <div style={blockStyle}>
+      <div className={css.simpleBlock}>
         <ParamInput
           name={"colorRgba"}
           values={values}
@@ -128,7 +129,7 @@ const App = () => {
           onChange={handleChange}
         />
       </div>
-      <div style={blockStyle}>
+      <div className={css.simpleBlock}>
         <ParamInput
           name={"textOption"}
           values={values}
@@ -141,7 +142,7 @@ const App = () => {
           onChange={handleChange}
         />
       </div>
-      <div style={blockStyle}>
+      <div className={css.simpleBlock}>
         <ParamInput
           name={"numberOption"}
           values={values}
@@ -154,7 +155,7 @@ const App = () => {
           onChange={handleChange}
         />
       </div>
-      <div style={blockStyle}>
+      <div className={css.simpleBlock}>
         <ParamInput
           name={"objectOption"}
           values={values}
@@ -167,10 +168,34 @@ const App = () => {
           onChange={handleChange}
         />
       </div>
+      <div className={css.simpleBlock}>
+        <ParamInput
+          name={"singleImage"}
+          values={values}
+          attributes={{
+            type: "image",
+            multiple: false,
+            validation: file => file && (file.size < 50000 ? null : "Too big!")
+          }}
+          onChange={handleChange}
+        />
+      </div>
+      <div className={css.simpleBlock}>
+        <ParamInput
+          name={"multipleImages"}
+          values={values}
+          attributes={{
+            type: "image",
+            multiple: true,
+            validation: value => null
+          }}
+          onChange={handleChange}
+        />
+      </div>
 
       <h3>Editable ParamInput components</h3>
 
-      <div style={twoBlockStyle}>
+      <div className={css.pairBlock}>
         <ParamInput
           name={"text"}
           values={values}
@@ -181,7 +206,7 @@ const App = () => {
           onChange={handleChange}
         />
       </div>
-      <div style={twoBlockStyle}>
+      <div className={css.pairBlock}>
         <ParamInput
           name={"text"}
           values={values}
@@ -193,7 +218,7 @@ const App = () => {
           onChange={handleChange}
         />
       </div>
-      <div style={twoBlockStyle}>
+      <div className={css.pairBlock}>
         <ParamInput
           name={"toggle"}
           values={values}
@@ -204,7 +229,7 @@ const App = () => {
           onChange={handleChange}
         />
       </div>
-      <div style={twoBlockStyle}>
+      <div className={css.pairBlock}>
         <ParamInput
           name={"toggle"}
           values={values}
@@ -216,7 +241,7 @@ const App = () => {
           onChange={handleChange}
         />
       </div>
-      <div style={twoBlockStyle}>
+      <div className={css.pairBlock}>
         <ParamInput
           name={"number"}
           values={values}
@@ -227,7 +252,7 @@ const App = () => {
           onChange={handleChange}
         />
       </div>
-      <div style={twoBlockStyle}>
+      <div className={css.pairBlock}>
         <ParamInput
           name={"number"}
           values={values}
@@ -239,7 +264,7 @@ const App = () => {
           onChange={handleChange}
         />
       </div>
-      <div style={twoBlockStyle}>
+      <div className={css.pairBlock}>
         <ParamInput
           name={"slider"}
           values={values}
@@ -254,7 +279,7 @@ const App = () => {
           onChange={handleChange}
         />
       </div>
-      <div style={twoBlockStyle}>
+      <div className={css.pairBlock}>
         <ParamInput
           name={"slider"}
           values={values}
@@ -270,7 +295,7 @@ const App = () => {
           onChange={handleChange}
         />
       </div>
-      <div style={twoBlockStyle}>
+      <div className={css.pairBlock}>
         <ParamInput
           name={"colorHex"}
           values={values}
@@ -282,7 +307,7 @@ const App = () => {
           onChange={handleChange}
         />
       </div>
-      <div style={twoBlockStyle}>
+      <div className={css.pairBlock}>
         <ParamInput
           name={"colorHex"}
           values={values}
@@ -295,7 +320,7 @@ const App = () => {
           onChange={handleChange}
         />
       </div>
-      <div style={twoBlockStyle}>
+      <div className={css.pairBlock}>
         <ParamInput
           name={"textOption"}
           values={values}
@@ -307,7 +332,7 @@ const App = () => {
           onChange={handleChange}
         />
       </div>
-      <div style={twoBlockStyle}>
+      <div className={css.pairBlock}>
         <ParamInput
           name={"textOption"}
           values={values}
@@ -320,18 +345,41 @@ const App = () => {
           onChange={handleChange}
         />
       </div>
+      <div className={css.pairBlock}>
+        <ParamInput
+          name={"singleImage"}
+          values={values}
+          attributes={{
+            type: "image",
+            multiple: false
+          }}
+          onChange={handleChange}
+        />
+      </div>
+      <div className={css.pairBlock}>
+        <ParamInput
+          name={"singleImage"}
+          values={values}
+          attributes={{
+            type: "image",
+            multiple: false,
+            editable: false
+          }}
+          onChange={handleChange}
+        />
+      </div>
 
       <h3>Inputs</h3>
 
-      <div style={blockStyle}>
+      <div className={css.simpleBlock}>
         <TextInput label="Text Input" placeholder="Write... "></TextInput>
       </div>
 
-      <div style={blockStyle}>
+      <div className={css.simpleBlock}>
         <NumberInput label="Number Input" placeholder="Write... "></NumberInput>
       </div>
 
-      <div style={blockStyle}>
+      <div className={css.simpleBlock}>
         <NumberInput
           label="Range Input"
           placeholder="Write... "
@@ -340,32 +388,38 @@ const App = () => {
           step="5"></NumberInput>
       </div>
 
-      <div style={blockStyle}>
+      <div className={css.simpleBlock}>
         <NumberInput label="Slider Number Input" slider min="100" max="200" step="5"></NumberInput>
       </div>
 
-      <div style={blockStyle}>
-        <ColorInput value="rgba(100, 200, 200,1)"></ColorInput>
+      <div className={css.simpleBlock}>
+        <ColorInput label="Color Input" value="rgba(100, 200, 200,1)"></ColorInput>
       </div>
 
-      <div style={blockStyle}>
-        <Select label="Select input: ">
+      <div className={css.simpleBlock}>
+        <Select label="Select Input">
           <option>Option 1</option>
           <option>Option 2</option>
           <option>Option 3</option>
         </Select>
       </div>
 
+      <div className={css.simpleBlock}>
+        <ImageInput label="Image Input" />
+      </div>
+
       <h3>Buttons</h3>
 
-      <div style={blockStyle}>
+      <div className={css.simpleBlock}>
         <Button>I'm a button</Button>
       </div>
-      <div style={blockStyle}>
+      <div className={css.simpleBlock}>
         <Toggle status={true}>Toggle On</Toggle>
         <Toggle status={false}>Toggle Off</Toggle>
       </div>
     </>
   );
 };
+
+const root = document.getElementById("root");
 render(<App></App>, root);

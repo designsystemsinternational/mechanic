@@ -1,0 +1,96 @@
+@import "../variables.css";
+
+.root {
+}
+
+.container {
+  display: flex;
+  justify-content: space-between;
+  position: relative;
+
+  border: 1px solid var(--mechanic-text);
+  box-sizing: border-box;
+  padding: 15px 1em 0 1em;
+  background-color: var(--mechanic-background);
+
+  font-size: inherit;
+  font-family: inherit;
+  font-weight: inherit;
+}
+
+.loadedImages {
+  display: flex;
+  flex-grow: 1;
+  overflow-x: auto;
+  height: 35px;
+}
+
+.imageItem {
+}
+
+.thumbnail {
+  height: 20px;
+  margin-right: 5px;
+}
+
+.preview {
+  position: absolute;
+  left: 0px;
+  bottom: 40px;
+  width: 150px;
+}
+
+.input {
+  opacity: 0;
+  width: 0.1px;
+  height: 0.1px;
+  position: absolute;
+}
+
+.browseButton {
+  padding: 0 5px;
+  height: 20px;
+}
+
+.invalid {
+}
+
+.disabled {
+  & .container {
+    border: 1px solid var(--mechanic-gray);
+  }
+}
+
+.focus {
+}
+
+.mechanic-param {
+  & > .label {
+    display: block;
+
+    margin-bottom: 0.5em;
+    width: 100%;
+
+    font-size: 0.75em;
+    font-family: var(--mechanic-param-font);
+  }
+
+  & > .container {
+    width: 100%;
+
+    font-family: var(--mechanic-param-font);
+  }
+
+  &.invalid {
+    & > .container {
+      border: 1px solid var(--mechanic-error);
+    }
+
+    & > .error {
+      box-sizing: border-box;
+      padding: 0.1em;
+
+      background: var(--mechanic-error);
+    }
+  }
+}
