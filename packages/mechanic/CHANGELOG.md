@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## 0.2.12 - 2021-08-02
+
+### Changed
+
+- App adds new edge cases to support new image param.
+- Core function validation adds support for image param validation.
+
 ## 0.2.11 - 2021-07-27
 
 ### Changed
