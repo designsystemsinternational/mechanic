@@ -7,6 +7,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## 0.3.0 - 2021-08-02
+
+### Added
+
+- Added new image param into library. It's available for export as is and `ParamInput` also supports this new typo of input.
+
+### Changed
+
+- Refactored how styling is set up in example app.
+
+### Fixed
+
+- Gray color for disabled inputs was changed into one that supports full accessible contrast.
+
 ## 0.2.11 - 2021-07-27
 
 ### Changed

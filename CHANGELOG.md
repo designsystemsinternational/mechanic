@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## 0.3.0 - 2021-08-02
+
+### Added
+
+- Support for new param added of type `"image"`.
+
 ## 0.2.11 - 2021-07-27
 
 ### Changed
@@ -40,8 +46,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 First logged release
 
-[unreleased]: https://github.com/designsystemsinternational/mechanic/compare/v0.2.11...main
-[0.2.10]: https://github.com/designsystemsinternational/mechanic/releases/tag/v0.2.11
+[unreleased]: https://github.com/designsystemsinternational/mechanic/compare/v0.3.0...main
+[0.3.0]: https://github.com/designsystemsinternational/mechanic/releases/tag/v0.3.0
+[0.2.11]: https://github.com/designsystemsinternational/mechanic/releases/tag/v0.2.11
 [0.2.10]: https://github.com/designsystemsinternational/mechanic/releases/tag/v0.2.10
 [0.2.9]: https://github.com/designsystemsinternational/mechanic/releases/tag/v0.2.9
 [0.2.8]: https://github.com/designsystemsinternational/mechanic/releases/tag/v0.2.8
