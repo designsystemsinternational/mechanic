@@ -3,8 +3,7 @@ const path = require("path");
 const inquirer = require("inquirer");
 const {
   spinners: { mechanicSpinner: spinner },
-  logo: { mechanic: logo },
-  colors: { success, fail },
+  logo: { mechanicInverse: logo },
 } = require("@designsystemsinternational/mechanic-utils");
 
 const content = require("./script-content");
@@ -24,6 +23,7 @@ const {
 const log = console.log;
 const logSuccess = spinner.succeed;
 const logFail = spinner.fail;
+const sleep = (ms = 1000) => new Promise((resolve) => setTimeout(resolve, ms));
 
 const command = async (argv) => {
   const project = argv._[0];
@@ -66,6 +66,7 @@ const command = async (argv) => {
     base,
   });
   const answers = await inquirer.prompt(projectQuestion);
+  await sleep();
   const projectName = answers.project ?? projectQuestion[0].default;
   await generateProjectTemplate(projectName, typeOfBaseUsed);
 
@@ -74,10 +75,11 @@ const command = async (argv) => {
   if (!typeOfBaseUsed) {
     log(content.designFunctionDescription);
     const { confirmContinue } = await inquirer.prompt(confirmDFQuestion);
+    await sleep();
     if (confirmContinue) {
       log(content.designFunctionBasesDescription);
     } else {
-      skipFunctions = false;
+      skipFunctions = true;
     }
   }
   if (!skipFunctions) {
@@ -87,6 +89,7 @@ const command = async (argv) => {
       base,
     });
     const functionAnswers = await inquirer.prompt(functionQuestions);
+    await sleep();
     const usesBase = functionAnswers.usesBase ?? functionQuestions[0].default;
     const finalBase =
       usesBase === "Template"
@@ -105,16 +108,13 @@ const command = async (argv) => {
 
   // Install dependencies in new project directory
   const { install } = await inquirer.prompt(confirmInstallQuestion);
+  await sleep();
   if (install) {
     await installDependencies(projectName);
   }
 
   // Done!
-  log(`\nDone! Mechanic project created at ${success(projectName)}
-To start you now can run:
-> \`cd ${projectName}\`${install ? "" : "\n> `npm i`"}
-> \`npm run dev\`
-`);
+  log(content.doneAndNextStepsMessage(projectName, install));
   log(logo);
 };
 

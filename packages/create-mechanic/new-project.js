@@ -3,7 +3,6 @@ const execa = require("execa");
 const path = require("path");
 const {
   spinners: { mechanicSpinner: spinner },
-  colors: { success, fail },
 } = require("@designsystemsinternational/mechanic-utils");
 
 const content = require("./script-content");
@@ -24,9 +23,7 @@ const getProjectQuestion = (initialAnswers) => [
       (!initialAnswers.usesBase && !initialAnswers.project),
     validate: async (project) => {
       const exists = await fs.pathExists(path.resolve(project));
-      return !exists
-        ? true
-        : "Directory already exists. Enter name that doesn't exists.";
+      return !exists ? true : content.projectNameExistsError;
     },
   },
 ];
@@ -48,7 +45,7 @@ const confirmInstallQuestion = [
 ];
 
 const generateProjectTemplate = async (projectName, typeOfBaseUsed) => {
-  spinner.start("Generating mechanic project directory...");
+  spinner.start(content.generateProjectStart);
 
   // Make new directories
   const directory = path.resolve(projectName);
@@ -82,17 +79,12 @@ const generateProjectTemplate = async (projectName, typeOfBaseUsed) => {
     })(),
   ]);
 
-  // End UI spinner
-  spinner.succeed(
-    `Mechanic ${typeOfBaseUsed ? typeOfBaseUsed : "project"} ${success(
-      projectName
-    )} directory created!`
-  );
+  spinner.succeed(content.generateProjectSuccess(typeOfBaseUsed, projectName));
   log(content.projectContents(path.dirname(directory)));
 };
 
 const installDependencies = async (projectName) => {
-  spinner.start("Installing dependencies. This may take a few minutes.");
+  spinner.start(content.installStart);
 
   // Project directory
   const cwd = path.resolve(projectName);
@@ -106,21 +98,19 @@ const installDependencies = async (projectName) => {
   } catch (err) {
     if (err.failed) {
       // Notify failure
-      spinner.warn("Failed to install with yarn.");
+      spinner.warn(content.installSuccess("yarn"));
       spinner.start("Trying with npm.");
       try {
         // Install with npm
         await execa("npm", ["install"], { cwd });
         // End success UI spinner
-        spinner.succeed("Installed dependencies with npm.");
+        spinner.succeed(content.installSuccess("npm"));
+        return "npm";
       } catch (npmErr) {
         // Notify failure
-        spinner.fail("Failed to install with npm.");
-        throw npmErr;
+        spinner.fail(content.installFail);
       }
-      return "npm";
     }
-    throw err;
   }
 };
 

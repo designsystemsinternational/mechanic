@@ -11,17 +11,15 @@ Welcome to Mechanic!`,
 `,
   useBaseNotice: `You entered a flag to use a specific base to create a Mechanic project.
 `,
-  baseDoesNotExist: (typeOfBaseUsed, base) =>
-    `Failed to find ${typeOfBaseUsed} of name "${base}". Check the docs for the available options.
-`,
-  baseExist: (typeOfBaseUsed, base) =>
-    `${
-      typeOfBaseUsed === "template" ? "Template" : "Example"
-    } "${base}" available!
-`,
-  directoryAlreadyExist: (typeOfBaseUsed, base) =>
-    `Directory of name "${base}" already exists. Change name of existing folder or try in another directory.
-`,
+
+  projectNameQuestion: "Name your project",
+  projectNameExistsError:
+    "Directory already exists. Enter name that doesn't exists.",
+  generateProjectStart: "Generating mechanic project directory...",
+  generateProjectSuccess: (typeOfBaseUsed, projectName) =>
+    `Mechanic ${typeOfBaseUsed ? typeOfBaseUsed : "project"} ${success(
+      projectName
+    )} directory created!`,
   projectContents: (dirPath) =>
     `It was created in the current working directory: ${dirPath}
 It contains the following files:
@@ -33,20 +31,26 @@ It contains the following files:
 > ${success("functions/")} (folder that will contain all design functions)
 
 `,
-  functionCreationDetails: (functionName) =>
-    `This just:
-> Created a folder inside functions/, called ${success(
-      functionName
-    )}, which has an ${success(
-      "index.js"
-    )} file where the design function is defined.
-> Added some other dependencies into your project to make your design function work.
 
+  baseDoesNotExist: (typeOfBaseUsed, base) =>
+    `Failed to find ${typeOfBaseUsed} of name "${base}". Check the docs for the available options.
 `,
+  baseExist: (typeOfBaseUsed, base) =>
+    `${
+      typeOfBaseUsed === "template" ? "Template" : "Example"
+    } "${base}" available!
+`,
+  directoryAlreadyExist: (typeOfBaseUsed, base) =>
+    `Directory of name "${base}" already exists. Change name of existing folder or try in another directory.
+`,
+
   designFunctionDescription: `A ${
     bgRed("design ") + bgBlue("function")
   } is a JavaScript function that generates a design asset. The asset can be either static or animated, simple or complicated. A Mechanic project can have one or more design functions.
 `,
+  confirmContinueQuestion:
+    "Do you want to set up your first design function right now? (you can always do it afterwards)",
+
   designFunctionBasesDescription: `We’ve got some working design functions for you if you need them.
 
 ${bgRed(
@@ -57,9 +61,41 @@ ${bgBlue(
   "Examples"
 )} are more complicated design functions we created to show how to use Mechanic to tackle some common use cases. Current examples include a poster generator and an instagram post generator.  
 `,
-  projectNameQuestion: "Name your project",
-  confirmContinueQuestion:
-    "Do you want to set up your first design function right now? (you can always do it afterwards)",
+
+  functionBaseQuestion: `Do you want to use a template or an example as a base for your first design function?`,
+  functionTemplateQuestion: `Select template for your first design function`,
+  functionExampleQuestion: `Select example to use as base for your first design function`,
+  functionNameQuestion: "Name your first design function",
+  functionNameExistsError:
+    "Directory already exists. Enter name that doesn't exists.",
+  generateFunctionStart: "Adding design function to project...",
+  generateFunctionSuccess: (functionName) =>
+    `Design function "${functionName}" added to project!`,
+  functionCreationDetails: (functionName) =>
+    `This just:
+> Created a folder inside functions/, called ${success(
+      functionName
+    )}, which has an ${success(
+      "index.js"
+    )} file where the design function is defined.
+> Added some other dependencies into your project to make your design function work.
+
+`,
+
   confirmInstallQuestion:
     "Do you wish to install dependencies for your project right away?",
+  installStart:
+    "Installing dependencies. This may take a few minutes. Trying with yarn.",
+  installSuccess: (method) => `Failed to install with ${method}.`,
+  installFail:
+    "Failed to install with npm. Try installing by yourself to check the issue.",
+
+  doneAndNextStepsMessage: (
+    projectName,
+    installed
+  ) => `\nDone! Mechanic project created at ${success(projectName)}
+To start you now can run:
+> \`cd ${projectName}\`${installed ? "" : "\n> `npm i`"}
+> \`npm run dev\`
+`,
 };
