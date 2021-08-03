@@ -6,47 +6,65 @@ const {
 
 const functionExampleOptions = require("./function-examples");
 const functionTemplateOptions = require("./function-templates");
+const content = require("./script-content");
+
+const log = console.log;
+
+const baseExists = (typeOfBaseUsed, base) => {
+  if (typeOfBaseUsed === "template" && base in functionTemplateOptions)
+    return true;
+  if (typeOfBaseUsed === "example" && base in functionExampleOptions)
+    return true;
+  return false;
+};
 
 const getFunctionQuestions = (initialAnswers, config = {}) => [
   {
-    name: "base",
+    name: "usesBase",
     type: "list",
     message: `Do you want to use a template or an example as a base for your first design function?`,
-    default: initialAnswers.example
-      ? "Example"
-      : initialAnswers.template
-      ? "Template"
-      : null,
-    choices: ["Template", "Example"],
+    default:
+      initialAnswers.usesBase === "example"
+        ? "Example"
+        : initialAnswers.usesBase === "template"
+        ? "Template"
+        : null,
+    choices: ["Template", "Example", "Neither"],
+    when: initialAnswers.noSkip || !initialAnswers.usesBase,
   },
   {
     name: "template",
     type: "list",
     message: `Select template for your first design function`,
-    default: initialAnswers.template,
+    default:
+      initialAnswers.usesBase === "template" ? initialAnswers.base : null,
     choices: Object.values(functionTemplateOptions).map((option) => ({
       name: `${option.name} (${option.type})`,
       value: option.dir,
     })),
-    when: (answers) => answers.base === "Template",
+    when: (answers) =>
+      !initialAnswers.usesBase && answers.usesBase === "Template",
   },
   {
     name: "example",
     type: "list",
     message: `Select example to use as base for your first design function`,
-    default: initialAnswers.example,
+    default: initialAnswers.usesBase === "example" ? initialAnswers.base : null,
     choices: Object.values(functionExampleOptions).map((option) => ({
       name: `${option.name} (${option.type})`,
       value: option.dir,
     })),
-    when: (answers) => answers.base === "Example",
+    when: (answers) =>
+      !initialAnswers.usesBase && answers.usesBase === "Example",
   },
   {
     name: "functionName",
     type: "input",
     message:
       "Name your first design function (you can always create more with `mechanic new function`)",
-    default: initialAnswers.functionName || "my-function",
+    default: initialAnswers.usesBase
+      ? initialAnswers.base
+      : initialAnswers.functionName || "my-function",
     validate: async (functionName) => {
       const exists = await fs.pathExists(
         path.resolve(config.functionsPath || "functions", functionName)
@@ -55,12 +73,13 @@ const getFunctionQuestions = (initialAnswers, config = {}) => [
         ? true
         : "Directory already exists. Enter name that doesn't exists.";
     },
+    when: initialAnswers.noSkip || !initialAnswers.usesBase,
   },
 ];
 
 const generateFunctionTemplate = async (
   projectName,
-  { base, template, example, functionName },
+  { typeOfBaseUsed, base, functionName },
   config = {}
 ) => {
   spinner.start("Adding design function to project...");
@@ -77,10 +96,16 @@ const generateFunctionTemplate = async (
   // Path of template directory to copy
   const baseFunctionDir = path.join(
     __dirname,
-    base === "Template" ? "function-templates" : "function-examples",
+    typeOfBaseUsed === "Template"
+      ? "function-templates"
+      : typeOfBaseUsed === "Example"
+      ? "function-examples"
+      : "function-blank",
     base === "Template"
       ? functionTemplateOptions[template].dir
-      : functionExampleOptions[example].dir
+      : typeOfBaseUsed === "Example"
+      ? functionExampleOptions[example].dir
+      : ""
   );
 
   // Add dependencies and copy files
@@ -120,7 +145,12 @@ const generateFunctionTemplate = async (
 
   // End UI spinner
   spinner.succeed(`Design function "${functionName}" added to project!`);
+  log(content.functionCreationDetails(functionName));
   return newFunctionDir;
 };
 
-module.exports = { generateFunctionTemplate, getFunctionQuestions };
+module.exports = {
+  baseExists,
+  generateFunctionTemplate,
+  getFunctionQuestions,
+};

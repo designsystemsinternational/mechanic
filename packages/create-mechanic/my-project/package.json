@@ -1,0 +1,14 @@
+{
+  "name": "my-project",
+  "version": "0.0.0",
+  "scripts": {
+    "dev": "mechanic dev",
+    "build": "mechanic build",
+    "serve": "mechanic serve",
+    "new": "mechanic new function"
+  },
+  "devDependencies": {
+    "@designsystemsinternational/mechanic": "latest",
+    "@designsystemsinternational/mechanic-cli": "latest"
+  }
+}

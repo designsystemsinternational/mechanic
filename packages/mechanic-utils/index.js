@@ -54,7 +54,8 @@ mechanicSpinner.fail = text => mechanicSpinner.stopAndPersist({ text, symbol: ch
 mechanicSpinner.warn = text =>
   mechanicSpinner.stopAndPersist({ text, symbol: chalk.bgYellow(" ⚠ ") });
 
-const mechanicLogo = `${blue("MECHANIC")}\n${red("MECHANIC")}`;
+const mechanicLogo = `${red("MECHANIC")}\n${blue("MECHANIC")}`;
+const mechanicLogoInverse = `${blue("MECHANIC")}\n${red("MECHANIC")}`;
 
 const dsiLogo = `${white("TIONAL")}${red("DESIGN")}${blue("S")}\n${blue("YSTEMS")}${white(
   "INTERNA"
@@ -67,10 +68,13 @@ module.exports = {
   },
   colors: {
     success,
-    fail
+    fail,
+    bgRed: red,
+    bgBlue: blue
   },
   logo: {
     dsi: dsiLogo,
-    mechanic: mechanicLogo
+    mechanic: mechanicLogo,
+    mechanicInverse: mechanicLogoInverse
   }
 };
