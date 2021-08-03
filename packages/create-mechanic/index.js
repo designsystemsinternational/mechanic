@@ -3,7 +3,6 @@ const path = require("path");
 const inquirer = require("inquirer");
 const {
   spinners: { mechanicSpinner: spinner },
-  logo: { mechanicInverse: logo },
 } = require("@designsystemsinternational/mechanic-utils");
 
 const content = require("./script-content");
@@ -24,6 +23,16 @@ const log = console.log;
 const logSuccess = spinner.succeed;
 const logFail = spinner.fail;
 const sleep = (ms = 1000) => new Promise((resolve) => setTimeout(resolve, ms));
+
+const askToInstall = async (projectName) => {
+  // Install dependencies in new project directory
+  const { install } = await inquirer.prompt(confirmInstallQuestion);
+  await sleep();
+  if (install) {
+    await installDependencies(projectName);
+  }
+  return install;
+};
 
 const command = async (argv) => {
   const project = argv._[0];
@@ -107,15 +116,11 @@ const command = async (argv) => {
   }
 
   // Install dependencies in new project directory
-  const { install } = await inquirer.prompt(confirmInstallQuestion);
-  await sleep();
-  if (install) {
-    await installDependencies(projectName);
-  }
+  const install = await askToInstall(projectName);
 
   // Done!
   log(content.doneAndNextStepsMessage(projectName, install));
-  log(logo);
+  log(content.bye);
 };
 
 const commandOptions = {
@@ -136,5 +141,5 @@ const commandOptions = {
 module.exports = {
   create: command,
   options: commandOptions,
-  installDependencies,
+  askToInstall,
 };

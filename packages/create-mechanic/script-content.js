@@ -1,7 +1,9 @@
 const {
-  logo: { mechanic },
+  logo: { mechanic, mechanicInverse },
   colors: { success, bgRed, bgBlue },
 } = require("@designsystemsinternational/mechanic-utils");
+
+const mechanicPackage = "@designsystemsinternational/mechanic";
 
 module.exports = {
   welcome: `${mechanic}
@@ -98,4 +100,19 @@ To start you now can run:
 > \`cd ${projectName}\`${installed ? "" : "\n> `npm i`"}
 > \`npm run dev\`
 `,
+  bye: mechanicInverse,
+
+  welcomeNewFunction: `${mechanic}
+
+  `,
+  notMechanicProjectError: `Not mechanic project: new function can only be run inside mechanic project.
+  Either the current working directory does not contain a valid package.json or '${mechanicPackage}' is not specified as a dependency`,
+
+  newFunctionNextStepsMessage: (
+    functionDir,
+    installed
+  ) => `Done! Design function created at ${success(functionDir)}
+To start you now can run:${installed ? "" : "\n> `npm i`"}
+> \`npm run dev\`
+  `,
 };

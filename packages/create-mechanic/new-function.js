@@ -149,4 +149,12 @@ module.exports = {
   baseExists,
   generateFunctionTemplate,
   getFunctionQuestions,
+  content: {
+    notMechanicProjectError: content.notMechanicProjectError,
+    welcome: content.welcomeNewFunction,
+    useBaseNotice: content.useBaseNotice,
+
+    doneAndNextStepsMessage: content.newFunctionNextStepsMessage,
+    bye: content.bye,
+  },
 };

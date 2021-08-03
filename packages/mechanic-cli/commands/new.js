@@ -1,32 +1,30 @@
 const path = require("path");
 const inquirer = require("inquirer");
 const {
-  colors: { fail, success },
-  logo: { mechanic: logo },
+  spinners: { mechanicSpinner: spinner },
 } = require("@designsystemsinternational/mechanic-utils");
 const {
   create,
   options,
-  installDependencies,
+  askToInstall,
 } = require("@designsystemsinternational/create-mechanic");
 const {
   generateFunctionTemplate,
   getFunctionQuestions,
+  content,
 } = require("@designsystemsinternational/create-mechanic/new-function");
 
-const { mechanic, getIsMechanicProject } = require("./utils");
+const { getIsMechanicProject } = require("./utils");
+
+const log = console.log;
+const logSuccess = spinner.succeed;
+const logFail = spinner.fail;
+const sleep = (ms = 1000) => new Promise((resolve) => setTimeout(resolve, ms));
 
 const newFunctionCommand = async (argv) => {
   const isMechanicProject = getIsMechanicProject();
   if (!isMechanicProject) {
-    console.log(
-      fail("Not mechanic project: ") +
-        `new function can only be run inside mechanic project.`
-    );
-    console.log(
-      `Either the current working directory does not contain a valid package.json or ` +
-        `'${mechanic}' is not specified as a dependency \n`
-    );
+    logFail(content.notMechanicProjectError);
     return;
   }
 
@@ -35,40 +33,55 @@ const newFunctionCommand = async (argv) => {
   const functionName = argv._[2];
   const template = argv.template || argv.t;
   const example = argv.example || argv.e;
+  const typeOfBaseUsed = !!template
+    ? "template"
+    : !!example
+    ? "example"
+    : false;
+  const base = !!template ? template : !!example ? example : null;
+
+  log(content.welcome);
+  if (typeOfBaseUsed) {
+    log(content.useBaseNotice);
+  }
+
+  // Generate new functions directory and design function files and prompt if necessary
   const questions = getFunctionQuestions(
-    { functionName, template, example },
-    config
-  );
-
-  console.log(logo, "\n");
-  if (functionName || template || example) {
-    console.log("Received arguments loaded as defaults");
-  }
-
-  // Confirm and generate new project directory and content files
-  const functionAnswers = await inquirer.prompt(questions);
-  const functionDir = await generateFunctionTemplate(
-    ".",
-    functionAnswers,
-    config
-  );
-  const { install } = await inquirer.prompt([
     {
-      name: "install",
-      type: "confirm",
-      message: "Do you wish to install dependencies right away?",
-      default: true,
+      functionName,
+      usesBase: typeOfBaseUsed,
+      base,
     },
-  ]);
-  if (install) {
-    await installDependencies(".");
-  }
+    config
+  );
+  const functionAnswers = await inquirer.prompt(questions);
+  await sleep();
+
+  const usesBase = functionAnswers.usesBase ?? functionQuestions[0].default;
+  const finalBase =
+    usesBase === "Template"
+      ? functionAnswers.template ?? functionQuestions[1].default
+      : usesBase === "Example"
+      ? functionAnswers.example ?? functionQuestions[2].default
+      : null;
+  const finalFunctionName =
+    functionAnswers.functionName ?? functionQuestions[3].default;
+  await generateFunctionTemplate(
+    ".",
+    {
+      typeOfBaseUsed: usesBase,
+      base: finalBase,
+      functionName: finalFunctionName,
+    },
+    config
+  );
+
+  // Install new dependencies
+  const install = await askToInstall(".");
+
   // Done!
-  console.log(`\nDone! Design function created at ${success(functionDir)}
-To start you now can run:${install ? "" : "\n> `npm i`"}
-> \`npm run dev\`
-`);
-  console.log(logo);
+  log(content.doneAndNextStepsMessage(functionDir, install));
+  log(content.bye);
 };
 
 module.exports = {
