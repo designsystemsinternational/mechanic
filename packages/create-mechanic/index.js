@@ -1,4 +1,3 @@
-const fs = require("fs-extra");
 const path = require("path");
 const inquirer = require("inquirer");
 const {
@@ -15,6 +14,7 @@ const {
 } = require("./new-project");
 const {
   baseExists,
+  directoryExists,
   generateFunctionTemplate,
   getFunctionQuestions,
 } = require("./new-function");
@@ -61,7 +61,7 @@ const command = async (argv) => {
     } else {
       logSuccess(content.baseExist(typeOfBaseUsed, base));
     }
-    const alreadyExists = await fs.pathExists(path.resolve(base));
+    const alreadyExists = await directoryExists(path.resolve(base));
     if (alreadyExists) {
       logFail(content.directoryAlreadyExist(typeOfBaseUsed, base));
       return;

@@ -18,6 +18,8 @@ const baseExists = (typeOfBaseUsed, base) => {
   return false;
 };
 
+const directoryExists = async (dirPath) => await fs.pathExists(dirPath);
+
 const getFunctionQuestions = (initialAnswers, config = {}) => [
   {
     name: "usesBase",
@@ -147,13 +149,16 @@ const generateFunctionTemplate = async (
 
 module.exports = {
   baseExists,
+  directoryExists,
   generateFunctionTemplate,
   getFunctionQuestions,
   content: {
     notMechanicProjectError: content.notMechanicProjectError,
     welcome: content.welcomeNewFunction,
     useBaseNotice: content.useBaseNotice,
-
+    baseExist: content.baseExist,
+    baseDoesNotExist: content.baseDoesNotExist,
+    directoryAlreadyExist: content.directoryAlreadyExist,
     doneAndNextStepsMessage: content.newFunctionNextStepsMessage,
     bye: content.bye,
   },

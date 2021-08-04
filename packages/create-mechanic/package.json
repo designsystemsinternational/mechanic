@@ -33,6 +33,8 @@
   "files": [
     "index.js",
     "new-function.js",
+    "new-project.js",
+    "script-content.js",
     "cli.js",
     "function-*",
     "project-template"

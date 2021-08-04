@@ -9,6 +9,8 @@ const {
   askToInstall,
 } = require("@designsystemsinternational/create-mechanic");
 const {
+  baseExists,
+  directoryExists,
   generateFunctionTemplate,
   getFunctionQuestions,
   content,
@@ -45,6 +47,23 @@ const newFunctionCommand = async (argv) => {
     log(content.useBaseNotice);
   }
 
+  // Check that base exists and can be created
+  if (typeOfBaseUsed) {
+    if (!baseExists(typeOfBaseUsed, base)) {
+      logFail(content.baseDoesNotExist(typeOfBaseUsed, base));
+      return;
+    } else {
+      logSuccess(content.baseExist(typeOfBaseUsed, base));
+    }
+    const alreadyExists = await directoryExists(
+      path.resolve("functions", base)
+    );
+    if (alreadyExists) {
+      logFail(content.directoryAlreadyExist(typeOfBaseUsed, base));
+      return;
+    }
+  }
+
   // Generate new functions directory and design function files and prompt if necessary
   const questions = getFunctionQuestions(
     {
@@ -57,16 +76,16 @@ const newFunctionCommand = async (argv) => {
   const functionAnswers = await inquirer.prompt(questions);
   await sleep();
 
-  const usesBase = functionAnswers.usesBase ?? functionQuestions[0].default;
+  const usesBase = functionAnswers.usesBase ?? questions[0].default;
   const finalBase =
     usesBase === "Template"
-      ? functionAnswers.template ?? functionQuestions[1].default
+      ? functionAnswers.template ?? questions[1].default
       : usesBase === "Example"
-      ? functionAnswers.example ?? functionQuestions[2].default
+      ? functionAnswers.example ?? questions[2].default
       : null;
   const finalFunctionName =
-    functionAnswers.functionName ?? functionQuestions[3].default;
-  await generateFunctionTemplate(
+    functionAnswers.functionName ?? questions[3].default;
+  const functionDir = await generateFunctionTemplate(
     ".",
     {
       typeOfBaseUsed: usesBase,
