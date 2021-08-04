@@ -26,7 +26,9 @@ Welcome to Mechanic!`,
     `It was created in the current working directory: ${dirPath}
 It contains the following files:
 > ${success("package.json")} (has all dependencies to use Mechanic)
-> ${success("mechanic.config.js")} (for Mechanic commands configuration)
+> ${success(
+      "mechanic.config.js"
+    )} (sets configuration for Mechanic commands to use)
 > ${success(
       "README.md"
     )} (contains some pointers on how to start using your Mechanic project)
