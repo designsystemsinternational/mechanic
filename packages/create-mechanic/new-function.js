@@ -6,64 +6,82 @@ const {
 
 const functionExampleOptions = require("./function-examples");
 const functionTemplateOptions = require("./function-templates");
+const content = require("./script-content");
+
+const log = console.log;
+
+const baseExists = (typeOfBaseUsed, base) => {
+  if (typeOfBaseUsed === "template" && base in functionTemplateOptions)
+    return true;
+  if (typeOfBaseUsed === "example" && base in functionExampleOptions)
+    return true;
+  return false;
+};
+
+const directoryExists = async (dirPath) => await fs.pathExists(dirPath);
 
 const getFunctionQuestions = (initialAnswers, config = {}) => [
   {
-    name: "base",
+    name: "usesBase",
     type: "list",
-    message: `Do you want to use a template or an example as a base for your first design function?`,
-    default: initialAnswers.example
-      ? "Example"
-      : initialAnswers.template
-      ? "Template"
-      : null,
-    choices: ["Template", "Example"],
+    message: content.functionBaseQuestion,
+    default:
+      initialAnswers.usesBase === "example"
+        ? "Example"
+        : initialAnswers.usesBase === "template"
+        ? "Template"
+        : null,
+    choices: ["Template", "Example", "Neither"],
+    when: initialAnswers.noSkip || !initialAnswers.usesBase,
   },
   {
     name: "template",
     type: "list",
-    message: `Select template for your first design function`,
-    default: initialAnswers.template,
+    message: content.functionTemplateQuestion,
+    default:
+      initialAnswers.usesBase === "template" ? initialAnswers.base : null,
     choices: Object.values(functionTemplateOptions).map((option) => ({
       name: `${option.name} (${option.type})`,
       value: option.dir,
     })),
-    when: (answers) => answers.base === "Template",
+    when: (answers) =>
+      !initialAnswers.usesBase && answers.usesBase === "Template",
   },
   {
     name: "example",
     type: "list",
-    message: `Select example to use as base for your first design function`,
-    default: initialAnswers.example,
+    message: content.functionExampleQuestion,
+    default: initialAnswers.usesBase === "example" ? initialAnswers.base : null,
     choices: Object.values(functionExampleOptions).map((option) => ({
       name: `${option.name} (${option.type})`,
       value: option.dir,
     })),
-    when: (answers) => answers.base === "Example",
+    when: (answers) =>
+      !initialAnswers.usesBase && answers.usesBase === "Example",
   },
   {
     name: "functionName",
     type: "input",
-    message:
-      "Name your first design function (you can always create more with `mechanic new function`)",
-    default: initialAnswers.functionName || "my-function",
+    message: content.functionNameQuestion,
+    default: initialAnswers.usesBase
+      ? initialAnswers.base
+      : initialAnswers.functionName || "my-function",
     validate: async (functionName) => {
       const exists = await fs.pathExists(
         path.resolve(config.functionsPath || "functions", functionName)
       );
-      return !exists
-        ? true
-        : "Directory already exists. Enter name that doesn't exists.";
+      return !exists ? true : content.functionNameExistsError;
     },
+    when: initialAnswers.noSkip || !initialAnswers.usesBase,
   },
 ];
 
 const generateFunctionTemplate = async (
   projectName,
-  { base, template, example, functionName },
+  { typeOfBaseUsed, base, functionName },
   config = {}
 ) => {
-  spinner.start("Adding design function to project...");
+  spinner.start(content.generateFunctionStart);
 
   // Create design function folder
   const directory = path.resolve(projectName);
@@ -77,10 +95,16 @@ const generateFunctionTemplate = async (
   // Path of template directory to copy
   const baseFunctionDir = path.join(
     __dirname,
-    base === "Template" ? "function-templates" : "function-examples",
-    base === "Template"
-      ? functionTemplateOptions[template].dir
-      : functionExampleOptions[example].dir
+    typeOfBaseUsed === "Template"
+      ? "function-templates"
+      : typeOfBaseUsed === "Example"
+      ? "function-examples"
+      : "function-blank",
+    typeOfBaseUsed === "Template"
+      ? functionTemplateOptions[base].dir
+      : typeOfBaseUsed === "Example"
+      ? functionExampleOptions[base].dir
+      : ""
   );
 
   // Add dependencies and copy files
@@ -118,9 +142,24 @@ const generateFunctionTemplate = async (
     ),
   ]);
 
-  // End UI spinner
-  spinner.succeed(`Design function "${functionName}" added to project!`);
+  spinner.succeed(content.generateFunctionSuccess(functionName));
+  log(content.functionCreationDetails(functionName));
   return newFunctionDir;
 };
 
-module.exports = { generateFunctionTemplate, getFunctionQuestions };
+module.exports = {
+  baseExists,
+  directoryExists,
+  generateFunctionTemplate,
+  getFunctionQuestions,
+  content: {
+    notMechanicProjectError: content.notMechanicProjectError,
+    welcome: content.welcomeNewFunction,
+    useBaseNotice: content.useBaseNotice,
+    baseExist: content.baseExist,
+    baseDoesNotExist: content.baseDoesNotExist,
+    directoryAlreadyExist: content.directoryAlreadyExist,
+    doneAndNextStepsMessage: content.newFunctionNextStepsMessage,
+    bye: content.bye,
+  },
+};

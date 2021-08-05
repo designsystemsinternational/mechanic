@@ -1,32 +1,32 @@
 const path = require("path");
 const inquirer = require("inquirer");
 const {
-  colors: { fail, success },
-  logo: { mechanic: logo },
+  spinners: { mechanicSpinner: spinner },
 } = require("@designsystemsinternational/mechanic-utils");
 const {
   create,
   options,
-  installDependencies,
+  askToInstall,
 } = require("@designsystemsinternational/create-mechanic");
 const {
+  baseExists,
+  directoryExists,
   generateFunctionTemplate,
   getFunctionQuestions,
+  content,
 } = require("@designsystemsinternational/create-mechanic/new-function");
 
-const { mechanic, getIsMechanicProject } = require("./utils");
+const { getIsMechanicProject } = require("./utils");
+
+const log = console.log;
+const logSuccess = spinner.succeed;
+const logFail = spinner.fail;
+const sleep = (ms = 1000) => new Promise((resolve) => setTimeout(resolve, ms));
 
 const newFunctionCommand = async (argv) => {
   const isMechanicProject = getIsMechanicProject();
   if (!isMechanicProject) {
-    console.log(
-      fail("Not mechanic project: ") +
-        `new function can only be run inside mechanic project.`
-    );
-    console.log(
-      `Either the current working directory does not contain a valid package.json or ` +
-        `'${mechanic}' is not specified as a dependency \n`
-    );
+    logFail(content.notMechanicProjectError);
     return;
   }
 
@@ -35,40 +35,72 @@ const newFunctionCommand = async (argv) => {
   const functionName = argv._[2];
   const template = argv.template || argv.t;
   const example = argv.example || argv.e;
-  const questions = getFunctionQuestions(
-    { functionName, template, example },
-    config
-  );
+  const typeOfBaseUsed = !!template
+    ? "template"
+    : !!example
+    ? "example"
+    : false;
+  const base = !!template ? template : !!example ? example : null;
 
-  console.log(logo, "\n");
-  if (functionName || template || example) {
-    console.log("Received arguments loaded as defaults");
+  log(content.welcome);
+  if (typeOfBaseUsed) {
+    log(content.useBaseNotice);
   }
 
-  // Confirm and generate new project directory and content files
+  // Check that base exists and can be created
+  if (typeOfBaseUsed) {
+    if (!baseExists(typeOfBaseUsed, base)) {
+      logFail(content.baseDoesNotExist(typeOfBaseUsed, base));
+      return;
+    } else {
+      logSuccess(content.baseExist(typeOfBaseUsed, base));
+    }
+    const alreadyExists = await directoryExists(
+      path.resolve("functions", base)
+    );
+    if (alreadyExists) {
+      logFail(content.directoryAlreadyExist(typeOfBaseUsed, base));
+      return;
+    }
+  }
+
+  // Generate new functions directory and design function files and prompt if necessary
+  const questions = getFunctionQuestions(
+    {
+      functionName,
+      usesBase: typeOfBaseUsed,
+      base,
+    },
+    config
+  );
   const functionAnswers = await inquirer.prompt(questions);
+  await sleep();
+
+  const usesBase = functionAnswers.usesBase ?? questions[0].default;
+  const finalBase =
+    usesBase === "Template"
+      ? functionAnswers.template ?? questions[1].default
+      : usesBase === "Example"
+      ? functionAnswers.example ?? questions[2].default
+      : null;
+  const finalFunctionName =
+    functionAnswers.functionName ?? questions[3].default;
   const functionDir = await generateFunctionTemplate(
     ".",
-    functionAnswers,
+    {
+      typeOfBaseUsed: usesBase,
+      base: finalBase,
+      functionName: finalFunctionName,
+    },
     config
   );
-  const { install } = await inquirer.prompt([
-    {
-      name: "install",
-      type: "confirm",
-      message: "Do you wish to install dependencies right away?",
-      default: true,
-    },
-  ]);
-  if (install) {
-    await installDependencies(".");
-  }
+
+  // Install new dependencies
+  const install = await askToInstall(".");
+
   // Done!
-  console.log(`\nDone! Design function created at ${success(functionDir)}
-To start you now can run:${install ? "" : "\n> `npm i`"}
-> \`npm run dev\`
-`);
-  console.log(logo);
+  log(content.doneAndNextStepsMessage(functionDir, install));
+  log(content.bye);
 };
 
 module.exports = {
