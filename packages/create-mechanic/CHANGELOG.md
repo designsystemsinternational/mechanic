@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### Changed
+
+- Added more options to the creation flow and concept explanations that were missing.
+
 ## 0.2.10 - 2021-07-21
 
 ### Fixed

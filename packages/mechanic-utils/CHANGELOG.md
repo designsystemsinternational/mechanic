@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### Added
+
+- New inverted version of Mechanic logo to log at the end of CLI commands.
+- Also exports colored background utilities.
+
 ## 0.2.7 - 2021-07-13
 
 First logged release
