@@ -1,5 +1,10 @@
 const options = [
   {
+    name: "Poster Generator",
+    type: "Canvas",
+    dir: "poster-generator",
+  },
+  {
     name: "Vanilla JS Image",
     type: "SVG",
     dir: "svg-image",
