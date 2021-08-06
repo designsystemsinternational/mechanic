@@ -10,6 +10,34 @@ const content = require("./script-content");
 
 const log = console.log;
 
+// https://gist.github.com/lovasoa/8691344#gistcomment-3299018
+const walk = (dir, fileCallback, directoryCallback) => {
+  const files = fs.readdirSync(dir);
+  files.forEach((file) => {
+    const filepath = path.join(dir, file);
+    const stats = fs.statSync(filepath);
+    if (stats.isDirectory()) {
+      directoryCallback(file, filepath, stats);
+      walk(filepath, fileCallback, directoryCallback);
+    } else if (stats.isFile()) {
+      fileCallback(file, filepath, stats);
+    }
+  });
+};
+
+const copyDirAndContents = (baseFunctionDir, newFunctionDir) => {
+  const copyFile = (_, filepath) => {
+    if (path.join(baseFunctionDir, "dependencies.json") === filepath) return;
+    const relativePath = path.relative(baseFunctionDir, filepath);
+    fs.copyFileSync(filepath, path.join(newFunctionDir, relativePath));
+  };
+  const copyDir = (_, filepath) => {
+    const relativePath = path.relative(baseFunctionDir, filepath);
+    fs.mkdirSync(path.join(newFunctionDir, relativePath));
+  };
+  walk(baseFunctionDir, copyFile, copyDir);
+};
+
 const baseExists = (typeOfBaseUsed, base) => {
   if (typeOfBaseUsed === "template" && base in functionTemplateOptions)
     return true;
@@ -107,7 +135,7 @@ const generateFunctionTemplate = async (
       : ""
   );
 
-  // Add dependencies and copy files
+  // Add dependencies and copy basic files
   await Promise.all([
     (async () => {
       const packageObj = JSON.parse(
@@ -128,19 +156,15 @@ const generateFunctionTemplate = async (
           packageObj[depType][dep] = baseDependencies[depType][dep];
         }
       }
-
       // Write the resulting package
       await fs.writeFile(
         path.join(directory, "package.json"),
         JSON.stringify(packageObj, null, 2)
       );
     })(),
-    // Copy template design function with different names
-    fs.copyFile(
-      path.join(baseFunctionDir, "index.js"),
-      path.join(newFunctionDir, "index.js")
-    ),
   ]);
+  // Copy all files in base dir
+  copyDirAndContents(baseFunctionDir, newFunctionDir);
 
   spinner.succeed(content.generateFunctionSuccess(functionName));
   log(content.functionCreationDetails(functionName));
