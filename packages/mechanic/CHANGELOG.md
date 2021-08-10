@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### Fixed
+
+- Fixed mechanic value validation through validation field.
+
 ## 0.3.0 - 2021-08-02
 
 ### Changed
