@@ -7,17 +7,19 @@ import {
 } from "../../utils/blocks";
 import { Block } from "../../utils/blocks-components";
 
-export const handler = ({
-  width,
-  ratio,
-  done,
-  colorMode,
-  flag,
-  firstColor,
-  secondColor,
-  thirdColor,
-  offset,
-}) => {
+export const handler = ({ params, mechanic }) => {
+  const {
+    width,
+    ratio,
+    colorMode,
+    flag,
+    firstColor,
+    secondColor,
+    thirdColor,
+    offset,
+  } = params;
+  const { done } = mechanic;
+
   const rows = 2;
   const cols = 13;
   const words = ["DESIGN", "SYSTEMS", "INTERNATIONAL"];

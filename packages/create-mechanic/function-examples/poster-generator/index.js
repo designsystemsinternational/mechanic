@@ -13,7 +13,7 @@ import {
   randInt,
 } from "./utils.js";
 
-export const handler = (sketch, params, mechanic) => {
+export const handler = ({ params, mechanic, sketch }) => {
   const { width, height, date, dayAndTime, artist, description, image, color } =
     params;
   const artistText = artist.toUpperCase();
