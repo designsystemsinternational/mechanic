@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 
-export const handler = ({ height, frame, done }) => {
+export const handler = ({ params, mechanic }) => {
+  const { height, background, fill } = params;
   const width = height;
 
   const isPlaying = useRef(true);
@@ -11,10 +12,10 @@ export const handler = ({ height, frame, done }) => {
 
   useEffect(() => {
     if (frameCount < 100) {
-      frame();
+      mechanic.frame();
     } else if (isPlaying.current) {
       isPlaying.current = false;
-      done();
+      mechanic.done();
     }
   }, [frameCount]);
 
@@ -26,16 +27,9 @@ export const handler = ({ height, frame, done }) => {
         width={width}
         height={height}
         stroke="none"
-        fill={"red"}
+        fill={background}
       />
-      <ellipse
-        cx={x}
-        cy={height / 2}
-        rx={r}
-        ry={r}
-        stroke="none"
-        fill={"blue"}
-      />
+      <ellipse cx={x} cy={height / 2} rx={r} ry={r} stroke="none" fill={fill} />
     </svg>
   );
 };
@@ -44,6 +38,16 @@ export const params = {
   height: {
     type: "number",
     default: 600,
+  },
+  background: {
+    type: "color",
+    default: "red",
+    options: ["red", "orange", "yellow"],
+  },
+  fill: {
+    type: "color",
+    default: "cyan",
+    options: ["cyan", "blue", "green"],
   },
 };
 
