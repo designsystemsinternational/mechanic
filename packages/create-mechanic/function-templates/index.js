@@ -1,16 +1,6 @@
 const options = [
   {
     name: "Vanilla JS Image",
-    type: "SVG",
-    dir: "svg-image",
-  },
-  {
-    name: "Vanilla JS Video",
-    type: "SVG",
-    dir: "svg-video",
-  },
-  {
-    name: "Vanilla JS Image",
     type: "Canvas",
     dir: "canvas-image",
   },
@@ -20,9 +10,24 @@ const options = [
     dir: "canvas-video",
   },
   {
-    name: "Random Vanilla JS Image",
+    name: "Vanilla JS Image",
+    type: "SVG",
+    dir: "svg-image",
+  },
+  {
+    name: "Vanilla JS Video",
+    type: "SVG",
+    dir: "svg-video",
+  },
+  {
+    name: "p5.js Image",
     type: "Canvas",
-    dir: "random-image",
+    dir: "p5-image",
+  },
+  {
+    name: "p5.js Video",
+    type: "Canvas",
+    dir: "p5-animation",
   },
   {
     name: "React Image",
@@ -30,14 +35,9 @@ const options = [
     dir: "react-image",
   },
   {
-    name: "React Animation",
+    name: "React Video",
     type: "SVG",
     dir: "react-video",
-  },
-  {
-    name: "p5.js Animation",
-    type: "Canvas",
-    dir: "p5-animation",
   },
 ];
 
