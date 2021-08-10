@@ -126,7 +126,7 @@ const validateValues = (params, values = {}) => {
     }
     // Run validation functions for values.
     if (hasKey(values, paramName) && hasKey(param, "validation")) {
-      const error = param.validation(values[param]);
+      const error = param.validation(values[paramName]);
       if (error !== null && error !== undefined) {
         return `Param validation error returned: ${error}`;
       }
