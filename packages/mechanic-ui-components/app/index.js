@@ -11,7 +11,7 @@ import {
   Toggle
 } from "../src/index.js";
 
-import * as css from "./index.css";
+import * as css from "./index.module.css";
 
 const App = () => {
   const [values, setValues] = useState({

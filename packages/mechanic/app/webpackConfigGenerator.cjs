@@ -93,6 +93,7 @@ module.exports = (modeParam, functionsPath, distDir) => {
         loader: require.resolve("css-loader"),
         options: {
           modules: {
+            auto: true,
             localIdentName: "[name]__[local]",
             namedExport: true,
             exportLocalsConvention: "camelCaseOnly"
@@ -117,6 +118,11 @@ module.exports = (modeParam, functionsPath, distDir) => {
         }
       }
     ])
+  };
+  // inline fonts
+  const fonts = {
+    test: /\.(woff2?|otf|ttf)$/,
+    type: "asset/inline"
   };
 
   const functions = {
@@ -193,7 +199,7 @@ module.exports = (modeParam, functionsPath, distDir) => {
       }
     },
     module: {
-      rules: [js, css, functions]
+      rules: [js, css, functions, fonts]
     },
     plugins
   };

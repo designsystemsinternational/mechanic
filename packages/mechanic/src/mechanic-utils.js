@@ -1,9 +1,11 @@
+import { optimize, extendDefaultPlugins } from "svgo/dist/svgo.browser.js";
+
 /**
- * Converts an SVG element to a data url
+ * Prepares an SVG element with sensible defauls and to returns serialized svg string
  * @param {SVGElement} el - SVG element to convert
  * @param {XMLSerializer} serializer - An instance of XMLSerializer to use for serialization
  */
-const svgToDataUrl = (el, serializer) => {
+const svgPrepare = (el, serializer) => {
   let str = serializer.serializeToString(el);
   if (!str.match(/^<svg[^>]+xmlns="http\:\/\/www\.w3\.org\/2000\/svg"/)) {
     str = str.replace(/^<svg/, '<svg xmlns="http://www.w3.org/2000/svg"');
@@ -12,6 +14,26 @@ const svgToDataUrl = (el, serializer) => {
     str = str.replace(/^<svg/, '<svg xmlns:xlink="http://www.w3.org/1999/xlink"');
   }
   str = '<?xml version="1.0" standalone="no"?>\r\n' + str;
+  return str;
+};
+
+/**
+ * Optimizes an SVG with SVGO
+ * @param {String} svgString - SVG string to optimize
+ */
+const svgOptimize = svgString => {
+  const result = optimize(svgString, {
+    multipass: true
+  });
+
+  return result.data;
+};
+
+/**
+ * Converts an SVG string to a data url
+ * @param {String} svg - SVG string to convert
+ */
+const svgToDataUrl = str => {
   return "data:image/svg+xml;charset=utf-8," + encodeURIComponent(str);
 };
 
@@ -55,4 +77,4 @@ const getTimeStamp = () => {
   return `${year}-${month}-${day}-${hour}-${minute}`;
 };
 
-export { svgToDataUrl, extractSvgSize, dataUrlToCanvas, getTimeStamp };
+export { svgPrepare, svgOptimize, svgToDataUrl, extractSvgSize, dataUrlToCanvas, getTimeStamp };
