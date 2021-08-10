@@ -63,7 +63,7 @@ ${bgRed(
 
 ${bgBlue(
   "Examples"
-)} are more complicated design functions we created to show how to use Mechanic to tackle some common use cases. Current examples include a poster generator and an instagram post generator.  
+)} are more complicated design functions we created to show how to use Mechanic to tackle some common use cases. The only current example is a poster generator. More examples will be added along the way. 
 `,
 
   functionBaseQuestion: `Do you want to use a template or an example as a base for your first design function?`,

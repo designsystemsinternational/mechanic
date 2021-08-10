@@ -46,9 +46,11 @@ export const handler = (sketch, params, mechanic) => {
   };
 
   const drawGrid = () => {
+    sketch.strokeWeight(width / (6 * 500));
     for (let i = 0; i <= 32; i++) {
       sketch.line(0, separation * i, width, separation * i);
     }
+    sketch.strokeWeight(1);
   };
 
   const setStylingBase = () => {
@@ -56,15 +58,16 @@ export const handler = (sketch, params, mechanic) => {
     sketch.stroke(color);
     sketch.fill(color);
     sketch.textFont("PP Object Sans");
+    // sketch.textAlign(sketch.LEFT, sketch.BASELINE);
   };
 
   const drawArtistElement = () => {
     const element = {};
-    element.baseRowSize = randInt(2, 6);
+    element.baseRowSize = randInt(3, 6);
     element.baseSize = element.baseRowSize * separation;
 
     const words = artistText.split(" ");
-    sketch.textSize(element.baseSize);
+    sketch.textSize(element.baseSize * 0.8);
     sketch.textStyle(sketch.BOLDITALIC);
     const lengths = words.map((t) => sketch.textWidth(t));
     element.length = Math.max(width / 3, ...lengths) + width / 20;
@@ -72,23 +75,22 @@ export const handler = (sketch, params, mechanic) => {
     element.startRow = choice(
       getPossibleStartPositions(
         availableRows,
-        element.baseRowSize * words.length
+        element.baseRowSize * words.length + 1
       )
     );
-    element.endRow = element.startRow + words.length * element.baseRowSize - 1;
+    element.endRow =
+      element.startRow + words.length * (element.baseRowSize - 1);
     element.y = element.startRow * separation;
     element.x1 = 0;
     element.x2 = element.length + element.x1;
 
-    sketch.textAlign(sketch.LEFT, sketch.TOP);
     let x = element.x1;
     while (x < width) {
       for (let i = 0; i < words.length; i++) {
         sketch.text(
           words[i],
           x,
-          element.y + i * element.baseSize,
-          element.length
+          element.y + (i + 1) * (element.baseSize - separation)
         );
       }
       x += element.length;
@@ -107,14 +109,14 @@ export const handler = (sketch, params, mechanic) => {
     element.length = sketch.textWidth(descriptionText) + width / 20;
 
     element.startRow = choice(
-      getPossibleStartPositions(availableRows, element.baseRowSize)
+      getPossibleStartPositions(availableRows, element.baseRowSize + 1)
     );
-    element.endRow = element.startRow + element.baseRowSize - 1;
+    element.endRow = element.startRow + element.baseRowSize;
     element.y = element.startRow * separation;
     element.x1 = 0;
     element.x2 = element.x1 + element.length;
 
-    sketch.text(descriptionText, 0, element.y);
+    sketch.text(descriptionText, 0, element.y + element.baseSize);
 
     return element;
   };
@@ -125,16 +127,38 @@ export const handler = (sketch, params, mechanic) => {
     element.baseRowSize = 1;
     element.baseSize = element.baseRowSize * separation;
 
-    element.startRow = choice(
-      getPossibleStartPositions(
-        availableRows,
-        (element.isSingleRow ? 1 : 2) * element.baseRowSize
-      )
-    );
+    sketch.textSize(element.baseSize * 0.8);
+    sketch.textStyle(sketch.BOLD);
+    const minLength =
+      (element.isSingleRow
+        ? sketch.textWidth(dateText) +
+          width / 20 +
+          sketch.textWidth(dayAndTimeText)
+        : Math.max(
+            sketch.textWidth(dateText),
+            sketch.textWidth(dayAndTimeText)
+          )) +
+      width / 20;
+
+    if (minLength + descriptionElement.length >= width) {
+      const rowsWithoutDescription = [...availableRows];
+      removeRowsUsedByElement(rowsWithoutDescription, descriptionElement);
+      element.startRow = choice(
+        getPossibleStartPositions(
+          rowsWithoutDescription,
+          (element.isSingleRow ? 1 : 2) * element.baseRowSize + 1
+        )
+      );
+    } else {
+      element.startRow = choice(
+        getPossibleStartPositions(
+          availableRows,
+          (element.isSingleRow ? 1 : 2) * element.baseRowSize + 1
+        )
+      );
+    }
     element.endRow =
-      element.startRow +
-      (element.isSingleRow ? 1 : 2) * element.baseRowSize -
-      1;
+      element.startRow + (element.isSingleRow ? 1 : 2) * element.baseRowSize;
     element.y = element.startRow * separation;
     const offset = getIntersectionOffset(element, [descriptionElement]);
     const leftWidth = width - offset;
@@ -142,8 +166,6 @@ export const handler = (sketch, params, mechanic) => {
       Math.floor(leftWidth / 20),
       Math.floor(leftWidth / 4)
     );
-    sketch.textSize(element.baseSize);
-    sketch.textStyle(sketch.BOLD);
     element.length =
       (element.isSingleRow
         ? Math.max(
@@ -170,61 +192,52 @@ export const handler = (sketch, params, mechanic) => {
       : [dayAndTimeText, dateText];
 
     if (element.isSingleRow) {
-      sketch.text(first, element.x1, element.y);
+      sketch.text(first, element.x1, element.y + element.baseSize);
       sketch.text(
         second,
         element.x1 + sketch.textWidth(first) + element.midDistance,
-        element.y
+        element.y + element.baseSize
       );
     } else {
       const alignDateRight = flipCoin();
       if (alignDateRight) {
-        sketch.textAlign(sketch.RIGHT, sketch.TOP);
+        sketch.textAlign(sketch.RIGHT);
       }
       sketch.text(
         first,
         alignDateRight ? element.x2 - leftWidth / 20 : element.x1,
-        element.y
+        element.y + element.baseSize
       );
       sketch.text(
         second,
         alignDateRight ? element.x2 - leftWidth / 20 : element.x1,
-        element.y + element.baseSize
+        element.y + 2 * element.baseSize
       );
+      if (alignDateRight) {
+        sketch.textAlign(sketch.LEFT);
+      }
     }
-    sketch.textAlign(sketch.LEFT, sketch.TOP);
 
     return element;
   };
 
-  const drawRectangle = ({ rectX, rectY, rectWidth, rectHeight }) => {
+  const drawRectangle = ({ rx, ry, rw, rh }) => {
     if (img) {
-      let sx, sy, sw, sh;
-      const rectRatio = rectWidth / rectHeight;
+      const rectRatio = rw / rh;
       const imageRatio = imgGraphic.width / imgGraphic.height;
-      sw =
+      const sw =
         rectRatio > imageRatio
           ? imgGraphic.width
           : imgGraphic.height * rectRatio;
-      sh =
+      const sh =
         rectRatio > imageRatio
           ? imgGraphic.width / rectRatio
           : imgGraphic.height;
-      sx = (imgGraphic.width - sw) / 2;
-      sy = (imgGraphic.height - sh) / 2;
-      sketch.image(
-        imgGraphic,
-        rectX,
-        rectY,
-        rectWidth,
-        rectHeight,
-        sx,
-        sy,
-        sw,
-        sh
-      );
+      const sx = (imgGraphic.width - sw) / 2;
+      const sy = (imgGraphic.height - sh) / 2;
+      sketch.image(imgGraphic, rx, ry, rw, rh, sx, sy, sw, sh);
     } else {
-      sketch.rect(rectX, rectY, rectWidth, rectHeight);
+      sketch.rect(rx, ry, rw, rh);
     }
   };
 
@@ -242,8 +255,8 @@ export const handler = (sketch, params, mechanic) => {
     }
 
     const elementRows = getRowsFromElements([descriptionElement, dateElement]);
-    const usedSections = getSections(elementRows, 2);
-    const freeSections = getSections(availableRows, 2);
+    const usedSections = getSections(elementRows, 3);
+    const freeSections = getSections(availableRows, 3);
     const sections = [
       ...getRandomSubsetSections(
         freeSections,
@@ -270,33 +283,33 @@ export const handler = (sketch, params, mechanic) => {
       const rectHeight = rectRowHeight * separation;
       if (separateInColumns) {
         drawRectangle({
-          rectX: offset,
-          rectY,
-          rectHeight,
-          rectWidth: leftWidth - (columnLength + width / 20),
+          rx: offset,
+          ry: rectY,
+          rw: leftWidth - (columnLength + width / 20),
+          rh: rectHeight,
         });
         drawRectangle({
-          rectX: width - columnLength,
-          rectY,
-          rectHeight,
-          rectWidth: columnLength,
+          rx: width - columnLength,
+          ry: rectY,
+          rw: columnLength,
+          rh: rectHeight,
         });
       } else {
         drawRectangle({
-          rectX: offset,
-          rectY,
-          rectHeight,
-          rectWidth: leftWidth,
+          rx: offset,
+          ry: rectY,
+          rw: leftWidth,
+          rh: rectHeight,
         });
       }
     }
 
     if (bigColumnDrawn) {
       drawRectangle({
-        rectX: width - columnLength,
-        rectY: 0,
-        rectHeight: height,
-        rectWidth: width - columnLength,
+        rx: width - columnLength,
+        ry: 0,
+        rw: width - columnLength,
+        rh: height,
       });
     }
   };
@@ -353,7 +366,7 @@ export const params = {
   },
   artist: {
     type: "text",
-    default: "Oliver Taro",
+    default: "Ariana Grande",
   },
   description: {
     type: "text",
