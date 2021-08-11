@@ -7,9 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### Changed
+
+- Updated app loading page to use rotating mini Mechanic logo.
+
 ### Fixed
 
 - Fixed mechanic value validation through validation field.
+- Fixed preset value sets.
 
 ## 0.3.0 - 2021-08-02
 
