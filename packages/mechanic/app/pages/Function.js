@@ -3,12 +3,13 @@ import PropTypes from "prop-types";
 import classnames from "classnames";
 
 import { useValues } from "./utils/useValues.js";
+import { getPossiblePresets, addPresetsAsSources } from "./utils/presets.js";
 import { useShortcuts } from "./utils/useShortcuts.js";
 
 import { Button, Toggle, ParamInput } from "@designsystemsinternational/mechanic-ui-components";
 import * as css from "./Function.module.css";
 
-export const Function = ({ name, exports, children }) => {
+export const Function = ({ name, exports: functionExports, children }) => {
   const [iframeLoaded, setIframeLoaded] = useState(false);
   const [scaleToFit, setScaleToFit] = useState(true);
   const [autoRefreshOn, setAutoRefreshOn] = useState(true);
@@ -21,25 +22,13 @@ export const Function = ({ name, exports, children }) => {
     params,
     presets: exportedPresets,
     settings: { usesRandom }
-  } = exports;
-  const presets = ["default"].concat(Object.keys(exportedPresets ? exportedPresets : {}));
+  } = functionExports;
+  const presets = getPossiblePresets(exportedPresets ?? {});
   const canScale = !!(params.width && params.height);
   const [values, setValues] = useValues(name, params);
-
   const handleOnChange = (e, name, value) => {
     const sources = [{ [name]: value }];
-    if (name === "preset") {
-      if (value === "default") {
-        sources.push(
-          Object.entries(params).reduce((source, param) => {
-            if (param[1].default) source[param[0]] = param[1].default;
-            return source;
-          }, {})
-        );
-      } else {
-        sources.push(exportedPresets[value]);
-      }
-    }
+    if (name === "preset") addPresetsAsSources(value, exportedPresets, sources);
     setValues(values => Object.assign({}, values, ...sources));
   };
 
