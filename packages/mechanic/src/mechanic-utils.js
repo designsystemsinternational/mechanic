@@ -7,6 +7,7 @@ import { optimize, extendDefaultPlugins } from "svgo/dist/svgo.browser.js";
  */
 const svgPrepare = (el, serializer) => {
   let str = serializer.serializeToString(el);
+  console.log("original", str);
   if (!str.match(/^<svg[^>]+xmlns="http\:\/\/www\.w3\.org\/2000\/svg"/)) {
     str = str.replace(/^<svg/, '<svg xmlns="http://www.w3.org/2000/svg"');
   }
@@ -21,10 +22,13 @@ const svgPrepare = (el, serializer) => {
  * Optimizes an SVG with SVGO
  * @param {String} svgString - SVG string to optimize
  */
-const svgOptimize = svgString => {
-  const result = optimize(svgString, {
-    multipass: true
-  });
+const svgOptimize = (svgString, optimizeOptions) => {
+  const options = Object.assign({}, optimizeOptions);
+
+  if (options.plugins) options.plugins = extendDefaultPlugins(options.plugins);
+  console.log("optimizing with options:", options);
+
+  const result = optimize(svgString, options);
 
   return result.data;
 };
