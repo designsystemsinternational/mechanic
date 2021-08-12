@@ -14,9 +14,8 @@ module.exports = (modeParam, functionsPath, distDir) => {
   // condition function used to determine if a path belongs to mechanic or not
   const isMechanicCondition = pathname => {
     const isMechanicModule = /node_modules.+mechanic/.test(pathname);
-    const isMechanicDirectory = !pathname.startsWith(__dirname);
-    // console.log(path.relative(process.cwd(), pathname), isMechanicModule);
-    return isMechanicModule || isMechanicDirectory;
+    // if (pathname) console.log(path.relative(process.cwd(), pathname), isMechanicModule);
+    return isMechanicModule;
   };
 
   // https://stackoverflow.com/questions/33527653/babel-6-regeneratorruntime-is-not-defined
