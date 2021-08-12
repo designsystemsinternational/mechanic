@@ -7,10 +7,11 @@ import { optimize, extendDefaultPlugins } from "svgo/dist/svgo.browser.js";
  */
 const svgPrepare = (el, serializer) => {
   let str = serializer.serializeToString(el);
-  console.log("original", str);
+
   if (!str.match(/^<svg[^>]+xmlns="http\:\/\/www\.w3\.org\/2000\/svg"/)) {
     str = str.replace(/^<svg/, '<svg xmlns="http://www.w3.org/2000/svg"');
   }
+
   if (!str.match(/^<svg[^>]+"http\:\/\/www\.w3\.org\/1999\/xlink"/)) {
     str = str.replace(/^<svg/, '<svg xmlns:xlink="http://www.w3.org/1999/xlink"');
   }
@@ -26,7 +27,6 @@ const svgOptimize = (svgString, optimizeOptions) => {
   const options = Object.assign({}, optimizeOptions);
 
   if (options.plugins) options.plugins = extendDefaultPlugins(options.plugins);
-  console.log("optimizing with options:", options);
 
   const result = optimize(svgString, options);
 

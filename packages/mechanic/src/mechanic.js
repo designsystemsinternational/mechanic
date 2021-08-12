@@ -114,13 +114,7 @@ export class Mechanic {
         let svgString = svgPrepare(el, this.serializer);
 
         if (this.settings.optimize) {
-          console.log("optimizing");
-          console.log(svgString);
-
           svgString = svgOptimize(svgString, this.settings.optimize);
-
-          console.log("\n\nafter:");
-          console.log(svgString);
         }
         this.svgData = svgToDataUrl(svgString);
       } else {
