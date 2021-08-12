@@ -105,7 +105,7 @@ module.exports = (modeParam, functionsPath, distDir) => {
         options: {
           modules: {
             auto: true,
-            localIdentName: "[name]__[local]",
+            localIdentName: "[path]--[name]__[local]",
             namedExport: true,
             exportLocalsConvention: "camelCaseOnly"
           },
