@@ -28,7 +28,7 @@ export const Function = ({ name, exports: functionExports, children }) => {
   const [values, setValues] = useValues(name, params);
   const handleOnChange = (e, name, value) => {
     const sources = [{ [name]: value }];
-    if (name === "preset") addPresetsAsSources(value, exportedPresets, sources);
+    if (name === "preset") addPresetsAsSources(value, exportedPresets, params, sources);
     setValues(values => Object.assign({}, values, ...sources));
   };
 

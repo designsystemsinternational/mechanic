@@ -4,7 +4,7 @@ const DEFAULT_PRESET_VALUE = "default values";
 const getPossiblePresets = presets =>
   [NO_PRESET_VALUE].concat(Object.keys(presets)).concat([DEFAULT_PRESET_VALUE]);
 
-const addPresetsAsSources = (presetValue, presets, sources) => {
+const addPresetsAsSources = (presetValue, presets, params, sources) => {
   if (presetValue === DEFAULT_PRESET_VALUE) {
     sources.push(
       Object.entries(params).reduce((source, param) => {
