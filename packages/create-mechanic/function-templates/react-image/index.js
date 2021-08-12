@@ -1,40 +1,43 @@
 import React, { useEffect } from "react";
 
 export const handler = ({ params, mechanic }) => {
-  const { width, background, fill, hasInnerHole } = params;
-  const height = width;
-  const radius = width / 3;
+  const { width, height, text, color1, color2, radiusPercentage } = params;
+
+  const center = [width / 2, height / 2];
+  const radius = ((height / 2) * radiusPercentage) / 100;
+  const angle = Math.random() * 360;
+
   useEffect(() => {
     mechanic.done();
   }, []);
+
   return (
     <svg width={width} height={height}>
-      <rect
-        x={0}
-        y={0}
-        width={width}
-        height={height}
-        stroke="none"
-        fill={background}
-      />
-      <ellipse
-        cx={width / 2}
-        cy={height / 2}
-        rx={radius}
-        ry={radius}
-        stroke="none"
-        fill={fill}
-      />
-      {hasInnerHole && (
-        <ellipse
-          cx={width / 2}
-          cy={height / 2}
-          rx={radius / 2}
-          ry={radius / 2}
-          stroke="none"
-          fill={background}
-        />
-      )}
+      <rect fill="#F4F4F4" width={width} height={height} />
+      <g transform={`translate(${center[0]}, ${center[1]})`}>
+        <g transform={`rotate(${angle})`}>
+          <path
+            d={`M ${radius} 0
+          A ${radius} ${radius}, 0, 0, 0, ${-radius} 0 Z`}
+            fill={color1}
+          />
+          <path
+            d={`M ${-radius} 0
+           A ${radius} ${radius}, 0, 0, 0, ${radius} 0 Z`}
+            fill={color2}
+          />
+        </g>
+        <text
+          x={0}
+          y={height / 2 - height / 20}
+          textAnchor="middle"
+          fontWeight="bold"
+          fontFamily="sans-serif"
+          fontSize={height / 10}
+        >
+          {text}
+        </text>
+      </g>
     </svg>
   );
 };
@@ -42,24 +45,47 @@ export const handler = ({ params, mechanic }) => {
 export const params = {
   width: {
     type: "number",
-    default: 600,
+    default: 400,
   },
-  background: {
+  height: {
+    type: "number",
+    default: 300,
+  },
+  text: {
+    type: "text",
+    default: "mechanic",
+  },
+  color1: {
     type: "color",
-    default: "red",
-    options: ["red", "orange", "yellow"],
+    model: "hex",
+    default: "#E94225",
   },
-  fill: {
+  color2: {
     type: "color",
-    default: "cyan",
-    options: ["cyan", "blue", "green"],
+    model: "hex",
+    default: "#002EBB",
   },
-  hasInnerHole: {
-    type: "boolean",
-    default: false,
+  radiusPercentage: {
+    type: "number",
+    default: 40,
+    min: 0,
+    max: 100,
+    slider: true,
+  },
+};
+
+export const presets = {
+  medium: {
+    width: 800,
+    height: 600,
+  },
+  large: {
+    width: 1600,
+    height: 1200,
   },
 };
 
 export const settings = {
   engine: require("@designsystemsinternational/mechanic-engine-react"),
+  usesRandom: true,
 };

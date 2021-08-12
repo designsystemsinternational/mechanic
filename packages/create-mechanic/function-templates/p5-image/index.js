@@ -1,19 +1,32 @@
 export const handler = ({ params, mechanic, sketch }) => {
-  const { width, height, primaryColor, secondaryColor, maxFrames } = params;
+  const { width, height, text, color1, color2, radiusPercentage } = params;
 
-  let x = 0;
-  const y = height / 2;
-  let frames = 0;
+  const center = [width / 2, height / 2];
+  const radius = ((height / 2) * radiusPercentage) / 100;
+  const angle = Math.random() * Math.PI * 2;
+
   sketch.setup = () => {
     sketch.createCanvas(width, height);
   };
 
   sketch.draw = () => {
-    sketch.background(primaryColor);
-    sketch.fill(secondaryColor);
-    sketch.rect(x, y, width / 3, width / 3);
+    sketch.background("#F4F4F4");
+    sketch.noStroke();
 
-    x++;
+    sketch.translate(...center);
+    sketch.rotate(angle);
+
+    sketch.fill(color1);
+    sketch.arc(0, 0, 2 * radius, 2 * radius, -sketch.PI, 0);
+    sketch.fill(color2);
+    sketch.arc(0, 0, 2 * radius, 2 * radius, 0, sketch.PI);
+
+    sketch.rotate(-angle);
+    sketch.fill("#000000");
+    sketch.textAlign(sketch.CENTER, sketch.BOTTOM);
+    sketch.textStyle(sketch.BOLD);
+    sketch.textSize(height / 10);
+    sketch.text(text, 0, height / 2 - height / 20);
 
     mechanic.done();
   };
@@ -28,17 +41,26 @@ export const params = {
     type: "number",
     default: 300,
   },
-  primaryColor: {
-    type: "color",
-    default: "#FF0000",
+  text: {
+    type: "text",
+    default: "mechanic",
   },
-  secondaryColor: {
+  color1: {
     type: "color",
-    default: "#00FFFF",
+    model: "hex",
+    default: "#E94225",
   },
-  maxFrames: {
+  color2: {
+    type: "color",
+    model: "hex",
+    default: "#002EBB",
+  },
+  radiusPercentage: {
     type: "number",
-    default: 100,
+    default: 40,
+    min: 0,
+    max: 100,
+    slider: true,
   },
 };
 
@@ -51,12 +73,9 @@ export const presets = {
     width: 1600,
     height: 1200,
   },
-  xLarge: {
-    width: 3200,
-    height: 2400,
-  },
 };
 
 export const settings = {
   engine: require("@designsystemsinternational/mechanic-engine-p5"),
+  usesRandom: true,
 };

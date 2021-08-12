@@ -1,25 +1,47 @@
 export const handler = async ({ params, mechanic }) => {
-  const { width, height, primaryColor, secondaryColor, maxFrames } = params;
+  const { width, height, text, color1, color2, radiusPercentage, turns } =
+    params;
+
+  const center = [width / 2, height / 2];
+  const radius = ((height / 2) * radiusPercentage) / 100;
+  let angle = 0;
 
   const canvas = document.createElement("canvas");
   canvas.width = width;
   canvas.height = height;
+
   const ctx = canvas.getContext("2d");
 
-  let x = 0;
-  let frames = 0;
-
   const drawFrame = () => {
-    ctx.fillStyle = primaryColor;
+    ctx.fillStyle = "#F4F4F4";
     ctx.fillRect(0, 0, width, height);
-    ctx.fillStyle = secondaryColor;
-    ctx.fillRect(x, height / 2, width / 3, width / 3);
-    mechanic.frame(canvas);
 
-    x++;
+    ctx.fillStyle = color1;
+    ctx.beginPath();
+    ctx.arc(
+      center[0],
+      center[1],
+      radius,
+      Math.PI + angle,
+      2 * Math.PI + angle,
+      false
+    );
+    ctx.fill();
 
-    if (frames < maxFrames && x < width) {
-      frames += 1;
+    ctx.fillStyle = color2;
+    ctx.beginPath();
+    ctx.arc(center[0], center[1], radius, 0 + angle, Math.PI + angle, false);
+    ctx.fill();
+
+    ctx.fillStyle = "#000000";
+    ctx.font = `${height / 10}px sans-serif`;
+    ctx.textAlign = "center";
+    ctx.strokeText(text, width / 2, height - height / 20);
+    ctx.fillText(text, width / 2, height - height / 20);
+
+    if (angle < turns * 2 * Math.PI) {
+      mechanic.frame(canvas);
+      angle += (2 * Math.PI) / 100;
       window.requestAnimationFrame(drawFrame);
     } else {
       mechanic.done(canvas);
@@ -38,17 +60,30 @@ export const params = {
     type: "number",
     default: 300,
   },
-  primaryColor: {
-    type: "color",
-    default: "#FF0000",
+  text: {
+    type: "text",
+    default: "mechanic",
   },
-  secondaryColor: {
+  color1: {
     type: "color",
-    default: "#00FFFF",
+    model: "hex",
+    default: "#E94225",
   },
-  maxFrames: {
+  color2: {
+    type: "color",
+    model: "hex",
+    default: "#002EBB",
+  },
+  radiusPercentage: {
     type: "number",
-    default: 100,
+    default: 40,
+    min: 0,
+    max: 100,
+    slider: true,
+  },
+  turns: {
+    type: "number",
+    default: 3,
   },
 };
 
@@ -60,10 +95,6 @@ export const presets = {
   large: {
     width: 1600,
     height: 1200,
-  },
-  xLarge: {
-    width: 3200,
-    height: 2400,
   },
 };
 

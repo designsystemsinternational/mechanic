@@ -1,43 +1,42 @@
 export const handler = ({ params, mechanic }) => {
-  const {
-    width,
-    height,
-    primaryColor,
-    secondaryColor,
-    numberOfRects,
-    hasOuterMargin,
-    innerMargin,
-    margin: marginOption,
-  } = params;
+  const { width, height, text, color1, color2, radiusPercentage } = params;
 
-  const margin = {
-    even: { top: 100, bottom: 100, left: 100, right: 100 },
-    flat: { top: 100, bottom: 100, left: 50, right: 50 },
-    tall: { top: 50, bottom: 50, left: 100, right: 100 },
-  }[marginOption];
+  const center = [width / 2, height / 2];
+  const radius = ((height / 2) * radiusPercentage) / 100;
+  const angle = Math.random() * Math.PI * 2;
 
   const canvas = document.createElement("canvas");
   canvas.width = width;
   canvas.height = height;
-  const ctx = canvas.getContext("2d");
-  ctx.fillStyle = primaryColor;
-  ctx.fillRect(0, 0, width, height);
-  ctx.fillStyle = secondaryColor;
-  const top = hasOuterMargin ? margin.top : 0;
-  const right = hasOuterMargin ? margin.right : 0;
-  const bottom = hasOuterMargin ? margin.bottom : 0;
-  const left = hasOuterMargin ? margin.left : 0;
 
-  const rectWidth =
-    (width - left - right - innerMargin * (numberOfRects - 1)) / numberOfRects;
-  for (let index = 0; index < numberOfRects; index++) {
-    ctx.fillRect(
-      left + index * (rectWidth + innerMargin),
-      top,
-      rectWidth,
-      height - top - bottom
-    );
-  }
+  const ctx = canvas.getContext("2d");
+
+  ctx.fillStyle = "#F4F4F4";
+  ctx.fillRect(0, 0, width, height);
+
+  ctx.fillStyle = color1;
+  ctx.beginPath();
+  ctx.arc(
+    center[0],
+    center[1],
+    radius,
+    Math.PI + angle,
+    2 * Math.PI + angle,
+    false
+  );
+  ctx.fill();
+
+  ctx.fillStyle = color2;
+  ctx.beginPath();
+  ctx.arc(center[0], center[1], radius, 0 + angle, Math.PI + angle, false);
+  ctx.fill();
+
+  ctx.fillStyle = "#000000";
+  ctx.font = `${height / 10}px sans-serif`;
+  ctx.textAlign = "center";
+  ctx.strokeText(text, width / 2, height - height / 20);
+  ctx.fillText(text, width / 2, height - height / 20);
+
   mechanic.done(canvas);
 };
 
@@ -45,43 +44,31 @@ export const params = {
   width: {
     type: "number",
     default: 400,
-    validation: (v) => (v < 410 || v > 420 ? null : "Out of range"),
   },
   height: {
     type: "number",
     default: 300,
   },
-  primaryColor: {
+  text: {
+    type: "text",
+    default: "mechanic",
+  },
+  color1: {
     type: "color",
     model: "hex",
-    default: "#FF0000",
+    default: "#E94225",
   },
-  secondaryColor: {
+  color2: {
     type: "color",
-    options: ["#00FFFF", "#FF00FF", "#FFFF00"],
-    default: "#00FFFF",
+    model: "hex",
+    default: "#002EBB",
   },
-  numberOfRects: {
+  radiusPercentage: {
     type: "number",
-    default: 2,
-    options: [2, 3, 4],
-  },
-  hasOuterMargin: {
-    type: "boolean",
-    default: true,
-  },
-  innerMargin: {
-    type: "number",
-    default: 10,
+    default: 40,
     min: 0,
-    max: 30,
-    step: 1,
+    max: 100,
     slider: true,
-  },
-  margin: {
-    type: "text",
-    options: ["even", "tall", "flat"],
-    default: "even",
   },
 };
 
@@ -94,12 +81,9 @@ export const presets = {
     width: 1600,
     height: 1200,
   },
-  xLarge: {
-    width: 3200,
-    height: 2400,
-  },
 };
 
 export const settings = {
   engine: require("@designsystemsinternational/mechanic-engine-canvas"),
+  usesRandom: true,
 };

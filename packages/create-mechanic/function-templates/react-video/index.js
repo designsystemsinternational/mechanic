@@ -1,18 +1,20 @@
 import React, { useState, useEffect, useRef } from "react";
 
 export const handler = ({ params, mechanic }) => {
-  const { height, background, fill } = params;
-  const width = height;
+  const { width, height, text, color1, color2, radiusPercentage, turns } =
+    params;
+
+  const center = [width / 2, height / 2];
+  const radius = ((height / 2) * radiusPercentage) / 100;
+  const angle = useRef(0);
 
   const isPlaying = useRef(true);
   const frameCount = useDrawLoop(isPlaying.current);
 
-  const r = width / 3;
-  const x = frameCount;
-
   useEffect(() => {
-    if (frameCount < 100) {
+    if (angle.current < turns * 360) {
       mechanic.frame();
+      angle.current += 360 / 100;
     } else if (isPlaying.current) {
       isPlaying.current = false;
       mechanic.done();
@@ -21,33 +23,79 @@ export const handler = ({ params, mechanic }) => {
 
   return (
     <svg width={width} height={height}>
-      <rect
-        x={0}
-        y={0}
-        width={width}
-        height={height}
-        stroke="none"
-        fill={background}
-      />
-      <ellipse cx={x} cy={height / 2} rx={r} ry={r} stroke="none" fill={fill} />
+      <rect fill="#F4F4F4" width={width} height={height} />
+      <g transform={`translate(${center[0]}, ${center[1]})`}>
+        <g transform={`rotate(${angle.current})`}>
+          <path
+            d={`M ${radius} 0
+          A ${radius} ${radius}, 0, 0, 0, ${-radius} 0 Z`}
+            fill={color1}
+          />
+          <path
+            d={`M ${-radius} 0
+           A ${radius} ${radius}, 0, 0, 0, ${radius} 0 Z`}
+            fill={color2}
+          />
+        </g>
+        <text
+          x={0}
+          y={height / 2 - height / 20}
+          textAnchor="middle"
+          fontWeight="bold"
+          fontFamily="sans-serif"
+          fontSize={height / 10}
+        >
+          {text}
+        </text>
+      </g>
     </svg>
   );
 };
 
 export const params = {
+  width: {
+    type: "number",
+    default: 400,
+  },
   height: {
     type: "number",
-    default: 600,
+    default: 300,
   },
-  background: {
-    type: "color",
-    default: "red",
-    options: ["red", "orange", "yellow"],
+  text: {
+    type: "text",
+    default: "mechanic",
   },
-  fill: {
+  color1: {
     type: "color",
-    default: "cyan",
-    options: ["cyan", "blue", "green"],
+    model: "hex",
+    default: "#E94225",
+  },
+  color2: {
+    type: "color",
+    model: "hex",
+    default: "#002EBB",
+  },
+  radiusPercentage: {
+    type: "number",
+    default: 40,
+    min: 0,
+    max: 100,
+    slider: true,
+  },
+  turns: {
+    type: "number",
+    default: 3,
+  },
+};
+
+export const presets = {
+  medium: {
+    width: 800,
+    height: 600,
+  },
+  large: {
+    width: 1600,
+    height: 1200,
   },
 };
 

@@ -1,11 +1,37 @@
 export const handler = ({ params, mechanic }) => {
-  const { width, height, radius: r } = params;
+  const { width, height, text, color1, color2, radiusPercentage } = params;
+
+  const center = [width / 2, height / 2];
+  const radius = ((height / 2) * radiusPercentage) / 100;
+  const angle = Math.random() * 360;
+
   const svg = `<svg width="${width}" height="${height}">
-    <rect x="0" y="0" width="${width}" height="${height}" stroke="none" fill="red" />
-    <ellipse cx="${width / 2}" cy="${
-    height / 2
-  }" rx="${r}" ry="${r}" stroke="none" fill="cyan" />
-  </svg>`;
+      <rect fill="#F4F4F4" width="${width}" height="${height}" />
+      <g transform="translate(${center[0]}, ${center[1]})">
+        <g transform="rotate(${angle})">
+        <path
+          d="M ${radius} 0
+        A ${radius} ${radius}, 0, 0, 0, ${-radius} 0 Z"
+          fill="${color1}"
+        />
+        <path
+          d="M ${-radius} 0
+        A ${radius} ${radius}, 0, 0, 0, ${radius} 0 Z"
+          fill="${color2}"
+        />
+        </g>
+        <text
+          x="0"
+          y="${height / 2 - height / 20}"
+          text-anchor="middle"
+          font-weight="bold"
+          font-family="sans-serif"
+          font-size="${height / 10}"
+        >
+          ${text}
+        </text>
+      </g>
+    </svg>`;
   mechanic.done(svg);
 };
 
@@ -18,9 +44,26 @@ export const params = {
     type: "number",
     default: 300,
   },
-  radius: {
+  text: {
+    type: "text",
+    default: "mechanic",
+  },
+  color1: {
+    type: "color",
+    model: "hex",
+    default: "#E94225",
+  },
+  color2: {
+    type: "color",
+    model: "hex",
+    default: "#002EBB",
+  },
+  radiusPercentage: {
     type: "number",
-    default: 10,
+    default: 40,
+    min: 0,
+    max: 100,
+    slider: true,
   },
 };
 
@@ -33,12 +76,9 @@ export const presets = {
     width: 1600,
     height: 1200,
   },
-  xLarge: {
-    width: 3200,
-    height: 2400,
-  },
 };
 
 export const settings = {
   engine: require("@designsystemsinternational/mechanic-engine-svg"),
+  usesRandom: true,
 };
