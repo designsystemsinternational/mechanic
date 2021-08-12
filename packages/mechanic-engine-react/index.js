@@ -3,7 +3,7 @@ import { render, unmountComponentAtNode } from "react-dom";
 import { Mechanic } from "@designsystemsinternational/mechanic";
 
 const root = document.getElementById("root");
-const head = document.querySelector("head");
+const styles = document.querySelectorAll("head style");
 
 export const run = (functionName, func, values, isPreview) => {
   unmountComponentAtNode(root);
@@ -16,9 +16,7 @@ export const run = (functionName, func, values, isPreview) => {
   };
   const onDone = async (name) => {
     if (!isPreview) {
-      await mechanic.done(root.childNodes[0], {
-        styles: head.querySelectorAll("style"),
-      });
+      await mechanic.done(root.childNodes[0], { styles });
       mechanic.download(name || functionName);
     }
   };
