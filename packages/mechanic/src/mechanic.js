@@ -103,17 +103,19 @@ export class Mechanic {
   async done(el, extras = {}) {
     if (!this.settings.animated) {
       if (validation.isSVG(el)) {
-        if (extras.styles && extras.styles.length) {
-          for (var i = 0; i < extras.styles.length; i++) {
-            el.append(extras.styles[i]);
+        if (extras.head) {
+          const styles = extras.head.querySelectorAll("style");
+          console.log(styles);
+          for (var i = 0; i < styles.length; i++) {
+            el.append(styles[i].cloneNode(true));
           }
         }
 
         this.serializer = new XMLSerializer();
 
         let svgString = svgPrepare(el, this.serializer);
-
-        if (this.settings.optimize) {
+        console.log(svgString);
+        if (this.settings.optimize !== false) {
           svgString = svgOptimize(svgString, this.settings.optimize);
         }
         this.svgData = svgToDataUrl(svgString);
