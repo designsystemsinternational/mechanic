@@ -11,6 +11,14 @@ module.exports = (modeParam, functionsPath, distDir) => {
 
   const devtool = isProduction ? "source-map" : "eval-source-map";
 
+  // condition function used to determine if a path belongs to mechanic or not
+  const isMechanicCondition = pathname => {
+    const isMechanicModule = /node_modules.+mechanic/.test(pathname);
+    const isMechanicDirectory = !pathname.startsWith(__dirname);
+    // console.log(path.relative(process.cwd(), pathname), isMechanicModule);
+    return isMechanicModule || isMechanicDirectory;
+  };
+
   // https://stackoverflow.com/questions/33527653/babel-6-regeneratorruntime-is-not-defined
   const js = {
     test: /\.(js|jsx)$/,
@@ -49,14 +57,23 @@ module.exports = (modeParam, functionsPath, distDir) => {
     }
   };
 
-  const externalCss = {
+  const functions = {
+    test: /FUNCTIONS/,
+    use: [{ loader: path.resolve(__dirname, "./function-loader.cjs"), options: { functionsPath } }]
+  };
+
+  const mechanicCss = {
     test: /\.(css)$/,
-    include: [/.+\/node_modules\/.+/, /.+\/mechanic-ui-components\/.+/],
+    include: isMechanicCondition,
     use: [isProduction ? MiniCssExtractPlugin.loader : require.resolve("style-loader")].concat([
       {
         loader: require.resolve("css-loader"),
         options: {
-          modules: false,
+          modules: {
+            localIdentName: "[name]__[local]",
+            namedExport: true,
+            exportLocalsConvention: "camelCaseOnly"
+          },
           importLoaders: 1
         }
       },
@@ -79,16 +96,11 @@ module.exports = (modeParam, functionsPath, distDir) => {
     ])
   };
 
-  const css = {
+  const functionsCss = {
     test: /\.(css)$/,
-    exclude: pathname => {
-      return (
-        pathname.includes("node_modules") &&
-        !pathname.includes(path.join("@designsystemsinternational", "mechanic-ui-components")) &&
-        !pathname.startsWith(__dirname)
-      );
-    },
-    use: [isProduction ? MiniCssExtractPlugin.loader : require.resolve("style-loader")].concat([
+    exclude: isMechanicCondition,
+    use: [
+      require.resolve("style-loader"),
       {
         loader: require.resolve("css-loader"),
         options: {
@@ -117,17 +129,19 @@ module.exports = (modeParam, functionsPath, distDir) => {
           }
         }
       }
-    ])
-  };
-  // inline fonts
-  const fonts = {
-    test: /\.(woff2?|otf|ttf)$/,
-    type: "asset/inline"
+    ]
   };
 
-  const functions = {
-    test: /FUNCTIONS/,
-    use: [{ loader: path.resolve(__dirname, "./function-loader.cjs"), options: { functionsPath } }]
+  const mechanicFonts = {
+    test: /\.(woff2?|otf|ttf)$/,
+    type: "asset/resource",
+    include: isMechanicCondition
+  };
+
+  const functionsFonts = {
+    test: /\.(woff2?|otf|ttf)$/,
+    type: "asset/inline",
+    exclude: isMechanicCondition
   };
 
   const entry = {
@@ -199,7 +213,7 @@ module.exports = (modeParam, functionsPath, distDir) => {
       }
     },
     module: {
-      rules: [js, css, functions, fonts]
+      rules: [js, functions, mechanicCss, functionsCss, mechanicFonts, functionsFonts]
     },
     plugins
   };
