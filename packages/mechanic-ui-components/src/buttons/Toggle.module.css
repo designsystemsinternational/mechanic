@@ -2,11 +2,14 @@
 
 .root {
   position: relative;
-
   border: 1px solid currentColor;
   color: currentColor;
   border-radius: var(--mechanic-param-height-half);
-  padding: 0.6em 2em 0.5em 1em;
+  padding: 0.2em 1em 0 2em;
+  display: flex;
+  align-items: center;
+
+  width: 100%;
   height: var(--mechanic-param-height);
   line-height: 1;
   background-color: var(--mechanic-background);
@@ -20,6 +23,13 @@
 
   &:active:not([disabled]) {
     transform: translate(0, 1px);
+  }
+
+  box-sizing: border-box;
+  & *,
+  & *:before,
+  & *:after {
+    box-sizing: inherit;
   }
 }
 
@@ -45,7 +55,7 @@
 .root.focus {
   outline: none;
   border: 2px solid currentColor;
-  padding: calc(0.6em - 1px) calc(2em - 1px) calc(0.5em - 1px) calc(1em - 1px);
+  padding: 0.2em calc(1em - 1px) 0 calc(2em - 1px);
 }
 
 .label {

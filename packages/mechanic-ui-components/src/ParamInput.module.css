@@ -1,9 +1,28 @@
+@font-face {
+  font-family: "Object Sans";
+  src: url("../src/fonts/PP Object Sans/PPObjectSans-Regular.otf") format("opentype");
+}
+
+@font-face {
+  font-family: "Object Sans";
+  src: url("../src/fonts/PP Object Sans/PPObjectSans-Slanted.otf") format("opentype");
+  font-style: italic;
+}
+
+@font-face {
+  font-family: "Object Sans";
+  src: url("../src/fonts/PP Object Sans/PPObjectSans-Heavy.otf") format("opentype");
+  font-weight: bold;
+}
+
+@font-face {
+  font-family: "Object Sans";
+  src: url("../src/fonts/PP Object Sans/PPObjectSans-HeavySlanted.otf") format("opentype");
+  font-weight: bold;
+  font-style: italic;
+}
+
 .root {
+  font-family: "Object Sans", Helvetica, Arial, Sans-Serif;
   font-size: var(--mechanic-param-font-size);
-  box-sizing: border-box;
-  & *,
-  & *:before,
-  & *:after {
-    box-sizing: inherit;
-  }
 }

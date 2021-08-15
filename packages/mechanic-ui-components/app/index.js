@@ -220,9 +220,7 @@ const App = () => {
           onChange={handleChange}
         />
       </div>
-
       <h3>Editable ParamInput components</h3>
-
       <div className={css.pairBlock}>
         <ParamInput
           name={"text"}
@@ -257,7 +255,6 @@ const App = () => {
           onChange={handleChange}
         />
       </div>
-
       <div className={css.pairBlock}>
         <ParamInput
           name={"toggle"}
@@ -397,17 +394,13 @@ const App = () => {
           onChange={handleChange}
         />
       </div>
-
       <h3>Inputs</h3>
-
       <div className={css.simpleBlock}>
         <TextInput label="Text Input" placeholder="Write... "></TextInput>
       </div>
-
       <div className={css.simpleBlock}>
         <NumberInput label="Number Input" placeholder="Write... "></NumberInput>
       </div>
-
       <div className={css.simpleBlock}>
         <NumberInput
           label="Range Input"
@@ -416,15 +409,12 @@ const App = () => {
           max="200"
           step="5"></NumberInput>
       </div>
-
       <div className={css.simpleBlock}>
         <NumberInput label="Slider Number Input" slider min="100" max="200" step="5"></NumberInput>
       </div>
-
       <div className={css.simpleBlock}>
         <ColorInput label="Color Input" value="rgba(100, 200, 200,1)"></ColorInput>
       </div>
-
       <div className={css.simpleBlock}>
         <Select label="Select Input">
           <option>Option 1</option>
@@ -432,18 +422,17 @@ const App = () => {
           <option>Option 3</option>
         </Select>
       </div>
-
       <div className={css.simpleBlock}>
         <ImageInput label="Image Input" />
       </div>
-
       <h3>Buttons</h3>
-
       <div className={css.simpleBlock}>
         <Button>I'm a button</Button>
       </div>
       <div className={css.simpleBlock}>
         <Toggle status={true}>Toggle On</Toggle>
+      </div>
+      <div className={css.simpleBlock}>
         <Toggle status={false}>Toggle Off</Toggle>
       </div>
     </div>

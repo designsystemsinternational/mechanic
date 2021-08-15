@@ -39,8 +39,7 @@
   align-items: center;
   justify-content: flex-end;
   height: calc(var(--mechanic-param-height) - 4px);
-  padding: calc(var(--mechanic-param-height-quart) - 2px) var(--mechanic-param-height-quart)
-    calc(var(--mechanic-param-height-quart) - 2px) var(--mechanic-param-height-quart);
+  padding: 0 var(--mechanic-param-height-quart);
 }
 
 .disabled {
