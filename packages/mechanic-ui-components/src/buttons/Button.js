@@ -24,23 +24,23 @@ export const Button = props => {
     [css.disabled]: disabled
   });
 
-  const handleOnFocus = useRef(event => {
+  const handleOnFocus = event => {
     onFocus && onFocus(event);
     setFocus(true);
-  });
+  };
 
-  const handleOnBlur = useRef(event => {
+  const handleOnBlur = event => {
     onBlur && onBlur(event);
     setFocus(false);
-  });
+  };
 
   return (
     <button
       id={id}
       className={classes}
       onClick={onClick}
-      onFocus={handleOnFocus.current}
-      onBlur={handleOnBlur.current}
+      onFocus={handleOnFocus}
+      onBlur={handleOnBlur}
       disabled={disabled}>
       {children}
     </button>

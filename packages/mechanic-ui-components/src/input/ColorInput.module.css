@@ -3,10 +3,17 @@
 .root {
 }
 
-.invalid {
+.label {
+  display: block;
+  margin-bottom: 0.5em;
+  margin-left: 0.25em;
+  font-size: var(--mechanic-label-font-size);
+  font-family: inherit;
+  width: 100%;
 }
 
 .disabled {
+  opacity: 0.4;
 }
 
 .button-container {
@@ -14,26 +21,47 @@
 }
 
 .button {
+  z-index: 9;
+  position: relative;
   min-width: 240px;
-  height: 36px;
+  width: 100%;
+  border: 1px solid currentColor;
+  color: currentColor;
+  border-radius: var(--mechanic-param-height-half);
+  padding: 0.6em 2em 0.5em 1em;
+  height: var(--mechanic-param-height);
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  background-color: var(--mechanic-background);
+  font-size: inherit;
+  font-family: inherit;
+  font-weight: inherit;
+}
+
+.focus .button.focus {
+  outline: none;
+  border: 2px solid currentColor;
+  padding: calc(0.6em - 1px) calc(2em - 1px) calc(0.5em - 1px) calc(1em - 1px);
 }
 
 .swatch {
-  position: absolute;
-  left: 1em;
-  top: 50%;
+  margin-right: var(--mechanic-param-height-quart);
+  border-radius: var(--mechanic-param-height-quart);
+  width: var(--mechanic-param-height-half);
+  height: var(--mechanic-param-height-half);
+}
+.value {
+}
 
-  display: inline-block;
-  transform: translateY(-50%);
-
-  width: 18px;
-  height: 18px;
+.picking .button {
+  border-radius: var(--mechanic-param-height-half) var(--mechanic-param-height-half) 0 0;
 }
 
 .popover {
   position: absolute;
-  z-index: 2;
-  top: 36px;
+  z-index: 20;
+  top: calc(2.5em - 2px);
   left: 0;
 
   padding-bottom: 30px;
@@ -41,41 +69,57 @@
 
   & > .chrome-picker {
     box-shadow: none !important;
-    border: 1px solid var(--mechanic-text) !important;
     border-top: none !important;
-    border-radius: 0 !important;
+    border-right: 1px solid currentColor !important;
+    border-left: 1px solid currentColor !important;
+    border-bottom: 1px solid currentColor !important;
+
+    /* border-top: none !important; */
+    border-radius: 0 0 var(--mechanic-param-height-half) var(--mechanic-param-height-half) !important;
+    padding: 0.5em;
+    overflow: hidden;
     box-sizing: border-box !important;
     width: 100% !important;
   }
 }
 
-.mechanic-param {
-  & > .label {
-    display: block;
+.focus .popover .chrome-picker {
+  border-right: 2px solid currentColor !important;
+  border-left: 2px solid currentColor !important;
+  border-bottom: 2px solid currentColor !important;
+  padding: 0.5em calc(0.5em - 1px) calc(0.5em - 1px);
+}
 
-    margin-bottom: 0.5em;
-    width: 100%;
+.suffix {
+  pointer-events: none;
+  position: absolute;
+  z-index: 10;
+  right: 2px;
+  top: 2px;
+  border-radius: var(--mechanic-param-height-half);
+  text-align: right;
+  background: var(--mechanic-param-background);
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  height: calc(var(--mechanic-param-height) - 4px);
+  padding: calc(var(--mechanic-param-height-quart) - 2px) var(--mechanic-param-height-quart)
+    calc(var(--mechanic-param-height-quart) - 2px) var(--mechanic-param-height-quart);
+}
 
-    font-size: 0.75em;
-    font-family: var(--mechanic-param-font);
-  }
+.invalid .button-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: var(--mechanic-param-height);
+  z-index: 8;
+  opacity: 0.15;
+  background-color: currentColor;
+  border-radius: var(--mechanic-param-height-half);
+}
 
-  & .button {
-    width: 100%;
-
-    font-family: var(--mechanic-param-font);
-  }
-
-  &.invalid {
-    & .button-container button {
-      border: 1px solid var(--mechanic-error);
-    }
-
-    & > .error {
-      box-sizing: border-box;
-      padding: 0.1em;
-
-      background: var(--mechanic-error);
-    }
-  }
+.invalid .error {
+  padding: 0.2em 0.25em;
+  font-size: var(--mechanic-label-font-size);
 }

@@ -2,7 +2,7 @@ import React, { useCallback, useRef, useState } from "react";
 import PropTypes from "prop-types";
 import classnames from "classnames";
 import { uid } from "../uid.js";
-import { Button } from "../index.js";
+import { Add } from "../icons/index.js";
 import * as css from "./ImageInput.module.css";
 
 const ImageItem = ({ file, onPreview }) => {
@@ -47,20 +47,20 @@ export const ImageInput = props => {
 
   const handleChangePreview = useCallback(value => setPreview(value), [setPreview]);
 
-  const handleOnChange = useRef(event => {
+  const handleOnChange = event => {
     const { name, files } = event.target;
     onChange && onChange(event, name, multiple ? files : files[0]);
-  });
+  };
 
-  const handleOnFocus = useRef(event => {
+  const handleOnFocus = event => {
     onFocus && onFocus(event);
     setFocus(true);
-  });
+  };
 
-  const handleOnBlur = useRef(event => {
+  const handleOnBlur = event => {
     onBlur && onBlur(event);
     setFocus(false);
-  });
+  };
 
   const handleButtonClick = () => {
     ref.current?.click();
@@ -107,32 +107,41 @@ export const ImageInput = props => {
           {label}
         </label>
       )}
-      <div className={css.container}>
-        {preview && <img className={css.preview} src={preview} />}
-        <div className={css.loadedImages}>{loadedImages}</div>
-        <input
-          type="file"
-          accept={formats ?? "image/*"}
-          multiple={!!multiple}
-          name={name}
-          ref={ref}
-          files={value}
-          id={id}
-          className={css.input}
-          disabled={disabled}
-          placeholder={placeholder}
-          autoComplete={autocomplete}
-          onChange={handleOnChange.current}
-          onFocus={handleOnFocus.current}
-          onBlur={handleOnBlur.current}
-          onKeyPress={onKeyPress}
-          aria-required={required}
-          aria-describedby={`error-${id}`}
-          aria-invalid={invalid}
-        />
-        <Button className={css.browseButton} onClick={handleButtonClick} disabled={disabled}>
-          +
-        </Button>
+      <div className={css.containerWrapper}>
+        <div className={css.container}>
+          {preview && <img className={css.preview} src={preview} />}
+          <div className={css.loadedImages}>{loadedImages}</div>
+          <input
+            type="file"
+            accept={formats ?? "image/*"}
+            multiple={!!multiple}
+            name={name}
+            ref={ref}
+            files={value}
+            id={id}
+            tabIndex="-1"
+            className={css.input}
+            disabled={disabled}
+            placeholder={placeholder}
+            autoComplete={autocomplete}
+            onChange={handleOnChange}
+            onFocus={handleOnFocus}
+            onBlur={handleOnBlur}
+            onKeyPress={onKeyPress}
+            aria-required={required}
+            aria-describedby={`error-${id}`}
+            aria-invalid={invalid}
+          />
+          <button
+            className={css.browseButton}
+            onFocus={handleOnFocus}
+            onBlur={handleOnBlur}
+            onClick={handleButtonClick}
+            disabled={disabled}>
+            <Add />
+          </button>
+        </div>
+        {invalid && <div className={css.inputBackground} />}
       </div>
       {invalid && error && (
         <div className={css.error} id={`error-${id}`} aria-live="polite">

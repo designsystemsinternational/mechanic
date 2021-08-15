@@ -10,10 +10,19 @@ import { ColorInput } from "./input/ColorInput.js";
 import { ImageInput } from "./input/ImageInput.js";
 import { uid } from "./uid.js";
 
-export const ParamInput = ({ name, className, values, attributes, onChange, children }) => {
+export const ParamInput = ({
+  name,
+  className,
+  values,
+  attributes,
+  onChange,
+  children,
+  color = "#f04b17"
+}) => {
   const id = useRef(uid("param-input"));
-  const { type, options, validation, editable } = attributes;
+  const { type, label, options, validation, editable } = attributes;
   const _default = attributes["default"];
+  const _label = label || name;
 
   const value = values[name];
   const isEditable =
@@ -32,14 +41,14 @@ export const ParamInput = ({ name, className, values, attributes, onChange, chil
         type={type}
         options={options}
         value={actualValue}
-        label={name}
+        label={_label}
         id={id.current}
         className={rootClasses}
-        variant="mechanicParam"
         invalid={error ? true : false}
         error={error}
         disabled={!isEditable}
-        onChange={onChange}>
+        onChange={onChange}
+        color={color}>
         {children}
       </OptionInput>
     );
@@ -51,15 +60,15 @@ export const ParamInput = ({ name, className, values, attributes, onChange, chil
       <ImageInput
         name={name}
         value={actualValue}
-        label={name}
+        label={_label}
         id={id.current}
         className={rootClasses}
-        variant="mechanicParam"
         invalid={error ? true : false}
         error={error}
         multiple={multiple}
         disabled={!isEditable}
-        onChange={onChange}>
+        onChange={onChange}
+        color={color}>
         {children}
       </ImageInput>
     );
@@ -70,14 +79,14 @@ export const ParamInput = ({ name, className, values, attributes, onChange, chil
       <BooleanInput
         name={name}
         value={actualValue}
-        label={name}
+        label={_label}
         id={id.current}
         className={rootClasses}
-        variant="mechanicParam"
         invalid={error ? true : false}
         error={error}
         disabled={!isEditable}
-        onChange={onChange}>
+        onChange={onChange}
+        color={color}>
         {children}
       </BooleanInput>
     );
@@ -90,14 +99,14 @@ export const ParamInput = ({ name, className, values, attributes, onChange, chil
         name={name}
         model={model}
         value={actualValue}
-        label={name}
+        label={_label}
         id={id.current}
         className={rootClasses}
-        variant="mechanicParam"
         invalid={error ? true : false}
         error={error}
         disabled={!isEditable}
-        onChange={onChange}>
+        onChange={onChange}
+        color={color}>
         {children}
       </ColorInput>
     );
@@ -107,12 +116,11 @@ export const ParamInput = ({ name, className, values, attributes, onChange, chil
     const { min, max, step, slider } = attributes;
     return (
       <NumberInput
-        label={name}
+        label={_label}
         value={actualValue}
         name={name}
         id={id.current}
         className={rootClasses}
-        variant="mechanicParam"
         invalid={error ? true : false}
         error={error}
         disabled={!isEditable}
@@ -120,7 +128,8 @@ export const ParamInput = ({ name, className, values, attributes, onChange, chil
         min={min}
         max={max}
         step={step}
-        onChange={onChange}>
+        onChange={onChange}
+        color={color}>
         {children}
       </NumberInput>
     );
@@ -130,10 +139,9 @@ export const ParamInput = ({ name, className, values, attributes, onChange, chil
     <TextInput
       name={name}
       value={actualValue}
-      label={name}
+      label={_label}
       id={id.current}
       className={rootClasses}
-      variant="mechanicParam"
       invalid={error ? true : false}
       error={error}
       disabled={!isEditable}

@@ -2,43 +2,65 @@
 
 .root {
 }
-
-.invalid {
+.toggle-wrapper {
+  width: 100%;
+  position: relative;
 }
 
 .disabled {
+  opacity: 0.5;
 }
 
-.focus {
+.focus .toggle {
+  outline: none;
+  border: 2px solid currentColor;
+  padding: calc(0.6em - 1px) calc(2em - 1px) calc(0.5em - 1px) calc(1em - 1px);
 }
 
-.mechanic-param {
-  & > .label {
-    display: block;
+.label {
+  display: block;
+  margin-bottom: 0.5em;
+  margin-left: 0.25em;
+  font-size: var(--mechanic-label-font-size);
+  font-family: inherit;
+  width: 100%;
+}
 
-    margin-bottom: 0.5em;
-    width: 100%;
+.toggle {
+  z-index: 9;
+  width: 100%;
+}
 
-    font-size: 0.75em;
-    font-family: var(--mechanic-param-font);
-  }
+.suffix {
+  pointer-events: none;
+  position: absolute;
+  z-index: 10;
+  right: 2px;
+  top: 2px;
+  border-radius: var(--mechanic-param-height-half);
+  text-align: right;
+  background: var(--mechanic-param-background);
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  height: calc(var(--mechanic-param-height) - 4px);
+  padding: calc(var(--mechanic-param-height-quart) - 2px) var(--mechanic-param-height-quart)
+    calc(var(--mechanic-param-height-quart) - 2px) var(--mechanic-param-height-quart);
+}
 
-  & > .toggle {
-    width: 100%;
-    
-    font-family: var(--mechanic-param-font);
-  }
+.invalid .toggle-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: var(--mechanic-param-height);
+  z-index: 8;
+  opacity: 0.15;
+  background-color: currentColor;
+  border-radius: var(--mechanic-param-height-half);
+}
 
-  &.invalid {
-    & > button {
-      border: 1px solid var(--mechanic-error);
-    }
-
-    & > .error {
-      box-sizing: border-box;
-      padding: 0.1em;
-
-      background: var(--mechanic-error);
-    }
-  }
+.invalid .error {
+  padding: 0.2em 0.25em;
+  font-size: var(--mechanic-label-font-size);
 }

@@ -11,7 +11,6 @@ export const Toggle = props => {
     children,
     id = _id.current,
     className,
-    variant,
     disabled,
     onClick,
     onFocus,
@@ -20,28 +19,27 @@ export const Toggle = props => {
   const [focus, setFocus] = useState(false);
   const classes = classnames(css.root, {
     [className]: className,
-    [css[variant]]: css[variant],
     [css.focus]: focus,
     [css.disabled]: disabled
   });
 
-  const handleOnFocus = useRef(event => {
+  const handleOnFocus = event => {
     onFocus && onFocus(event);
     setFocus(true);
-  });
+  };
 
-  const handleOnBlur = useRef(event => {
+  const handleOnBlur = event => {
     onBlur && onBlur(event);
     setFocus(false);
-  });
+  };
 
   return (
     <button
       id={id}
       className={classes}
       onClick={onClick}
-      onFocus={handleOnFocus.current}
-      onBlur={handleOnBlur.current}
+      onFocus={handleOnFocus}
+      onBlur={handleOnBlur}
       disabled={disabled}>
       <div className={classnames(css.status, { [css.on]: status })} />
       <span className={css.label}>{children}</span>

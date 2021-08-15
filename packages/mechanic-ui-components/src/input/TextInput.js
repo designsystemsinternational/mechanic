@@ -2,6 +2,9 @@ import React, { useRef, useState } from "react";
 import PropTypes from "prop-types";
 import classnames from "classnames";
 import { uid } from "../uid.js";
+
+import { Invalid } from "../icons/index.js";
+
 import * as css from "./TextInput.module.css";
 
 export const TextInput = props => {
@@ -26,24 +29,24 @@ export const TextInput = props => {
   } = props;
   const [focus, setFocus] = useState(false);
 
-  const handleOnChange = useRef(event => {
+  const handleOnChange = event => {
     const { name, value } = event.target;
     onChange && onChange(event, name, value);
-  });
+  };
 
-  const handleOnFocus = useRef(event => {
+  const handleOnFocus = event => {
     onFocus && onFocus(event);
     setFocus(true);
-  });
+  };
 
-  const handleOnBlur = useRef(event => {
+  const handleOnBlur = event => {
     onBlur && onBlur(event);
     setFocus(false);
-  });
+  };
 
   const rootClasses = classnames(css.root, {
+    root,
     [className]: className,
-    [css[variant]]: variant,
     [css.invalid]: invalid,
     [css.disabled]: disabled,
     [css.focus]: focus
@@ -56,23 +59,27 @@ export const TextInput = props => {
           {label}
         </label>
       )}
-      <input
-        type="text"
-        name={name}
-        value={value}
-        id={id}
-        className={css.input}
-        disabled={disabled}
-        placeholder={placeholder}
-        autoComplete={autocomplete}
-        onChange={handleOnChange.current}
-        onFocus={handleOnFocus.current}
-        onBlur={handleOnBlur.current}
-        onKeyPress={onKeyPress}
-        aria-required={required}
-        aria-describedby={`error-${id}`}
-        aria-invalid={invalid}
-      />
+      <div className={css.inputWrapper}>
+        <input
+          type="text"
+          name={name}
+          value={value}
+          id={id}
+          className={css.input}
+          disabled={disabled}
+          placeholder={placeholder}
+          autoComplete={autocomplete}
+          onChange={handleOnChange}
+          onFocus={handleOnFocus}
+          onBlur={handleOnBlur}
+          onKeyPress={onKeyPress}
+          aria-required={required}
+          aria-describedby={`error-${id}`}
+          aria-invalid={invalid}
+        />
+        <div className={css.suffix}>{invalid && <Invalid />}</div>
+        {invalid && <div className={css.buttonBackground} />}
+      </div>
       {invalid && error && (
         <div className={css.error} id={`error-${id}`} aria-live="polite">
           {error}

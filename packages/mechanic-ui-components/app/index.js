@@ -35,7 +35,7 @@ const App = () => {
   };
 
   return (
-    <>
+    <div className={css.root}>
       <h3>ParamInput component</h3>
       <div className={css.simpleBlock}>
         <ParamInput
@@ -44,6 +44,20 @@ const App = () => {
           attributes={{
             type: "text",
             default: "Hi",
+            validation: value => (value.length < 15 ? null : "Length must be less than 15")
+          }}
+          onChange={handleChange}
+        />
+      </div>
+      <div className={css.simpleBlock}>
+        <ParamInput
+          name={"text"}
+          values={values}
+          attributes={{
+            type: "text",
+            label: "Super Text",
+            default: "Hi",
+            editable: false,
             validation: value => (value.length < 15 ? null : "Length must be less than 15")
           }}
           onChange={handleChange}
@@ -144,6 +158,20 @@ const App = () => {
       </div>
       <div className={css.simpleBlock}>
         <ParamInput
+          name={"disabledTextOption"}
+          values={values}
+          attributes={{
+            type: "text",
+            editable: false,
+            default: "Option 1",
+            options: ["Option 1", "Option 2", "Option 3"],
+            validation: value => (value === "Option 1" ? null : "Should be Option 1")
+          }}
+          onChange={handleChange}
+        />
+      </div>
+      <div className={css.simpleBlock}>
+        <ParamInput
           name={"numberOption"}
           values={values}
           attributes={{
@@ -229,6 +257,7 @@ const App = () => {
           onChange={handleChange}
         />
       </div>
+
       <div className={css.pairBlock}>
         <ParamInput
           name={"toggle"}
@@ -417,7 +446,7 @@ const App = () => {
         <Toggle status={true}>Toggle On</Toggle>
         <Toggle status={false}>Toggle Off</Toggle>
       </div>
-    </>
+    </div>
   );
 };
 

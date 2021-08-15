@@ -4,6 +4,8 @@ import classnames from "classnames";
 import { uid } from "../uid.js";
 import * as css from "./Select.module.css";
 
+import { Dropdown } from "../icons/index.js";
+
 export const Select = props => {
   const _id = useRef(uid("select"));
   const {
@@ -25,20 +27,20 @@ export const Select = props => {
   } = props;
   const [focus, setFocus] = useState(false);
 
-  const handleOnChange = useRef(event => {
+  const handleOnChange = event => {
     const { name, value } = event.target;
     onChange && onChange(event, name, value);
-  });
+  };
 
-  const handleOnFocus = useRef(event => {
+  const handleOnFocus = event => {
     onFocus && onFocus(event);
     setFocus(true);
-  });
+  };
 
-  const handleOnBlur = useRef(event => {
+  const handleOnBlur = event => {
     onBlur && onBlur(event);
     setFocus(false);
-  });
+  };
 
   const rootClasses = classnames(css.root, {
     [className]: className,
@@ -55,22 +57,27 @@ export const Select = props => {
           {label}
         </label>
       )}
-      <select
-        name={name}
-        value={value}
-        id={id}
-        className={css.select}
-        placeholder={placeholder}
-        disabled={disabled}
-        onChange={handleOnChange.current}
-        onFocus={handleOnFocus.current}
-        onBlur={handleOnBlur.current}
-        aria-required={required}
-        aria-describedby={`error-${id}`}
-        aria-invalid={invalid}>
-        <option disabled>{placeholder}</option>
-        {children}
-      </select>
+      <div className={css.selectWrapper}>
+        <select
+          name={name}
+          value={value}
+          id={id}
+          className={css.select}
+          placeholder={placeholder}
+          disabled={disabled}
+          onChange={handleOnChange}
+          onFocus={handleOnFocus}
+          onBlur={handleOnBlur}
+          aria-required={required}
+          aria-describedby={`error-${id}`}
+          aria-invalid={invalid}>
+          <option disabled>{placeholder}</option>
+          {children}
+        </select>
+        <div className={css.suffix}>
+          <Dropdown open={false} />
+        </div>
+      </div>
       {invalid && error && (
         <div className={css.error} id={`error-${id}`} aria-live="polite">
           {error}

@@ -2,6 +2,7 @@ import React, { useRef } from "react";
 import PropTypes from "prop-types";
 import classnames from "classnames";
 import { uid } from "../uid.js";
+import { Invalid } from "../icons/index.js";
 import { Toggle } from "../buttons/Toggle.js";
 import * as css from "./BooleanInput.module.css";
 
@@ -14,7 +15,6 @@ export const BooleanInput = props => {
     label,
     id = _id.current,
     className,
-    variant,
     disabled,
     invalid,
     error,
@@ -25,7 +25,6 @@ export const BooleanInput = props => {
 
   const rootClasses = classnames(css.root, {
     [className]: className,
-    [css[variant]]: variant,
     [css.invalid]: invalid,
     [css.disabled]: disabled
   });
@@ -37,20 +36,24 @@ export const BooleanInput = props => {
           {label}
         </label>
       )}
-      <Toggle
-        name={name}
-        id={id}
-        className={css.toggle}
-        status={value}
-        disabled={disabled}
-        onClick={e => onChange(e, name, !value)}
-        onFocus={onFocus}
-        onBlur={onBlur}
-        aria-describedby={`error-${id}`}
-        aria-invalid={invalid}>
-        {value ? "true" : "false"}
-        {children}
-      </Toggle>
+      <div className={css.toggleWrapper}>
+        <Toggle
+          name={name}
+          id={id}
+          className={css.toggle}
+          status={value}
+          disabled={disabled}
+          onClick={e => onChange(e, name, !value)}
+          onFocus={onFocus}
+          onBlur={onBlur}
+          aria-describedby={`error-${id}`}
+          aria-invalid={invalid}>
+          {value ? "true" : "false"}
+          {children}
+        </Toggle>
+        <div className={css.suffix}>{invalid && <Invalid />}</div>
+        {invalid && <div className={css.toggleBackground} />}
+      </div>
       {invalid && error && (
         <div className={css.error} id={`error-${id}`} aria-live="polite">
           {error}

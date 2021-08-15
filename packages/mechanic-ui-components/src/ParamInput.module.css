@@ -1,2 +1,9 @@
 .root {
+  font-size: var(--mechanic-param-font-size);
+  box-sizing: border-box;
+  & *,
+  & *:before,
+  & *:after {
+    box-sizing: inherit;
+  }
 }

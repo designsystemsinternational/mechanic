@@ -40,6 +40,11 @@ export default async (env, argv) => {
     ])
   };
 
+  const files = {
+    test: /(woff2?|otf|ttf)$/,
+    type: "asset/resource"
+  };
+
   const plugins = [
     new webpack.EnvironmentPlugin({
       "process.env.NODE_ENV": mode
@@ -88,7 +93,7 @@ Copied "${url}" to clipboard.
       extensions: [".js", ".jsx", ".json"]
     },
     module: {
-      rules: [js, css]
+      rules: [js, css, files]
     },
     plugins,
     devServer

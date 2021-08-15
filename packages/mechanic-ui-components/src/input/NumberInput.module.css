@@ -3,17 +3,35 @@
 .root {
 }
 
+.label {
+  display: block;
+  margin-bottom: 0.5em;
+  margin-left: 0.25em;
+  font-size: var(--mechanic-label-font-size);
+  font-family: inherit;
+  width: 100%;
+}
+
+.input-wrapper {
+  width: 100%;
+  position: relative;
+}
+
 .number-input {
+  position: relative;
+  z-index: 9;
   margin: 0;
-  border: 1px solid var(--mechanic-text);
-  box-sizing: border-box;
-  padding: 0.5em 1em;
-
+  border: 1px solid currentColor;
+  color: currentColor;
+  border-radius: var(--mechanic-param-height-half);
+  padding: 0.6em 2em 0.5em 1em;
+  height: var(--mechanic-param-height);
+  line-height: 1;
   background-color: var(--mechanic-background);
-
   font-size: inherit;
   font-family: inherit;
   font-weight: inherit;
+  width: 100%;
 
   -moz-appearance: textfield;
   &::-webkit-outer-spin-button,
@@ -23,22 +41,40 @@
   }
 }
 
-.range-wrapper {
+.suffix {
+  pointer-events: none;
+  position: absolute;
+  z-index: 10;
+  right: 2px;
+  top: 2px;
+  border-radius: var(--mechanic-param-height-half);
+  text-align: right;
+  background: var(--mechanic-param-background);
   display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  height: calc(var(--mechanic-param-height) - 4px);
+  padding: calc(var(--mechanic-param-height-quart) - 2px) var(--mechanic-param-height-quart)
+    calc(var(--mechanic-param-height-quart) - 2px) var(--mechanic-param-height-quart);
+}
 
+.range-wrapper {
+  position: relative;
+  display: flex;
   margin: 0;
   box-sizing: border-box;
-  padding: 0.5em 0;
-
+  align-items: center;
+  height: var(--mechanic-param-height);
+  padding: 0 0.5em;
   background-color: var(--mechanic-background);
+  border: 2px solid transparent;
+  color: currentColor;
+  border-radius: var(--mechanic-param-height-half);
 }
 
 .range-label {
-  flex: 0 1 90px;
-
+  flex: 0 0 60px;
   box-sizing: border-box;
-  padding: 0 1em;
-
   overflow-x: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -46,24 +82,24 @@
 
 /* https://css-tricks.com/styling-cross-browser-compatible-range-inputs-css/ */
 .range-input {
+  position: relative;
+  z-index: 9;
   flex: 1 1 auto;
   min-width: 0;
-
+  color: inherit;
   background: transparent; /* Otherwise white in Chrome */
 
   -webkit-appearance: none; /* Hides the slider so that custom slider can be made */
 
   /* Special styling for WebKit/Blink */
   &::-webkit-slider-thumb {
-    margin-top: -14px; /* You need to specify a margin in Chrome, but in Firefox and IE it is automatic */
-    border: 1px solid var(--mechanic-text);
-    border-radius: 0;
-    height: 36px;
-    width: 8px;
-
-    background: var(--mechanic-background);
+    margin-top: -0.65em; /* You need to specify a margin in Chrome, but in Firefox and IE it is automatic */
+    border: none;
+    background-color: currentColor;
+    border-radius: var(--mechanic-param-height-half);
+    height: var(--mechanic-param-height-half);
+    width: var(--mechanic-param-height-half);
     cursor: pointer;
-
     -webkit-appearance: none;
   }
 
@@ -84,78 +120,68 @@
 
   /* All the same stuff for Firefox */
   &::-moz-range-thumb {
-    border: 1px solid var(--mechanic-text);
-    border-radius: 0;
-    height: 36px;
-    width: 8px;
-
-    background: var(--mechanic-background);
-    cursor: pointer;
+    border: none;
+    background-color: currentColor;
+    border-radius: var(--mechanic-param-height-half);
+    height: var(--mechanic-param-height-half);
+    width: var(--mechanic-param-height-half);
   }
 
   /* All the same stuff for IE */
   &::-ms-thumb {
-    border: 1px solid var(--mechanic-text);
-    border-radius: 0;
-    height: 36px;
-    width: 8px;
-
-    background: var(--mechanic-background);
-    cursor: pointer;
+    border: none;
+    background-color: currentColor;
+    border-radius: var(--mechanic-param-height-half);
+    height: var(--mechanic-param-height-half);
+    width: var(--mechanic-param-height-half);
   }
 
   &::-webkit-slider-runnable-track {
-    border: 1px solid var(--mechanic-text);
-    border-radius: 0;
+    border: 1px solid currentColor;
+    border-radius: 2px;
     width: 100%;
-    height: 1px;
-
-    background: var(--mechanic-text);
+    height: 2px;
+    background-color: currentColor;
     cursor: pointer;
   }
 
   &:focus::-webkit-slider-runnable-track {
-    background: var(--mechanic-text);
+    background: currentColor;
   }
 
   &::-moz-range-track {
-    border: 1px solid var(--mechanic-text);
-    border-radius: 0;
+    border: 1px solid currentColor;
+    border-radius: 2px;
     width: 100%;
-    height: 1px;
-
-    background: var(--mechanic-text);
+    height: 2px;
+    background-color: currentColor;
     cursor: pointer;
   }
 
   &::-ms-track {
-    border: 1px solid var(--mechanic-text);
-    border-radius: 0;
+    border: 1px solid currentColor;
+    border-radius: 2px;
     width: 100%;
-    height: 1px;
-
-    background: var(--mechanic-text);
+    height: 2px;
+    background-color: currentColor;
     cursor: pointer;
-
     color: transparent;
   }
   &::-ms-fill-lower {
-    border: 1px solid var(--mechanic-text);
+    border: 1px solid currentColor;
     border-radius: 2.6px;
-
-    background: var(--mechanic-text);
+    background: currentColor;
   }
   &:focus::-ms-fill-lower {
-    background: var(--text);
   }
   &::-ms-fill-upper {
-    border: 1px solid var(--mechanic-text);
-    border-radius: 2.6px;
+    border: 1px solid currentColor;
+    border-radius: 5px;
 
-    background: var(--text);
+    background: currentColor;
   }
   &:focus::-ms-fill-upper {
-    background: var(--mechanic-text);
+    background: currentColor;
   }
 }
 
@@ -163,17 +189,9 @@
 }
 
 .disabled {
-  & .number-input {
-    border: 1px solid var(--mechanic-gray);
-  }
-
-  & .range-wrapper {
-    color: var(--mechanic-disabled);
-  }
-
+  opacity: 0.4;
   & .range-input {
     &::-webkit-slider-thumb {
-      border: 1px solid var(--mechanic-gray);
       cursor: default;
     }
 
@@ -182,103 +200,54 @@
     }
 
     &::-moz-range-thumb {
-      border: 1px solid var(--mechanic-gray);
       cursor: default;
     }
 
     &::-ms-thumb {
-      border: 1px solid var(--mechanic-gray);
       cursor: default;
     }
 
     &::-webkit-slider-runnable-track {
-      border: 1px solid var(--mechanic-gray);
-      background: var(--mechanic-gray);
       cursor: default;
     }
 
     &:focus::-webkit-slider-runnable-track {
-      background: var(--mechanic-gray);
+      cursor: default;
     }
 
     &::-moz-range-track {
-      border: 1px solid var(--mechanic-gray);
-      background: var(--mechanic-gray);
       cursor: default;
     }
 
     &::-ms-track {
-      border: 1px solid var(--mechanic-gray);
-      background: var(--mechanic-gray);
       cursor: default;
     }
-    &::-ms-fill-lower {
-      border: 1px solid var(--mechanic-gray);
-      background: var(--mechanic-gray);
-    }
-    &:focus::-ms-fill-lower {
-      background: var(--mechanic-gray);
-    }
-    &::-ms-fill-upper {
-      border: 1px solid var(--mechanic-gray);
-      background: var(--mechanic-gray);
-    }
-    &:focus::-ms-fill-upper {
-      background: var(--mechanic-gray);
-    }
   }
 }
 
-.focus {
+.focus .number-input {
+  outline: none;
+  border: 2px solid currentColor;
+  padding: calc(0.6em - 1px) calc(2em - 1px) calc(0.5em - 1px) calc(1em - 1px);
 }
 
-.mechanic-param {
-  & > .label {
-    display: block;
+.focus .range-wrapper {
+  border-color: currentColor;
+}
 
-    margin-bottom: 0.5em;
-    width: 100%;
+.invalid .button-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: var(--mechanic-param-height);
+  z-index: 8;
+  opacity: 0.15;
+  background-color: currentColor;
+  border-radius: var(--mechanic-param-height-half);
+}
 
-    font-size: 0.75em;
-    font-family: var(--mechanic-param-font);
-  }
-
-  & > .number-input {
-    width: 100%;
-
-    font-family: var(--mechanic-param-font);
-  }
-
-  & .range-label {
-    font-family: var(--mechanic-param-font);
-  }
-
-  &.invalid {
-    & > input {
-      border: 1px solid var(--mechanic-error);
-    }
-
-    & .range-wrapper .range-input {
-      &::-webkit-slider-thumb {
-        border: 1px solid var(--mechanic-error);
-      }
-
-      /* All the same stuff for Firefox */
-      &::-moz-range-thumb {
-        border: 1px solid var(--mechanic-error);
-      }
-
-      /* All the same stuff for IE */
-      &::-ms-thumb {
-        border: 1px solid var(--mechanic-error);
-      }
-    }
-
-    & > .error {
-      box-sizing: border-box;
-      padding: 0.1em;
-
-      background: var(--mechanic-error);
-    }
-  }
+.invalid .error {
+  padding: 0.2em 0.25em;
+  font-size: var(--mechanic-label-font-size);
 }
