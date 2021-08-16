@@ -1,6 +1,13 @@
 import { download } from "./download.js";
 import { WebMWriter } from "./webm-writer.js";
-import { svgToDataUrl, extractSvgSize, dataUrlToCanvas, getTimeStamp } from "./mechanic-utils.js";
+import {
+  svgOptimize,
+  svgPrepare,
+  svgToDataUrl,
+  extractSvgSize,
+  dataUrlToCanvas,
+  getTimeStamp
+} from "./mechanic-utils.js";
 import * as validation from "./mechanic-validation.js";
 import { MechanicError } from "./mechanic-error.js";
 
@@ -93,11 +100,25 @@ export class Mechanic {
    * Finish a static or animated design function
    * @param {SVGElement|HTMLCanvasElement} el - Element with the current drawing state of the design function
    */
-  async done(el) {
+  async done(el, extras = {}) {
     if (!this.settings.animated) {
       if (validation.isSVG(el)) {
+        if (extras.head) {
+          const styles = extras.head.querySelectorAll("style");
+
+          for (var i = 0; i < styles.length; i++) {
+            el.append(styles[i].cloneNode(true));
+          }
+        }
+
         this.serializer = new XMLSerializer();
-        this.svgData = svgToDataUrl(el, this.serializer);
+
+        let svgString = svgPrepare(el, this.serializer);
+
+        if (this.settings.optimize !== false) {
+          svgString = svgOptimize(svgString, this.settings.optimize);
+        }
+        this.svgData = svgToDataUrl(svgString);
       } else {
         this.canvasData = el.toDataURL();
       }

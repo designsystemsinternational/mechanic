@@ -11,6 +11,13 @@ module.exports = (modeParam, functionsPath, distDir) => {
 
   const devtool = isProduction ? "source-map" : "eval-source-map";
 
+  // condition function used to determine if a path belongs to mechanic or not
+  const isMechanicCondition = pathname => {
+    const isMechanicModule = /node_modules.+mechanic/.test(pathname);
+    // if (pathname) console.log(path.relative(process.cwd(), pathname), isMechanicModule);
+    return isMechanicModule;
+  };
+
   // https://stackoverflow.com/questions/33527653/babel-6-regeneratorruntime-is-not-defined
   const js = {
     test: /\.(js|jsx)$/,
@@ -49,45 +56,14 @@ module.exports = (modeParam, functionsPath, distDir) => {
     }
   };
 
-  const externalCss = {
-    test: /\.(css)$/,
-    include: [/.+\/node_modules\/.+/, /.+\/mechanic-ui-components\/.+/],
-    use: [isProduction ? MiniCssExtractPlugin.loader : require.resolve("style-loader")].concat([
-      {
-        loader: require.resolve("css-loader"),
-        options: {
-          modules: false,
-          importLoaders: 1
-        }
-      },
-      {
-        loader: require.resolve("postcss-loader"),
-        options: {
-          sourceMap: true,
-          postcssOptions: {
-            plugins: [
-              [
-                require.resolve("postcss-preset-env"),
-                {
-                  stage: 0
-                }
-              ]
-            ]
-          }
-        }
-      }
-    ])
+  const functions = {
+    test: /FUNCTIONS/,
+    use: [{ loader: path.resolve(__dirname, "./function-loader.cjs"), options: { functionsPath } }]
   };
 
-  const css = {
+  const mechanicCss = {
     test: /\.(css)$/,
-    exclude: pathname => {
-      return (
-        pathname.includes("node_modules") &&
-        !pathname.includes(path.join("@designsystemsinternational", "mechanic-ui-components")) &&
-        !pathname.startsWith(__dirname)
-      );
-    },
+    include: isMechanicCondition,
     use: [isProduction ? MiniCssExtractPlugin.loader : require.resolve("style-loader")].concat([
       {
         loader: require.resolve("css-loader"),
@@ -119,9 +95,52 @@ module.exports = (modeParam, functionsPath, distDir) => {
     ])
   };
 
-  const functions = {
-    test: /FUNCTIONS/,
-    use: [{ loader: path.resolve(__dirname, "./function-loader.cjs"), options: { functionsPath } }]
+  const functionsCss = {
+    test: /\.(css)$/,
+    exclude: isMechanicCondition,
+    use: [
+      require.resolve("style-loader"),
+      {
+        loader: require.resolve("css-loader"),
+        options: {
+          modules: {
+            auto: true,
+            localIdentName: "[path]--[name]__[local]",
+            namedExport: true,
+            exportLocalsConvention: "camelCaseOnly"
+          },
+          importLoaders: 1
+        }
+      },
+      {
+        loader: require.resolve("postcss-loader"),
+        options: {
+          sourceMap: true,
+          postcssOptions: {
+            plugins: [
+              [
+                require.resolve("postcss-preset-env"),
+                {
+                  stage: 0
+                }
+              ]
+            ]
+          }
+        }
+      }
+    ]
+  };
+
+  const mechanicFonts = {
+    test: /\.(woff2?|otf|ttf)$/,
+    type: "asset/resource",
+    include: isMechanicCondition
+  };
+
+  const functionsFonts = {
+    test: /\.(woff2?|otf|ttf)$/,
+    type: "asset/inline",
+    exclude: isMechanicCondition
   };
 
   const entry = {
@@ -193,7 +212,7 @@ module.exports = (modeParam, functionsPath, distDir) => {
       }
     },
     module: {
-      rules: [js, css, functions]
+      rules: [js, functions, mechanicCss, functionsCss, mechanicFonts, functionsFonts]
     },
     plugins
   };
