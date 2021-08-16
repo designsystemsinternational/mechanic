@@ -1,7 +1,7 @@
 import { optimize, extendDefaultPlugins } from "svgo/dist/svgo.browser.js";
 
 /**
- * Prepares an SVG element with sensible defauls and to returns serialized svg string
+ * Prepares an SVG element with sensible defaults and returns serialized svg string
  * @param {SVGElement} el - SVG element to convert
  * @param {XMLSerializer} serializer - An instance of XMLSerializer to use for serialization
  */
