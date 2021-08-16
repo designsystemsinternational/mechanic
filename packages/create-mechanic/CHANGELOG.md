@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### Added
+
+- Real template base projects
+- Poster generator example
+
 ### Changed
 
 - Added more options to the creation flow and concept explanations that were missing.
