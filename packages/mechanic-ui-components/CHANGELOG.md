@@ -7,12 +7,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
-### Added
-
-- Added ability to import fonts in functions, and embed them on SVG export
-- Added ability to import css files in functions. They are now properly handled when exporting svg.
-- Added SVG optimization via [SVGO](https://github.com/svg/svgo#svgo). This also removes unused css in the exported file. There is a new `optimize` setting key that defaults to true and accepts a boolean or a [SVGO config](https://github.com/svg/svgo#configuration) object.
-
 ## 0.3.0 - 2021-08-02
 
 ### Added
