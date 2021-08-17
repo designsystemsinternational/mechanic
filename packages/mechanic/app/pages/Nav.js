@@ -1,4 +1,5 @@
 import React from "react";
+import Case from "case";
 import { useHistory } from "react-router-dom";
 import * as css from "./Nav.module.css";
 
@@ -11,7 +12,7 @@ export const Nav = ({ name, functionsNames }) => {
         Design Functions
       </label>
       <div className={css.selectContainer}>
-        <span className={css.functionLabel}>{name}</span>
+        <span className={css.functionLabel}>{Case.title(name)}</span>
         <select
           id="navigation-select"
           className={css.navigationSelect}
@@ -22,7 +23,9 @@ export const Nav = ({ name, functionsNames }) => {
             Select...
           </option>
           {functionsNames.map(name => (
-            <option key={`route-${name}`}>{name}</option>
+            <option key={`route-${name}`} value={name}>
+              {Case.title(name)}
+            </option>
           ))}
         </select>
       </div>

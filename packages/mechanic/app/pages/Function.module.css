@@ -105,13 +105,9 @@
 .param {
   margin-bottom: 1em;
 }
-
+.error {
+  font-size: 0.75em;
+}
 .strong {
   font-weight: bold;
-}
-
-.blue-highlight {
-  background-color: var(--mechanic-blue);
-
-  color: white;
 }

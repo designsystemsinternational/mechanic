@@ -48,6 +48,7 @@
     "@designsystemsinternational/mechanic-ui-components": "^0.3.0",
     "@designsystemsinternational/mechanic-utils": "^0.3.0",
     "babel-loader": "^8.2.2",
+    "case": "^1.6.3",
     "classnames": "^2.2.6",
     "clean-webpack-plugin": "^3.0.0",
     "connect-history-api-fallback": "^1.6.0",

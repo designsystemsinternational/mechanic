@@ -123,21 +123,18 @@ export const Function = ({ name, exports, children }) => {
         <div className={css.line} />
         <div className={css.sep} />
         <div className={css.section}>
-          <div className={classnames(css.row, css.strong)}>
+          <div className={css.row}>
             <Toggle
               className={css.grow}
               status={canScale && scaleToFit}
               disabled={!canScale}
               onClick={() => setScaleToFit(scaleToFit => !scaleToFit)}>
-              {canScale
-                ? scaleToFit
-                  ? "Scale to fit On"
-                  : "Scale to fit Off"
-                : "Params missing for scaling"}
+              {canScale ? (scaleToFit ? "Scale to fit On" : "Scale to fit Off") : "Scale to Fit"}
             </Toggle>
+            {!canScale && <span className={css.error}>Params missing for scaling</span>}
           </div>
           <div className={css.sep} />
-          <div className={classnames(css.row, css.strong)}>
+          <div className={css.row}>
             <Toggle
               className={css.grow}
               status={autoRefreshOn}
@@ -147,15 +144,16 @@ export const Function = ({ name, exports, children }) => {
             </Toggle>
           </div>
           <div className={css.sep} />
-          <div className={classnames(css.row, css.strong)}>
+          <div className={css.row}>
             <Button className={css.grow} onClick={handlePreview} disabled={!iframeLoaded}>
               {iframeLoaded ? (usesRandom ? "Preview / Randomize" : "Preview") : "Loading content"}
             </Button>
           </div>
           <div className={css.sep} />
-          <div className={classnames(css.row, css.strong)}>
+          <div className={css.row}>
             <Button
-              className={classnames(css.grow, { [css.blueHighlight]: iframeLoaded })}
+              className={css.grow}
+              primary={iframeLoaded}
               onClick={handleExport}
               disabled={!iframeLoaded}>
               {iframeLoaded ? "Export" : "Loading content"}

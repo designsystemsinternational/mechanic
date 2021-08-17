@@ -1,7 +1,6 @@
 import React, { useRef } from "react";
 import PropTypes from "prop-types";
 import classnames from "classnames";
-import Case from "case";
 import * as css from "./ParamInput.module.css";
 import { TextInput } from "./input/TextInput.js";
 import { NumberInput } from "./input/NumberInput.js";
@@ -21,9 +20,9 @@ export const ParamInput = ({
   color = "#f04b17"
 }) => {
   const id = useRef(uid("param-input"));
-  const { type, label: _label, options, validation, editable } = attributes;
+  const { type, label, options, validation, editable } = attributes;
   const _default = attributes["default"];
-  const label = Case.title(name) || _label;
+  const _label = label || name;
 
   const value = values[name];
   const isEditable =
@@ -42,7 +41,7 @@ export const ParamInput = ({
         type={type}
         options={options}
         value={actualValue}
-        label={label}
+        label={_label}
         id={id.current}
         className={rootClasses}
         invalid={error ? true : false}
@@ -61,7 +60,7 @@ export const ParamInput = ({
       <ImageInput
         name={name}
         value={actualValue}
-        label={label}
+        label={_label}
         id={id.current}
         className={rootClasses}
         invalid={error ? true : false}
@@ -80,7 +79,7 @@ export const ParamInput = ({
       <BooleanInput
         name={name}
         value={actualValue}
-        label={label}
+        label={_label}
         id={id.current}
         className={rootClasses}
         invalid={error ? true : false}
@@ -100,7 +99,7 @@ export const ParamInput = ({
         name={name}
         model={model}
         value={actualValue}
-        label={label}
+        label={_label}
         id={id.current}
         className={rootClasses}
         invalid={error ? true : false}
@@ -117,7 +116,7 @@ export const ParamInput = ({
     const { min, max, step, slider } = attributes;
     return (
       <NumberInput
-        label={label}
+        label={_label}
         value={actualValue}
         name={name}
         id={id.current}
@@ -140,7 +139,7 @@ export const ParamInput = ({
     <TextInput
       name={name}
       value={actualValue}
-      label={label}
+      label={_label}
       id={id.current}
       className={rootClasses}
       invalid={error ? true : false}

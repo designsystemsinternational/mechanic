@@ -1,0 +1,30 @@
+@font-face {
+  font-family: "Object Sans";
+  src: url("./PP Object Sans/PPObjectSans-Regular.otf") format("opentype");
+}
+
+@font-face {
+  font-family: "Object Sans";
+  src: url("./PP Object Sans/PPObjectSans-Slanted.otf") format("opentype");
+  font-style: italic;
+}
+
+@font-face {
+  font-family: "Object Sans";
+  src: url("./PP Object Sans/PPObjectSans-Heavy.otf") format("opentype");
+  font-weight: bold;
+}
+
+@font-face {
+  font-family: "Object Sans";
+  src: url("./PP Object Sans/PPObjectSans-HeavySlanted.otf") format("opentype");
+  font-weight: bold;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: Plex;
+  src: url("./IBM-Plex-Mono/IBMPlexMono-Regular.otf") format("opentype");
+  font-weight: normal;
+  font-style: normal;
+}

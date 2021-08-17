@@ -1,0 +1,115 @@
+@import "../variables.css";
+
+.container {
+  display: flex;
+  justify-content: space-between;
+  position: relative;
+  z-index: 20;
+  border: 1px solid currentColor;
+  color: currentColor;
+  border-radius: var(--mechanic-param-height-half);
+  padding: 0 var(--mechanic-param-height) 0 var(--mechanic-param-height-quart);
+  display: flex;
+  align-items: center;
+  min-height: var(--mechanic-param-height);
+  line-height: 1;
+  background-color: var(--mechanic-background);
+  font-size: inherit;
+  font-family: inherit;
+  font-weight: inherit;
+  width: 100%;
+}
+
+.container-wrapper {
+  position: relative;
+}
+
+.loadedImages {
+  z-index: 21;
+  pointer-events: none;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  flex-grow: 1;
+}
+
+.imageItem {
+  pointer-events: initial;
+  margin: 0.15em 0.15em 0 0;
+}
+
+.thumbnail {
+  height: var(--mechanic-param-height-half);
+  border-radius: 6px;
+}
+
+.preview {
+  position: absolute;
+  z-index: 1000;
+  left: var(--mechanic-param-height-quart);
+  right: var(--mechanic-param-height-quart);
+  top: calc(100% + var(--mechanic-param-height-half));
+  width: calc(100% - var(--mechanic-param-height-half));
+  max-height: 200px;
+  object-fit: contain;
+  background-color: #f7f7f7;
+  border-radius: 6px;
+}
+
+.focus .container .preview,
+.container:hover .preview {
+  left: calc(var(--mechanic-param-height-quart) - 1px);
+  right: calc(var(--mechanic-param-height-quart) - 1px);
+}
+
+.input {
+  opacity: 0;
+  width: 0.1px;
+  height: 0.1px;
+  position: absolute;
+}
+
+.browseButton {
+  position: absolute;
+  left: 0;
+  right: 0;
+  z-index: 20;
+  padding: 0 var(--mechanic-param-height-half) 0 0;
+  height: 100%;
+  width: 100%;
+  border: none;
+  border-radius: var(--mechanic-param-height-half);
+  background: none;
+  color: inherit;
+  vertical-align: middle;
+  text-align: right;
+}
+.focus .browseButton,
+.container:hover .browseButton {
+  padding: 0 calc(var(--mechanic-param-height-half) - 1px) 0 0;
+}
+
+.invalid {
+}
+
+.disabled {
+  opacity: 0.4;
+}
+
+.focus .input {
+  outline: none;
+}
+.focus .browseButton {
+  outline: none;
+}
+
+.focus .container,
+.container:hover {
+  outline: none;
+  border: 2px solid currentColor;
+  padding: 0 calc(var(--mechanic-param-height) - 1px) 0
+    calc(var(--mechanic-param-height-quart) - 1px);
+}
+.container:active {
+  transform: translateY(1px);
+}
