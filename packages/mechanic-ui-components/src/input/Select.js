@@ -60,7 +60,7 @@ export const Select = props => {
           name={name}
           value={value}
           id={id}
-          className={classnames(commonCss.input)}
+          className={classnames(commonCss.input, css.select)}
           placeholder={placeholder}
           disabled={disabled}
           onChange={handleOnChange}

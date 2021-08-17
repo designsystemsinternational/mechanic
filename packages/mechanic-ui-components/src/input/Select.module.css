@@ -2,3 +2,6 @@
 
 .root {
 }
+.select {
+  cursor: pointer;
+}

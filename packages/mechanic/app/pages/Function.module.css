@@ -38,7 +38,6 @@
 
 .sep {
   flex-shrink: 0;
-
   height: 1em;
 }
 
@@ -61,6 +60,8 @@
 .params-wrapper {
   position: relative;
   flex-grow: 1;
+  overflow: auto;
+
   &:before,
   &:after {
     content: "";

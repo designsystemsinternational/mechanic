@@ -94,7 +94,6 @@ export const Function = ({ name, exports, children }) => {
   return (
     <div className={css.root}>
       <aside className={css.aside}>
-        <div className={css.sep} />
         <div className={css.section}>{children}</div>
         <div className={css.sep} />
         <div className={css.line} />
@@ -121,7 +120,6 @@ export const Function = ({ name, exports, children }) => {
           </div>
         </div>
         <div className={css.line} />
-        <div className={css.sep} />
         <div className={css.section}>
           <div className={css.row}>
             <Toggle
@@ -158,6 +156,7 @@ export const Function = ({ name, exports, children }) => {
               {iframeLoaded ? "Export" : "Loading content"}
             </Button>
           </div>
+          <div className={css.sep} />
         </div>
       </aside>
       <main className={css.main} ref={mainRef}>

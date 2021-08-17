@@ -57,7 +57,7 @@
 }
 
 .focus .container .preview,
-.container:hover .preview {
+.container:not([disabled]):hover .preview {
   left: calc(var(--mechanic-param-height-quart) - 1px);
   right: calc(var(--mechanic-param-height-quart) - 1px);
 }
@@ -85,7 +85,7 @@
   text-align: right;
 }
 .focus .browseButton,
-.container:hover .browseButton {
+.container:not([disabled]):hover .browseButton {
   padding: 0 calc(var(--mechanic-param-height-half) - 1px) 0 0;
 }
 
@@ -104,7 +104,7 @@
 }
 
 .focus .container,
-.container:hover {
+.container:not([disabled]):hover {
   outline: none;
   border: 2px solid currentColor;
   padding: 0 calc(var(--mechanic-param-height) - 1px) 0

@@ -13,7 +13,7 @@
 
 .disabled {
   opacity: 0.4;
-
+  pointer-events: none;
   /* to prevent buttons inside inputs to be double-dimmed */
   & .disabled {
     opacity: 1;
@@ -51,6 +51,7 @@
   font-family: inherit;
   font-weight: inherit;
   width: 100%;
+
   -moz-appearance: none;
   -webkit-appearance: none;
   appearance: none;
@@ -63,9 +64,11 @@
 .button {
   justify-content: center;
   padding: 0 var(--mechanic-param-height-quart);
+  transition: transform 0.1s ease;
 }
 
-.button:hover {
+.root:not(.disabled) .button:hover,
+.button:not(.disabled):not([disabled]):hover {
   transform: translateY(-1px);
   cursor: pointer;
 }

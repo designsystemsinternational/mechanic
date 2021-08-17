@@ -5,7 +5,7 @@
 }
 .root .button {
   justify-content: flex-start;
-  &:hover {
+  &:not([disabled]):hover {
     transform: translateY(0);
   }
 }
