@@ -3,6 +3,8 @@ import PropTypes from "prop-types";
 import classnames from "classnames";
 import { uid } from "../uid.js";
 import { Add } from "../icons/index.js";
+
+import * as commonCss from "../common.module.css";
 import * as css from "./ImageInput.module.css";
 
 const ImageItem = ({ file, onPreview }) => {
@@ -66,7 +68,7 @@ export const ImageInput = props => {
     ref.current?.click();
   };
 
-  const rootClasses = classnames(css.root, {
+  const rootClasses = classnames(commonCss.root, {
     [className]: className,
     [css[variant]]: variant,
     [css.invalid]: invalid,
@@ -103,7 +105,7 @@ export const ImageInput = props => {
   return (
     <div className={rootClasses}>
       {label && (
-        <label className={css.label} htmlFor={id}>
+        <label className={commonCss.label} htmlFor={id}>
           {label}
         </label>
       )}
@@ -141,10 +143,10 @@ export const ImageInput = props => {
             <Add />
           </button>
         </div>
-        {invalid && <div className={css.inputBackground} />}
+        {invalid && <div className={commonCss.background} />}
       </div>
       {invalid && error && (
-        <div className={css.error} id={`error-${id}`} aria-live="polite">
+        <div className={commonCss.error} id={`error-${id}`} aria-live="polite">
           {error}
         </div>
       )}

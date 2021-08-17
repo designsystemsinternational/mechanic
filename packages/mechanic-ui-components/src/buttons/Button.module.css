@@ -1,23 +1,6 @@
 @import "../variables.css";
 
 .root {
-  color: inherit;
-  position: relative;
-  margin: 0;
-  width: 100%;
-  border: 1px solid currentColor;
-  color: currentColor;
-  border-radius: var(--mechanic-param-height-half);
-  padding: 0.6em 2em 0.5em 1em;
-  height: var(--mechanic-param-height);
-  line-height: 1;
-  background-color: var(--mechanic-background);
-  font-size: inherit;
-  font-family: inherit;
-  font-weight: inherit;
-  -moz-appearance: none;
-  -webkit-appearance: none;
-  appearance: none;
   &:not([disabled]) {
     cursor: pointer;
   }
@@ -25,24 +8,4 @@
   &:active:not([disabled]) {
     transform: translate(0, 1px);
   }
-
-  box-sizing: border-box;
-  & *,
-  & *:before,
-  & *:after {
-    box-sizing: inherit;
-  }
-}
-
-.invalid {
-}
-
-.disabled {
-  opacity: 0.4;
-}
-
-.root.focus {
-  outline: none;
-  border: 2px solid currentColor;
-  padding: calc(0.6em - 1px) calc(2em - 1px) calc(0.5em - 1px) calc(1em - 1px);
 }

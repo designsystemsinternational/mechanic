@@ -2,9 +2,10 @@ import React, { Fragment, useRef, useState } from "react";
 import PropTypes from "prop-types";
 import classnames from "classnames";
 import { uid } from "../uid.js";
-import * as css from "./Select.module.css";
-
 import { Dropdown } from "../icons/index.js";
+
+import * as commonCss from "../common.module.css";
+import * as css from "./Select.module.css";
 
 export const Select = props => {
   const _id = useRef(uid("select"));
@@ -42,27 +43,25 @@ export const Select = props => {
     setFocus(false);
   };
 
-  const rootClasses = classnames(css.root, {
+  const rootClasses = classnames(css.root, commonCss.root, {
     [className]: className,
-    [css[variant]]: variant,
-    [css.focus]: focus,
-    [css.invalid]: invalid,
-    [css.disabled]: disabled
+    [commonCss.focus]: focus,
+    [commonCss.disabled]: disabled
   });
 
   return (
     <div className={rootClasses}>
       {label && (
-        <label className={css.label} htmlFor={id}>
+        <label className={commonCss.label} htmlFor={id}>
           {label}
         </label>
       )}
-      <div className={css.selectWrapper}>
+      <div className={commonCss.inputWrapper}>
         <select
           name={name}
           value={value}
           id={id}
-          className={css.select}
+          className={classnames(commonCss.input)}
           placeholder={placeholder}
           disabled={disabled}
           onChange={handleOnChange}
@@ -74,12 +73,13 @@ export const Select = props => {
           <option disabled>{placeholder}</option>
           {children}
         </select>
-        <div className={css.suffix}>
+        <div className={commonCss.suffix}>
           <Dropdown open={false} />
         </div>
+        {invalid && <div className={commonCss.background} />}
       </div>
       {invalid && error && (
-        <div className={css.error} id={`error-${id}`} aria-live="polite">
+        <div className={commonCss.error} id={`error-${id}`} aria-live="polite">
           {error}
         </div>
       )}

@@ -2,9 +2,9 @@ import React, { useRef, useState } from "react";
 import PropTypes from "prop-types";
 import classnames from "classnames";
 import { uid } from "../uid.js";
-
 import { Invalid } from "../icons/index.js";
 
+import * as commonCss from "../common.module.css";
 import * as css from "./TextInput.module.css";
 
 export const TextInput = props => {
@@ -44,28 +44,26 @@ export const TextInput = props => {
     setFocus(false);
   };
 
-  const rootClasses = classnames(css.root, {
-    root,
+  const rootClasses = classnames(commonCss.root, {
     [className]: className,
-    [css.invalid]: invalid,
-    [css.disabled]: disabled,
-    [css.focus]: focus
+    [commonCss.disabled]: disabled,
+    [commonCss.focus]: focus
   });
 
   return (
     <div className={rootClasses}>
       {label && (
-        <label className={css.label} htmlFor={id}>
+        <label className={commonCss.label} htmlFor={id}>
           {label}
         </label>
       )}
-      <div className={css.inputWrapper}>
+      <div className={commonCss.inputWrapper}>
         <input
           type="text"
           name={name}
           value={value}
           id={id}
-          className={css.input}
+          className={commonCss.input}
           disabled={disabled}
           placeholder={placeholder}
           autoComplete={autocomplete}
@@ -77,11 +75,11 @@ export const TextInput = props => {
           aria-describedby={`error-${id}`}
           aria-invalid={invalid}
         />
-        <div className={css.suffix}>{invalid && <Invalid />}</div>
-        {invalid && <div className={css.buttonBackground} />}
+        <div className={commonCss.suffix}>{invalid && <Invalid />}</div>
+        {invalid && <div className={commonCss.background} />}
       </div>
       {invalid && error && (
-        <div className={css.error} id={`error-${id}`} aria-live="polite">
+        <div className={commonCss.error} id={`error-${id}`} aria-live="polite">
           {error}
         </div>
       )}

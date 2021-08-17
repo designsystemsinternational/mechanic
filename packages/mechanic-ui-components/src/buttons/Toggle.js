@@ -2,6 +2,7 @@ import React, { useState, useRef } from "react";
 import PropTypes from "prop-types";
 import classnames from "classnames";
 import { uid } from "../uid.js";
+import * as commonCss from "../common.module.css";
 import * as css from "./Toggle.module.css";
 
 export const Toggle = props => {
@@ -20,7 +21,7 @@ export const Toggle = props => {
   const classes = classnames(css.root, {
     [className]: className,
     [css.focus]: focus,
-    [css.disabled]: disabled
+    [commonCss.disabled]: disabled
   });
 
   const handleOnFocus = event => {

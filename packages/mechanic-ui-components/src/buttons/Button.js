@@ -2,6 +2,7 @@ import React, { useState, useRef } from "react";
 import PropTypes from "prop-types";
 import classnames from "classnames";
 import { uid } from "../uid.js";
+import * as commonCss from "../common.module.css";
 import * as css from "./Button.module.css";
 
 export const Button = props => {
@@ -17,11 +18,10 @@ export const Button = props => {
     onBlur
   } = props;
   const [focus, setFocus] = useState(false);
-  const classes = classnames(css.root, {
+  const classes = classnames(css.root, commonCss.root, commonCss.button, {
     [className]: className,
-    [css[variant]]: css[variant],
-    [css.focus]: focus,
-    [css.disabled]: disabled
+    [commonCss.focus]: focus,
+    [commonCss.disabled]: disabled
   });
 
   const handleOnFocus = event => {

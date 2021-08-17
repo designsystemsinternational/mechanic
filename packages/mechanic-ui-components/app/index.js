@@ -43,21 +43,8 @@ const App = () => {
           values={values}
           attributes={{
             type: "text",
+            label: "The Text",
             default: "Hi",
-            validation: value => (value.length < 15 ? null : "Length must be less than 15")
-          }}
-          onChange={handleChange}
-        />
-      </div>
-      <div className={css.simpleBlock}>
-        <ParamInput
-          name={"text"}
-          values={values}
-          attributes={{
-            type: "text",
-            label: "Super Text",
-            default: "Hi",
-            editable: false,
             validation: value => (value.length < 15 ? null : "Length must be less than 15")
           }}
           onChange={handleChange}

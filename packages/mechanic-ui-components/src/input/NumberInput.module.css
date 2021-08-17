@@ -1,71 +1,12 @@
 @import "../variables.css";
 
-.root {
-  box-sizing: border-box;
-  & *,
-  & *:before,
-  & *:after {
-    box-sizing: inherit;
-  }
-}
-
-.label {
-  display: block;
-  margin-bottom: 0.5em;
-  margin-left: 0.25em;
-  font-size: var(--mechanic-label-font-size);
-  font-family: inherit;
-  width: 100%;
-}
-
-.input-wrapper {
-  width: 100%;
-  position: relative;
-}
-
 .number-input {
-  position: relative;
-  z-index: 9;
-  margin: 0;
-  border: 1px solid currentColor;
-  color: currentColor;
-  border-radius: var(--mechanic-param-height-half);
-  padding: 0.6em 2em 0.5em 1em;
-  height: var(--mechanic-param-height);
-  line-height: 1;
-  background-color: var(--mechanic-background);
-  font-size: inherit;
-  font-family: inherit;
-  font-weight: inherit;
-  width: 100%;
-
   -moz-appearance: textfield;
   &::-webkit-outer-spin-button,
   &::-webkit-inner-spin-button {
     -webkit-appearance: none;
     margin: 0;
   }
-}
-
-.suffix {
-  pointer-events: none;
-  position: absolute;
-  z-index: 10;
-  right: 2px;
-  top: 2px;
-  border-radius: var(--mechanic-param-height-half);
-  text-align: right;
-  background: var(--mechanic-param-background);
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  height: calc(var(--mechanic-param-height) - 4px);
-  padding: 0 var(--mechanic-param-height-quart);
-}
-
-.number-input::placeholder {
-  color: currentColor;
-  opacity: 0.6;
 }
 
 .range-wrapper {
@@ -80,6 +21,9 @@
   border: 2px solid transparent;
   color: currentColor;
   border-radius: var(--mechanic-param-height-half);
+  & .background {
+    top: -2px;
+  }
 }
 
 .range-label {
@@ -111,10 +55,6 @@
     width: var(--mechanic-param-height-half);
     cursor: pointer;
     -webkit-appearance: none;
-  }
-
-  &:focus {
-    outline: none; /* Removes the blue border. Should probably do some kind of focus styling for accessibility reasons though. */
   }
 
   &::-ms-track {
@@ -195,11 +135,7 @@
   }
 }
 
-.invalid {
-}
-
 .disabled {
-  opacity: 0.4;
   & .range-input {
     &::-webkit-slider-thumb {
       cursor: default;
@@ -235,29 +171,10 @@
   }
 }
 
-.focus .number-input {
-  outline: none;
-  border: 2px solid currentColor;
-  padding: calc(0.6em - 1px) calc(2em - 1px) calc(0.5em - 1px) calc(1em - 1px);
-}
-
 .focus .range-wrapper {
   border-color: currentColor;
 }
 
-.invalid .button-background {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: var(--mechanic-param-height);
-  z-index: 8;
-  opacity: 0.15;
-  background-color: currentColor;
-  border-radius: var(--mechanic-param-height-half);
-}
-
-.invalid .error {
-  padding: 0.2em 0.25em;
-  font-size: var(--mechanic-label-font-size);
+.focus .range-input {
+  outline: none;
 }

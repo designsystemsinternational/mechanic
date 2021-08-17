@@ -1,19 +1,10 @@
 @import "../variables.css";
 
-.root {
-  box-sizing: border-box;
-  & *,
-  & *:before,
-  & *:after {
-    box-sizing: inherit;
-  }
-}
-
 .container {
   display: flex;
   justify-content: space-between;
   position: relative;
-  z-index: 9;
+  z-index: 20;
   border: 1px solid currentColor;
   color: currentColor;
   border-radius: var(--mechanic-param-height-half);
@@ -34,26 +25,41 @@
 }
 
 .loadedImages {
+  z-index: 21;
+  pointer-events: none;
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   flex-grow: 1;
-  padding: var(--mechanic-param-height-quart);
 }
 
 .imageItem {
-  margin: 0 0.1em 0.1em;
+  pointer-events: initial;
+  margin: 0.15em 0.15em 0 0;
 }
 
 .thumbnail {
   height: var(--mechanic-param-height-half);
+  border-radius: 6px;
 }
 
 .preview {
   position: absolute;
-  left: 0px;
-  bottom: 40px;
-  width: 150px;
+  z-index: 1000;
+  left: var(--mechanic-param-height-quart);
+  right: var(--mechanic-param-height-quart);
+  top: calc(100% + var(--mechanic-param-height-half));
+  width: calc(100% - var(--mechanic-param-height-half));
+  max-height: 200px;
+  object-fit: contain;
+  background-color: #f7f7f7;
+  border-radius: 6px;
+}
+
+.focus .container .preview,
+.container:hover .preview {
+  left: calc(var(--mechanic-param-height-quart) - 1px);
+  right: calc(var(--mechanic-param-height-quart) - 1px);
 }
 
 .input {
@@ -67,7 +73,7 @@
   position: absolute;
   left: 0;
   right: 0;
-  z-index: 10;
+  z-index: 20;
   padding: 0 var(--mechanic-param-height-half) 0 0;
   height: 100%;
   width: 100%;
@@ -77,6 +83,10 @@
   color: inherit;
   vertical-align: middle;
   text-align: right;
+}
+.focus .browseButton,
+.container:hover .browseButton {
+  padding: 0 calc(var(--mechanic-param-height-half) - 1px) 0 0;
 }
 
 .invalid {
@@ -92,6 +102,7 @@
 .focus .browseButton {
   outline: none;
 }
+
 .focus .container,
 .container:hover {
   outline: none;
@@ -101,30 +112,4 @@
 }
 .container:active {
   transform: translateY(1px);
-}
-
-.label {
-  display: block;
-  margin-bottom: 0.5em;
-  margin-left: 0.25em;
-  font-size: var(--mechanic-label-font-size);
-  font-family: inherit;
-  width: 100%;
-}
-
-.invalid .input-background {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: var(--mechanic-param-height);
-  z-index: 8;
-  opacity: 0.15;
-  background-color: currentColor;
-  border-radius: var(--mechanic-param-height-half);
-}
-
-.invalid .error {
-  padding: 0.2em 0.25em;
-  font-size: var(--mechanic-label-font-size);
 }

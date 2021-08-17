@@ -48,21 +48,11 @@
   }
 }
 
-.disabled {
-  opacity: 0.4;
+.label {
 }
 
 .root.focus {
   outline: none;
   border: 2px solid currentColor;
   padding: 0.2em calc(1em - 1px) 0 calc(2em - 1px);
-}
-
-.label {
-  display: block;
-  margin-bottom: 0.5em;
-  margin-left: 0.25em;
-  font-size: var(--mechanic-label-font-size);
-  font-family: inherit;
-  width: 100%;
 }

@@ -3,6 +3,8 @@ import PropTypes from "prop-types";
 import classnames from "classnames";
 import { uid } from "../uid.js";
 import { Invalid } from "../icons/index.js";
+
+import * as commonCss from "../common.module.css";
 import * as css from "./NumberInput.module.css";
 
 export const NumberInput = props => {
@@ -46,10 +48,11 @@ export const NumberInput = props => {
     setFocus(false);
   };
 
-  const rootClasses = classnames(css.root, {
+  const rootClasses = classnames(commonCss.root, {
     [className]: className,
-    [css.invalid]: invalid,
+    [commonCss.disabled]: disabled,
     [css.disabled]: disabled,
+    [commonCss.focus]: focus,
     [css.focus]: focus
   });
 
@@ -64,7 +67,7 @@ export const NumberInput = props => {
   return (
     <div className={rootClasses}>
       {label && (
-        <label className={css.label} htmlFor={id}>
+        <label className={commonCss.label} htmlFor={id}>
           {label}
         </label>
       )}
@@ -97,16 +100,16 @@ export const NumberInput = props => {
             aria-describedby={`error-${id}`}
             aria-invalid={invalid}
           />
-          {invalid && <div className={css.buttonBackground} />}
+          {invalid && <div className={classnames(css.background, commonCss.background)} />}
         </div>
       ) : (
-        <div className={css.inputWrapper}>
+        <div className={commonCss.inputWrapper}>
           <input
             type={"number"}
             name={name}
             value={value ? "" + value : value}
             id={id}
-            className={css.numberInput}
+            className={classnames(commonCss.input, css.numberInput)}
             disabled={disabled}
             placeholder={placeholder}
             autoComplete={autocomplete}
@@ -121,12 +124,12 @@ export const NumberInput = props => {
             aria-describedby={`error-${id}`}
             aria-invalid={invalid}
           />
-          <div className={css.suffix}>{invalid && <Invalid />}</div>
-          {invalid && <div className={css.buttonBackground} />}
+          <div className={commonCss.suffix}>{invalid && <Invalid />}</div>
+          {invalid && <div className={commonCss.background} />}
         </div>
       )}
       {invalid && error && (
-        <div className={css.error} id={`error-${id}`} aria-live="polite">
+        <div className={commonCss.error} id={`error-${id}`} aria-live="polite">
           {error}
         </div>
       )}

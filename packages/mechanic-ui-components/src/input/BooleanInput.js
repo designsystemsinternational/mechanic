@@ -4,6 +4,8 @@ import classnames from "classnames";
 import { uid } from "../uid.js";
 import { Invalid } from "../icons/index.js";
 import { Toggle } from "../buttons/Toggle.js";
+
+import * as commonCss from "../common.module.css";
 import * as css from "./BooleanInput.module.css";
 
 export const BooleanInput = props => {
@@ -23,24 +25,23 @@ export const BooleanInput = props => {
     onBlur
   } = props;
 
-  const rootClasses = classnames(css.root, {
+  const rootClasses = classnames(css.root, commonCss.root, {
     [className]: className,
-    [css.invalid]: invalid,
-    [css.disabled]: disabled
+    [commonCss.disabled]: disabled
   });
 
   return (
     <div className={rootClasses}>
       {label && (
-        <label className={css.label} htmlFor={id}>
+        <label className={commonCss.label} htmlFor={id}>
           {label}
         </label>
       )}
-      <div className={css.toggleWrapper}>
+      <div className={commonCss.inputWrapper}>
         <Toggle
           name={name}
           id={id}
-          className={css.toggle}
+          className={commonCss.button}
           status={value}
           disabled={disabled}
           onClick={e => onChange(e, name, !value)}
@@ -51,11 +52,11 @@ export const BooleanInput = props => {
           {value ? "true" : "false"}
           {children}
         </Toggle>
-        <div className={css.suffix}>{invalid && <Invalid />}</div>
-        {invalid && <div className={css.toggleBackground} />}
+        <div className={commonCss.suffix}>{invalid && <Invalid />}</div>
+        {invalid && <div className={commonCss.background} />}
       </div>
       {invalid && error && (
-        <div className={css.error} id={`error-${id}`} aria-live="polite">
+        <div className={commonCss.error} id={`error-${id}`} aria-live="polite">
           {error}
         </div>
       )}
