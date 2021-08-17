@@ -35,7 +35,8 @@ export const NumberInput = props => {
   const handleOnChange = event => {
     const { name, value } = event.target;
     const parsedValue = value === "" ? 0 : parseFloat(value);
-    onChange && onChange(event, name, parsedValue);
+    const constrainedValue = Math.min(max || Infinity, Math.max(min || -Infinity, value));
+    onChange && onChange(event, name, constrainedValue);
   };
 
   const handleOnFocus = event => {
@@ -74,14 +75,21 @@ export const NumberInput = props => {
       {slider ? (
         <div className={css.rangeWrapper}>
           {value !== undefined && (
-            <div
+            <input
               style={{ flexBasis: maxDigits ? `${maxDigits * 0.8}em` : null }}
-              className={css.rangeLabel}>
-              {value}
-            </div>
+              className={classnames(css.rangeNumberInput)}
+              type={"number"}
+              onChange={handleOnChange}
+              min={min ? "" + min : min}
+              max={max ? "" + max : max}
+              step={step ? "" + step : step}
+              name={name}
+              value={value}
+            />
           )}
           <input
             type={"range"}
+            tabIndex="-1"
             name={name}
             value={value ? "" + value : value}
             id={id}

@@ -26,12 +26,31 @@
   }
 }
 
-.range-label {
+.range-number-input {
   flex: 0 0 60px;
+  z-index: 10;
   box-sizing: border-box;
   overflow-x: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+
+  border: none;
+  background: none;
+  font-family: inherit;
+  color: inherit;
+  font-size: inherit;
+  outline: none;
+
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  appearance: none;
+
+  -moz-appearance: textfield;
+  &::-webkit-outer-spin-button,
+  &::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
 }
 
 /* https://css-tricks.com/styling-cross-browser-compatible-range-inputs-css/ */
