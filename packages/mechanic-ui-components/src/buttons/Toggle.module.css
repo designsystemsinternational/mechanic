@@ -1,39 +1,5 @@
 @import "../variables.css";
 
-.root {
-  position: relative;
-  border: 1px solid currentColor;
-  color: currentColor;
-  border-radius: var(--mechanic-param-height-half);
-  padding: 0 var(--mechanic-param-height-quart) 0 var(--mechanic-param-height);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  width: 100%;
-  height: var(--mechanic-param-height);
-  line-height: 1;
-  background-color: var(--mechanic-background);
-  font-size: inherit;
-  font-family: inherit;
-  font-weight: inherit;
-
-  -moz-appearance: none;
-  -webkit-appearance: none;
-  appearance: none;
-
-  &:active:not([disabled]) {
-    transform: translate(0, 1px);
-  }
-
-  box-sizing: border-box;
-  & *,
-  & *:before,
-  & *:after {
-    box-sizing: inherit;
-  }
-}
-
 .status {
   display: inline-block;
   position: absolute;
@@ -52,8 +18,6 @@
 .label {
 }
 
-.root.focus {
-  outline: none;
-  border: 2px solid currentColor;
-  padding: 0.2em calc(1em - 1px) 0 calc(2em - 1px);
+.focus .status {
+  margin-left: -1px;
 }

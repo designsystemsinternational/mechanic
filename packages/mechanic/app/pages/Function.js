@@ -125,7 +125,6 @@ export const Function = ({ name, exports, children }) => {
         <div className={css.section}>
           <div className={css.row}>
             <Toggle
-              className={css.grow}
               status={canScale && scaleToFit}
               disabled={!canScale}
               onClick={() => setScaleToFit(scaleToFit => !scaleToFit)}>

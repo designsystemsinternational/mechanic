@@ -1,9 +1,13 @@
 @import "../variables.css";
 
 .root {
+  z-index: 50;
 }
-.button {
+.root .button {
   justify-content: flex-start;
+  &:hover {
+    transform: translateY(0);
+  }
 }
 .swatch {
   margin-right: var(--mechanic-param-height-quart);
@@ -22,7 +26,7 @@
 .popover {
   position: absolute;
   z-index: 20;
-  top: calc(2.5em - 2px);
+  top: calc(var(--mechanic-param-height) - 2px);
   left: 0;
 
   padding-bottom: 30px;

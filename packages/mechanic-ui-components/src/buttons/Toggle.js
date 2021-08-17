@@ -18,9 +18,10 @@ export const Toggle = props => {
     onBlur
   } = props;
   const [focus, setFocus] = useState(false);
-  const classes = classnames(css.root, {
+  const classes = classnames(commonCss.button, {
     [className]: className,
     [css.focus]: focus,
+    [commonCss.focus]: focus,
     [commonCss.disabled]: disabled
   });
 

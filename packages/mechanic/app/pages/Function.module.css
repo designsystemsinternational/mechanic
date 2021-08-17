@@ -50,7 +50,7 @@
 
 .row {
   display: flex;
-
+  flex-wrap: wrap;
   width: 100%;
 }
 
@@ -60,7 +60,7 @@
 
 .params-wrapper {
   position: relative;
-
+  flex-grow: 1;
   &:before,
   &:after {
     content: "";
@@ -90,8 +90,6 @@
 
 .params {
   overflow: auto;
-
-  height: calc(100vh - 306px);
   padding-right: 30px;
 
   & > .param:first-child {
@@ -106,6 +104,7 @@
   margin-bottom: 1em;
 }
 .error {
+  padding: 0.2em 0.25em;
   font-size: 0.75em;
 }
 .strong {

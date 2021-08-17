@@ -55,6 +55,7 @@
   -webkit-appearance: none;
   appearance: none;
 }
+
 .input {
   padding: 0 var(--mechanic-param-height) 0 var(--mechanic-param-height-quart);
 }
@@ -62,6 +63,15 @@
 .button {
   justify-content: center;
   padding: 0 var(--mechanic-param-height-quart);
+}
+
+.button:hover {
+  transform: translateY(-1px);
+  cursor: pointer;
+}
+
+.button:active {
+  transform: translateY(1px);
 }
 
 .input::placeholder {
@@ -72,16 +82,16 @@
 .focus .input {
   outline: none;
   border: 2px solid currentColor;
+  padding-left: calc(var(--mechanic-param-height-quart) - 1px);
   padding-right: calc(var(--mechanic-param-height) - 1px);
-  padding-left: calc(var(--mechanic-param-quart) - 1px);
 }
 
 .focus .button,
 .button.focus {
   outline: none;
   border: 2px solid currentColor;
-  padding-right: calc(0.75em - 1px);
-  padding-left: calc(0.75 - 1px);
+  padding-left: calc(var(--mechanic-param-height-quart) - 1px);
+  padding-right: calc(var(--mechanic-param-height-quart) - 1px);
 }
 
 .suffix {
