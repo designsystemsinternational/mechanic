@@ -1,6 +1,6 @@
 const path = require("path");
 const webpack = require("webpack");
-const { getConfig, getFunctionsPath } = require("./utils.cjs");
+const { getConfig, getFunctionsPath, generateTempScripts } = require("./utils.cjs");
 const webpackConfigGenerator = require("../../app/webpackConfigGenerator.cjs");
 
 const {
@@ -32,10 +32,14 @@ const command = async argv => {
     );
   }
 
+  spinner.start("Generating temp files to serve...");
+  const [designFunctions] = generateTempScripts(functionsPath);
+  spinner.succeed("Temp files created!");
+
   const distDir = path.normalize(argv.distDir !== "./dist" ? argv.distDir : config.distDir);
 
   spinner.start("Loading webpack compilation...");
-  const webpackConfig = webpackConfigGenerator("prod", functionsPath, distDir);
+  const webpackConfig = webpackConfigGenerator("prod", designFunctions, distDir);
   const compiler = webpack(webpackConfig);
   compiler.run((err, stats) => {
     // [Stats Object](#stats-object) https://webpack.js.org/api/node/#stats-object

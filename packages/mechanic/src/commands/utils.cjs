@@ -31,6 +31,12 @@ const searchDesignFunctions = (dir, callback, depth = 0) => {
   });
 };
 
+const setUpFunctionDir = path.resolve(path.join(__dirname, "..", "function-set-up.js"));
+const getScripContent = designFunctionPath => `
+const designFunction = require("${designFunctionPath}");
+const { setUp } = require("${setUpFunctionDir}");
+setUp(designFunction)`;
+
 const generateTempScripts = functionsPath => {
   const designFunctions = {};
   searchDesignFunctions(functionsPath, (_, filepath) => {
@@ -44,27 +50,25 @@ const generateTempScripts = functionsPath => {
     prefix: "tmp-mechanic--",
     unsafeCleanup: true
   });
-
-  const setUpFunctionDir = path.resolve(path.join(__dirname, "..", "function-set-up-2.js"));
-
-  console.log({ setUpFunctionDir });
-
   Object.entries(designFunctions).map(([name, designFuncObj]) => {
     const tempScriptName = path.join(tempDirObj.name, `${name}.js`);
-    fs.writeFileSync(
-      tempScriptName,
-      `console.log("${designFuncObj.original}");
-const df = require("${designFuncObj.original}");
-const { setUp } = require("${setUpFunctionDir}");
-setUp(df)`
-    );
+    fs.writeFileSync(tempScriptName, getScripContent(designFuncObj.original));
     designFunctions[name]["temp"] = tempScriptName;
   });
-  return designFunctions;
+  return [designFunctions, tempDirObj];
+};
+
+const setCustomInterrupt = (message, tempDirObj) => {
+  process.on("SIGINT", function () {
+    if (tempDirObj) tempDirObj.removeCallback();
+    console.log(message);
+    process.exit();
+  });
 };
 
 module.exports = {
   getConfig,
   getFunctionsPath,
-  generateTempScripts
+  generateTempScripts,
+  setCustomInterrupt
 };

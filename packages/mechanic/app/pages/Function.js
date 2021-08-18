@@ -74,15 +74,12 @@ export const Function = ({ name, exports, children }) => {
   };
 
   useEffect(() => {
-    if (autoRefreshOn) handleAutoPreview();
-  });
+    if (autoRefreshOn && iframeLoaded) handleAutoPreview();
+  }, [autoRefreshOn, iframeLoaded]);
 
-  // Init engine when the name of the function changes
+  // Check when iframe is done loading
   useEffect(() => {
-    const onLoad = () => {
-      setIframeLoaded(true);
-      iframe.current.contentWindow?.initEngine?.(name);
-    };
+    const onLoad = () => setIframeLoaded(true);
     iframe.current?.addEventListener?.("load", onLoad);
     return () => {
       iframe.current?.removeEventListener?.("load", onLoad);

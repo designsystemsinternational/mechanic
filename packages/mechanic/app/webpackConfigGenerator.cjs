@@ -161,8 +161,6 @@ module.exports = (modeParam, designFunctions, distDir) => {
     }
   );
 
-  console.log({ entry });
-
   const outputPath = distDir
     ? path.resolve(process.cwd(), distDir)
     : path.join(process.cwd(), "dist");

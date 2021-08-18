@@ -1,47 +1,34 @@
 import { MechanicError } from "./mechanic-error.js";
 
 /**
- * Sets up iframe's window functions that call
- * the corresponding engines and design functions from context function.
- * @param {object} functions - object that holds all user defined
- * design functions export objects.
+ * Sets up iframe's window function that call
+ * the corresponding engine and design function.
+ * @param {object} designFunction - Object exported by user that holds the design function's definition.
  */
-const setUp = functions => {
-  const engines = {};
-  Object.keys(functions).forEach(
-    functionName => (engines[functionName] = functions[functionName].settings.engine?.run)
-  );
-  let curEngine = null;
-  window.run = () => {
-    alert(
-      "The engine and/or function may still be loading, try again in a bit. If this keeps happening, post an issue!"
-    );
-  };
-  window.initEngine = functionName => {
-    if (engines[functionName] === undefined) {
-      window.run = () => {
-        const p = document.createElement("p");
-        p.textContent = `No engine to run for ${functionName}!`;
-        document.body.appendChild(p);
-      };
-      throw new MechanicError(`No defined engine for: ${functionName}`);
-    } else if (engines[functionName] !== curEngine) {
-      console.info("Setting mechanic engine for:", functionName);
-      curEngine = engines[functionName];
-      window.run = (functionName, values, isPreview) => {
-        // TODO: Do performance stats here?
-        const func = functions[functionName];
-        try {
-          const mechanic = curEngine(functionName, func, values, isPreview);
-          return mechanic ? mechanic : null;
-        } catch (error) {
-          alert("There was an error running the engine and/or function. Check the console!");
-          throw error;
-        }
-      };
+const setUp = designFunction => {
+  const engine = designFunction.settings?.engine?.run;
+  if (engine === undefined) {
+    window.run = functionName => {
+      alert(
+        "Design function is either missing a settings export or doesn't define a proper engine."
+      );
+      throw new MechanicError(`Invalid engine for design function: ${functionName}`);
+    };
+    console.error("Couldn't load design function's engine.");
+    return;
+  }
+
+  window.run = (functionName, values, isPreview) => {
+    // TODO: Do performance stats here?
+    try {
+      const mechanic = engine(functionName, designFunction, values, isPreview);
+      return mechanic ? mechanic : null;
+    } catch (error) {
+      alert("There was an error running the engine and/or function. Check the console!");
+      throw error;
     }
   };
-  console.info("Design function definitions set.");
+  console.info("Design function definition set.");
 };
 
 export { setUp };

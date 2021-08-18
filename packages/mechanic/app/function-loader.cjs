@@ -4,7 +4,6 @@ module.exports = function () {
   const { designFunctions } = getOptions(this);
 
   let requireFunctions = "";
-
   Object.entries(designFunctions).map(([name, designFunctionObj]) => {
     if (requireFunctions !== "") {
       requireFunctions += ",\n";
@@ -13,14 +12,9 @@ module.exports = function () {
   });
 
   const result = `
-  module.exports = {
-    ${requireFunctions}
-  };
-  `;
-
-  console.log("----------- functions loader result ------------");
-  console.log(result);
-  console.log("------------------------------------------------");
-
+module.exports = {
+  ${requireFunctions}
+};
+`;
   return result;
 };
