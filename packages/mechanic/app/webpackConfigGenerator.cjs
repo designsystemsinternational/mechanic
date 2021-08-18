@@ -5,7 +5,7 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const NodePolyfillPlugin = require("node-polyfill-webpack-plugin");
 
-module.exports = (modeParam, functionsPath, distDir) => {
+module.exports = (modeParam, designFunctions, distDir) => {
   const mode = modeParam === "dev" ? "development" : "production";
   const isProduction = mode === "production";
 
@@ -58,7 +58,9 @@ module.exports = (modeParam, functionsPath, distDir) => {
 
   const functions = {
     test: /FUNCTIONS/,
-    use: [{ loader: path.resolve(__dirname, "./function-loader.cjs"), options: { functionsPath } }]
+    use: [
+      { loader: path.resolve(__dirname, "./function-loader.cjs"), options: { designFunctions } }
+    ]
   };
 
   const mechanicCss = {
@@ -143,22 +145,24 @@ module.exports = (modeParam, functionsPath, distDir) => {
     exclude: isMechanicCondition
   };
 
-  const entry = {
-    app: isProduction
-      ? path.resolve(__dirname, "./index.js")
-      : [
-          path.resolve(__dirname, "./index.js")
-          // commented for now, seems to be issue in webpack5
-          // require.resolve("webpack-hot-middleware/client")
-        ],
-    functions: isProduction
-      ? path.resolve(__dirname, "./functions.js")
-      : [
-          path.resolve(__dirname, "./functions.js")
-          // commented for now, seems to be issue in webpack5
-          // require.resolve("webpack-hot-middleware/client")
-        ]
-  };
+  const entry = Object.entries(designFunctions).reduce(
+    (acc, [name, designFunctionObj]) => {
+      acc[name] = designFunctionObj.temp;
+      return acc;
+    },
+    {
+      app: isProduction
+        ? path.resolve(__dirname, "./index.js")
+        : [
+            path.resolve(__dirname, "./index.js")
+            // commented for now, seems to be issue in webpack5
+            // require.resolve("webpack-hot-middleware/client")
+          ]
+    }
+  );
+
+  console.log({ entry });
+
   const outputPath = distDir
     ? path.resolve(process.cwd(), distDir)
     : path.join(process.cwd(), "dist");
@@ -182,11 +186,14 @@ module.exports = (modeParam, functionsPath, distDir) => {
       template: path.resolve(__dirname, "./index.html"),
       chunks: ["app"]
     }),
-    new HtmlWebpackPlugin({
-      template: path.resolve(__dirname, "./index.html"),
-      filename: "functions.html",
-      chunks: ["functions"]
-    }),
+    ...Object.keys(designFunctions).map(
+      name =>
+        new HtmlWebpackPlugin({
+          template: path.resolve(__dirname, "./index.html"),
+          filename: `${name}.html`,
+          chunks: [name]
+        })
+    ),
     new NodePolyfillPlugin()
   ].concat(
     isProduction

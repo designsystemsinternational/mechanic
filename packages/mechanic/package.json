@@ -71,6 +71,7 @@
     "seedrandom": "^3.0.5",
     "style-loader": "^3.2.1",
     "svgo": "^2.3.1",
+    "tmp": "^0.2.1",
     "webpack": "^5.39.1",
     "webpack-dev-middleware": "^5.0.0",
     "webpack-hot-middleware": "^2.25.0"

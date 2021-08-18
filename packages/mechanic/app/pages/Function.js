@@ -166,7 +166,7 @@ export const Function = ({ name, exports, children }) => {
       <main className={css.main} ref={mainRef}>
         <iframe
           title={`Design function ${name} document.`}
-          src="functions.html"
+          src={`${name}.html`}
           className={css.iframe}
           ref={iframe}
         />

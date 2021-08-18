@@ -5,7 +5,7 @@ const webpackDevMiddleware = require("webpack-dev-middleware");
 const webpackHotMiddleware = require("webpack-hot-middleware");
 const history = require("connect-history-api-fallback");
 const webpackConfigGenerator = require("../../app/webpackConfigGenerator.cjs");
-const { getConfig, getFunctionsPath } = require("./utils.cjs");
+const { getConfig, getFunctionsPath, generateTempScripts } = require("./utils.cjs");
 
 const {
   spinners: { mechanicSpinner: spinner },
@@ -36,6 +36,11 @@ const command = async argv => {
     );
   }
 
+  spinner.start("Generating temp files to serve...");
+  const designFunctions = generateTempScripts(functionsPath);
+  spinner.succeed("Temp files created!");
+  // console.log(designFunctions);
+
   spinner.start("Starting off server...");
   // Set port and express server
   const port = config.port ? config.port : argv.port;
@@ -65,7 +70,7 @@ const command = async argv => {
   spinner.start("Loading webpack compilation...");
 
   // Load webpack middleware to load mechanic app
-  const webpackConfig = webpackConfigGenerator("dev", functionsPath);
+  const webpackConfig = webpackConfigGenerator("dev", designFunctions);
   const compiler = webpack(webpackConfig);
   // https://stackoverflow.com/questions/43921770/webpack-dev-middleware-pass-through-for-all-routes
   app.use(history());
