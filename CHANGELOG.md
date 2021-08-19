@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Change
 
 - Improved project creation CLI experience.
+- Updated engines argument pass to single object with named fields.
 
 ## 0.3.0 - 2021-08-02
 

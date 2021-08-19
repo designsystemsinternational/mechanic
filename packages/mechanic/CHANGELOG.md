@@ -19,8 +19,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
-- Fixed mechanic value validation through validation field.
-- Fixed preset value sets.
+- Fixed bug in mechanic value validation through validation field.
+- Fixed bug in preset value sets.
 
 ## 0.3.0 - 2021-08-02
 

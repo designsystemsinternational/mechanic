@@ -15,7 +15,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 - Added more options to the creation flow and concept explanations that were missing.
-- Updated definitions to new design function parameter definition.
+- Updated blank base to new design function parameter definition.
+- Improved base project README.md
 
 ## 0.2.10 - 2021-07-21
 
