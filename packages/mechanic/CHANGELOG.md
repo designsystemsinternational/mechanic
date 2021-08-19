@@ -13,6 +13,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added ability to import css files in functions. They are now properly handled when exporting svg.
 - Added SVG optimization via [SVGO](https://github.com/svg/svgo#svgo). This also removes unused css in the exported file. There is a new `optimize` setting key that defaults to true and accepts a boolean or a [SVGO config](https://github.com/svg/svgo#configuration) object.
 
+### Changed
+
+- Changed how design functions are bundled, instead of a single functions bundle that mixes definitions, one per design function bundle is generated through temporal scripts. This let's CSS stylings to not get mixed in the loaded iframe of the app.
+- Improved language and logs in main Mechanic commands (`dev`, `build`, `serve`)
+
 ## 0.3.0 - 2021-08-02
 
 ### Changed
