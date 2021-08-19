@@ -9,7 +9,11 @@ const {
 } = require("@designsystemsinternational/mechanic-utils");
 
 const command = async argv => {
+  // Greet and intro command
   greet();
+  console.log(
+    "This command will look into your Mechanic project and design functions and locally build an app for you to serve later.\n"
+  );
   // Load config file
   spinner.start("Loading mechanic config file...");
   const { config, configPath } = await getConfig(argv.configPath);
@@ -56,7 +60,7 @@ const command = async argv => {
           })
         );
     } else {
-      spinner.succeed(success(`Mechanic app built at ${argv.distDir}!`));
+      spinner.succeed(success(`Mechanic app built at directory ${argv.distDir}/!\n`));
       console.log(
         "You can serve locally and use the builded app using the `npm run serve` command!"
       );

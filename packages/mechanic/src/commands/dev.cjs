@@ -20,7 +20,12 @@ const {
 } = require("@designsystemsinternational/mechanic-utils");
 
 const command = async argv => {
+  // Greet and intro command
   greet();
+  console.log(
+    "This command will look into your Mechanic project and design functions and serve an app where you can test and use your code.\n"
+  );
+
   // Load config file
   spinner.start("Loading mechanic config file...");
   const { config, configPath } = await getConfig(argv.configPath);

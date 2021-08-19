@@ -9,7 +9,11 @@ const {
 } = require("@designsystemsinternational/mechanic-utils");
 
 const command = async argv => {
+  // Greet and intro command
   greet();
+  console.log(
+    "This command will serve whatever already built Mechanic app (npm run build) for you to test and use your design functions.\n"
+  );
   // Load config file
   spinner.start("Loading mechanic config file...");
   const { config, configPath } = await getConfig(argv.configPath);
