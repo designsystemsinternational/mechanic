@@ -1,7 +1,7 @@
 const path = require("path");
 const express = require("express");
 const history = require("connect-history-api-fallback");
-const { getConfig } = require("./utils.cjs");
+const { getConfig, setCustomInterrupt, greet, goodbye } = require("./utils.cjs");
 
 const {
   spinners: { mechanicSpinner: spinner },
@@ -9,6 +9,7 @@ const {
 } = require("@designsystemsinternational/mechanic-utils");
 
 const command = async argv => {
+  greet();
   // Load config file
   spinner.start("Loading mechanic config file...");
   const { config, configPath } = await getConfig(argv.configPath);
@@ -56,7 +57,13 @@ const command = async argv => {
 
   // Done!
   status = "started";
-  spinner.succeed(success(`Serving mechanic app (${distDir}) at http://localhost:${port}`));
+  spinner.succeed(
+    success(
+      `Serving mechanic app (${distDir}) at http://localhost:${port}. Open that address on Chrome for best experience. `
+    )
+  );
+  console.log(success("If you wish to stop this server, press CTRL+C. "));
+  setCustomInterrupt(goodbye);
 };
 
 module.exports = command;

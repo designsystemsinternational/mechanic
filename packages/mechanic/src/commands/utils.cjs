@@ -1,6 +1,9 @@
 const path = require("path");
 const fs = require("fs-extra");
 const tmp = require("tmp");
+const {
+  logo: { mechanic, mechanicInverse }
+} = require("@designsystemsinternational/mechanic-utils");
 
 const getConfig = async argvConfigPath => {
   const configPath = path.resolve(argvConfigPath);
@@ -58,17 +61,31 @@ const generateTempScripts = functionsPath => {
   return [designFunctions, tempDirObj];
 };
 
-const setCustomInterrupt = (message, tempDirObj) => {
+const setCustomInterrupt = (callback, tempDirObj) => {
   process.on("SIGINT", function () {
     if (tempDirObj) tempDirObj.removeCallback();
-    console.log(message);
+    callback();
     process.exit();
   });
+};
+
+const greet = () => {
+  console.log(`${mechanic}
+`);
+};
+
+const goodbye = () => {
+  console.log(`
+Bye!
+
+${mechanicInverse}`);
 };
 
 module.exports = {
   getConfig,
   getFunctionsPath,
   generateTempScripts,
-  setCustomInterrupt
+  setCustomInterrupt,
+  greet,
+  goodbye
 };

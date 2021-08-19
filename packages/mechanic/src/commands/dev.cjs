@@ -8,19 +8,19 @@ const webpackConfigGenerator = require("../../app/webpackConfigGenerator.cjs");
 const {
   getConfig,
   getFunctionsPath,
+  setCustomInterrupt,
   generateTempScripts,
-  setCustomInterrupt
+  greet,
+  goodbye
 } = require("./utils.cjs");
 
 const {
-  logo: { mechanic, mechanicInverse },
   spinners: { mechanicSpinner: spinner },
   colors: { success }
 } = require("@designsystemsinternational/mechanic-utils");
 
 const command = async argv => {
-  console.log(`${mechanic}
-`);
+  greet();
   // Load config file
   spinner.start("Loading mechanic config file...");
   const { config, configPath } = await getConfig(argv.configPath);
@@ -104,13 +104,7 @@ const command = async argv => {
   );
   console.log();
 
-  setCustomInterrupt(
-    `
-Bye!
-
-${mechanicInverse}`,
-    tempDirObj
-  );
+  setCustomInterrupt(goodbye, tempDirObj);
 };
 
 module.exports = command;

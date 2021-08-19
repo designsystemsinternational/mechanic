@@ -1,6 +1,6 @@
 const path = require("path");
 const webpack = require("webpack");
-const { getConfig, getFunctionsPath, generateTempScripts } = require("./utils.cjs");
+const { getConfig, getFunctionsPath, generateTempScripts, greet, goodbye } = require("./utils.cjs");
 const webpackConfigGenerator = require("../../app/webpackConfigGenerator.cjs");
 
 const {
@@ -9,6 +9,7 @@ const {
 } = require("@designsystemsinternational/mechanic-utils");
 
 const command = async argv => {
+  greet();
   // Load config file
   spinner.start("Loading mechanic config file...");
   const { config, configPath } = await getConfig(argv.configPath);
@@ -56,6 +57,10 @@ const command = async argv => {
         );
     } else {
       spinner.succeed(success(`Mechanic app built at ${argv.distDir}!`));
+      console.log(
+        "You can serve locally and use the builded app using the `npm run serve` command!"
+      );
+      goodbye();
     }
   });
 };
