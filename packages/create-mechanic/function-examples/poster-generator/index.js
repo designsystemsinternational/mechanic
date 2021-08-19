@@ -1,6 +1,3 @@
-// import "./assets/PPObjectSans-Regular.otf";
-// import "./assets/PPObjectSans-Heavy.otf";
-
 import {
   getPossibleStartPositions,
   removeRowsUsedByElement,
@@ -12,6 +9,10 @@ import {
   flipCoin,
   randInt,
 } from "./utils.js";
+
+import fontRegular from "./assets/PPObjectSans-Regular.otf";
+import fontHeavy from "./assets/PPObjectSans-Heavy.otf";
+import fontHeavySlanted from "./assets/PPObjectSans-HeavySlanted.otf";
 
 export const handler = ({ params, mechanic, sketch }) => {
   const { width, height, date, dayAndTime, artist, description, image, color } =
@@ -31,8 +32,9 @@ export const handler = ({ params, mechanic, sketch }) => {
 
   let img;
   let imgGraphic;
-  // let objectSansRegular;
-  // let objectSansHeavy;
+  let objSansRegular;
+  let objSansHeavy;
+  let objSansHeavySlanted;
 
   const loadImageAndAddFilter = () => {
     imgGraphic = sketch.createGraphics(img.width, img.height);
@@ -57,8 +59,7 @@ export const handler = ({ params, mechanic, sketch }) => {
     sketch.background("white");
     sketch.stroke(color);
     sketch.fill(color);
-    sketch.textFont("PP Object Sans");
-    // sketch.textAlign(sketch.LEFT, sketch.BASELINE);
+    sketch.textFont(objSansRegular);
   };
 
   const drawArtistElement = () => {
@@ -68,7 +69,7 @@ export const handler = ({ params, mechanic, sketch }) => {
 
     const words = artistText.split(" ");
     sketch.textSize(element.baseSize * 0.8);
-    sketch.textStyle(sketch.BOLDITALIC);
+    sketch.textFont(objSansHeavySlanted);
     const lengths = words.map((t) => sketch.textWidth(t));
     element.length = Math.max(width / 3, ...lengths) + width / 20;
 
@@ -128,7 +129,7 @@ export const handler = ({ params, mechanic, sketch }) => {
     element.baseSize = element.baseRowSize * separation;
 
     sketch.textSize(element.baseSize * 0.8);
-    sketch.textStyle(sketch.BOLD);
+    sketch.textFont(objSansHeavy);
     const minLength =
       (element.isSingleRow
         ? sketch.textWidth(dateText) +
@@ -318,12 +319,9 @@ export const handler = ({ params, mechanic, sketch }) => {
     if (image) {
       img = sketch.loadImage(URL.createObjectURL(image));
     }
-    //   objectSansRegular = sketch.loadFont(
-    //     "./functions/p5/assets/PPObjectSans-Regular.otf"
-    //   );
-    //   objectSansHeavy = sketch.loadFont(
-    //     "./functions/p5/assets/PPObjectSans-Heavy.otf"
-    //   );
+    objSansRegular = sketch.loadFont(fontRegular);
+    objSansHeavy = sketch.loadFont(fontHeavy);
+    objSansHeavySlanted = sketch.loadFont(fontHeavySlanted);
   };
 
   sketch.setup = () => {
