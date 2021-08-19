@@ -10,6 +10,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Change
 
 - Improved project creation CLI experience.
+- Changed single bundle for design functions approach to one isolated bundle per design function.
+- Improved other commands experience.
 
 ## 0.3.0 - 2021-08-02
 
