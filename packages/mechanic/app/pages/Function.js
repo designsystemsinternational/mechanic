@@ -26,23 +26,6 @@ export const Function = ({ name, exports, children }) => {
   const canScale = !!(params.width && params.height);
   const [values, setValues] = useValues(name, params);
 
-  const handleOnChange = (e, name, value) => {
-    const sources = [{ [name]: value }];
-    if (name === "preset") {
-      if (value === "default") {
-        sources.push(
-          Object.entries(params).reduce((source, param) => {
-            if (param[1].default) source[param[0]] = param[1].default;
-            return source;
-          }, {})
-        );
-      } else {
-        sources.push(exportedPresets[value]);
-      }
-    }
-    setValues(values => Object.assign({}, values, ...sources));
-  };
-
   const prepareValues = (useScale, useRandomSeed) => {
     const valuesCopy = Object.assign({}, values);
     if (useScale && canScale && scaleToFit) {
@@ -73,9 +56,27 @@ export const Function = ({ name, exports, children }) => {
     iframe.current.contentWindow?.run?.(name, valuesCopy);
   };
 
+  const handleOnChange = (e, name, value) => {
+    const sources = [{ [name]: value }];
+    if (name === "preset") {
+      if (value === "default") {
+        sources.push(
+          Object.entries(params).reduce((source, param) => {
+            if (param[1].default) source[param[0]] = param[1].default;
+            return source;
+          }, {})
+        );
+      } else {
+        sources.push(exportedPresets[value]);
+      }
+    }
+    setValues(values => Object.assign({}, values, ...sources));
+    if (autoRefreshOn && iframeLoaded) handleAutoPreview();
+  };
+
   useEffect(() => {
     if (autoRefreshOn && iframeLoaded) handleAutoPreview();
-  }, [autoRefreshOn, iframeLoaded]);
+  });
 
   // Check when iframe is done loading
   useEffect(() => {
