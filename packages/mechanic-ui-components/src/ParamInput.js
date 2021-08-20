@@ -11,19 +11,11 @@ import { ColorInput } from "./input/ColorInput.js";
 import { ImageInput } from "./input/ImageInput.js";
 import { uid } from "./uid.js";
 
-export const ParamInput = ({
-  name,
-  className,
-  values,
-  attributes,
-  onChange,
-  children,
-  color = "#f04b17"
-}) => {
+export const ParamInput = ({ name, className, values, attributes, onChange, children }) => {
   const id = useRef(uid("param-input"));
   const { type, label: _label, options, validation, editable } = attributes;
   const _default = attributes["default"];
-  const label = Case.title(name) || _label;
+  const label = _label || Case.title(name);
 
   const value = values[name];
   const isEditable =
@@ -48,8 +40,7 @@ export const ParamInput = ({
         invalid={error ? true : false}
         error={error}
         disabled={!isEditable}
-        onChange={onChange}
-        color={color}>
+        onChange={onChange}>
         {children}
       </OptionInput>
     );
@@ -68,8 +59,7 @@ export const ParamInput = ({
         error={error}
         multiple={multiple}
         disabled={!isEditable}
-        onChange={onChange}
-        color={color}>
+        onChange={onChange}>
         {children}
       </ImageInput>
     );
@@ -86,8 +76,7 @@ export const ParamInput = ({
         invalid={error ? true : false}
         error={error}
         disabled={!isEditable}
-        onChange={onChange}
-        color={color}>
+        onChange={onChange}>
         {children}
       </BooleanInput>
     );
@@ -106,8 +95,7 @@ export const ParamInput = ({
         invalid={error ? true : false}
         error={error}
         disabled={!isEditable}
-        onChange={onChange}
-        color={color}>
+        onChange={onChange}>
         {children}
       </ColorInput>
     );
@@ -129,8 +117,7 @@ export const ParamInput = ({
         min={min}
         max={max}
         step={step}
-        onChange={onChange}
-        color={color}>
+        onChange={onChange}>
         {children}
       </NumberInput>
     );
