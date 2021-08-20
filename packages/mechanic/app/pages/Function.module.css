@@ -20,10 +20,11 @@
 .main {
   display: flex;
   flex-direction: column;
-
   flex: 1;
   height: 100%;
-  padding-left: 30px;
+  background-color: #f7f7f7;
+  padding-left: 1em;
+  padding-top: 1em;
 }
 
 .iframe {
