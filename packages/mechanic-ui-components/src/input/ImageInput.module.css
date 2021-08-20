@@ -1,10 +1,12 @@
 @import "../variables.css";
 
+.container-wrapper {
+  position: relative;
+}
+
 .container {
   display: flex;
   justify-content: space-between;
-  position: relative;
-  z-index: 20;
   border: 1px solid currentColor;
   color: currentColor;
   border-radius: var(--mechanic-param-height-half);
@@ -18,10 +20,6 @@
   font-family: inherit;
   font-weight: inherit;
   width: 100%;
-}
-
-.container-wrapper {
-  position: relative;
 }
 
 .loadedImages {
@@ -45,10 +43,10 @@
 
 .preview {
   position: absolute;
-  z-index: 1000;
+  z-index: 100;
   left: var(--mechanic-param-height-quart);
   right: var(--mechanic-param-height-quart);
-  top: calc(100% + var(--mechanic-param-height-half));
+  margin-top: var(--mechanic-param-height-quart);
   width: calc(100% - var(--mechanic-param-height-half));
   max-height: 200px;
   object-fit: contain;

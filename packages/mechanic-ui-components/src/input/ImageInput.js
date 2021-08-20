@@ -109,7 +109,6 @@ export const ImageInput = props => {
       )}
       <div className={css.containerWrapper}>
         <div className={css.container}>
-          {preview && <img className={css.preview} src={preview} />}
           <div className={css.loadedImages}>{loadedImages}</div>
           <input
             type="file"
@@ -143,6 +142,7 @@ export const ImageInput = props => {
         </div>
         {invalid && <div className={commonCss.background} />}
       </div>
+      {preview && <img className={css.preview} src={preview} />}
       {invalid && error && (
         <div className={commonCss.error} id={`error-${id}`} aria-live="polite">
           {error}

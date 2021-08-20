@@ -62,7 +62,7 @@ export const ColorInput = props => {
   useEffect(() => {
     if (!picking) return;
     const onClickOutside = e => {
-      if (!e.target.closest(`.${css.root} .${commonCss.inputWrapper}`)) {
+      if (!e.target || !e.target.closest(`.${css.root} .${commonCss.inputWrapper}`)) {
         setPicking(false);
       }
     };

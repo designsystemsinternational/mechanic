@@ -96,30 +96,30 @@ export const Function = ({ name, exports, children }) => {
       <aside className={css.aside}>
         <div className={css.section}>{children}</div>
         <div className={css.sep} />
-        <div className={css.line} />
-        <div className={css.paramsWrapper}>
-          <div className={css.params}>
+
+        <div className={classnames(css.edge, css.top)} />
+        <div className={css.params}>
+          <ParamInput
+            className={css.param}
+            key="param-preset"
+            name="preset"
+            values={values}
+            attributes={{ type: "string", options: presets, default: presets[0] }}
+            onChange={handleOnChange}
+          />
+          {Object.entries(params).map(([name, param]) => (
             <ParamInput
               className={css.param}
-              key="param-preset"
-              name="preset"
+              key={`param-${name}`}
+              name={name}
               values={values}
-              attributes={{ type: "string", options: presets, default: presets[0] }}
+              attributes={param}
               onChange={handleOnChange}
             />
-            {Object.entries(params).map(([name, param]) => (
-              <ParamInput
-                className={css.param}
-                key={`param-${name}`}
-                name={name}
-                values={values}
-                attributes={param}
-                onChange={handleOnChange}
-              />
-            ))}
-          </div>
+          ))}
         </div>
-        <div className={css.line} />
+        <div className={classnames(css.edge, css.bottom)} />
+
         <div className={css.section}>
           <div className={css.row}>
             <Toggle

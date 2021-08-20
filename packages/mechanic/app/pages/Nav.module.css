@@ -29,7 +29,6 @@
   position: absolute;
   left: 0;
   top: 0;
-
   font-size: 1em;
   color: transparent;
   font-weight: bolder;
@@ -47,6 +46,10 @@
   transition: border 0.25s ease;
   border-radius: 4em;
   border: 1px solid transparent;
+
+  & option {
+    color: var(--mechanic-black);
+  }
 }
 
 .navigationSelectSuffix {

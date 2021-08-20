@@ -32,64 +32,8 @@
   border: none;
 }
 
-.section {
-  padding-right: 30px;
-}
-
-.sep {
-  flex-shrink: 0;
-  height: 1em;
-}
-
-.line {
-  margin-right: 30px;
-  margin-bottom: 1em;
-  border-bottom: 1px solid var(--mechanic-dust-gray);
-}
-
-.row {
-  display: flex;
-  flex-wrap: wrap;
-  width: 100%;
-}
-
-.grow {
-  flex-grow: 1;
-}
-
-.params-wrapper {
-  position: relative;
-  flex-grow: 1;
-  overflow: auto;
-
-  &:before,
-  &:after {
-    content: "";
-
-    position: absolute;
-    z-index: 100;
-    left: 0;
-    right: 0;
-
-    pointer-events: none;
-  }
-  &:before {
-    top: 0;
-
-    height: 10px;
-
-    background-image: linear-gradient(to top, rgba(255, 255, 255, 0), white);
-  }
-  &:after {
-    bottom: 0;
-
-    height: 30px;
-
-    background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0), white);
-  }
-}
-
 .params {
+  flex-grow: 1;
   overflow: auto;
   padding-right: 30px;
 
@@ -103,6 +47,51 @@
 
 .param {
   margin-bottom: 1em;
+}
+
+.section {
+  padding-right: 30px;
+}
+
+.sep {
+  flex-shrink: 0;
+  height: 1em;
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+}
+
+.grow {
+  flex-grow: 1;
+}
+
+.edge {
+  position: relative;
+  height: 0;
+  z-index: 100;
+  left: 0;
+  right: 0;
+  pointer-events: none;
+  border-bottom: 1px solid var(--mechanic-dust-gray);
+  &:before {
+    content: "";
+    height: 10px;
+    position: absolute;
+    width: 100%;
+    height: 10px;
+  }
+}
+
+.edge.top:before {
+  background-image: linear-gradient(to top, rgba(255, 255, 255, 0), white);
+  top: 0;
+}
+.edge.bottom:before {
+  background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0), white);
+  bottom: 0;
 }
 .error {
   padding: 0.2em 0.25em;
