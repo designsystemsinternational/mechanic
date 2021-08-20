@@ -11,6 +11,7 @@ const functionNames = Object.keys(functions);
 import * as css from "./App.module.css";
 
 const AppComponent = () => {
+  console.log("rerender");
   return (
     <div className={css.root}>
       <Switch>

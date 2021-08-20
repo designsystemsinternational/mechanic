@@ -11,3 +11,7 @@ const app = (
   </BrowserRouter>
 );
 render(app, root);
+
+if (module["hot"]) {
+  module["hot"].accept();
+}

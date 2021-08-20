@@ -91,7 +91,7 @@ const command = async argv => {
       publicPath: webpackConfig.output.publicPath
     })
   );
-  app.use(webpackHotMiddleware(compiler, { log: null }));
+  app.use(webpackHotMiddleware(compiler));
 
   // Allow the spinner time to flush its output to the console.
   await new Promise(resolve => setTimeout(resolve, 2000));
