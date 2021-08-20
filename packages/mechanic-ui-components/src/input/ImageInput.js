@@ -137,7 +137,7 @@ export const ImageInput = props => {
             onBlur={handleOnBlur}
             onClick={handleButtonClick}
             disabled={disabled}>
-            <Add />
+            <Add className={css.plus} />
           </button>
         </div>
         {invalid && <div className={commonCss.background} />}

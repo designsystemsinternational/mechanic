@@ -111,3 +111,7 @@
 .container:active {
   transform: translateY(1px);
 }
+
+.plus {
+  margin-top: 0.2em;
+}

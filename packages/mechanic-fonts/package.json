@@ -30,5 +30,16 @@
       "url": "https://designsystems.international"
     }
   ],
-  "style": "fonts.css"
+  "style": "fonts.css",
+  "files": [
+    "fonts.css",
+    "PP-Object-Sans/PPObjectSans-Regular.otf",
+    "PP-Object-Sans/PPObjectSans-Slanted.otf",
+    "PP-Object-Sans/PPObjectSans-Heavy.otf",
+    "PP-Object-Sans/PPObjectSans-HeavySlanted.otf",
+    "IBM-Plex-Mono/IBMPlexMono-Regular.otf",
+    "IBM-Plex-Mono/IBMPlexMono-Italic.otf",
+    "IBM-Plex-Mono/IBMPlexMono-Bold.otf",
+    "IBM-Plex-Mono/IBMPlexMono-BoldItalic.otf"
+  ]
 }
