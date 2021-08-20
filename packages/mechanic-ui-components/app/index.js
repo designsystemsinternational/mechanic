@@ -145,20 +145,6 @@ const App = () => {
       </div>
       <div className={css.simpleBlock}>
         <ParamInput
-          name={"disabledTextOption"}
-          values={values}
-          attributes={{
-            type: "text",
-            editable: false,
-            default: "Option 1",
-            options: ["Option 1", "Option 2", "Option 3"],
-            validation: value => (value === "Option 1" ? null : "Should be Option 1")
-          }}
-          onChange={handleChange}
-        />
-      </div>
-      <div className={css.simpleBlock}>
-        <ParamInput
           name={"numberOption"}
           values={values}
           attributes={{
