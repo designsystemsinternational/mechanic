@@ -7,7 +7,7 @@ import * as css from "./Nav.module.css";
 export const Nav = ({ name, functions }) => {
   let history = useHistory();
   const functionsNames = Object.keys(functions);
-  console.log(functions);
+
   const currentFn = functions[name];
   const currentLabel = currentFn.settings.name || Case.title(name);
   return (
