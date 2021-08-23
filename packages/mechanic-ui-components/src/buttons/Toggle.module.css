@@ -1,61 +1,23 @@
 @import "../variables.css";
 
-.root {
-  position: relative;
-
-  margin: 0;
-  border: 1px solid var(--mechanic-text);
-  box-sizing: border-box;
-  min-width: 120px;
-  padding: 0.5em 1em;
-
-  background-color: var(--mechanic-background);
-
-  font-size: inherit;
-  line-height: 1em;
-  font-family: inherit;
-  font-weight: inherit;
-
-  -moz-appearance: none;
-  -webkit-appearance: none;
-  appearance: none;
-
-  &:not([disabled]) {
-    cursor: pointer;
-  }
-
-  &:active:not([disabled]) {
-    background-color: var(--mechanic-blue);
-
-    color: var(--mechanic-background);
-  }
-}
-
 .status {
   display: inline-block;
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  left: 10px;
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  background: var(--mechanic-red);
+  left: 1em;
+  width: var(--mechanic-param-height-quart);
+  height: var(--mechanic-param-height-quart);
+  border-radius: var(--mechanic-param-height-eighth);
+  border: 1px solid currentColor;
   &.on {
-    background: var(--mechanic-green);
+    background: currentColor;
   }
 }
 
-.invalid {
-}
-
-.disabled {
-  border: 1px solid var(--mechanic-gray);
-  color: var(--mechanic-disabled);
-}
-
-.focus {
-}
-
 .label {
+}
+
+.focus .status {
+  margin-left: -1px;
 }

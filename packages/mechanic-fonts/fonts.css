@@ -1,0 +1,67 @@
+/* Object Sans
+ * This beautiful font was designed by Alex Slobzheninov.
+ * Object Sans is a contemporary type family that puts together the best
+ * qualities of Swiss neo-grotesks and geometric fonts. It’s a multifunctional
+ * workhorse designed to work best in any printed and on-screen contexts.
+ * It is free to use for personal purposes. If you would like to use it
+ * for commercial purposes, you will need to purchase a license.
+ * for more information visit https://pangrampangram.com/products/object-sans
+ * Alex Slobzheninov https://www.behance.net/slobzheninov
+ */
+
+@font-face {
+  font-family: "Object Sans";
+  src: url("./PP-Object-Sans/PPObjectSans-Regular.otf") format("opentype");
+}
+
+@font-face {
+  font-family: "Object Sans";
+  src: url("./PP-Object-Sans/PPObjectSans-Slanted.otf") format("opentype");
+  font-style: italic;
+}
+
+@font-face {
+  font-family: "Object Sans";
+  src: url("./PP-Object-Sans/PPObjectSans-Heavy.otf") format("opentype");
+  font-weight: bold;
+}
+
+@font-face {
+  font-family: "Object Sans";
+  src: url("./PP-Object-Sans/PPObjectSans-HeavySlanted.otf") format("opentype");
+  font-weight: bold;
+  font-style: italic;
+}
+
+/* IBM Plex
+ * Copyright © 2017 IBM Corp. with Reserved Font Name "Plex"
+ * This Font Software is licensed under the SIL Open Font License, Version 1.1.
+*/
+
+@font-face {
+  font-family: Plex;
+  src: url("./IBM-Plex-Mono/IBMPlexMono-Regular.otf") format("opentype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: Plex;
+  src: url("./IBM-Plex-Mono/IBMPlexMono-Italic.otf") format("opentype");
+  font-weight: normal;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: Plex;
+  src: url("./IBM-Plex-Mono/IBMPlexMono-Bold.otf") format("opentype");
+  font-weight: bold;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: Plex;
+  src: url("./IBM-Plex-Mono/IBMPlexMono-BoldItalic.otf") format("opentype");
+  font-weight: bold;
+  font-style: italic;
+}

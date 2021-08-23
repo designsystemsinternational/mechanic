@@ -1,0 +1,131 @@
+@import "./variables.css";
+
+.root {
+  position: relative;
+  box-sizing: border-box;
+  font-family: inherit;
+  & *,
+  & *:before,
+  & *:after {
+    box-sizing: inherit;
+  }
+}
+
+.disabled {
+  opacity: 0.4;
+  pointer-events: none;
+  /* to prevent buttons inside inputs to be double-dimmed */
+  & .disabled {
+    opacity: 1;
+  }
+}
+
+.label {
+  display: block;
+  margin-bottom: 0.5em;
+  margin-left: 0.25em;
+  font-size: var(--mechanic-label-font-size);
+  font-family: inherit;
+  width: 100%;
+}
+
+.input-wrapper {
+  width: 100%;
+  position: relative;
+}
+
+.input,
+.button {
+  position: relative;
+  z-index: 9;
+  margin: 0;
+  border: 1px solid currentColor;
+  color: currentColor;
+  border-radius: var(--mechanic-param-height-half);
+  display: flex;
+  align-items: center;
+  height: var(--mechanic-param-height);
+  line-height: 1;
+  background-color: var(--mechanic-background);
+  font-size: inherit;
+  font-family: inherit;
+  font-weight: inherit;
+  width: 100%;
+
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.input {
+  padding: 0 var(--mechanic-param-height) 0 var(--mechanic-param-height-quart);
+}
+
+.button {
+  justify-content: center;
+  padding: 0 var(--mechanic-param-height-quart);
+  transition: transform 0.1s ease;
+}
+
+.root:not(.disabled) .button:hover,
+.button:not(.disabled):not([disabled]):hover {
+  transform: translateY(-1px);
+  cursor: pointer;
+}
+
+.button:active {
+  transform: translateY(1px);
+}
+
+.input::placeholder {
+  color: currentColor;
+  opacity: 0.6;
+}
+
+.focus .input {
+  outline: none;
+  border: 2px solid currentColor;
+  padding-left: calc(var(--mechanic-param-height-quart) - 1px);
+  padding-right: calc(var(--mechanic-param-height) - 1px);
+}
+
+.focus .button,
+.button.focus {
+  outline: none;
+  border: 2px solid currentColor;
+  padding-left: calc(var(--mechanic-param-height-quart) - 1px);
+  padding-right: calc(var(--mechanic-param-height-quart) - 1px);
+}
+
+.suffix {
+  pointer-events: none;
+  position: absolute;
+  z-index: 10;
+  right: 2px;
+  top: 2px;
+  border-radius: var(--mechanic-param-height-half);
+  text-align: right;
+  background: var(--mechanic-param-background);
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  height: calc(var(--mechanic-param-height) - 4px);
+  padding: 0 var(--mechanic-param-height-quart);
+}
+
+.background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: var(--mechanic-param-height);
+  z-index: 8;
+  opacity: 0.15;
+  background-color: currentColor;
+  border-radius: var(--mechanic-param-height-half);
+}
+
+.error {
+  padding: 0.2em 0.25em;
+  font-size: var(--mechanic-label-font-size);
+}

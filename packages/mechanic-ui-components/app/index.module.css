@@ -1,3 +1,10 @@
+@import "@designsystemsinternational/mechanic-fonts";
+
+.root {
+  font-family: "Object Sans", Helvetica, Arial, Sans-Serif;
+  color: var(--mechanic-red);
+}
+
 .simpleBlock {
   width: 300px;
   display: inline-block;

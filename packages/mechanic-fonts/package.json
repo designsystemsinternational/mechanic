@@ -1,0 +1,45 @@
+{
+  "name": "@designsystemsinternational/mechanic-fonts",
+  "version": "0.3.0",
+  "description": "Fonts used by Mechanic.",
+  "license": "MIT",
+  "homepage": "https://github.com/designsystemsinternational/mechanic#readme",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/designsystemsinternational/mechanic",
+    "directory": "packages/mechanic-fonts"
+  },
+  "bugs": {
+    "url": "https://github.com/designsystemsinternational/mechanic/issues",
+    "email": "i@designsystems.international"
+  },
+  "author": {
+    "name": "Martin Bravo",
+    "email": "i@designsystems.international",
+    "url": "https://designsystems.international"
+  },
+  "contributors": [
+    {
+      "name": "Fernando Florenzano Hernández",
+      "email": "i@designsystems.international",
+      "url": "https://designsystems.international"
+    },
+    {
+      "name": "Rune Skjoldborg Madsen",
+      "email": "i@designsystems.international",
+      "url": "https://designsystems.international"
+    }
+  ],
+  "style": "fonts.css",
+  "files": [
+    "fonts.css",
+    "PP-Object-Sans/PPObjectSans-Regular.otf",
+    "PP-Object-Sans/PPObjectSans-Slanted.otf",
+    "PP-Object-Sans/PPObjectSans-Heavy.otf",
+    "PP-Object-Sans/PPObjectSans-HeavySlanted.otf",
+    "IBM-Plex-Mono/IBMPlexMono-Regular.otf",
+    "IBM-Plex-Mono/IBMPlexMono-Italic.otf",
+    "IBM-Plex-Mono/IBMPlexMono-Bold.otf",
+    "IBM-Plex-Mono/IBMPlexMono-BoldItalic.otf"
+  ]
+}

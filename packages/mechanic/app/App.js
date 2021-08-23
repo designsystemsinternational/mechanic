@@ -6,7 +6,6 @@ import { NotFound } from "./pages/NotFound.js";
 import { Nav } from "./pages/Nav.js";
 
 import functions from "./FUNCTIONS";
-const functionNames = Object.keys(functions);
 
 import * as css from "./App.module.css";
 
@@ -14,14 +13,14 @@ const AppComponent = () => {
   return (
     <div className={css.root}>
       <Switch>
-        {functionNames.map((name, i) => (
+        {Object.keys(functions).map((name, i) => (
           <Route
             exact
             key={`route-${name}`}
             path={i == 0 ? ["/", `/${name}`] : `/${name}`}
             render={() => (
               <Function name={name} exports={functions[name]}>
-                <Nav name={name} functionsNames={functionNames} />
+                <Nav name={name} functions={functions} />
               </Function>
             )}
           />
