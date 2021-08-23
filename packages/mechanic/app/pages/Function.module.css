@@ -1,19 +1,15 @@
 .root {
   display: flex;
-
   height: 100%;
 }
 
 .aside {
   flex: 0 0 300px;
-  width: 300px;
   display: flex;
   flex-direction: column;
-
   border-right: 1px solid var(--mechanic-dust-gray);
   height: 100%;
   padding-left: 30px;
-
   user-select: none;
 }
 

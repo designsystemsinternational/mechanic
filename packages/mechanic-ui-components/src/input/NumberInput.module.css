@@ -33,18 +33,15 @@
   overflow-x: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-
   border: none;
   background: none;
   font-family: inherit;
   color: inherit;
   font-size: inherit;
   outline: none;
-
   -moz-appearance: none;
   -webkit-appearance: none;
   appearance: none;
-
   -moz-appearance: textfield;
   &::-webkit-outer-spin-button,
   &::-webkit-inner-spin-button {
@@ -58,12 +55,11 @@
   position: relative;
   z-index: 9;
   flex: 1 1 auto;
+  width: 100%;
   min-width: 0;
   color: inherit;
   background: transparent; /* Otherwise white in Chrome */
-
   -webkit-appearance: none; /* Hides the slider so that custom slider can be made */
-
   /* Special styling for WebKit/Blink */
   &::-webkit-slider-thumb {
     margin-top: -0.65em; /* You need to specify a margin in Chrome, but in Firefox and IE it is automatic */
