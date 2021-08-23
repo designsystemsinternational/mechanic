@@ -2,7 +2,9 @@ import React, { useCallback, useRef, useState } from "react";
 import PropTypes from "prop-types";
 import classnames from "classnames";
 import { uid } from "../uid.js";
-import { Button } from "../index.js";
+import { Add } from "../icons/index.js";
+
+import * as commonCss from "../common.module.css";
 import * as css from "./ImageInput.module.css";
 
 const ImageItem = ({ file, onPreview }) => {
@@ -27,7 +29,6 @@ export const ImageInput = props => {
     label,
     id = _id.current,
     className,
-    variant,
     invalid,
     error,
     disabled,
@@ -47,28 +48,27 @@ export const ImageInput = props => {
 
   const handleChangePreview = useCallback(value => setPreview(value), [setPreview]);
 
-  const handleOnChange = useRef(event => {
+  const handleOnChange = event => {
     const { name, files } = event.target;
     onChange && onChange(event, name, multiple ? files : files[0]);
-  });
+  };
 
-  const handleOnFocus = useRef(event => {
+  const handleOnFocus = event => {
     onFocus && onFocus(event);
     setFocus(true);
-  });
+  };
 
-  const handleOnBlur = useRef(event => {
+  const handleOnBlur = event => {
     onBlur && onBlur(event);
     setFocus(false);
-  });
+  };
 
   const handleButtonClick = () => {
     ref.current?.click();
   };
 
-  const rootClasses = classnames(css.root, {
+  const rootClasses = classnames(commonCss.root, {
     [className]: className,
-    [css[variant]]: variant,
     [css.invalid]: invalid,
     [css.disabled]: disabled,
     [css.focus]: focus
@@ -103,39 +103,48 @@ export const ImageInput = props => {
   return (
     <div className={rootClasses}>
       {label && (
-        <label className={css.label} htmlFor={id}>
+        <label className={commonCss.label} htmlFor={id}>
           {label}
         </label>
       )}
-      <div className={css.container}>
-        {preview && <img className={css.preview} src={preview} />}
-        <div className={css.loadedImages}>{loadedImages}</div>
-        <input
-          type="file"
-          accept={formats ?? "image/*"}
-          multiple={!!multiple}
-          name={name}
-          ref={ref}
-          files={value}
-          id={id}
-          className={css.input}
-          disabled={disabled}
-          placeholder={placeholder}
-          autoComplete={autocomplete}
-          onChange={handleOnChange.current}
-          onFocus={handleOnFocus.current}
-          onBlur={handleOnBlur.current}
-          onKeyPress={onKeyPress}
-          aria-required={required}
-          aria-describedby={`error-${id}`}
-          aria-invalid={invalid}
-        />
-        <Button className={css.browseButton} onClick={handleButtonClick} disabled={disabled}>
-          +
-        </Button>
+      <div className={css.containerWrapper}>
+        <div className={css.container}>
+          <div className={css.loadedImages}>{loadedImages}</div>
+          <input
+            type="file"
+            accept={formats ?? "image/*"}
+            multiple={!!multiple}
+            name={name}
+            ref={ref}
+            files={value}
+            id={id}
+            tabIndex="-1"
+            className={css.input}
+            disabled={disabled}
+            placeholder={placeholder}
+            autoComplete={autocomplete}
+            onChange={handleOnChange}
+            onFocus={handleOnFocus}
+            onBlur={handleOnBlur}
+            onKeyPress={onKeyPress}
+            aria-required={required}
+            aria-describedby={`error-${id}`}
+            aria-invalid={invalid}
+          />
+          <button
+            className={css.browseButton}
+            onFocus={handleOnFocus}
+            onBlur={handleOnBlur}
+            onClick={handleButtonClick}
+            disabled={disabled}>
+            <Add className={css.plus} />
+          </button>
+        </div>
+        {invalid && <div className={commonCss.background} />}
       </div>
+      {preview && <img className={css.preview} src={preview} />}
       {invalid && error && (
-        <div className={css.error} id={`error-${id}`} aria-live="polite">
+        <div className={commonCss.error} id={`error-${id}`} aria-live="polite">
           {error}
         </div>
       )}
@@ -156,7 +165,6 @@ ImageInput.propTypes = {
   label: PropTypes.string,
   id: PropTypes.string,
   className: PropTypes.string,
-  variant: PropTypes.string,
   invalid: PropTypes.bool,
   error: PropTypes.string,
   disabled: PropTypes.bool,

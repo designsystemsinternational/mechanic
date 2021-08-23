@@ -16,7 +16,6 @@ export const OptionInput = props => {
     label,
     id = _id.current,
     className,
-    variant,
     invalid,
     error,
     disabled,
@@ -45,7 +44,6 @@ export const OptionInput = props => {
       label={label}
       id={id}
       className={rootClasses}
-      variant={variant}
       invalid={invalid}
       error={error}
       disabled={disabled}
@@ -80,7 +78,6 @@ OptionInput.propTypes = {
   label: PropTypes.string,
   id: PropTypes.string,
   className: PropTypes.string,
-  variant: PropTypes.string,
   invalid: PropTypes.bool,
   error: PropTypes.string,
   disabled: PropTypes.bool,

@@ -1,6 +1,7 @@
 import React, { useRef } from "react";
 import PropTypes from "prop-types";
 import classnames from "classnames";
+import Case from "case";
 import * as css from "./ParamInput.module.css";
 import { TextInput } from "./input/TextInput.js";
 import { NumberInput } from "./input/NumberInput.js";
@@ -12,8 +13,9 @@ import { uid } from "./uid.js";
 
 export const ParamInput = ({ name, className, values, attributes, onChange, children }) => {
   const id = useRef(uid("param-input"));
-  const { type, options, validation, editable } = attributes;
+  const { type, label: _label, options, validation, editable } = attributes;
   const _default = attributes["default"];
+  const label = _label || Case.title(name);
 
   const value = values[name];
   const isEditable =
@@ -32,10 +34,9 @@ export const ParamInput = ({ name, className, values, attributes, onChange, chil
         type={type}
         options={options}
         value={actualValue}
-        label={name}
+        label={label}
         id={id.current}
         className={rootClasses}
-        variant="mechanicParam"
         invalid={error ? true : false}
         error={error}
         disabled={!isEditable}
@@ -51,10 +52,9 @@ export const ParamInput = ({ name, className, values, attributes, onChange, chil
       <ImageInput
         name={name}
         value={actualValue}
-        label={name}
+        label={label}
         id={id.current}
         className={rootClasses}
-        variant="mechanicParam"
         invalid={error ? true : false}
         error={error}
         multiple={multiple}
@@ -70,10 +70,9 @@ export const ParamInput = ({ name, className, values, attributes, onChange, chil
       <BooleanInput
         name={name}
         value={actualValue}
-        label={name}
+        label={label}
         id={id.current}
         className={rootClasses}
-        variant="mechanicParam"
         invalid={error ? true : false}
         error={error}
         disabled={!isEditable}
@@ -90,10 +89,9 @@ export const ParamInput = ({ name, className, values, attributes, onChange, chil
         name={name}
         model={model}
         value={actualValue}
-        label={name}
+        label={label}
         id={id.current}
         className={rootClasses}
-        variant="mechanicParam"
         invalid={error ? true : false}
         error={error}
         disabled={!isEditable}
@@ -107,12 +105,11 @@ export const ParamInput = ({ name, className, values, attributes, onChange, chil
     const { min, max, step, slider } = attributes;
     return (
       <NumberInput
-        label={name}
+        label={label}
         value={actualValue}
         name={name}
         id={id.current}
         className={rootClasses}
-        variant="mechanicParam"
         invalid={error ? true : false}
         error={error}
         disabled={!isEditable}
@@ -130,10 +127,9 @@ export const ParamInput = ({ name, className, values, attributes, onChange, chil
     <TextInput
       name={name}
       value={actualValue}
-      label={name}
+      label={label}
       id={id.current}
       className={rootClasses}
-      variant="mechanicParam"
       invalid={error ? true : false}
       error={error}
       disabled={!isEditable}

@@ -1,3 +1,5 @@
+@import "@designsystemsinternational/mechanic-fonts";
+
 *,
 *:before,
 *:after {
@@ -12,9 +14,9 @@ html {
 body {
   padding: 0;
   margin: 0;
+  font-family: "Object Sans", Helvetica, Arial, Sans-Serif;
+  font-size: 16px;
 
-  font-size: 14px;
-  font-family: Helvetica, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color: var(--mechanic-text);

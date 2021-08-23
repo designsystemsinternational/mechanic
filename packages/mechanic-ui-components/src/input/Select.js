@@ -2,6 +2,9 @@ import React, { Fragment, useRef, useState } from "react";
 import PropTypes from "prop-types";
 import classnames from "classnames";
 import { uid } from "../uid.js";
+import { Dropdown } from "../icons/index.js";
+
+import * as commonCss from "../common.module.css";
 import * as css from "./Select.module.css";
 
 export const Select = props => {
@@ -13,7 +16,6 @@ export const Select = props => {
     label,
     id = _id.current,
     className,
-    variant,
     invalid,
     error,
     disabled,
@@ -25,54 +27,58 @@ export const Select = props => {
   } = props;
   const [focus, setFocus] = useState(false);
 
-  const handleOnChange = useRef(event => {
+  const handleOnChange = event => {
     const { name, value } = event.target;
     onChange && onChange(event, name, value);
-  });
+  };
 
-  const handleOnFocus = useRef(event => {
+  const handleOnFocus = event => {
     onFocus && onFocus(event);
     setFocus(true);
-  });
+  };
 
-  const handleOnBlur = useRef(event => {
+  const handleOnBlur = event => {
     onBlur && onBlur(event);
     setFocus(false);
-  });
+  };
 
-  const rootClasses = classnames(css.root, {
+  const rootClasses = classnames(css.root, commonCss.root, {
     [className]: className,
-    [css[variant]]: variant,
-    [css.focus]: focus,
-    [css.invalid]: invalid,
-    [css.disabled]: disabled
+    [commonCss.focus]: focus,
+    [commonCss.disabled]: disabled
   });
 
   return (
     <div className={rootClasses}>
       {label && (
-        <label className={css.label} htmlFor={id}>
+        <label className={commonCss.label} htmlFor={id}>
           {label}
         </label>
       )}
-      <select
-        name={name}
-        value={value}
-        id={id}
-        className={css.select}
-        placeholder={placeholder}
-        disabled={disabled}
-        onChange={handleOnChange.current}
-        onFocus={handleOnFocus.current}
-        onBlur={handleOnBlur.current}
-        aria-required={required}
-        aria-describedby={`error-${id}`}
-        aria-invalid={invalid}>
-        <option disabled>{placeholder}</option>
-        {children}
-      </select>
+      <div className={commonCss.inputWrapper}>
+        <select
+          name={name}
+          value={value}
+          id={id}
+          className={classnames(commonCss.input, css.select)}
+          placeholder={placeholder}
+          disabled={disabled}
+          onChange={handleOnChange}
+          onFocus={handleOnFocus}
+          onBlur={handleOnBlur}
+          aria-required={required}
+          aria-describedby={`error-${id}`}
+          aria-invalid={invalid}>
+          <option disabled>{placeholder}</option>
+          {children}
+        </select>
+        <div className={commonCss.suffix}>
+          <Dropdown open={false} />
+        </div>
+        {invalid && <div className={commonCss.background} />}
+      </div>
       {invalid && error && (
-        <div className={css.error} id={`error-${id}`} aria-live="polite">
+        <div className={commonCss.error} id={`error-${id}`} aria-live="polite">
           {error}
         </div>
       )}
@@ -94,7 +100,6 @@ Select.propTypes = {
   label: PropTypes.string,
   id: PropTypes.string,
   className: PropTypes.string,
-  variant: PropTypes.string,
   invalid: PropTypes.bool,
   error: PropTypes.string,
   disabled: PropTypes.bool,
