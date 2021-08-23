@@ -16,7 +16,7 @@
   box-sizing: border-box;
   align-items: center;
   height: var(--mechanic-param-height);
-  padding: 0 0.5em;
+  padding: 0 var(--mechanic-param-height-eighth) 0 var(--mechanic-param-height-quart);
   background-color: var(--mechanic-background);
   border: 2px solid transparent;
   color: currentColor;
