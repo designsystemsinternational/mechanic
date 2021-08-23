@@ -1,9 +1,12 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { ChromePicker } from "react-color";
 import PropTypes from "prop-types";
 import classnames from "classnames";
 import { uid } from "../uid.js";
 import { Button } from "../buttons/Button.js";
+import { Invalid } from "../icons/index.js";
+
+import * as commonCss from "../common.module.css";
 import * as css from "./ColorInput.module.css";
 
 const colorToString = (color, model) => {
@@ -26,7 +29,6 @@ export const ColorInput = props => {
     label,
     id = _id.current,
     className,
-    variant,
     invalid,
     disabled,
     error,
@@ -34,50 +36,94 @@ export const ColorInput = props => {
     onFocus,
     onBlur
   } = props;
+
+  const [focus, setFocus] = useState(false);
   const [picking, setPicking] = useState(false);
 
-  const classes = classnames(css.root, {
+  const classes = classnames(css.root, commonCss.root, {
     [className]: className,
-    [css[variant]]: css[variant],
-    [css.invalid]: invalid,
-    [css.disabled]: disabled
+    [commonCss.disabled]: disabled,
+    [commonCss.focus]: focus,
+    [css.focus]: focus,
+    [css.picking]: picking
   });
 
-  const handleClick = () => setPicking(picking => !picking);
+  const handleOnFocus = event => {
+    onFocus && onFocus(event);
+    setFocus(true);
+  };
 
-  const handleChange = color => {
+  const handleOnBlur = event => {
+    onBlur && onBlur(event);
+    setFocus(false);
+  };
+
+  // close picker when clicking outside of the input element
+  useEffect(() => {
+    if (!picking) return;
+    const onClickOutside = e => {
+      if (!e.target || !e.target.closest(`.${css.root} .${commonCss.inputWrapper}`)) {
+        setPicking(false);
+      }
+    };
+
+    const onKeyDown = e => {
+      // close picker when typing enter or esc
+      if (["Escape", "Enter"].includes(e.key)) {
+        e.target.blur();
+        setPicking(false);
+      }
+      // close picker on tab navigation
+      if (["Tab"].includes(e.key) && e.target.closest(`.${css.chromePicker}`)) {
+        setPicking(false);
+      }
+    };
+
+    document.addEventListener("click", onClickOutside);
+    document.addEventListener("keydown", onKeyDown);
+    return () => {
+      document.removeEventListener("click", onClickOutside);
+      document.removeEventListener("keydown", onKeyDown);
+    };
+  }, [picking]);
+
+  const handleOnClick = () => setPicking(picking => !picking);
+
+  const handleOnChange = color => {
     onChange({}, name, colorToString(color, model));
   };
 
   return (
     <div className={classes}>
       {label && (
-        <label className={css.label} htmlFor={id}>
+        <label className={commonCss.label} htmlFor={id}>
           {label}
         </label>
       )}
       <div
         id={id}
-        className={css.buttonContainer}
+        className={commonCss.inputWrapper}
         aria-describedby={`error-${id}`}
-        aria-invalid={invalid}>
+        aria-invalid={invalid}
+        onFocus={handleOnFocus}
+        onBlur={handleOnBlur}>
         <Button
-          className={css.button}
-          onClick={handleClick}
-          onFocus={onFocus}
-          onBlur={onBlur}
+          className={classnames(css.button, commonCss.button)}
+          onClick={handleOnClick}
           disabled={disabled}>
-          <div className={css.swatch} style={{ backgroundColor: value }} />
-          <span>{value}</span>
+          <span className={css.swatch} style={{ backgroundColor: value }} />
+          <span className={css.value}>{value}</span>
         </Button>
         {picking && (
           <div className={css.popover}>
-            <ChromePicker className={css.chromePicker} color={value} onChange={handleChange} />
+            <ChromePicker className={css.chromePicker} color={value} onChange={handleOnChange} />
           </div>
         )}
+        <div className={commonCss.suffix}>{invalid && <Invalid />}</div>
+        {invalid && <div className={commonCss.background} />}
       </div>
       {invalid && error && (
-        <div className={css.error} id={`error-${id}`} aria-live="polite">
+        <div className={commonCss.error} id={`error-${id}`} aria-live="polite">
           {error}
         </div>
       )}
@@ -100,7 +146,6 @@ ColorInput.propTypes = {
   label: PropTypes.string,
   id: PropTypes.string,
   className: PropTypes.string,
-  variant: PropTypes.string,
   disabled: PropTypes.bool,
   error: PropTypes.string,
   invalid: PropTypes.bool,

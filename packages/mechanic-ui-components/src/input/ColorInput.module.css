@@ -1,39 +1,32 @@
 @import "../variables.css";
 
 .root {
+  z-index: 50;
 }
-
-.invalid {
+.root .button {
+  justify-content: flex-start;
+  &:not([disabled]):hover {
+    transform: translateY(0);
+  }
 }
-
-.disabled {
-}
-
-.button-container {
-  position: relative;
-}
-
-.button {
-  min-width: 240px;
-  height: 36px;
-}
-
 .swatch {
-  position: absolute;
-  left: 1em;
-  top: 50%;
+  margin-right: var(--mechanic-param-height-quart);
+  border-radius: var(--mechanic-param-height-quart);
+  width: var(--mechanic-param-height-half);
+  height: var(--mechanic-param-height-half);
+}
 
-  display: inline-block;
-  transform: translateY(-50%);
+.value {
+}
 
-  width: 18px;
-  height: 18px;
+.picking .button {
+  border-radius: var(--mechanic-param-height-half) var(--mechanic-param-height-half) 0 0;
 }
 
 .popover {
   position: absolute;
-  z-index: 2;
-  top: 36px;
+  z-index: 20;
+  top: calc(var(--mechanic-param-height) - 2px);
   left: 0;
 
   padding-bottom: 30px;
@@ -41,41 +34,23 @@
 
   & > .chrome-picker {
     box-shadow: none !important;
-    border: 1px solid var(--mechanic-text) !important;
     border-top: none !important;
-    border-radius: 0 !important;
+    border-right: 1px solid currentColor !important;
+    border-left: 1px solid currentColor !important;
+    border-bottom: 1px solid currentColor !important;
+
+    /* border-top: none !important; */
+    border-radius: 0 0 var(--mechanic-param-height-half) var(--mechanic-param-height-half) !important;
+    padding: 0.5em;
+    overflow: hidden;
     box-sizing: border-box !important;
     width: 100% !important;
   }
 }
 
-.mechanic-param {
-  & > .label {
-    display: block;
-
-    margin-bottom: 0.5em;
-    width: 100%;
-
-    font-size: 0.75em;
-    font-family: var(--mechanic-param-font);
-  }
-
-  & .button {
-    width: 100%;
-
-    font-family: var(--mechanic-param-font);
-  }
-
-  &.invalid {
-    & .button-container button {
-      border: 1px solid var(--mechanic-error);
-    }
-
-    & > .error {
-      box-sizing: border-box;
-      padding: 0.1em;
-
-      background: var(--mechanic-error);
-    }
-  }
+.focus .popover .chrome-picker {
+  border-right: 2px solid currentColor !important;
+  border-left: 2px solid currentColor !important;
+  border-bottom: 2px solid currentColor !important;
+  padding: 0.5em calc(0.5em - 1px) calc(0.5em - 1px);
 }

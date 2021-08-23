@@ -1,7 +1,10 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useMemo } from "react";
 import PropTypes from "prop-types";
 import classnames from "classnames";
 import { uid } from "../uid.js";
+import { Invalid } from "../icons/index.js";
+
+import * as commonCss from "../common.module.css";
 import * as css from "./NumberInput.module.css";
 
 export const NumberInput = props => {
@@ -12,7 +15,6 @@ export const NumberInput = props => {
     label,
     id = _id.current,
     className,
-    variant,
     invalid,
     error,
     disabled,
@@ -30,42 +32,64 @@ export const NumberInput = props => {
   } = props;
   const [focus, setFocus] = useState(false);
 
-  const handleOnChange = useRef(event => {
+  const handleOnChange = event => {
     const { name, value } = event.target;
     const parsedValue = value === "" ? 0 : parseFloat(value);
-    onChange && onChange(event, name, parsedValue);
-  });
+    const constrainedValue = Math.min(max || Infinity, Math.max(min || -Infinity, value));
+    onChange && onChange(event, name, constrainedValue);
+  };
 
-  const handleOnFocus = useRef(event => {
+  const handleOnFocus = event => {
     onFocus && onFocus(event);
     setFocus(true);
-  });
+  };
 
-  const handleOnBlur = useRef(event => {
+  const handleOnBlur = event => {
     onBlur && onBlur(event);
     setFocus(false);
+  };
+
+  const rootClasses = classnames(commonCss.root, {
+    [className]: className,
+    [commonCss.disabled]: disabled,
+    [css.disabled]: disabled,
+    [commonCss.focus]: focus,
+    [css.focus]: focus
   });
 
-  const rootClasses = classnames(css.root, {
-    [className]: className,
-    [css.invalid]: invalid,
-    [css.disabled]: disabled,
-    [css.focus]: focus,
-    [css[variant]]: variant
-  });
+  // this is used to calculate how wide the number label should be on a range
+  const maxDigits = useMemo(() => {
+    let digits = max ? max.toString().length : 0;
+    const stepParts = step ? step.toString().split(".") : [];
+    digits += stepParts[1] ? stepParts[1].length : 0;
+    return digits;
+  }, [max, step]);
 
   return (
     <div className={rootClasses}>
       {label && (
-        <label className={css.label} htmlFor={id}>
+        <label className={commonCss.label} htmlFor={id}>
           {label}
         </label>
       )}
       {slider ? (
         <div className={css.rangeWrapper}>
-          {value !== undefined && <div className={css.rangeLabel}>{value}</div>}
+          {value !== undefined && (
+            <input
+              style={{ flexBasis: maxDigits ? `${maxDigits * 0.8}em` : null }}
+              className={classnames(css.rangeNumberInput)}
+              type={"number"}
+              onChange={handleOnChange}
+              min={min ? "" + min : min}
+              max={max ? "" + max : max}
+              step={step ? "" + step : step}
+              name={name}
+              value={value}
+            />
+          )}
           <input
             type={"range"}
+            tabIndex="-1"
             name={name}
             value={value ? "" + value : value}
             id={id}
@@ -76,39 +100,44 @@ export const NumberInput = props => {
             min={min ? "" + min : min}
             max={max ? "" + max : max}
             step={step ? "" + step : step}
-            onChange={handleOnChange.current}
-            onFocus={handleOnFocus.current}
-            onBlur={handleOnBlur.current}
+            onChange={handleOnChange}
+            onFocus={handleOnFocus}
+            onBlur={handleOnBlur}
             onKeyPress={onKeyPress}
             aria-required={required}
             aria-describedby={`error-${id}`}
             aria-invalid={invalid}
           />
+          {invalid && <div className={classnames(css.background, commonCss.background)} />}
         </div>
       ) : (
-        <input
-          type={"number"}
-          name={name}
-          value={value ? "" + value : value}
-          id={id}
-          className={css.numberInput}
-          disabled={disabled}
-          placeholder={placeholder}
-          autoComplete={autocomplete}
-          min={min ? "" + min : min}
-          max={max ? "" + max : max}
-          step={step ? "" + step : step}
-          onChange={handleOnChange.current}
-          onFocus={handleOnFocus.current}
-          onBlur={handleOnBlur.current}
-          onKeyPress={onKeyPress}
-          aria-required={required}
-          aria-describedby={`error-${id}`}
-          aria-invalid={invalid}
-        />
+        <div className={commonCss.inputWrapper}>
+          <input
+            type={"number"}
+            name={name}
+            value={value ? "" + value : value}
+            id={id}
+            className={classnames(commonCss.input, css.numberInput)}
+            disabled={disabled}
+            placeholder={placeholder}
+            autoComplete={autocomplete}
+            min={min ? "" + min : min}
+            max={max ? "" + max : max}
+            step={step ? "" + step : step}
+            onChange={handleOnChange}
+            onFocus={handleOnFocus}
+            onBlur={handleOnBlur}
+            onKeyPress={onKeyPress}
+            aria-required={required}
+            aria-describedby={`error-${id}`}
+            aria-invalid={invalid}
+          />
+          <div className={commonCss.suffix}>{invalid && <Invalid />}</div>
+          {invalid && <div className={commonCss.background} />}
+        </div>
       )}
       {invalid && error && (
-        <div className={css.error} id={`error-${id}`} aria-live="polite">
+        <div className={commonCss.error} id={`error-${id}`} aria-live="polite">
           {error}
         </div>
       )}
@@ -129,7 +158,6 @@ NumberInput.propTypes = {
   label: PropTypes.string,
   id: PropTypes.string,
   className: PropTypes.string,
-  variant: PropTypes.string,
   invalid: PropTypes.bool,
   error: PropTypes.string,
   disabled: PropTypes.bool,
