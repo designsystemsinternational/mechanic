@@ -38,11 +38,7 @@ const setUpFunctionDir = path.resolve(path.join(__dirname, "..", "function-set-u
 const getScripContent = designFunctionPath => `
 const designFunction = require("${designFunctionPath}");
 const { setUp } = require("${setUpFunctionDir}");
-setUp(designFunction)
-if (module['hot']) {
-  module['hot'].accept();
-}
-console.log("iframe render");`;
+setUp(designFunction)`;
 
 const generateTempScripts = functionsPath => {
   const designFunctions = {};
