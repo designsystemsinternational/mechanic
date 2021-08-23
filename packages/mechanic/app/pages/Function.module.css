@@ -1,29 +1,26 @@
 .root {
   display: flex;
-
   height: 100%;
 }
 
 .aside {
   flex: 0 0 300px;
-
   display: flex;
   flex-direction: column;
-
   border-right: 1px solid var(--mechanic-dust-gray);
   height: 100%;
   padding-left: 30px;
-
   user-select: none;
 }
 
 .main {
   display: flex;
   flex-direction: column;
-
   flex: 1;
   height: 100%;
-  padding-left: 30px;
+  background-color: #f7f7f7;
+  padding-left: 1em;
+  padding-top: 1em;
 }
 
 .iframe {
@@ -32,66 +29,9 @@
   border: none;
 }
 
-.section {
-  padding-right: 30px;
-}
-
-.sep {
-  flex-shrink: 0;
-
-  height: 1em;
-}
-
-.line {
-  margin-right: 30px;
-  margin-bottom: 1em;
-  border-bottom: 1px solid var(--mechanic-dust-gray);
-}
-
-.row {
-  display: flex;
-
-  width: 100%;
-}
-
-.grow {
-  flex-grow: 1;
-}
-
-.params-wrapper {
-  position: relative;
-
-  &:before,
-  &:after {
-    content: "";
-
-    position: absolute;
-    z-index: 100;
-    left: 0;
-    right: 0;
-
-    pointer-events: none;
-  }
-  &:before {
-    top: 0;
-
-    height: 10px;
-
-    background-image: linear-gradient(to top, rgba(255, 255, 255, 0), white);
-  }
-  &:after {
-    bottom: 0;
-
-    height: 30px;
-
-    background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0), white);
-  }
-}
-
 .params {
+  flex-grow: 1;
   overflow: auto;
-
-  height: calc(100vh - 306px);
   padding-right: 30px;
 
   & > .param:first-child {
@@ -106,12 +46,54 @@
   margin-bottom: 1em;
 }
 
-.strong {
-  font-weight: bold;
+.section {
+  padding-right: 30px;
 }
 
-.blue-highlight {
-  background-color: var(--mechanic-blue);
+.sep {
+  flex-shrink: 0;
+  height: 1em;
+}
 
-  color: white;
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+}
+
+.grow {
+  flex-grow: 1;
+}
+
+.edge {
+  position: relative;
+  height: 0;
+  z-index: 100;
+  left: 0;
+  right: 0;
+  pointer-events: none;
+  border-bottom: 1px solid var(--mechanic-dust-gray);
+  &:before {
+    content: "";
+    height: 10px;
+    position: absolute;
+    width: 100%;
+    height: 10px;
+  }
+}
+
+.edge.top:before {
+  background-image: linear-gradient(to top, rgba(255, 255, 255, 0), white);
+  top: 0;
+}
+.edge.bottom:before {
+  background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0), white);
+  bottom: 0;
+}
+.error {
+  padding: 0.2em 0.25em;
+  font-size: 0.75em;
+}
+.strong {
+  font-weight: bold;
 }

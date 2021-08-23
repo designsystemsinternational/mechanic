@@ -2,6 +2,7 @@ import React, { useState, useRef } from "react";
 import PropTypes from "prop-types";
 import classnames from "classnames";
 import { uid } from "../uid.js";
+import * as commonCss from "../common.module.css";
 import * as css from "./Button.module.css";
 
 export const Button = props => {
@@ -10,39 +11,39 @@ export const Button = props => {
     children,
     id = _id.current,
     className,
-    variant,
+    primary,
     disabled,
     onClick,
     onFocus,
     onBlur
   } = props;
   const [focus, setFocus] = useState(false);
-  const classes = classnames(css.root, {
+  const classes = classnames(css.root, commonCss.button, {
     [className]: className,
-    [css[variant]]: css[variant],
-    [css.focus]: focus,
-    [css.disabled]: disabled
+    [css.primary]: primary,
+    [commonCss.focus]: focus,
+    [commonCss.disabled]: disabled
   });
 
-  const handleOnFocus = useRef(event => {
+  const handleOnFocus = event => {
     onFocus && onFocus(event);
     setFocus(true);
-  });
+  };
 
-  const handleOnBlur = useRef(event => {
+  const handleOnBlur = event => {
     onBlur && onBlur(event);
     setFocus(false);
-  });
+  };
 
   return (
     <button
       id={id}
       className={classes}
       onClick={onClick}
-      onFocus={handleOnFocus.current}
-      onBlur={handleOnBlur.current}
+      onFocus={handleOnFocus}
+      onBlur={handleOnBlur}
       disabled={disabled}>
-      {children}
+      <span>{children}</span>
     </button>
   );
 };
@@ -57,7 +58,7 @@ Button.propTypes = {
   children: PropTypes.node,
   id: PropTypes.string,
   className: PropTypes.string,
-  variant: PropTypes.string,
+  primary: PropTypes.bool,
   disabled: PropTypes.bool,
   onClick: PropTypes.func,
   onFocus: PropTypes.func,

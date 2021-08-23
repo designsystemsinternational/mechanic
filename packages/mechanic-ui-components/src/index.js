@@ -7,3 +7,4 @@ export { NumberInput } from "./input/NumberInput.js";
 export { Select } from "./input/Select.js";
 export { ImageInput } from "./input/ImageInput.js";
 export { ParamInput } from "./ParamInput.js";
+export { Dropdown as DropdownIcon, Invalid as InvalidIcon, Add as AddIcon } from "./icons/index.js";

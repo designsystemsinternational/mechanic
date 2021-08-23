@@ -1,20 +1,6 @@
 @import "../variables.css";
 
-.root {
-}
-
 .number-input {
-  margin: 0;
-  border: 1px solid var(--mechanic-text);
-  box-sizing: border-box;
-  padding: 0.5em 1em;
-
-  background-color: var(--mechanic-background);
-
-  font-size: inherit;
-  font-family: inherit;
-  font-weight: inherit;
-
   -moz-appearance: textfield;
   &::-webkit-outer-spin-button,
   &::-webkit-inner-spin-button {
@@ -24,51 +10,66 @@
 }
 
 .range-wrapper {
+  position: relative;
   display: flex;
-
   margin: 0;
   box-sizing: border-box;
-  padding: 0.5em 0;
-
+  align-items: center;
+  height: var(--mechanic-param-height);
+  padding: 0 var(--mechanic-param-height-eighth) 0 var(--mechanic-param-height-quart);
   background-color: var(--mechanic-background);
+  border: 2px solid transparent;
+  color: currentColor;
+  border-radius: var(--mechanic-param-height-half);
+  & .background {
+    top: -2px;
+  }
 }
 
-.range-label {
-  flex: 0 1 90px;
-
+.range-number-input {
+  flex: 0 0 60px;
+  z-index: 10;
   box-sizing: border-box;
-  padding: 0 1em;
-
   overflow-x: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  border: none;
+  background: none;
+  font-family: inherit;
+  color: inherit;
+  font-size: inherit;
+  outline: none;
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  appearance: none;
+  -moz-appearance: textfield;
+  &::-webkit-outer-spin-button,
+  &::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
 }
 
 /* https://css-tricks.com/styling-cross-browser-compatible-range-inputs-css/ */
 .range-input {
+  position: relative;
+  z-index: 9;
   flex: 1 1 auto;
+  width: 100%;
   min-width: 0;
-
+  color: inherit;
   background: transparent; /* Otherwise white in Chrome */
-
   -webkit-appearance: none; /* Hides the slider so that custom slider can be made */
-
   /* Special styling for WebKit/Blink */
   &::-webkit-slider-thumb {
-    margin-top: -14px; /* You need to specify a margin in Chrome, but in Firefox and IE it is automatic */
-    border: 1px solid var(--mechanic-text);
-    border-radius: 0;
-    height: 36px;
-    width: 8px;
-
-    background: var(--mechanic-background);
+    margin-top: -0.65em; /* You need to specify a margin in Chrome, but in Firefox and IE it is automatic */
+    border: none;
+    background-color: currentColor;
+    border-radius: var(--mechanic-param-height-half);
+    height: var(--mechanic-param-height-half);
+    width: var(--mechanic-param-height-half);
     cursor: pointer;
-
     -webkit-appearance: none;
-  }
-
-  &:focus {
-    outline: none; /* Removes the blue border. Should probably do some kind of focus styling for accessibility reasons though. */
   }
 
   &::-ms-track {
@@ -84,96 +85,74 @@
 
   /* All the same stuff for Firefox */
   &::-moz-range-thumb {
-    border: 1px solid var(--mechanic-text);
-    border-radius: 0;
-    height: 36px;
-    width: 8px;
-
-    background: var(--mechanic-background);
-    cursor: pointer;
+    border: none;
+    background-color: currentColor;
+    border-radius: var(--mechanic-param-height-half);
+    height: var(--mechanic-param-height-half);
+    width: var(--mechanic-param-height-half);
   }
 
   /* All the same stuff for IE */
   &::-ms-thumb {
-    border: 1px solid var(--mechanic-text);
-    border-radius: 0;
-    height: 36px;
-    width: 8px;
-
-    background: var(--mechanic-background);
-    cursor: pointer;
+    border: none;
+    background-color: currentColor;
+    border-radius: var(--mechanic-param-height-half);
+    height: var(--mechanic-param-height-half);
+    width: var(--mechanic-param-height-half);
   }
 
   &::-webkit-slider-runnable-track {
-    border: 1px solid var(--mechanic-text);
-    border-radius: 0;
+    border: 1px solid currentColor;
+    border-radius: 2px;
     width: 100%;
-    height: 1px;
-
-    background: var(--mechanic-text);
+    height: 2px;
+    background-color: currentColor;
     cursor: pointer;
   }
 
   &:focus::-webkit-slider-runnable-track {
-    background: var(--mechanic-text);
+    background: currentColor;
   }
 
   &::-moz-range-track {
-    border: 1px solid var(--mechanic-text);
-    border-radius: 0;
+    border: 1px solid currentColor;
+    border-radius: 2px;
     width: 100%;
-    height: 1px;
-
-    background: var(--mechanic-text);
+    height: 2px;
+    background-color: currentColor;
     cursor: pointer;
   }
 
   &::-ms-track {
-    border: 1px solid var(--mechanic-text);
-    border-radius: 0;
+    border: 1px solid currentColor;
+    border-radius: 2px;
     width: 100%;
-    height: 1px;
-
-    background: var(--mechanic-text);
+    height: 2px;
+    background-color: currentColor;
     cursor: pointer;
-
     color: transparent;
   }
   &::-ms-fill-lower {
-    border: 1px solid var(--mechanic-text);
+    border: 1px solid currentColor;
     border-radius: 2.6px;
-
-    background: var(--mechanic-text);
+    background: currentColor;
   }
   &:focus::-ms-fill-lower {
-    background: var(--text);
   }
   &::-ms-fill-upper {
-    border: 1px solid var(--mechanic-text);
-    border-radius: 2.6px;
+    border: 1px solid currentColor;
+    border-radius: 5px;
 
-    background: var(--text);
+    background: currentColor;
   }
   &:focus::-ms-fill-upper {
-    background: var(--mechanic-text);
+    background: currentColor;
   }
-}
-
-.invalid {
 }
 
 .disabled {
-  & .number-input {
-    border: 1px solid var(--mechanic-gray);
-  }
-
-  & .range-wrapper {
-    color: var(--mechanic-disabled);
-  }
-
   & .range-input {
     &::-webkit-slider-thumb {
-      border: 1px solid var(--mechanic-gray);
       cursor: default;
     }
 
@@ -182,103 +161,35 @@
     }
 
     &::-moz-range-thumb {
-      border: 1px solid var(--mechanic-gray);
       cursor: default;
     }
 
     &::-ms-thumb {
-      border: 1px solid var(--mechanic-gray);
       cursor: default;
     }
 
     &::-webkit-slider-runnable-track {
-      border: 1px solid var(--mechanic-gray);
-      background: var(--mechanic-gray);
       cursor: default;
     }
 
     &:focus::-webkit-slider-runnable-track {
-      background: var(--mechanic-gray);
+      cursor: default;
     }
 
     &::-moz-range-track {
-      border: 1px solid var(--mechanic-gray);
-      background: var(--mechanic-gray);
       cursor: default;
     }
 
     &::-ms-track {
-      border: 1px solid var(--mechanic-gray);
-      background: var(--mechanic-gray);
       cursor: default;
     }
-    &::-ms-fill-lower {
-      border: 1px solid var(--mechanic-gray);
-      background: var(--mechanic-gray);
-    }
-    &:focus::-ms-fill-lower {
-      background: var(--mechanic-gray);
-    }
-    &::-ms-fill-upper {
-      border: 1px solid var(--mechanic-gray);
-      background: var(--mechanic-gray);
-    }
-    &:focus::-ms-fill-upper {
-      background: var(--mechanic-gray);
-    }
   }
 }
 
-.focus {
+.focus .range-wrapper {
+  border-color: currentColor;
 }
 
-.mechanic-param {
-  & > .label {
-    display: block;
-
-    margin-bottom: 0.5em;
-    width: 100%;
-
-    font-size: 0.75em;
-    font-family: var(--mechanic-param-font);
-  }
-
-  & > .number-input {
-    width: 100%;
-
-    font-family: var(--mechanic-param-font);
-  }
-
-  & .range-label {
-    font-family: var(--mechanic-param-font);
-  }
-
-  &.invalid {
-    & > input {
-      border: 1px solid var(--mechanic-error);
-    }
-
-    & .range-wrapper .range-input {
-      &::-webkit-slider-thumb {
-        border: 1px solid var(--mechanic-error);
-      }
-
-      /* All the same stuff for Firefox */
-      &::-moz-range-thumb {
-        border: 1px solid var(--mechanic-error);
-      }
-
-      /* All the same stuff for IE */
-      &::-ms-thumb {
-        border: 1px solid var(--mechanic-error);
-      }
-    }
-
-    & > .error {
-      box-sizing: border-box;
-      padding: 0.1em;
-
-      background: var(--mechanic-error);
-    }
-  }
+.focus .range-input {
+  outline: none;
 }

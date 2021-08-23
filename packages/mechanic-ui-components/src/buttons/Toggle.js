@@ -2,6 +2,7 @@ import React, { useState, useRef } from "react";
 import PropTypes from "prop-types";
 import classnames from "classnames";
 import { uid } from "../uid.js";
+import * as commonCss from "../common.module.css";
 import * as css from "./Toggle.module.css";
 
 export const Toggle = props => {
@@ -11,37 +12,36 @@ export const Toggle = props => {
     children,
     id = _id.current,
     className,
-    variant,
     disabled,
     onClick,
     onFocus,
     onBlur
   } = props;
   const [focus, setFocus] = useState(false);
-  const classes = classnames(css.root, {
+  const classes = classnames(commonCss.button, {
     [className]: className,
-    [css[variant]]: css[variant],
     [css.focus]: focus,
-    [css.disabled]: disabled
+    [commonCss.focus]: focus,
+    [commonCss.disabled]: disabled
   });
 
-  const handleOnFocus = useRef(event => {
+  const handleOnFocus = event => {
     onFocus && onFocus(event);
     setFocus(true);
-  });
+  };
 
-  const handleOnBlur = useRef(event => {
+  const handleOnBlur = event => {
     onBlur && onBlur(event);
     setFocus(false);
-  });
+  };
 
   return (
     <button
       id={id}
       className={classes}
       onClick={onClick}
-      onFocus={handleOnFocus.current}
-      onBlur={handleOnBlur.current}
+      onFocus={handleOnFocus}
+      onBlur={handleOnBlur}
       disabled={disabled}>
       <div className={classnames(css.status, { [css.on]: status })} />
       <span className={css.label}>{children}</span>
@@ -60,7 +60,6 @@ Toggle.propTypes = {
   children: PropTypes.node,
   id: PropTypes.string,
   className: PropTypes.string,
-  variant: PropTypes.string,
   disabled: PropTypes.bool,
   onClick: PropTypes.func,
   onFocus: PropTypes.func,

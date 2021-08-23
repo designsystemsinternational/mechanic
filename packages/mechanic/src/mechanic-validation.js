@@ -62,6 +62,11 @@ const validateParams = params => {
       return `Expected function or boolean in editable property in ${paramName}. Got ${typeof param.editable}.`;
     }
 
+    // Check that 'label' property is string
+    if (hasKey(param, "label") && typeof param.label !== "string") {
+      return `Expected string in label property in ${paramName}. Got ${typeof param.label}.`;
+    }
+
     // Check 'options' property
     if (hasKey(param, "options")) {
       const { options } = param;
