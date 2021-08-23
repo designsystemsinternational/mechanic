@@ -1,14 +1,14 @@
 ---
 name: "\U0001F41B Bug report"
 about: Report an issue with Mechanic.
-title: "\U0001F41B - "
+title: ''
 labels: 'bug:bug:'
 assignees: ''
 
 ---
 
 **Describe the bug**
-A description of what the bug is.
+A description of what the bug or issue is. 
 
 **To Reproduce**
 Steps to reproduce the behavior:
@@ -29,4 +29,4 @@ If applicable, add screenshots to help explain your problem.
  - Version [e.g. 22]
 
 **Additional context**
-Add any other context about the problem here.
+Add any other context about the problem here. Feel free to add labels related to the issue. Is it UI related? Core functionality related?
