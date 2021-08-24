@@ -63,15 +63,12 @@ export const Function = ({ name, exports: functionExports, children }) => {
   };
 
   useEffect(() => {
-    if (autoRefreshOn) handleAutoPreview();
+    if (autoRefreshOn && iframeLoaded) handleAutoPreview();
   });
 
-  // Init engine when the name of the function changes
+  // Check when iframe is done loading
   useEffect(() => {
-    const onLoad = () => {
-      setIframeLoaded(true);
-      iframe.current.contentWindow?.initEngine?.(name);
-    };
+    const onLoad = () => setIframeLoaded(true);
     iframe.current?.addEventListener?.("load", onLoad);
     return () => {
       iframe.current?.removeEventListener?.("load", onLoad);
@@ -151,7 +148,7 @@ export const Function = ({ name, exports: functionExports, children }) => {
       <main className={css.main} ref={mainRef}>
         <iframe
           title={`Design function ${name} document.`}
-          src="functions.html"
+          src={`${name}.html`}
           className={css.iframe}
           ref={iframe}
         />

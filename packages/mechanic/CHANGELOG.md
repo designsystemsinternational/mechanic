@@ -16,6 +16,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- Changed how design functions are bundled, instead of a single functions bundle that mixes definitions, one per design function bundle is generated through temporal scripts. This let's CSS stylings to not get mixed in the loaded iframe of the app.
+- Improved language and logs in main Mechanic commands (`dev`, `build`, `serve`)
 - Updated app loading page to use rotating mini Mechanic logo.
 
 ### Fixed
