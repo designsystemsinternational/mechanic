@@ -1,6 +1,6 @@
 const path = require("path");
 const webpack = require("webpack");
-const { getConfig, getFunctionsPath } = require("./utils.cjs");
+const { getConfig, getFunctionsPath, generateTempScripts, greet, goodbye } = require("./utils.cjs");
 const webpackConfigGenerator = require("../../app/webpackConfigGenerator.cjs");
 
 const {
@@ -9,6 +9,11 @@ const {
 } = require("@designsystemsinternational/mechanic-utils");
 
 const command = async argv => {
+  // Greet and intro command
+  greet();
+  console.log(
+    "This command will look into your Mechanic project and design functions and locally build an app for you to serve later.\n"
+  );
   // Load config file
   spinner.start("Loading mechanic config file...");
   const { config, configPath } = await getConfig(argv.configPath);
@@ -32,10 +37,14 @@ const command = async argv => {
     );
   }
 
+  spinner.start("Generating temp files to serve...");
+  const [designFunctions] = generateTempScripts(functionsPath);
+  spinner.succeed("Temp files created!");
+
   const distDir = path.normalize(argv.distDir !== "./dist" ? argv.distDir : config.distDir);
 
   spinner.start("Loading webpack compilation...");
-  const webpackConfig = webpackConfigGenerator("prod", functionsPath, distDir);
+  const webpackConfig = webpackConfigGenerator("prod", designFunctions, distDir);
   const compiler = webpack(webpackConfig);
   compiler.run((err, stats) => {
     // [Stats Object](#stats-object) https://webpack.js.org/api/node/#stats-object
@@ -51,7 +60,11 @@ const command = async argv => {
           })
         );
     } else {
-      spinner.succeed(success(`Mechanic app built at ${argv.distDir}!`));
+      spinner.succeed(success(`Mechanic app built at directory ${argv.distDir}/!\n`));
+      console.log(
+        "You can serve locally and use the builded app using the `npm run serve` command!"
+      );
+      goodbye();
     }
   });
 };

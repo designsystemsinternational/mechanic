@@ -5,7 +5,14 @@ const webpackDevMiddleware = require("webpack-dev-middleware");
 const webpackHotMiddleware = require("webpack-hot-middleware");
 const history = require("connect-history-api-fallback");
 const webpackConfigGenerator = require("../../app/webpackConfigGenerator.cjs");
-const { getConfig, getFunctionsPath } = require("./utils.cjs");
+const {
+  getConfig,
+  getFunctionsPath,
+  setCustomInterrupt,
+  generateTempScripts,
+  greet,
+  goodbye
+} = require("./utils.cjs");
 
 const {
   spinners: { mechanicSpinner: spinner },
@@ -13,6 +20,12 @@ const {
 } = require("@designsystemsinternational/mechanic-utils");
 
 const command = async argv => {
+  // Greet and intro command
+  greet();
+  console.log(
+    "This command will look into your Mechanic project and design functions and serve an app where you can test and use your code.\n"
+  );
+
   // Load config file
   spinner.start("Loading mechanic config file...");
   const { config, configPath } = await getConfig(argv.configPath);
@@ -62,10 +75,14 @@ const command = async argv => {
     });
   });
   spinner.succeed(`Server listening on port ${port}`);
+
+  spinner.start("Generating temp files to serve...");
+  const [designFunctions, tempDirObj] = generateTempScripts(functionsPath);
+  spinner.succeed("Temp files created!");
   spinner.start("Loading webpack compilation...");
 
   // Load webpack middleware to load mechanic app
-  const webpackConfig = webpackConfigGenerator("dev", functionsPath);
+  const webpackConfig = webpackConfigGenerator("dev", designFunctions);
   const compiler = webpack(webpackConfig);
   // https://stackoverflow.com/questions/43921770/webpack-dev-middleware-pass-through-for-all-routes
   app.use(history());
@@ -80,8 +97,19 @@ const command = async argv => {
   await new Promise(resolve => setTimeout(resolve, 2000));
   // Done!
   status = "started";
-  spinner.succeed(success(`Mechanic app ready at http://localhost:${port}`));
+  spinner.succeed(
+    success(
+      `Mechanic app ready at http://localhost:${port}. Open that address on Chrome for best experience. `
+    )
+  );
   console.log();
+  console.log(
+    "All other logs are from webpack (that bundles your code). " +
+      success("If you wish to stop this server, press CTRL+C. ")
+  );
+  console.log();
+
+  setCustomInterrupt(goodbye, tempDirObj);
 };
 
 module.exports = command;
