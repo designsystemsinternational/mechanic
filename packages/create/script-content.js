@@ -52,9 +52,7 @@ It contains the following files:
     bgRed("design ") + bgBlue("function")
   } is a JavaScript function that generates a design asset. The asset can be either static or animated, simple or complicated. A Mechanic project can have one or more design functions.
 `,
-  confirmContinueQuestion:
-    "Do you want to set up your first design function right now? (you can always do it afterwards)",
-
+  confirmContinueQuestion: `Do you want to set up your first design function right now? (you can always do it afterwards)`,
   designFunctionBasesDescription: `We’ve got some working design functions for you if you need them.
 
 ${bgRed(
@@ -66,7 +64,10 @@ ${bgBlue(
 )} are more complicated design functions we created to show how to use Mechanic to tackle some common use cases. The only current example is a poster generator. More examples will be added along the way. 
 `,
 
-  functionBaseQuestion: `Do you want to use a template or an example as a base for your first design function?`,
+  functionBaseQuestion: (isFirst = true) =>
+    `Do you want to use a template or an example as a base for your ${
+      isFirst ? "first" : ""
+    } design function?`,
   functionTemplateQuestion: `Select template for your first design function`,
   functionExampleQuestion: `Select example to use as base for your first design function`,
   functionNameQuestion: "Name your first design function",

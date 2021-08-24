@@ -52,7 +52,7 @@ const getFunctionQuestions = (initialAnswers, config = {}) => [
   {
     name: "usesBase",
     type: "list",
-    message: content.functionBaseQuestion,
+    message: content.functionBaseQuestion(config.isFirst),
     default:
       initialAnswers.usesBase === "example"
         ? "Example"
