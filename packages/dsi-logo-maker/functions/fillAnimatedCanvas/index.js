@@ -7,7 +7,7 @@ import {
 } from "../../utils/blocks";
 import { drawBlock } from "../../utils/blocks-canvas";
 
-export const handler = (params, mechanic) => {
+export const handler = ({ params, mechanic }) => {
   const { width, height, logoWidth, logoRatio, duration } = params;
 
   const rows = 2;

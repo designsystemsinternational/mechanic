@@ -1,4 +1,4 @@
-export const handler = () => {};
+export const handler = ({ params, mechanic }) => {};
 
 export const params = {};
 

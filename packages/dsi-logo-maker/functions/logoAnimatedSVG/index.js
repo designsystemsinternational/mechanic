@@ -9,20 +9,21 @@ import {
 import { Unit } from "../../utils/blocks-components";
 import { useDrawLoop } from "../../utils/drawLoopHook";
 
-export const handler = ({
-  width,
-  ratio,
-  frame,
-  done,
-  colorMode,
-  flag,
-  firstColor,
-  secondColor,
-  thirdColor,
-  offset,
-  duration,
-  loops,
-}) => {
+export const handler = ({ params, mechanic }) => {
+  const {
+    width,
+    ratio,
+    colorMode,
+    flag,
+    firstColor,
+    secondColor,
+    thirdColor,
+    offset,
+    duration,
+    loops,
+  } = params;
+  const { frame, done } = mechanic;
+
   const [blockParams, setBlockParams] = useState({
     colors: [],
     blocksByIndex: [],

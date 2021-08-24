@@ -8,7 +8,10 @@ import {
 } from "../../utils/blocks";
 import { Block } from "../../utils/blocks-components";
 
-export const handler = ({ width, height, done, allSameColors }) => {
+export const handler = ({ params, mechanic }) => {
+  const { width, height, allSameColors } = params;
+  const { done } = mechanic;
+
   const words = ["DESIGN", "SYSTEMS", "INTERNATIONAL"];
   const blockConfigs = [];
   let colors = getColors("Random Flag");

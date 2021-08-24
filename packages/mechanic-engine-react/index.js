@@ -20,6 +20,12 @@ export const run = (functionName, func, values, isPreview) => {
       mechanic.download(name || functionName);
     }
   };
-  render(<Handler {...mechanic.values} frame={onFrame} done={onDone} />, root);
+  render(
+    <Handler
+      params={mechanic.values}
+      mechanic={{ frame: onFrame, done: onDone }}
+    />,
+    root
+  );
   return mechanic;
 };

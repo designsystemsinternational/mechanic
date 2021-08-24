@@ -7,11 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Create CLI project templates and examples
+
 ### Change
 
 - Improved project creation CLI experience.
 - Changed single bundle for design functions approach to one isolated bundle per design function.
 - Improved other commands experience.
+- Updated engines argument pass to single object with named fields.
 
 ## 0.3.0 - 2021-08-02
 
