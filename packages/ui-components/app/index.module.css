@@ -1,0 +1,19 @@
+@import "@mechanic-design/fonts";
+
+.root {
+  font-family: "Object Sans", Helvetica, Arial, Sans-Serif;
+  color: var(--mechanic-red);
+}
+
+.simpleBlock {
+  width: 300px;
+  display: inline-block;
+  vertical-align: text-top;
+  margin: 1em;
+}
+
+.pairBlock {
+  width: 600px;
+  display: inline-block;
+  margin: 1em;
+}

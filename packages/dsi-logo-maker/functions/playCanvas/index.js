@@ -130,6 +130,6 @@ export const presets = {
 };
 
 export const settings = {
-  engine: require("@designsystemsinternational/mechanic-engine-canvas"),
+  engine: require("@mechanic-design/engine-canvas"),
   usesRandom: true,
 };

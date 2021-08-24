@@ -74,7 +74,7 @@ For example, the following `settings` export is for an function that generates a
 
 ```javascript
 export const settings = {
-  engine: require("@designsystemsinternational/mechanic-engine-p5"),
+  engine: require("@mechanic-design/engine-p5"),
   animated: true,
 };
 ```
@@ -156,7 +156,7 @@ export const presets = {
 };
 
 export const settings = {
-  engine: require("@designsystemsinternational/mechanic-engine-canvas"),
+  engine: require("@mechanic-design/engine-canvas"),
 };
 ```
 
