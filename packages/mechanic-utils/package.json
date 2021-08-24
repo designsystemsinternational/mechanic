@@ -1,6 +1,6 @@
 {
   "name": "@designsystemsinternational/mechanic-utils",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "Custom CLI util definitions for Mechanic packages.",
   "license": "MIT",
   "homepage": "https://github.com/designsystemsinternational/mechanic#readme",
