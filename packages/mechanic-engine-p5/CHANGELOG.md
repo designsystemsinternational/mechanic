@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## 0.4.0 - 2021-08-24
+
 ### Changed
 
 - Updated engine to pass single argument object with named fields to design functions.

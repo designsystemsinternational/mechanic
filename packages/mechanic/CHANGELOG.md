@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## 0.4.0 - 2021-08-24
+
 ### Added
 
 - Added ability to import fonts in functions, and embed them on SVG export
