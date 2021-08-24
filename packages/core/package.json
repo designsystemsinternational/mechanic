@@ -47,7 +47,7 @@
     "@babel/runtime": "^7.14.6",
     "@mechanic-design/fonts": "^0.4.0",
     "@mechanic-design/ui-components": "^0.4.0",
-    "@mechanic-design/ dutils": "^0.4.0",
+    "@mechanic-design/utils": "^0.4.0",
     "babel-loader": "^8.2.2",
     "case": "^1.6.3",
     "classnames": "^2.2.6",
