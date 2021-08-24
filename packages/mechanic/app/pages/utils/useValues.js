@@ -119,7 +119,14 @@ const cleanValues = (object, reference) =>
           acc[cur[0]] = cur[1];
           return acc;
         }, {})
-    : { preset: "default" };
+    : Object.entries(reference).reduce(
+        (current, param) => {
+          if (param[1].default) current[param[0]] = param[1].default;
+          else current[param[0]] = undefined;
+          return current;
+        },
+        { preset: "" }
+      );
 
 const useValues = (name, params) => {
   const [allValues, setAllValues] = useLocalStorageState("function-values", {});

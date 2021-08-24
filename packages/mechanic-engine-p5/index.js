@@ -24,7 +24,11 @@ export const run = (functionName, func, values, isPreview) => {
   };
   p5Sketch = new p5(
     (sketch) =>
-      func.handler(sketch, mechanic.values, { frame: onFrame, done: onDone }),
+      func.handler({
+        params: mechanic.values,
+        mechanic: { frame: onFrame, done: onDone },
+        sketch,
+      }),
     root
   );
   return mechanic;

@@ -14,6 +14,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added SVG optimization via [SVGO](https://github.com/svg/svgo#svgo). This also removes unused css in the exported file. There is a new `optimize` setting key that defaults to true and accepts a boolean or a [SVGO config](https://github.com/svg/svgo#configuration) object.
 - Updated app to use new visual styles.
 
+### Changed
+
+- Updated app loading page to use rotating mini Mechanic logo.
+
+### Fixed
+
+- Fixed bug in mechanic value validation through validation field.
+- Fixed bug in preset value sets.
+
 ## 0.3.0 - 2021-08-02
 
 ### Changed
