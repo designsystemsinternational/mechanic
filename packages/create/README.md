@@ -4,18 +4,18 @@
 
 With NPM:
 
-`$ npm init @mechanic-design@latest`
+`$ npm init @mechanic-design`
 
 ## Use templates
 
 ```
 # npm 6.x
-npm init @@mechanic-design@latest my-project --template p5-video
+npm init @@mechanic-design my-project --template p5-video
 ```
 
 ```
 # npm 7+, extra double-dash is needed:
-npm init @@mechanic-design@latest my-project -- --template p5-video
+npm init @@mechanic-design my-project -- --template p5-video
 ```
 
 Current templates:
@@ -33,12 +33,12 @@ Current templates:
 
 ```
 # npm 6.x
-npm init @@mechanic-design@latest my-project --example poster-generator
+npm init @@mechanic-design my-project --example poster-generator
 ```
 
 ```
 # npm 7+, extra double-dash is needed:
-npm init @@mechanic-design@latest my-project -- --example poster-generator
+npm init @@mechanic-design my-project -- --example poster-generator
 ```
 
 Current examples:
