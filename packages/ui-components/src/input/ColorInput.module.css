@@ -10,6 +10,7 @@
   }
 }
 .swatch {
+  display: inline-block;
   margin-right: var(--mechanic-param-height-quart);
   border-radius: var(--mechanic-param-height-quart);
   width: var(--mechanic-param-height-half);
