@@ -99,7 +99,7 @@ const command = async argv => {
   status = "started";
   spinner.succeed(
     success(
-      `Mechanic app ready at http://localhost:${port}. Open that address on Chrome for best experience. `
+      `Mechanic app ready at http://localhost:${port} . Open that address on Chrome for best experience. `
     )
   );
   console.log();

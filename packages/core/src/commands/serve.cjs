@@ -63,7 +63,7 @@ const command = async argv => {
   status = "started";
   spinner.succeed(
     success(
-      `Serving mechanic app (${distDir}) at http://localhost:${port}. Open that address on Chrome for best experience. `
+      `Serving mechanic app (${distDir}) at http://localhost:${port} . Open that address on Chrome for best experience. `
     )
   );
   console.log(success("If you wish to stop this server, press CTRL+C. "));
