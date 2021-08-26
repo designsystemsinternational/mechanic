@@ -1,0 +1,46 @@
+{
+  "name": "@mechanic-design/utils",
+  "version": "0.4.1",
+  "description": "Custom CLI util definitions for Mechanic packages.",
+  "license": "MIT",
+  "homepage": "https://github.com/designsystemsinternational/mechanic#readme",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/designsystemsinternational/mechanic",
+    "directory": "packages/utils"
+  },
+  "bugs": {
+    "url": "https://github.com/designsystemsinternational/mechanic/issues",
+    "email": "i@designsystems.international"
+  },
+  "author": {
+    "name": "Fernando Florenzano Hernández",
+    "email": "i@designsystems.international",
+    "url": "https://designsystems.international"
+  },
+  "contributors": [
+    {
+      "name": "Rune Skjoldborg Madsen",
+      "email": "i@designsystems.international",
+      "url": "https://designsystems.international"
+    },
+    {
+      "name": "Martin Bravo",
+      "email": "i@designsystems.international",
+      "url": "https://designsystems.international"
+    }
+  ],
+  "files": [
+    "index.js"
+  ],
+  "type": "commonjs",
+  "exports": "./index.js",
+  "scripts": {
+    "test": "node ./test.js"
+  },
+  "dependencies": {
+    "chalk": "^4.1.1",
+    "ora": "^5.4.1"
+  },
+  "gitHead": "72540367e35f7c65bc111779ceb4c59ea0e1a5fb"
+}

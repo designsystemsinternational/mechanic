@@ -124,7 +124,7 @@ export const params = {
 };
 
 export const settings = {
-  engine: require("@designsystemsinternational/mechanic-engine-react"),
+  engine: require("@mechanic-design/engine-react"),
   animated: true,
   usesRandom: true,
 };

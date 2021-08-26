@@ -1,0 +1,59 @@
+{
+  "name": "@mechanic-design/create",
+  "version": "0.4.1",
+  "description": "Create Mechanic projects.",
+  "license": "MIT",
+  "homepage": "https://github.com/designsystemsinternational/mechanic#readme",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/designsystemsinternational/mechanic",
+    "directory": "packages/create"
+  },
+  "bugs": {
+    "url": "https://github.com/designsystemsinternational/mechanic/issues",
+    "email": "i@designsystems.international"
+  },
+  "author": {
+    "name": "Fernando Florenzano Hernández",
+    "email": "i@designsystems.international",
+    "url": "https://designsystems.international"
+  },
+  "contributors": [
+    {
+      "name": "Rune Skjoldborg Madsen",
+      "email": "i@designsystems.international",
+      "url": "https://designsystems.international"
+    },
+    {
+      "name": "Martin Bravo",
+      "email": "i@designsystems.international",
+      "url": "https://designsystems.international"
+    }
+  ],
+  "files": [
+    "index.js",
+    "new-function.js",
+    "new-project.js",
+    "script-content.js",
+    "cli.js",
+    "function-*",
+    "project-template"
+  ],
+  "type": "commonjs",
+  "exports": {
+    ".": "./index.js",
+    "./new-function": "./new-function.js"
+  },
+  "bin": "cli.js",
+  "scripts": {
+    "start": "node cli.js"
+  },
+  "dependencies": {
+    "@mechanic-design/utils": "^0.4.1",
+    "execa": "^5.1.1",
+    "fs-extra": "^10.0.0",
+    "inquirer": "^8.1.1",
+    "yargs": "^17.0.1"
+  },
+  "gitHead": "72540367e35f7c65bc111779ceb4c59ea0e1a5fb"
+}
