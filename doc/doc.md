@@ -39,8 +39,68 @@ Usually receives custom parameter values defined in the `params` export, and a `
 ### `params`
 
 Object that defines custom parameters for the design function.
-Every key is used as a name for a single parameter, and the corresponding object value describes the parameter.
+Every key is used as a name for each parameter, and the corresponding object value describes the parameter. Each parameter must have a `type` key, which defines the type of value.
+
 From this the React app shows input controls that lets the user change the values of each parameter.
+
+Possible values for `type`:
+
+| Type      | UI                     | Resulting Value Type |
+| --------- | ---------------------- | -------------------- |
+| `text`    | Text field             | `String`             |
+| `number`  | Number field or slider | `Number`             |
+| `boolean` | Toggle                 | `boolean`            |
+| `color`   | Color picker           | Color `String`       |
+| `image`   | File selector          | `File` object        |
+
+#### Param Types
+
+##### Text
+
+| Prop       | Type                                                      | Default   | Description                                                                                                                    |
+| ---------- | --------------------------------------------------------- | --------- | ------------------------------------------------------------------------------------------------------------------------------ |
+| type       | `String`                                                  | undefined | 'text'                                                                                                                         |
+| default    | `String`                                                  | undefined | If present, defaults to this value.                                                                                            |
+| editable   | `boolean`                                                 | true      | If false, disables the field in the UI.                                                                                        |
+| options    | `['value']` or `[{label,value}]` or `{label: value, ...}` | undefined | If present, displays a dropdown with the provided options.                                                                     |
+| validation | `Function`                                                | undefined | If present, executes function with value to validate. Function should return a string describing the error or null if no error |
+
+##### Number
+
+| Prop       | Type                                                      | Default   | Description                                                                                                                    |
+| ---------- | --------------------------------------------------------- | --------- | ------------------------------------------------------------------------------------------------------------------------------ |
+| type       | `String`                                                  | undefined | 'number'                                                                                                                       |
+| min        | `Number`                                                  | undefined | Mininum acceptable value (required if `slider: true`)                                                                          |
+| max        | `Number`                                                  | undefined | Maximum acceptable value (required if `slider: true`)                                                                          |
+| step       | `Step`                                                    | undefined | Step to increase of decrease value by                                                                                          |
+| slider     | `boolean`                                                 | undefined | Wether to display input as as range slider. (requires min and max to be defined)                                               |
+| default    | `String`                                                  | undefined | If present, defaults to this value.                                                                                            |
+| editable   | `boolean`                                                 | true      | If false, disables the field in the UI.                                                                                        |
+| options    | `['value']` or `[{label,value}]` or `{label: value, ...}` | undefined | If present, displays a dropdown with the provided options.                                                                     |
+| validation | `Function`                                                | undefined | If present, executes function with value to validate. Function should return a string describing the error or null if no error |
+
+##### Color
+
+| Prop       | Type                                                      | Default   | Description                                                                                                                    |
+| ---------- | --------------------------------------------------------- | --------- | ------------------------------------------------------------------------------------------------------------------------------ |
+| type       | `String`                                                  | undefined | 'color'                                                                                                                        |
+| model      | `String`                                                  | `rgba`    | one of `rgba`, `hex` ``                                                                                                        |
+| default    | `String`                                                  | undefined | If present, defaults to this value.                                                                                            |
+| editable   | `boolean`                                                 | true      | If false, disables the field in the UI.                                                                                        |
+| options    | `['value']` or `[{label,value}]` or `{label: value, ...}` | undefined | If present, displays a dropdown with the provided options.                                                                     |
+| validation | `Function`                                                | undefined | If present, executes function with value to validate. Function should return a string describing the error or null if no error |
+
+##### Image
+
+| Prop       | Type       | Default   | Description                                                                                                                            |
+| ---------- | ---------- | --------- | -------------------------------------------------------------------------------------------------------------------------------------- |
+| type       | `String`   | undefined | 'image'                                                                                                                                |
+| multiple   | `String`   | false     | Wether it should accept multiple images                                                                                                |
+| default    | `String`   | undefined | If present, defaults to this value.                                                                                                    |
+| editable   | `boolean`  | true      | If false, disables the field in the UI.                                                                                                |
+| validation | `Function` | undefined | If present, executes function with file object to validate. Function should return a string describing the error or `null` if no error |
+
+---
 
 For example, the following `params` export says the corresponding design function will receive changable parameters `width`, `height` and `name`. Both `width` and `height` are numbers but only the latter has mininum and maximum values.
 
