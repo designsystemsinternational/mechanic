@@ -181,13 +181,13 @@ Parameters are defined by their `type`:
 
 #### Text
 
-| Prop         | Type                                                      | Default   | Description                                                                                                       |
-| ------------ | --------------------------------------------------------- | --------- | ----------------------------------------------------------------------------------------------------------------- |
-| type (\*)    | `String`                                                  | undefined | 'text'                                                                                                            |
-| default (\*) | `String`                                                  | undefined | Default to this value.                                                                                            |
-| editable     | `boolean`                                                 | true      | If false, disables the field in the UI.                                                                           |
-| options      | `['value']` or `[{label,value}]` or `{label: value, ...}` | undefined | If present, displays a dropdown with the provided options.                                                        |
-| validation   | `Function`                                                | undefined | If present, executes function with the new value. Should return a string describing the error or null if no error |
+| Prop         | Type                                              | Default   | Description                                                                                                       |
+| ------------ | ------------------------------------------------- | --------- | ----------------------------------------------------------------------------------------------------------------- |
+| type (\*)    | `String`                                          | undefined | 'text'                                                                                                            |
+| default (\*) | `String`                                          | undefined | Default to this value.                                                                                            |
+| editable     | `boolean`                                         | true      | If false, disables the field in the UI.                                                                           |
+| options      | `['value']\|[{label,value}]\|{label: value, ...}` | undefined | If present, displays a dropdown with the provided options.                                                        |
+| validation   | `Function`                                        | undefined | If present, executes function with the new value. Should return a string describing the error or null if no error |
 
 #### Number
 
@@ -230,10 +230,10 @@ Parameters are defined by their `type`:
 
 These are the available settings:
 
-| Setting           | Value                    | Default   | Description                                                                                                                                                                                                             |
-| ----------------- | ------------------------ | --------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| engine (required) | `svg\|canvas\|react\|d3` | undefined | Determines the engine to handle the design function                                                                                                                                                                     |
-| name              | `string`                 | undefined | If present it is used as the display name for the function                                                                                                                                                              |
-| animate           | `boolean`                | false     | Determines wether the design function is an animated sequence or a static image                                                                                                                                         |
-| usesRandom        | `boolean`                | false     | If true, enables a seeded random that forces the export to generate the same output as the last preview                                                                                                                 |
-| optimize          | `boolean\|object`        | true      | If true passes the output through [SVGO](https://github.com/svg/svgo). If an object is received it is merged with the default SVGO options and passed to the [optimize function](https://github.com/svg/svgo#optimize). |
+| Setting     | Value                    | Default   | Description                                                                                                                                                                                                             |
+| ----------- | ------------------------ | --------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| engine (\*) | `svg\|canvas\|react\|d3` | undefined | Determines the engine to handle the design function                                                                                                                                                                     |
+| name        | `string`                 | undefined | If present it is used as the display name for the function                                                                                                                                                              |
+| animate     | `boolean`                | false     | Determines wether the design function is an animated sequence or a static image                                                                                                                                         |
+| usesRandom  | `boolean`                | false     | If true, enables a seeded random that forces the export to generate the same output as the last preview                                                                                                                 |
+| optimize    | `boolean\|object`        | true      | If true passes the output through [SVGO](https://github.com/svg/svgo). If an object is received it is merged with the default SVGO options and passed to the [optimize function](https://github.com/svg/svgo#optimize). |
