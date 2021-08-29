@@ -43,65 +43,6 @@ Every key is used as a name for each parameter, and the corresponding object val
 
 From this the React app shows input controls that lets the user change the values of each parameter.
 
-Possible values for `type`:
-
-| Type      | UI                     | Resulting Value Type |
-| --------- | ---------------------- | -------------------- |
-| `text`    | Text field             | `String`             |
-| `number`  | Number field or slider | `Number`             |
-| `boolean` | Toggle                 | `boolean`            |
-| `color`   | Color picker           | Color `String`       |
-| `image`   | File selector          | `File` object        |
-
-#### Param Types
-
-##### Text
-
-| Prop       | Type                                                      | Default   | Description                                                                                                                    |
-| ---------- | --------------------------------------------------------- | --------- | ------------------------------------------------------------------------------------------------------------------------------ |
-| type       | `String`                                                  | undefined | 'text'                                                                                                                         |
-| default    | `String`                                                  | undefined | If present, defaults to this value.                                                                                            |
-| editable   | `boolean`                                                 | true      | If false, disables the field in the UI.                                                                                        |
-| options    | `['value']` or `[{label,value}]` or `{label: value, ...}` | undefined | If present, displays a dropdown with the provided options.                                                                     |
-| validation | `Function`                                                | undefined | If present, executes function with value to validate. Function should return a string describing the error or null if no error |
-
-##### Number
-
-| Prop       | Type                                                      | Default   | Description                                                                                                                    |
-| ---------- | --------------------------------------------------------- | --------- | ------------------------------------------------------------------------------------------------------------------------------ |
-| type       | `String`                                                  | undefined | 'number'                                                                                                                       |
-| min        | `Number`                                                  | undefined | Mininum acceptable value (required if `slider: true`)                                                                          |
-| max        | `Number`                                                  | undefined | Maximum acceptable value (required if `slider: true`)                                                                          |
-| step       | `Step`                                                    | undefined | Step to increase of decrease value by                                                                                          |
-| slider     | `boolean`                                                 | undefined | Wether to display input as as range slider. (requires min and max to be defined)                                               |
-| default    | `String`                                                  | undefined | If present, defaults to this value.                                                                                            |
-| editable   | `boolean`                                                 | true      | If false, disables the field in the UI.                                                                                        |
-| options    | `['value']` or `[{label,value}]` or `{label: value, ...}` | undefined | If present, displays a dropdown with the provided options.                                                                     |
-| validation | `Function`                                                | undefined | If present, executes function with value to validate. Function should return a string describing the error or null if no error |
-
-##### Color
-
-| Prop       | Type                                                      | Default   | Description                                                                                                                    |
-| ---------- | --------------------------------------------------------- | --------- | ------------------------------------------------------------------------------------------------------------------------------ |
-| type       | `String`                                                  | undefined | 'color'                                                                                                                        |
-| model      | `String`                                                  | `rgba`    | one of `rgba`, `hex` ``                                                                                                        |
-| default    | `String`                                                  | undefined | If present, defaults to this value.                                                                                            |
-| editable   | `boolean`                                                 | true      | If false, disables the field in the UI.                                                                                        |
-| options    | `['value']` or `[{label,value}]` or `{label: value, ...}` | undefined | If present, displays a dropdown with the provided options.                                                                     |
-| validation | `Function`                                                | undefined | If present, executes function with value to validate. Function should return a string describing the error or null if no error |
-
-##### Image
-
-| Prop       | Type       | Default   | Description                                                                                                                            |
-| ---------- | ---------- | --------- | -------------------------------------------------------------------------------------------------------------------------------------- |
-| type       | `String`   | undefined | 'image'                                                                                                                                |
-| multiple   | `String`   | false     | Wether it should accept multiple images                                                                                                |
-| default    | `String`   | undefined | If present, defaults to this value.                                                                                                    |
-| editable   | `boolean`  | true      | If false, disables the field in the UI.                                                                                                |
-| validation | `Function` | undefined | If present, executes function with file object to validate. Function should return a string describing the error or `null` if no error |
-
----
-
 For example, the following `params` export says the corresponding design function will receive changable parameters `width`, `height` and `name`. Both `width` and `height` are numbers but only the latter has mininum and maximum values.
 
 ```javascript
@@ -139,7 +80,7 @@ export const settings = {
 };
 ```
 
-[Go to settings](#settings-for-df) to check the supported types of parameters and customization options.
+[Go to settings](#available-settings) to check the supported settings and customization options.
 
 ### (Optional) `presets`
 
@@ -226,8 +167,71 @@ export const settings = {
 
 ### Parameters
 
-...
+Parameters are defined by their `type`:
 
-### Settings for df
+| Type      | UI                     | Resulting Value Type |
+| --------- | ---------------------- | -------------------- |
+| `text`    | Text field             | `String`             |
+| `number`  | Number field or slider | `Number`             |
+| `boolean` | Toggle                 | `boolean`            |
+| `color`   | Color picker           | Color `String`       |
+| `image`   | File selector          | `File` object        |
 
-...
+#### Text
+
+| Prop       | Type                                                      | Default   | Description                                                                                                                    |
+| ---------- | --------------------------------------------------------- | --------- | ------------------------------------------------------------------------------------------------------------------------------ |
+| type       | `String`                                                  | undefined | 'text'                                                                                                                         |
+| default    | `String`                                                  | undefined | If present, defaults to this value.                                                                                            |
+| editable   | `boolean`                                                 | true      | If false, disables the field in the UI.                                                                                        |
+| options    | `['value']` or `[{label,value}]` or `{label: value, ...}` | undefined | If present, displays a dropdown with the provided options.                                                                     |
+| validation | `Function`                                                | undefined | If present, executes function with value to validate. Function should return a string describing the error or null if no error |
+
+#### Number
+
+| Prop       | Type                                                      | Default   | Description                                                                                                                    |
+| ---------- | --------------------------------------------------------- | --------- | ------------------------------------------------------------------------------------------------------------------------------ |
+| type       | `String`                                                  | undefined | 'number'                                                                                                                       |
+| min        | `Number`                                                  | undefined | Mininum acceptable value (required if `slider: true`)                                                                          |
+| max        | `Number`                                                  | undefined | Maximum acceptable value (required if `slider: true`)                                                                          |
+| step       | `Step`                                                    | undefined | Step to increase of decrease value by                                                                                          |
+| slider     | `boolean`                                                 | undefined | Wether to display input as as range slider. (requires min and max to be defined)                                               |
+| default    | `String`                                                  | undefined | If present, defaults to this value.                                                                                            |
+| editable   | `boolean`                                                 | true      | If false, disables the field in the UI.                                                                                        |
+| options    | `['value']` or `[{label,value}]` or `{label: value, ...}` | undefined | If present, displays a dropdown with the provided options.                                                                     |
+| validation | `Function`                                                | undefined | If present, executes function with value to validate. Function should return a string describing the error or null if no error |
+
+#### Color
+
+| Prop       | Type                                                      | Default   | Description                                                                                                                    |
+| ---------- | --------------------------------------------------------- | --------- | ------------------------------------------------------------------------------------------------------------------------------ |
+| type       | `String`                                                  | undefined | 'color'                                                                                                                        |
+| model      | `String`                                                  | `rgba`    | one of `rgba`, `hex` ``                                                                                                        |
+| default    | `String`                                                  | undefined | If present, defaults to this value.                                                                                            |
+| editable   | `boolean`                                                 | true      | If false, disables the field in the UI.                                                                                        |
+| options    | `['value']` or `[{label,value}]` or `{label: value, ...}` | undefined | If present, displays a dropdown with the provided options.                                                                     |
+| validation | `Function`                                                | undefined | If present, executes function with value to validate. Function should return a string describing the error or null if no error |
+
+#### Image
+
+| Prop       | Type       | Default   | Description                                                                                                                            |
+| ---------- | ---------- | --------- | -------------------------------------------------------------------------------------------------------------------------------------- |
+| type       | `String`   | undefined | 'image'                                                                                                                                |
+| multiple   | `String`   | false     | Wether it should accept multiple images                                                                                                |
+| default    | `String`   | undefined | If present, defaults to this value.                                                                                                    |
+| editable   | `boolean`  | true      | If false, disables the field in the UI.                                                                                                |
+| validation | `Function` | undefined | If present, executes function with file object to validate. Function should return a string describing the error or `null` if no error |
+
+---
+
+### Available Settings
+
+These are the available settings:
+
+| Setting           | Value                                    | Default                                                    | Description                                                                                             |
+| ----------------- | ---------------------------------------- | ---------------------------------------------------------- | ------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| name (required)   | `string` undefined                       | If present it is used as the display name for the function |
+| engine (required) | `svg \| canvas \| react \| d3` undefined | Determines the engine to handle the design function        |
+| animate           | `boolean`                                | false                                                      | Determines wether the design function is an animated sequence or a static image                         |
+| usesRandom        | `boolean`                                | false                                                      | If true, enables a seeded random that forces the export to generate the same output as the last preview |
+| optimize          | `boolean                                 | object`                                                    | true                                                                                                    | If true passes the output through [SVGO](https://github.com/svg/svgo). If an object is received it is merged with the default SVGO options and passed to the [optimize function](https://github.com/svg/svgo#optimize). |
