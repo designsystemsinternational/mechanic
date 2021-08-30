@@ -181,57 +181,56 @@ Parameters are defined by their `type`:
 
 #### Text
 
-| Prop         | Type                                              | Default   | Description                                                                                                       |
-| ------------ | ------------------------------------------------- | --------- | ----------------------------------------------------------------------------------------------------------------- |
-| type (\*)    | `"text"`                                          |           | Defines a param of type 'text'                                                                                    |
-| default (\*) | `string`                                          |           | Default to this value.                                                                                            |
-| editable     | `boolean`                                         | true      | If false, disables the field in the UI.                                                                           |
-| options      | `['value']\|[{label,value}]\|{label: value, ...}` | undefined | If present, displays a dropdown with the provided options.                                                        |
-| validation   | `function`                                        | undefined | If present, executes function with the new value. Should return a string describing the error or null if no error |
+| Prop         | Type                                          | Default   | Description                                                                                                        |
+| ------------ | --------------------------------------------- | --------- | ------------------------------------------------------------------------------------------------------------------ |
+| type (\*)    | `string`                                      |           | `"text"` defines a param of type 'text'                                                                            |
+| default (\*) | `string`                                      |           | Default to this value.                                                                                             |
+| editable     | `boolean\|function(params){return `boolean`}` | true      | Enables or disables the field in the UI.                                                                           |
+| options      | `['value']` \| `{label: value, ...}`          | undefined | If present, displays a dropdown with the provided options. All option values must match be a valid `text`          |
+| validation   | `function`                                    | undefined | If present, executes function with the new value. Should return a string describing the error or null if no error. |
 
 #### Number
 
-| Prop         | Type                                                      | Default   | Description                                                                                                       |
-| ------------ | --------------------------------------------------------- | --------- | ----------------------------------------------------------------------------------------------------------------- |
-| type (\*)    | `"number"`                                                |           | Defines a param of type 'number'                                                                                  |
-| default (\*) | `number`                                                  |           | Default to this value.                                                                                            |
-| min          | `number`                                                  | undefined | Mininum acceptable value (required if `slider: true`)                                                             |
-| max          | `number`                                                  | undefined | Maximum acceptable value (required if `slider: true`)                                                             |
-| step         | `Step`                                                    | undefined | Step to increase of decrease value by                                                                             |
-| slider       | `boolean`                                                 | undefined | Wether to display input as as range slider. (if true, min and max are required)                                   |
-| editable     | `boolean`                                                 | true      | If false, disables the field in the UI.                                                                           |
-| options      | `['value']` or `[{label,value}]` or `{label: value, ...}` | undefined | If present, displays a dropdown with the provided options.                                                        |
-| validation   | `function`                                                | undefined | If present, executes function with the new value. Should return a string describing the error or null if no error |
+| Prop         | Type                                          | Default   | Description                                                                                                        |
+| ------------ | --------------------------------------------- | --------- | ------------------------------------------------------------------------------------------------------------------ |
+| type (\*)    | `string`                                      |           | `"number"` defines a param of type 'number'                                                                        |
+| default (\*) | `number`                                      |           | Default to this value.                                                                                             |
+| min          | `number`                                      | undefined | Mininum acceptable value (required if `slider: true`)                                                              |
+| max          | `number`                                      | undefined | Maximum acceptable value (required if `slider: true`)                                                              |
+| step         | `Step`                                        | undefined | Step to increase of decrease value by                                                                              |
+| slider       | `boolean`                                     | undefined | Wether to display input as as range slider. (if true, min and max are required)                                    |
+| editable     | `boolean\|function(params){return `boolean`}` | true      | Enables or disables the field in the UI.                                                                           |
+| options      | `['value']` \| `{label: value, ...}`          | undefined | If present, displays a dropdown with the provided options. All option values must match be a valid `number`        |
+| validation   | `function`                                    | undefined | If present, executes function with the new value. Should return a string describing the error or null if no error. |
 
 #### Boolean or Toggle
 
-| Prop         | Type        | Default   | Description                                                                                                       |
-| ------------ | ----------- | --------- | ----------------------------------------------------------------------------------------------------------------- |
-| type (\*)    | `"boolean"` |           | Defines a param of type 'boolean'                                                                                 |
-| default (\*) | `string`    |           | Default to this value.                                                                                            |
-| editable     | `boolean`   | true      | If false, disables the field in the UI.                                                                           |
-| validation   | `function`  | undefined | If present, executes function with the new value. Should return a string describing the error or null if no error |
+| Prop       | Type                                          | Default   | Description                                                                                                        |
+| ---------- | --------------------------------------------- | --------- | ------------------------------------------------------------------------------------------------------------------ |
+| type (\*)  | `string`                                      |           | `"boolean"` defines a param of type 'boolean'                                                                      |
+| default    | `boolean`                                     | false     | Default to this value.                                                                                             |
+| editable   | `boolean\|function(params){return `boolean`}` | true      | Enables or disables the field in the UI.                                                                           |
+| validation | `function`                                    | undefined | If present, executes function with the new value. Should return a string describing the error or null if no error. |
 
 #### Color
 
-| Prop         | Type                                                      | Default   | Description                                                                                                       |
-| ------------ | --------------------------------------------------------- | --------- | ----------------------------------------------------------------------------------------------------------------- |
-| type (\*)    | `"color"`                                                 |           | Defines a param of type 'color'                                                                                   |
-| default (\*) | `string`                                                  | undefined | Default to this value.                                                                                            |
-| model        | `rgba\|hex`                                               | `rgba`    | The color model to be used                                                                                        |
-| editable     | `boolean`                                                 | true      | If false, disables the field in the UI.                                                                           |
-| options      | `['value']` or `[{label,value}]` or `{label: value, ...}` | undefined | If present, displays a dropdown with the provided options.                                                        |
-| validation   | `function`                                                | undefined | If present, executes function with the new value. Should return a string describing the error or null if no error |
+| Prop         | Type                                          | Default   | Description                                                                                                        |
+| ------------ | --------------------------------------------- | --------- | ------------------------------------------------------------------------------------------------------------------ |
+| type (\*)    | `string`                                      |           | `"color"` defines a param of type 'color'                                                                          |
+| default (\*) | `string`                                      | undefined | Default to this value.                                                                                             |
+| model        | `rgba\|hex`                                   | `rgba`    | The color model to be used                                                                                         |
+| editable     | `boolean\|function(params){return `boolean`}` | true      | Enables or disables the field in the UI.                                                                           |
+| options      | `['value']` \| `{label: value, ...}`          | undefined | If present, displays a dropdown with the provided options. All option values must match be a valid `color`         |
+| validation   | `function`                                    | undefined | If present, executes function with the new value. Should return a string describing the error or null if no error. |
 
 #### Image
 
-| Prop       | Type       | Default   | Description                                                                                                                   |
-| ---------- | ---------- | --------- | ----------------------------------------------------------------------------------------------------------------------------- |
-| type (\*)  | `"image"`  |           | Defines a param of type 'image'                                                                                               |
-| default    | `string`   | undefined | If present, defaults to this value.                                                                                           |
-| multiple   | `string`   | false     | Wether it should accept multiple images                                                                                       |
-| editable   | `boolean`  | true      | If false, disables the field in the UI.                                                                                       |
-| validation | `function` | undefined | If present, executes function with file object to validate. Should return a string describing the error or `null` if no error |
+| Prop       | Type                                          | Default   | Description                                                                                                                   |
+| ---------- | --------------------------------------------- | --------- | ----------------------------------------------------------------------------------------------------------------------------- |
+| type (\*)  | `string`                                      |           | `"image"` defines a param of type 'image'                                                                                     |
+| multiple   | `string`                                      | false     | Wether it should accept multiple images                                                                                       |
+| editable   | `boolean\|function(params){return `boolean`}` | true      | Enables or disables the field in the UI.                                                                                      |
+| validation | `function`                                    | undefined | If present, executes function with file object to validate. Should return a string describing the error or `null` if no error |
 
 ---
 
@@ -239,10 +238,10 @@ Parameters are defined by their `type`:
 
 These are the available settings:
 
-| Setting     | Value                       | Default   | Description                                                                                                                                                                                                       |
-| ----------- | --------------------------- | --------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| engine (\*) | `svg\|canvas\|react\|d3`    | undefined | Determines the engine to handle the design function                                                                                                                                                               |
-| name        | `string`                    | undefined | If present it is used as the display name for the function                                                                                                                                                        |
-| animate     | `boolean`                   | false     | Determines wether the design function is an animated sequence or a static image                                                                                                                                   |
-| usesRandom  | `boolean`                   | false     | If true, enables a seeded random that forces the export to generate the same output as the last preview                                                                                                           |
-| optimize    | `boolean\|{options object}` | true      | Optimizes the output using [SVGO](https://github.com/svg/svgo). If an object is received, it is merged with the default SVGO options and passed to the [optimize function](https://github.com/svg/svgo#optimize). |
+| Setting     | Value                                      | Default   | Description                                                                                                                                                                                                       |
+| ----------- | ------------------------------------------ | --------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| engine (\*) | `require('@mechanic-design/engine-[...]')` | undefined | Requires the engine to handle the design function. [See engines and handlers](#engines-and-handlers)                                                                                                              |
+| name        | `string`                                   | undefined | If present it is used as the display name for the function                                                                                                                                                        |
+| animate     | `boolean`                                  | false     | Determines wether the design function is an animated sequence or a static image                                                                                                                                   |
+| usesRandom  | `boolean`                                  | false     | If true, enables a seeded random that forces the export to generate the same output as the last preview                                                                                                           |
+| optimize    | `boolean\|{options object}`                | true      | Optimizes the output using [SVGO](https://github.com/svg/svgo). If an object is received, it is merged with the default SVGO options and passed to the [optimize function](https://github.com/svg/svgo#optimize). |

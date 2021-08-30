@@ -10,7 +10,7 @@ const supportedTypes = {
   image: "undefined"
 };
 const requiredKeys = ["type", "default"];
-const requiredKeysExceptions = { image: ["default"] };
+const requiredKeysExceptions = { image: ["default"], boolean: ["default"] };
 const otherParams = { preset: true, scaleToFit: true, randomSeed: true };
 
 /**
