@@ -10,7 +10,7 @@ const supportedTypes = {
   image: "undefined"
 };
 const requiredKeys = ["type", "default"];
-const requiredKeysExceptions = { image: ["default"] };
+const requiredKeysExceptions = { image: ["default"], boolean: ["default"] };
 const otherParams = { preset: true, scaleToFit: true, randomSeed: true };
 
 /**
@@ -44,7 +44,7 @@ const validateParams = params => {
     }
 
     // Check default value is of correct type to corresponding param type
-    if (typeof paramDefault !== supportedTypes[paramType]) {
+    if (hasKey(param, "default") && typeof paramDefault !== supportedTypes[paramType]) {
       return `Default property value invalid for parameter ${paramName} of type ${paramType}. Expected to be ${supportedTypes[paramType]}.`;
     }
 
