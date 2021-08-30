@@ -6,7 +6,7 @@ import "./index.module.css";
 
 const root = document.getElementById("root");
 const app = (
-  <BrowserRouter>
+  <BrowserRouter basename={BASENAME}>
     <App />
   </BrowserRouter>
 );

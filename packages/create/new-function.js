@@ -176,6 +176,7 @@ module.exports = {
   directoryExists,
   generateFunctionTemplate,
   getFunctionQuestions,
+  copyDirAndContents,
   content: {
     notMechanicProjectError: content.notMechanicProjectError,
     welcome: content.welcomeNewFunction,

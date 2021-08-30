@@ -41,10 +41,11 @@ const command = async argv => {
   const [designFunctions] = generateTempScripts(functionsPath);
   spinner.succeed("Temp files created!");
 
-  const distDir = path.normalize(argv.distDir !== "./dist" ? argv.distDir : config.distDir);
+  const distDir = path.normalize(config.distDir ?? argv.distDir ?? "./dist");
+  const publicPath = config.publicPath;
 
   spinner.start("Loading webpack compilation...");
-  const webpackConfig = webpackConfigGenerator("prod", designFunctions, distDir);
+  const webpackConfig = webpackConfigGenerator("prod", designFunctions, distDir, publicPath);
   const compiler = webpack(webpackConfig);
   compiler.run((err, stats) => {
     // [Stats Object](#stats-object) https://webpack.js.org/api/node/#stats-object
@@ -60,7 +61,7 @@ const command = async argv => {
           })
         );
     } else {
-      spinner.succeed(success(`Mechanic app built at directory ${argv.distDir}/!\n`));
+      spinner.succeed(success(`Mechanic app built at directory ${distDir}/!\n`));
       console.log(
         "You can serve locally and use the builded app using the `npm run serve` command!"
       );

@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## 0.4.2 - 2021-08-27
+
+### Added
+
+- App can be injected a different public path to be serve from a subfolder
+
 ## 0.4.1 - 2021-08-24
 
 ### Changed
