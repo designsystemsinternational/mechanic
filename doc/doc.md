@@ -197,10 +197,10 @@ Parameters are defined by their `type`:
 | default (\*) | `number`                                      |           | Default to this value.                                                                                             |
 | min          | `number`                                      | undefined | Mininum acceptable value (required if `slider: true`)                                                              |
 | max          | `number`                                      | undefined | Maximum acceptable value (required if `slider: true`)                                                              |
-| step         | `Step`                                        | undefined | Step to increase of decrease value by                                                                              |
+| step         | `number`                                      | undefined | Step to increase of decrease value by                                                                              |
 | slider       | `boolean`                                     | undefined | Wether to display input as as range slider. (if true, min and max are required)                                    |
 | editable     | `boolean\|function(params){return `boolean`}` | true      | Enables or disables the field in the UI.                                                                           |
-| options      | `['value']` \| `{label: value, ...}`          | undefined | If present, displays a dropdown with the provided options. All option values must match be a valid `number`        |
+| options      | `[value]` \| `{label: value, ...}`            | undefined | If present, displays a dropdown with the provided options. All option values must match be a valid `number`        |
 | validation   | `function`                                    | undefined | If present, executes function with the new value. Should return a string describing the error or null if no error. |
 
 #### Boolean or Toggle
@@ -228,7 +228,7 @@ Parameters are defined by their `type`:
 | Prop       | Type                                          | Default   | Description                                                                                                                   |
 | ---------- | --------------------------------------------- | --------- | ----------------------------------------------------------------------------------------------------------------------------- |
 | type (\*)  | `string`                                      |           | `"image"` defines a param of type 'image'                                                                                     |
-| multiple   | `string`                                      | false     | Wether it should accept multiple images                                                                                       |
+| multiple   | `boolean`                                     | false     | Wether it should accept multiple images                                                                                       |
 | editable   | `boolean\|function(params){return `boolean`}` | true      | Enables or disables the field in the UI.                                                                                      |
 | validation | `function`                                    | undefined | If present, executes function with file object to validate. Should return a string describing the error or `null` if no error |
 
