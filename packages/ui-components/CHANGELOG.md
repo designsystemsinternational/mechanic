@@ -13,6 +13,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Renamed packages and scope to `@mechanic-design/ui-components`.
 
+### Fixed
+
+- Fixed color input bug that prevented it from closing when clicking another instance of the input, and a related z-index issue
+
 ## 0.4.0 - 2021-08-24
 
 ### Changed
