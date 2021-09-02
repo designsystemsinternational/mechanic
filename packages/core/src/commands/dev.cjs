@@ -63,13 +63,14 @@ const command = async argv => {
         default: () => res.sendFile(path.resolve(__dirname, "./html/loading.html")),
         "text/html": () => res.sendFile(path.resolve(__dirname, "./html/loading.html")),
         "font/otf": () =>
-          res.json(
-            path.resolve("@mechanic-design/utils", "PP-Object-Sans/PPObjectSans-Regular.otf")
+          res.sendFile(
+            require.resolve("@mechanic-design/fonts/PP-Object-Sans/PPObjectSans-Regular.otf")
           ),
         "application/json": () => res.json({ loading: true, status })
       });
     }
   });
+
   const { server } = await new Promise((resolve, reject) => {
     const server = app.listen(port, error => {
       if (error) {
