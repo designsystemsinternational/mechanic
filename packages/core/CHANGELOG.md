@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### Fixed
+
+- HMR is now correctly enabled while running `npm run dev` on Mechanic project.
+
 ## 0.4.2 - 2021-08-27
 
 ### Added
