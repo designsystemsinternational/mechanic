@@ -150,7 +150,7 @@ export const presets = {
     width: 1600,
     height: 1200,
   },
-  xlarge: {
+  extraLarge: {
     width: 3200,
     height: 2400,
   },
@@ -171,66 +171,71 @@ export const settings = {
 
 Parameters are defined by their `type`:
 
-| Type      | UI                     | Resulting Value Type |
-| --------- | ---------------------- | -------------------- |
-| `text`    | Text field             | `string`             |
-| `number`  | Number field or slider | `number`             |
-| `boolean` | Toggle                 | `boolean`            |
-| `color`   | Color picker           | Color `string`       |
-| `image`   | File selector          | `File` object        |
+| Type      | UI                     | Resulting Value Type        |
+| --------- | ---------------------- | --------------------------- |
+| `text`    | Text field             | `string`                    |
+| `number`  | Number field or slider | `number`                    |
+| `boolean` | Toggle                 | `boolean`                   |
+| `color`   | Color picker           | Color `string`              |
+| `image`   | File selector          | `File` or `FileList` object |
 
 #### Text
 
-| Prop         | Type                                          | Default   | Description                                                                                                        |
-| ------------ | --------------------------------------------- | --------- | ------------------------------------------------------------------------------------------------------------------ |
-| type (\*)    | `string`                                      |           | `"text"` defines a param of type 'text'                                                                            |
-| default (\*) | `string`                                      |           | Default to this value.                                                                                             |
-| editable     | `boolean\|function(params){return `boolean`}` | true      | Enables or disables the field in the UI.                                                                           |
-| options      | `['value']` \| `{label: value, ...}`          | undefined | If present, displays a dropdown with the provided options. All option values must match be a valid `text`          |
-| validation   | `function`                                    | undefined | If present, executes function with the new value. Should return a string describing the error or null if no error. |
+| Prop         | Type                                        | Default   | Description                                                                                                        |
+| ------------ | ------------------------------------------- | --------- | ------------------------------------------------------------------------------------------------------------------ |
+| type (\*)    | `string`                                    |           | `"text"` defines a param of type 'text'                                                                            |
+| default (\*) | `string`                                    |           | Default to this value.                                                                                             |
+| editable     | `boolean\|function(params){return boolean}` | true      | Enables or disables the field in the UI.                                                                           |
+| options      | `['value']` \| `{label: value, ...}`        | undefined | If present, displays a dropdown with the provided options. All option values must match be a valid `text`          |
+| validation   | `function`                                  | undefined | If present, executes function with the new value. Should return a string describing the error or null if no error. |
+| label        | `string`                                    | undefined | If present, it's used as a label for the corresponding UI input in the Mechanic app.                               |
 
 #### Number
 
-| Prop         | Type                                          | Default   | Description                                                                                                        |
-| ------------ | --------------------------------------------- | --------- | ------------------------------------------------------------------------------------------------------------------ |
-| type (\*)    | `string`                                      |           | `"number"` defines a param of type 'number'                                                                        |
-| default (\*) | `number`                                      |           | Default to this value.                                                                                             |
-| min          | `number`                                      | undefined | Mininum acceptable value (required if `slider: true`)                                                              |
-| max          | `number`                                      | undefined | Maximum acceptable value (required if `slider: true`)                                                              |
-| step         | `number`                                      | undefined | Step to increase of decrease value by                                                                              |
-| slider       | `boolean`                                     | undefined | Wether to display input as as range slider. (if true, min and max are required)                                    |
-| editable     | `boolean\|function(params){return `boolean`}` | true      | Enables or disables the field in the UI.                                                                           |
-| options      | `[value]` \| `{label: value, ...}`            | undefined | If present, displays a dropdown with the provided options. All option values must match be a valid `number`        |
-| validation   | `function`                                    | undefined | If present, executes function with the new value. Should return a string describing the error or null if no error. |
+| Prop         | Type                                        | Default   | Description                                                                                                        |
+| ------------ | ------------------------------------------- | --------- | ------------------------------------------------------------------------------------------------------------------ |
+| type (\*)    | `string`                                    |           | `"number"` defines a param of type 'number'                                                                        |
+| default (\*) | `number`                                    |           | Default to this value.                                                                                             |
+| min          | `number`                                    | undefined | Mininum acceptable value (required if `slider: true`)                                                              |
+| max          | `number`                                    | undefined | Maximum acceptable value (required if `slider: true`)                                                              |
+| step         | `number`                                    | undefined | Step to increase of decrease value by                                                                              |
+| slider       | `boolean`                                   | undefined | Wether to display input as as range slider. (if true, min and max are required)                                    |
+| editable     | `boolean\|function(params){return boolean}` | true      | Enables or disables the field in the UI.                                                                           |
+| options      | `[value]` \| `{label: value, ...}`          | undefined | If present, displays a dropdown with the provided options. All option values must match be a valid `number`        |
+| validation   | `function`                                  | undefined | If present, executes function with the new value. Should return a string describing the error or null if no error. |
+| label        | `string`                                    | undefined | If present, it's used as a label for the corresponding UI input in the Mechanic app.                               |
 
 #### Boolean or Toggle
 
-| Prop       | Type                                          | Default   | Description                                                                                                        |
-| ---------- | --------------------------------------------- | --------- | ------------------------------------------------------------------------------------------------------------------ |
-| type (\*)  | `string`                                      |           | `"boolean"` defines a param of type 'boolean'                                                                      |
-| default    | `boolean`                                     | false     | Default to this value.                                                                                             |
-| editable   | `boolean\|function(params){return `boolean`}` | true      | Enables or disables the field in the UI.                                                                           |
-| validation | `function`                                    | undefined | If present, executes function with the new value. Should return a string describing the error or null if no error. |
+| Prop       | Type                                        | Default   | Description                                                                                                        |
+| ---------- | ------------------------------------------- | --------- | ------------------------------------------------------------------------------------------------------------------ |
+| type (\*)  | `string`                                    |           | `"boolean"` defines a param of type 'boolean'                                                                      |
+| default    | `boolean`                                   | false     | Default to this value.                                                                                             |
+| editable   | `boolean\|function(params){return boolean}` | true      | Enables or disables the field in the UI.                                                                           |
+| validation | `function`                                  | undefined | If present, executes function with the new value. Should return a string describing the error or null if no error. |
+| label      | `string`                                    | undefined | If present, it's used as a label for the corresponding UI input in the Mechanic app.                               |
 
 #### Color
 
-| Prop         | Type                                          | Default   | Description                                                                                                        |
-| ------------ | --------------------------------------------- | --------- | ------------------------------------------------------------------------------------------------------------------ |
-| type (\*)    | `string`                                      |           | `"color"` defines a param of type 'color'                                                                          |
-| default (\*) | `string`                                      | undefined | Default to this value.                                                                                             |
-| model        | `rgba\|hex`                                   | `rgba`    | The color model to be used                                                                                         |
-| editable     | `boolean\|function(params){return `boolean`}` | true      | Enables or disables the field in the UI.                                                                           |
-| options      | `['value']` \| `{label: value, ...}`          | undefined | If present, displays a dropdown with the provided options. All option values must match be a valid `color`         |
-| validation   | `function`                                    | undefined | If present, executes function with the new value. Should return a string describing the error or null if no error. |
+| Prop         | Type                                        | Default   | Description                                                                                                        |
+| ------------ | ------------------------------------------- | --------- | ------------------------------------------------------------------------------------------------------------------ |
+| type (\*)    | `string`                                    |           | `"color"` defines a param of type 'color'                                                                          |
+| default (\*) | `string`                                    | undefined | Default to this value.                                                                                             |
+| model        | `rgba\|hex`                                 | `rgba`    | The color model to be used                                                                                         |
+| editable     | `boolean\|function(params){return boolean}` | true      | Enables or disables the field in the UI.                                                                           |
+| options      | `['value']` \| `{label: value, ...}`        | undefined | If present, displays a dropdown with the provided options. All option values must match be a valid `color`         |
+| validation   | `function`                                  | undefined | If present, executes function with the new value. Should return a string describing the error or null if no error. |
+| label        | `string`                                    | undefined | If present, it's used as a label for the corresponding UI input in the Mechanic app.                               |
 
 #### Image
 
-| Prop       | Type                                          | Default   | Description                                                                                                                   |
-| ---------- | --------------------------------------------- | --------- | ----------------------------------------------------------------------------------------------------------------------------- |
-| type (\*)  | `string`                                      |           | `"image"` defines a param of type 'image'                                                                                     |
-| multiple   | `boolean`                                     | false     | Wether it should accept multiple images                                                                                       |
-| editable   | `boolean\|function(params){return `boolean`}` | true      | Enables or disables the field in the UI.                                                                                      |
-| validation | `function`                                    | undefined | If present, executes function with file object to validate. Should return a string describing the error or `null` if no error |
+| Prop       | Type                                        | Default   | Description                                                                                                                     |
+| ---------- | ------------------------------------------- | --------- | ------------------------------------------------------------------------------------------------------------------------------- |
+| type (\*)  | `string`                                    |           | `"image"` defines a param of type 'image'                                                                                       |
+| multiple   | `boolean`                                   | false     | Wether it should accept multiple images. If it's `false` it returns an `File` object, if `true` it returns a `FileList` object. |
+| editable   | `boolean\|function(params){return boolean}` | true      | Enables or disables the field in the UI.                                                                                        |
+| validation | `function`                                  | undefined | If present, executes function with file object to validate. Should return a string describing the error or `null` if no error   |
+| label      | `string`                                    | undefined | If present, it's used as a label for the corresponding UI input in the Mechanic app.                                            |
 
 ---
 

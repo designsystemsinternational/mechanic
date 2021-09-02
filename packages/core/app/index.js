@@ -11,3 +11,7 @@ const app = (
   </BrowserRouter>
 );
 render(app, root);
+
+if (import.meta.webpackHot) {
+  import.meta.webpackHot.accept();
+}

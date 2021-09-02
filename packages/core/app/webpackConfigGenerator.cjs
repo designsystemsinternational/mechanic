@@ -147,21 +147,15 @@ module.exports = (modeParam, designFunctions, distDir, publicPath) => {
 
   const entry = Object.entries(designFunctions).reduce(
     (acc, [name, designFunctionObj]) => {
-      acc[name] = designFunctionObj.temp;
-      // acc[name] = isProduction
-      //   ? designFunctionObj.temp
-      //   : [require.resolve("webpack-hot-middleware/client"), designFunctionObj.temp];
+      acc[name] = isProduction
+        ? designFunctionObj.temp
+        : [require.resolve("webpack-hot-middleware/client"), designFunctionObj.temp];
       return acc;
     },
     {
       app: isProduction
         ? path.resolve(__dirname, "./index.js")
-        : [
-            // require.resolve("webpack-hot-middleware/client"),
-            path.resolve(__dirname, "./index.js")
-            // commented for now, seems to be issue in webpack5
-            // require.resolve("webpack-hot-middleware/client")
-          ]
+        : [require.resolve("webpack-hot-middleware/client"), path.resolve(__dirname, "./index.js")]
     }
   );
 
