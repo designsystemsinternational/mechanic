@@ -38,7 +38,11 @@ const setUpFunctionDir = path.resolve(path.join(__dirname, "..", "function-set-u
 const getScripContent = designFunctionPath => `
 const designFunction = require("${designFunctionPath}");
 const { setUp } = require("${setUpFunctionDir}");
-setUp(designFunction)`;
+setUp(designFunction)
+if (module.hot) {
+  // Accept hot update
+  module.hot.accept();
+}`;
 
 const generateTempScripts = functionsPath => {
   const designFunctions = {};
