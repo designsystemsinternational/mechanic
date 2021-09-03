@@ -69,7 +69,7 @@
 
 .root:not(.disabled) .button:hover,
 .button:not(.disabled):not([disabled]):hover {
-  transform: translateY(-1px);
+  /* transform: translateY(-1px); */
   cursor: pointer;
 }
 
@@ -120,11 +120,22 @@
   right: 0;
   height: var(--mechanic-param-height);
   z-index: 8;
-  opacity: 0.15;
-  background-color: currentColor;
+  background-color: white;
   border-radius: var(--mechanic-param-height-half);
 }
 
+.invalid .background:after {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  opacity: 0.15;
+  border-radius: var(--mechanic-param-height-half);
+  background-color: currentColor;
+  z-index: 9;
+}
 .error {
   padding: 0.2em 0.25em;
   font-size: var(--mechanic-label-font-size);

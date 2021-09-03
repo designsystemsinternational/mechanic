@@ -5,6 +5,8 @@
 }
 
 .container {
+  position: relative;
+  z-index: 10;
   display: flex;
   justify-content: space-between;
   border: 1px solid currentColor;
@@ -54,17 +56,12 @@
   border-radius: 6px;
 }
 
-.focus .container .preview,
-.container:not([disabled]):hover .preview {
-  left: calc(var(--mechanic-param-height-quart) - 1px);
-  right: calc(var(--mechanic-param-height-quart) - 1px);
-}
-
 .input {
   opacity: 0;
   width: 0.1px;
   height: 0.1px;
   position: absolute;
+  outline: none;
 }
 
 .browseButton {
@@ -76,15 +73,27 @@
   height: 100%;
   width: 100%;
   border: none;
+  outline: none;
   border-radius: var(--mechanic-param-height-half);
   background: none;
   color: inherit;
   vertical-align: middle;
   text-align: right;
+  cursor: pointer;
 }
-.focus .browseButton,
-.container:not([disabled]):hover .browseButton {
-  padding: 0 calc(var(--mechanic-param-height-half) - 1px) 0 0;
+
+.focus .container {
+  outline: none;
+  border: 2px solid currentColor;
+  padding-left: calc(var(--mechanic-param-height-quart) - 1px);
+}
+.focus .browseButton {
+  padding-right: calc(var(--mechanic-param-height-half) - 1px);
+}
+
+.focus .container .preview {
+  left: calc(var(--mechanic-param-height-quart) - 1px);
+  right: calc(var(--mechanic-param-height-quart) - 1px);
 }
 
 .invalid {
@@ -94,20 +103,9 @@
   opacity: 0.4;
 }
 
-.focus .input {
-  outline: none;
-}
-.focus .browseButton {
-  outline: none;
+.container:not([disabled]):hover {
 }
 
-.focus .container,
-.container:not([disabled]):hover {
-  outline: none;
-  border: 2px solid currentColor;
-  padding: 0 calc(var(--mechanic-param-height) - 1px) 0
-    calc(var(--mechanic-param-height-quart) - 1px);
-}
 .container:active {
   transform: translateY(1px);
 }

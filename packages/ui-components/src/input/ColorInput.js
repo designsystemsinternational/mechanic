@@ -43,8 +43,9 @@ export const ColorInput = props => {
   const classes = classnames(css.root, commonCss.root, {
     [className]: className,
     [commonCss.disabled]: disabled,
-    [commonCss.focus]: focus,
     [css.focus]: focus,
+    [commonCss.focus]: focus,
+    [commonCss.invalid]: invalid,
     [css.picking]: picking
   });
 
@@ -108,7 +109,7 @@ export const ColorInput = props => {
         onFocus={handleOnFocus}
         onBlur={handleOnBlur}>
         <Button
-          className={classnames(css.button, commonCss.button)}
+          className={classnames(commonCss.button, css.button)}
           onClick={handleOnClick}
           disabled={disabled}>
           <span className={css.swatch} style={{ backgroundColor: value }} />
@@ -120,7 +121,7 @@ export const ColorInput = props => {
           </div>
         )}
         <div className={commonCss.suffix}>{invalid && <Invalid />}</div>
-        {invalid && <div className={commonCss.background} />}
+        <div className={commonCss.background} />
       </div>
       {invalid && error && (
         <div className={commonCss.error} id={`error-${id}`} aria-live="polite">

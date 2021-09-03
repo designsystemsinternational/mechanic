@@ -46,7 +46,8 @@ export const TextInput = props => {
   const rootClasses = classnames(commonCss.root, {
     [className]: className,
     [commonCss.disabled]: disabled,
-    [commonCss.focus]: focus
+    [commonCss.focus]: focus,
+    [commonCss.invalid]: invalid
   });
 
   return (
@@ -75,7 +76,7 @@ export const TextInput = props => {
           aria-invalid={invalid}
         />
         <div className={commonCss.suffix}>{invalid && <Invalid />}</div>
-        {invalid && <div className={commonCss.background} />}
+        <div className={commonCss.background} />
       </div>
       {invalid && error && (
         <div className={commonCss.error} id={`error-${id}`} aria-live="polite">
