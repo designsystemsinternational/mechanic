@@ -40,7 +40,7 @@
 
 .thumbnail {
   height: var(--mechanic-param-height-half);
-  border-radius: 6px;
+  border-radius: 3px;
 }
 
 .preview {
@@ -53,7 +53,7 @@
   max-height: 200px;
   object-fit: contain;
   background-color: #f7f7f7;
-  border-radius: 6px;
+  border-radius: 8px;
 }
 
 .input {
