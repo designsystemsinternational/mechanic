@@ -39,7 +39,6 @@ export const ColorInput = props => {
 
   const [focus, setFocus] = useState(false);
   const [picking, setPicking] = useState(false);
-  const inputRef = useRef();
 
   const classes = classnames(css.root, commonCss.root, {
     [className]: className,
@@ -63,9 +62,7 @@ export const ColorInput = props => {
   useEffect(() => {
     if (!picking) return;
     const onClickOutside = e => {
-      console.log("click");
-      console.log(e.target, inputRef.current);
-      if (!e.target || e.target === inputRef.current || !inputRef.current.contains(e.target)) {
+      if (!e.target || !e.target.closest(`#${id}`)) {
         setPicking(false);
       }
     };
@@ -77,7 +74,7 @@ export const ColorInput = props => {
         setPicking(false);
       }
       // close picker on tab navigation
-      if ("Tab" === e.key && e.target.closest(`.${css.chromePicker}`)) {
+      if ("Tab" === e.key && e.target.closest(`#${id} .${css.chromePicker}`)) {
         setPicking(false);
       }
     };
@@ -105,7 +102,6 @@ export const ColorInput = props => {
       )}
       <div
         id={id}
-        ref={inputRef}
         className={commonCss.inputWrapper}
         aria-describedby={`error-${id}`}
         aria-invalid={invalid}
