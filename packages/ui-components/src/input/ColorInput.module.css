@@ -1,7 +1,6 @@
 @import "../variables.css";
 
 .root {
-  z-index: 50;
 }
 .root .button {
   justify-content: flex-start;

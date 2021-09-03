@@ -63,7 +63,7 @@ export const ColorInput = props => {
   useEffect(() => {
     if (!picking) return;
     const onClickOutside = e => {
-      if (!e.target || !e.target.closest(`.${css.root} .${commonCss.inputWrapper}`)) {
+      if (!e.target || !e.target.closest(`#${id}`)) {
         setPicking(false);
       }
     };
@@ -75,7 +75,7 @@ export const ColorInput = props => {
         setPicking(false);
       }
       // close picker on tab navigation
-      if (["Tab"].includes(e.key) && e.target.closest(`.${css.chromePicker}`)) {
+      if ("Tab" === e.key && e.target.closest(`#${id} .${css.chromePicker}`)) {
         setPicking(false);
       }
     };
