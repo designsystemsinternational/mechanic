@@ -1,5 +1,5 @@
-export const handler = ({ params, mechanic }) => {
-  const { width, height, text, color1, color2, radiusPercentage } = params;
+export const handler = ({ inputs, mechanic }) => {
+  const { width, height, text, color1, color2, radiusPercentage } = inputs;
 
   const center = [width / 2, height / 2];
   const radius = ((height / 2) * radiusPercentage) / 100;
@@ -35,7 +35,7 @@ export const handler = ({ params, mechanic }) => {
   mechanic.done(svg);
 };
 
-export const params = {
+export const inputs = {
   width: {
     type: "number",
     default: 400,

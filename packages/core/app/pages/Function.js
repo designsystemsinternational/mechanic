@@ -6,7 +6,7 @@ import { useValues } from "./utils/useValues.js";
 import { getPossiblePresets, addPresetsAsSources } from "./utils/presets.js";
 import { useShortcuts } from "./utils/useShortcuts.js";
 
-import { Button, Toggle, ParamInput } from "@mechanic-design/ui-components";
+import { Button, Toggle, MechanicInput } from "@mechanic-design/ui-components";
 import * as css from "./Function.module.css";
 
 export const Function = ({ name, exports: functionExports, children }) => {
@@ -19,16 +19,16 @@ export const Function = ({ name, exports: functionExports, children }) => {
   const lastRun = useRef();
 
   const {
-    params,
+    inputs,
     presets: exportedPresets,
     settings: { usesRandom }
   } = functionExports;
   const presets = getPossiblePresets(exportedPresets ?? {});
-  const canScale = !!(params.width && params.height);
-  const [values, setValues] = useValues(name, params);
+  const canScale = !!(inputs.width && inputs.height);
+  const [values, setValues] = useValues(name, inputs);
   const handleOnChange = (e, name, value) => {
     const sources = [{ [name]: value }];
-    if (name === "preset") addPresetsAsSources(value, exportedPresets, params, sources);
+    if (name === "preset") addPresetsAsSources(value, exportedPresets, inputs, sources);
     setValues(values => Object.assign({}, values, ...sources));
   };
 
@@ -84,22 +84,22 @@ export const Function = ({ name, exports: functionExports, children }) => {
         <div className={css.sep} />
 
         <div className={classnames(css.edge, css.top)} />
-        <div className={css.params}>
-          <ParamInput
-            className={css.param}
-            key="param-preset"
+        <div className={css.inputs}>
+          <MechanicInput
+            className={css.input}
+            key="input-preset"
             name="preset"
             values={values}
             attributes={{ type: "string", options: presets, default: presets[0] }}
             onChange={handleOnChange}
           />
-          {Object.entries(params).map(([name, param]) => (
-            <ParamInput
-              className={css.param}
-              key={`param-${name}`}
+          {Object.entries(inputs).map(([name, input]) => (
+            <MechanicInput
+              className={css.input}
+              key={`input-${name}`}
               name={name}
               values={values}
-              attributes={param}
+              attributes={input}
               onChange={handleOnChange}
             />
           ))}
@@ -114,7 +114,7 @@ export const Function = ({ name, exports: functionExports, children }) => {
               onClick={() => setScaleToFit(scaleToFit => !scaleToFit)}>
               {canScale ? (scaleToFit ? "Scale to fit On" : "Scale to fit Off") : "Scale to Fit"}
             </Toggle>
-            {!canScale && <span className={css.error}>Params missing for scaling</span>}
+            {!canScale && <span className={css.error}>Inputs missing for scaling</span>}
           </div>
           <div className={css.sep} />
           <div className={css.row}>
@@ -161,7 +161,7 @@ Function.propTypes = {
   name: PropTypes.string.isRequired,
   exports: PropTypes.shape({
     handler: PropTypes.func.isRequired,
-    params: PropTypes.object.isRequired,
+    inputs: PropTypes.object.isRequired,
     settings: PropTypes.object.isRequired
   })
 };

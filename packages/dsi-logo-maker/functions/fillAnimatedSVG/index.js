@@ -9,8 +9,8 @@ import {
 import { Unit } from "../../utils/blocks-components";
 import { useDrawLoop } from "../../utils/drawLoopHook";
 
-export const handler = ({ params, mechanic }) => {
-  const { width, height, logoWidth, logoRatio, duration } = params;
+export const handler = ({ inputs, mechanic }) => {
+  const { width, height, logoWidth, logoRatio, duration } = inputs;
   const { frame, done } = mechanic;
 
   const [blockParams, setBlockParams] = useState({
@@ -91,7 +91,7 @@ export const handler = ({ params, mechanic }) => {
   );
 };
 
-export const params = {
+export const inputs = {
   width: {
     type: "number",
     default: 100,

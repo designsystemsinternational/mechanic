@@ -1,6 +1,6 @@
-export const handler = ({ params, mechanic }) => {
+export const handler = ({ inputs, mechanic }) => {
   const { width, height, text, color1, color2, radiusPercentage, turns } =
-    params;
+    inputs;
 
   const center = [width / 2, height / 2];
   const radius = ((height / 2) * radiusPercentage) / 100;
@@ -47,7 +47,7 @@ export const handler = ({ params, mechanic }) => {
   drawFrame();
 };
 
-export const params = {
+export const inputs = {
   width: {
     type: "number",
     default: 400,

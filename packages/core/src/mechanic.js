@@ -17,12 +17,12 @@ import { MechanicError } from "./mechanic-error.js";
 export class Mechanic {
   /**
    * Mechanic class constructor
-   * @param {object} params - Parameters from the design function
+   * @param {object} inputs - Inputs from the design function
    * @param {object} settings - Settings from the design function
-   * @param {object} values - Values for some or all of the design function parameters
+   * @param {object} values - Values for some or all of the design function inputs
    */
-  constructor(params, settings, values) {
-    const err1 = validation.validateParams(params);
+  constructor(inputs, settings, values) {
+    const err1 = validation.validateInputs(inputs);
     if (err1) {
       throw new MechanicError(err1);
     }
@@ -32,14 +32,14 @@ export class Mechanic {
       throw new MechanicError(err2);
     }
 
-    const err3 = validation.validateValues(params, values);
+    const err3 = validation.validateValues(inputs, values);
     if (err3) {
       throw new MechanicError(err3);
     }
 
-    this.params = params;
+    this.inputs = inputs;
     this.settings = settings;
-    this.values = validation.prepareValues(params, settings, values);
+    this.values = validation.prepareValues(inputs, settings, values);
   }
 
   /**

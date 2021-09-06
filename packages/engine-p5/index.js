@@ -9,7 +9,7 @@ export const run = (functionName, func, values, isPreview) => {
   if (p5Sketch) {
     p5Sketch.remove();
   }
-  const mechanic = new Mechanic(func.params, func.settings, values);
+  const mechanic = new Mechanic(func.inputs, func.settings, values);
   const onFrame = () => {
     if (!isPreview) {
       mechanic.frame(root.childNodes[0]);
@@ -25,7 +25,7 @@ export const run = (functionName, func, values, isPreview) => {
   p5Sketch = new p5(
     (sketch) =>
       func.handler({
-        params: mechanic.values,
+        inputs: mechanic.values,
         mechanic: { frame: onFrame, done: onDone },
         sketch,
       }),

@@ -7,7 +7,7 @@ const head = document.querySelector("head");
 
 export const run = (functionName, func, values, isPreview) => {
   unmountComponentAtNode(root);
-  const mechanic = new Mechanic(func.params, func.settings, values);
+  const mechanic = new Mechanic(func.inputs, func.settings, values);
   const Handler = func.handler;
   const onFrame = () => {
     if (!isPreview) {
@@ -22,7 +22,7 @@ export const run = (functionName, func, values, isPreview) => {
   };
   render(
     <Handler
-      params={mechanic.values}
+      inputs={mechanic.values}
       mechanic={{ frame: onFrame, done: onDone }}
     />,
     root

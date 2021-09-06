@@ -11,96 +11,96 @@ const supportedTypes = {
 };
 const requiredKeys = ["type", "default"];
 const requiredKeysExceptions = { image: ["default"], boolean: ["default"] };
-const otherParams = { preset: true, scaleToFit: true, randomSeed: true };
+const otherInputs = { preset: true, scaleToFit: true, randomSeed: true };
 
 /**
- * Receives the parameter template and checks that it is valid
- * @param {object} params - Parameter template from the design function
+ * Receives the inputs definitions and checks that it is valid
+ * @param {object} inputs - Inputs definition from the design function
  */
-const validateParams = params => {
-  // Check all params
-  for (let paramName in params) {
-    const param = params[paramName];
-    const { type: paramType, default: paramDefault } = param;
+const validateInputs = inputs => {
+  // Check all inputs
+  for (let inputName in inputs) {
+    const input = inputs[inputName];
+    const { type: inputType, default: defaultValueOfInput } = input;
 
     // Check for all required properties
     for (let requiredKey of requiredKeys) {
       if (
-        !hasKey(param, requiredKey) &&
+        !hasKey(input, requiredKey) &&
         !(
-          hasKey(requiredKeysExceptions, paramType) &&
-          requiredKeysExceptions[paramType].includes(requiredKey)
+          hasKey(requiredKeysExceptions, inputType) &&
+          requiredKeysExceptions[inputType].includes(requiredKey)
         )
       ) {
-        return `Parameter ${paramName} must have '${requiredKey}' property.`;
+        return `Input "${inputName}" must have '${requiredKey}' property.`;
       }
     }
 
     // Check type is supported by Mechanic
-    if (!hasKey(supportedTypes, paramType)) {
-      return `Parameter of type ${paramType} not supported, expected either: ${Object.keys(
+    if (!hasKey(supportedTypes, inputType)) {
+      return `Input of type ${inputType} not supported, expected either: ${Object.keys(
         supportedTypes
       )}.`;
     }
 
-    // Check default value is of correct type to corresponding param type
-    if (hasKey(param, "default") && typeof paramDefault !== supportedTypes[paramType]) {
-      return `Default property value invalid for parameter ${paramName} of type ${paramType}. Expected to be ${supportedTypes[paramType]}.`;
+    // Check default value is of correct type to corresponding input type
+    if (hasKey(input, "default") && typeof defaultValueOfInput !== supportedTypes[inputType]) {
+      return `Invalid default property value for input "${inputName}" of type ${inputType}. Expected to be ${supportedTypes[inputType]}.`;
     }
 
     // Check that 'validation' property is function
-    if (hasKey(param, "validation") && typeof param.validation !== "function") {
-      return `Expected function in validation property in ${paramName}. Got ${typeof param.validation}.`;
+    if (hasKey(input, "validation") && typeof input.validation !== "function") {
+      return `Expected function in validation property in "${inputName}". Got ${typeof input.validation}.`;
     }
 
     // Check that 'editable' property is function
     if (
-      hasKey(param, "editable") &&
-      typeof param.editable !== "function" &&
-      typeof param.editable !== "boolean"
+      hasKey(input, "editable") &&
+      typeof input.editable !== "function" &&
+      typeof input.editable !== "boolean"
     ) {
-      return `Expected function or boolean in editable property in ${paramName}. Got ${typeof param.editable}.`;
+      return `Expected function or boolean in editable property in "${inputName}". Got ${typeof input.editable}.`;
     }
 
     // Check that 'label' property is string
-    if (hasKey(param, "label") && typeof param.label !== "string") {
-      return `Expected string in label property in ${paramName}. Got ${typeof param.label}.`;
+    if (hasKey(input, "label") && typeof input.label !== "string") {
+      return `Expected string in label property in ${inputName}. Got ${typeof input.label}.`;
     }
 
     // Check 'options' property
-    if (hasKey(param, "options")) {
-      const { options } = param;
+    if (hasKey(input, "options")) {
+      const { options } = input;
       // Should be function or object
       if (!Array.isArray(options) && typeof options !== "object") {
-        return `Expected array or object in options property in ${paramName}. Got ${typeof options}.`;
+        return `Expected array or object in options property in ${inputName}. Got ${typeof options}.`;
       }
       // If it's not an array, it's an object
       else if (!Array.isArray(options)) {
         // It should be consistent with 'default' property
-        if (!Object.keys(options).includes(paramDefault)) {
-          return `Default value ${paramDefault} for ${paramName} is not present in given options: ${Object.keys(
+        if (!Object.keys(options).includes(defaultValueOfInput)) {
+          return `Default value ${defaultValueOfInput} for ${inputName} is not present in given options: ${Object.keys(
             options
           )}. `;
         }
-        // All values should be consistent with the param type
+        // All values should be consistent with the input type
         for (let option in options) {
-          if (typeof options[option] !== supportedTypes[paramType]) {
+          if (typeof options[option] !== supportedTypes[inputType]) {
             return `Incorrect type of value ${option} (${typeof options[
               option
-            ]}) in options object for ${paramName}. Expected ${paramType}.`;
+            ]}) in options object for ${inputName}. Expected ${inputType}.`;
           }
         }
       }
       // If it's an array
       else if (Array.isArray(options)) {
         // It should be consistent with 'default' property
-        if (!options.includes(paramDefault)) {
-          return `Default value ${paramDefault} for ${paramName} is not present in given options: ${options} `;
+        if (!options.includes(defaultValueOfInput)) {
+          return `Default value ${defaultValueOfInput} for ${inputName} is not present in given options: ${options} `;
         }
-        // All values should be consistent with the param type
+        // All values should be consistent with the input type
         for (let option of options) {
-          if (typeof option !== supportedTypes[paramType]) {
-            return `Incorrect type of value ${option} (${typeof option}) in options array for ${paramName}. Expected ${paramType}.`;
+          if (typeof option !== supportedTypes[inputType]) {
+            return `Incorrect type of value ${option} (${typeof option}) in options array for ${inputName}. Expected ${inputType}.`;
           }
         }
       }
@@ -110,38 +110,38 @@ const validateParams = params => {
 };
 
 /**
- * Receives the parameters and values and validates that the values
+ * Receives the inputs and values, and validates that the values
  * are valid according to the template.
- * @param {object} params - Parameter template from the design function
- * @param {object} values - Values for some or all of the parameters
+ * @param {object} inputs - Inputs definition from the design function
+ * @param {object} values - Values for some or all of the inputs
  */
-const validateValues = (params, values = {}) => {
-  for (let paramName in params) {
-    const param = params[paramName];
+const validateValues = (inputs, values = {}) => {
+  for (let inputName in inputs) {
+    const input = inputs[inputName];
     // Validate that values for options are specified in the template
-    if (hasKey(values, paramName) && hasKey(param, "options")) {
-      const { options } = param;
-      if (Array.isArray(options) && !options.includes(values[paramName])) {
-        return `Supplied ${paramName} parameter is not available in the template options: ${options}`;
-      } else if (!Array.isArray(options) && !hasKey(options, values[paramName])) {
-        return `Supplied ${paramName} parameter (${
-          values[paramName]
+    if (hasKey(values, inputName) && hasKey(input, "options")) {
+      const { options } = input;
+      if (Array.isArray(options) && !options.includes(values[inputName])) {
+        return `Supplied input "${inputName}" is not available in the template options: ${options}`;
+      } else if (!Array.isArray(options) && !hasKey(options, values[inputName])) {
+        return `Supplied input "${inputName}" (${
+          values[inputName]
         }) is not available in the template options: ${Object.keys(options)}`;
       }
     }
     // Run validation functions for values.
-    if (hasKey(values, paramName) && hasKey(param, "validation")) {
-      const error = param.validation(values[paramName]);
+    if (hasKey(values, inputName) && hasKey(input, "validation")) {
+      const error = input.validation(values[inputName]);
       if (error !== null && error !== undefined) {
-        return `Param validation error returned: ${error}`;
+        return `Validation error for "${inputName}" returned: ${error}`;
       }
     }
   }
 
-  // Check that there are not other values besides parameters and default params
-  for (let paramName in values) {
-    if (!hasKey(params, paramName) && !hasKey(otherParams, paramName)) {
-      return `Unexpected ${paramName} value not defined on template.`;
+  // Check that there are not other values besides inputs and default inputs
+  for (let inputName in values) {
+    if (!hasKey(inputs, inputName) && !hasKey(otherInputs, inputName)) {
+      return `Unexpected ${inputName} value not defined on template.`;
     }
   }
 
@@ -161,14 +161,14 @@ const validateSettings = settings => {
 };
 
 /**
- * Receives the parameters and values and returns an object with parameter
- * values (including defaults if value is missing) that can be passed to the
+ * Receives the inputs and values, and returns an object with values for
+ * inputs (including defaults if value is missing) that can be passed to the
  * design function.
- * @param {object} params - Parameter template from the design function
+ * @param {object} inputs - Inputs definition from the design function
  * @param {object} settings - Settings from the design function
- * @param {object} baseValues - Values for some or all of the parameters
+ * @param {object} baseValues - Values for some or all of the inputs
  */
-const prepareValues = (params, settings, baseValues) => {
+const prepareValues = (inputs, settings, baseValues) => {
   const values = Object.assign({}, baseValues);
 
   // Sets random seed
@@ -179,23 +179,23 @@ const prepareValues = (params, settings, baseValues) => {
     seedrandom(values.randomSeed, { global: true });
   }
 
-  // Go through params and set values based on baseValues and defaults
-  Object.entries(params).forEach(([name, param]) => {
-    if (hasKey(param, "options")) {
-      let value = baseValues[name] || param.default;
-      if (Array.isArray(param.options)) {
-        const index = param.options.indexOf(value);
-        value = param.options[index];
+  // Go through inputs and set values based on baseValues and defaults
+  Object.entries(inputs).forEach(([name, input]) => {
+    if (hasKey(input, "options")) {
+      let value = baseValues[name] || input.default;
+      if (Array.isArray(input.options)) {
+        const index = input.options.indexOf(value);
+        value = input.options[index];
       } else {
-        value = param.options[value];
+        value = input.options[value];
       }
       values[name] = value;
     } else {
-      values[name] = baseValues[name] === undefined ? param.default : baseValues[name];
+      values[name] = baseValues[name] === undefined ? input.default : baseValues[name];
     }
   });
 
-  // Scale down to fit if width and height are params
+  // Scale down to fit if width and height are inputs
   if (baseValues.scaleToFit && values.width && values.height) {
     const ratioWidth = baseValues.scaleToFit.width ? baseValues.scaleToFit.width / values.width : 1;
     const ratioHeight = baseValues.scaleToFit.height
@@ -231,7 +231,7 @@ export {
   isObject,
   hasKey,
   supportedTypes,
-  validateParams,
+  validateInputs,
   validateValues,
   validateSettings,
   prepareValues,

@@ -9,7 +9,7 @@ import {
 import { Unit } from "../../utils/blocks-components";
 import { useDrawLoop } from "../../utils/drawLoopHook";
 
-export const handler = ({ params, mechanic }) => {
+export const handler = ({ inputs, mechanic }) => {
   const {
     width,
     ratio,
@@ -21,7 +21,7 @@ export const handler = ({ params, mechanic }) => {
     offset,
     duration,
     loops,
-  } = params;
+  } = inputs;
   const { frame, done } = mechanic;
 
   const [blockParams, setBlockParams] = useState({
@@ -96,7 +96,7 @@ export const handler = ({ params, mechanic }) => {
   );
 };
 
-export const params = {
+export const inputs = {
   width: {
     type: "number",
     default: 500,
@@ -119,25 +119,25 @@ export const params = {
     type: "text",
     options: flagNames,
     default: flagNames[0],
-    editable: (params) => params.colorMode === "Pick Flag",
+    editable: (inputs) => inputs.colorMode === "Pick Flag",
   },
   firstColor: {
     type: "color",
     model: "hex",
     default: "#11457e",
-    editable: (params) => params.colorMode === "Custom Colors",
+    editable: (inputs) => inputs.colorMode === "Custom Colors",
   },
   secondColor: {
     type: "color",
     model: "hex",
     default: "#d7141a",
-    editable: (params) => params.colorMode === "Custom Colors",
+    editable: (inputs) => inputs.colorMode === "Custom Colors",
   },
   thirdColor: {
     type: "color",
     model: "hex",
     default: "#f1f1f1",
-    editable: (params) => params.colorMode === "Custom Colors",
+    editable: (inputs) => inputs.colorMode === "Custom Colors",
   },
   offset: {
     type: "number",
