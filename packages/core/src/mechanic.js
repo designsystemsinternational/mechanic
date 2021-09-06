@@ -63,6 +63,11 @@ export class Mechanic {
     if (!this.settings.animated) {
       throw new MechanicError("The frame() function can only be used for animations");
     }
+    if (!validation.supportsFormatWebP()) {
+      throw new MechanicError(
+        "Your running browser doesn't support WebP generation. Try using Chrome for exporting."
+      );
+    }
 
     const err = validation.validateEl(el);
     if (err) {
@@ -123,6 +128,11 @@ export class Mechanic {
         this.canvasData = el.toDataURL();
       }
     } else {
+      if (!validation.supportsFormatWebP()) {
+        throw new MechanicError(
+          "Your running browser doesn't support WebP generation. Try using Chrome for exporting."
+        );
+      }
       if (validation.isSVG(el)) {
         // This is slow. We should figure out a way to draw into canvas on every frame
         // or at least do Promise.all
