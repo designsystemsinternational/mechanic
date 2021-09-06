@@ -87,7 +87,7 @@ export class Mechanic {
       if (!this.svgFrames) {
         this.svgFrames = [];
       }
-      this.svgFrames.push(svgToDataUrl(el, this.serializer));
+      this.svgFrames.push(svgToDataUrl(svgPrepare(el, this.serializer)));
       if (!this.svgSize) {
         this.svgSize = extractSvgSize(el);
       }
