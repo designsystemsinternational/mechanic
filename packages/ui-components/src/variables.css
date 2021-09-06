@@ -8,12 +8,12 @@
   --mechanic-blue: #0f21c3;
   --mechanic-red: #f04b17;
   --mechanic-green: #21c30f;
-  --mechanic-param-font-size: 1em;
+  --mechanic-input-font-size: 1em;
   --mechanic-label-font-size: 0.75em;
-  --mechanic-param-font: "Object Sans", Helvetica, sans-serif;
+  --mechanic-input-font: "Object Sans", Helvetica, sans-serif;
   --mechanic-error: #f04b17;
-  --mechanic-param-height: 2.5em;
-  --mechanic-param-height-half: 1.25em;
-  --mechanic-param-height-quart: 0.75em;
-  --mechanic-param-height-eighth: 0.375em;
+  --mechanic-input-height: 2.5em;
+  --mechanic-input-height-half: 1.25em;
+  --mechanic-input-height-quart: 0.75em;
+  --mechanic-input-height-eighth: 0.375em;
 }

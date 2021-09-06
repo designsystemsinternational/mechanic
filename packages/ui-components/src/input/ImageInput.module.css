@@ -11,11 +11,11 @@
   justify-content: space-between;
   border: 1px solid currentColor;
   color: currentColor;
-  border-radius: var(--mechanic-param-height-half);
-  padding: 0 var(--mechanic-param-height) 0 var(--mechanic-param-height-quart);
+  border-radius: var(--mechanic-input-height-half);
+  padding: 0 var(--mechanic-input-height) 0 var(--mechanic-input-height-quart);
   display: flex;
   align-items: center;
-  min-height: var(--mechanic-param-height);
+  min-height: var(--mechanic-input-height);
   line-height: 1;
   background-color: var(--mechanic-background);
   font-size: inherit;
@@ -39,17 +39,17 @@
 }
 
 .thumbnail {
-  height: var(--mechanic-param-height-half);
+  height: var(--mechanic-input-height-half);
   border-radius: 3px;
 }
 
 .preview {
   position: absolute;
   z-index: 100;
-  left: var(--mechanic-param-height-quart);
-  right: var(--mechanic-param-height-quart);
-  margin-top: var(--mechanic-param-height-quart);
-  width: calc(100% - var(--mechanic-param-height-half));
+  left: var(--mechanic-input-height-quart);
+  right: var(--mechanic-input-height-quart);
+  margin-top: var(--mechanic-input-height-quart);
+  width: calc(100% - var(--mechanic-input-height-half));
   max-height: 200px;
   object-fit: contain;
   background-color: #f7f7f7;
@@ -69,12 +69,12 @@
   left: 0;
   right: 0;
   z-index: 20;
-  padding: 0 var(--mechanic-param-height-half) 0 0;
+  padding: 0 var(--mechanic-input-height-half) 0 0;
   height: 100%;
   width: 100%;
   border: none;
   outline: none;
-  border-radius: var(--mechanic-param-height-half);
+  border-radius: var(--mechanic-input-height-half);
   background: none;
   color: inherit;
   vertical-align: middle;
@@ -85,15 +85,15 @@
 .focus .container {
   outline: none;
   border: 2px solid currentColor;
-  padding-left: calc(var(--mechanic-param-height-quart) - 1px);
+  padding-left: calc(var(--mechanic-input-height-quart) - 1px);
 }
 .focus .browseButton {
-  padding-right: calc(var(--mechanic-param-height-half) - 1px);
+  padding-right: calc(var(--mechanic-input-height-half) - 1px);
 }
 
 .focus .container .preview {
-  left: calc(var(--mechanic-param-height-quart) - 1px);
-  right: calc(var(--mechanic-param-height-quart) - 1px);
+  left: calc(var(--mechanic-input-height-quart) - 1px);
+  right: calc(var(--mechanic-input-height-quart) - 1px);
 }
 
 .invalid {

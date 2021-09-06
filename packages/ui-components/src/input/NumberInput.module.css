@@ -15,12 +15,12 @@
   margin: 0;
   box-sizing: border-box;
   align-items: center;
-  height: var(--mechanic-param-height);
-  padding: 0 var(--mechanic-param-height-eighth) 0 var(--mechanic-param-height-quart);
+  height: var(--mechanic-input-height);
+  padding: 0 var(--mechanic-input-height-eighth) 0 var(--mechanic-input-height-quart);
   background-color: var(--mechanic-background);
   border: 2px solid transparent;
   color: currentColor;
-  border-radius: var(--mechanic-param-height-half);
+  border-radius: var(--mechanic-input-height-half);
   & .background {
     top: -2px;
   }
@@ -65,9 +65,9 @@
     margin-top: -0.65em; /* You need to specify a margin in Chrome, but in Firefox and IE it is automatic */
     border: none;
     background-color: currentColor;
-    border-radius: var(--mechanic-param-height-half);
-    height: var(--mechanic-param-height-half);
-    width: var(--mechanic-param-height-half);
+    border-radius: var(--mechanic-input-height-half);
+    height: var(--mechanic-input-height-half);
+    width: var(--mechanic-input-height-half);
     cursor: pointer;
     -webkit-appearance: none;
   }
@@ -85,9 +85,9 @@
   &::-moz-range-thumb {
     border: none;
     background-color: currentColor;
-    border-radius: var(--mechanic-param-height-half);
-    height: var(--mechanic-param-height-half);
-    width: var(--mechanic-param-height-half);
+    border-radius: var(--mechanic-input-height-half);
+    height: var(--mechanic-input-height-half);
+    width: var(--mechanic-input-height-half);
     cursor: pointer;
   }
 
@@ -95,9 +95,9 @@
   &::-ms-thumb {
     border: none;
     background-color: currentColor;
-    border-radius: var(--mechanic-param-height-half);
-    height: var(--mechanic-param-height-half);
-    width: var(--mechanic-param-height-half);
+    border-radius: var(--mechanic-input-height-half);
+    height: var(--mechanic-input-height-half);
+    width: var(--mechanic-input-height-half);
   }
 
   &::-webkit-slider-runnable-track {

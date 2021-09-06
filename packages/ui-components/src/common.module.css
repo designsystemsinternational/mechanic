@@ -41,10 +41,10 @@
   margin: 0;
   border: 1px solid currentColor;
   color: currentColor;
-  border-radius: var(--mechanic-param-height-half);
+  border-radius: var(--mechanic-input-height-half);
   display: flex;
   align-items: center;
-  height: var(--mechanic-param-height);
+  height: var(--mechanic-input-height);
   line-height: 1;
   background-color: var(--mechanic-background);
   font-size: inherit;
@@ -58,12 +58,12 @@
 }
 
 .input {
-  padding: 0 var(--mechanic-param-height) 0 var(--mechanic-param-height-quart);
+  padding: 0 var(--mechanic-input-height) 0 var(--mechanic-input-height-quart);
 }
 
 .button {
   justify-content: center;
-  padding: 0 var(--mechanic-param-height-quart);
+  padding: 0 var(--mechanic-input-height-quart);
   transition: transform 0.1s ease;
 }
 
@@ -85,16 +85,16 @@
 .focus .input {
   outline: none;
   border: 2px solid currentColor;
-  padding-left: calc(var(--mechanic-param-height-quart) - 1px);
-  padding-right: calc(var(--mechanic-param-height) - 1px);
+  padding-left: calc(var(--mechanic-input-height-quart) - 1px);
+  padding-right: calc(var(--mechanic-input-height) - 1px);
 }
 
 .focus .button,
 .button.focus {
   outline: none;
   border: 2px solid currentColor;
-  padding-left: calc(var(--mechanic-param-height-quart) - 1px);
-  padding-right: calc(var(--mechanic-param-height-quart) - 1px);
+  padding-left: calc(var(--mechanic-input-height-quart) - 1px);
+  padding-right: calc(var(--mechanic-input-height-quart) - 1px);
 }
 
 .suffix {
@@ -103,14 +103,14 @@
   z-index: 10;
   right: 2px;
   top: 2px;
-  border-radius: var(--mechanic-param-height-half);
+  border-radius: var(--mechanic-input-height-half);
   text-align: right;
-  background: var(--mechanic-param-background);
+  background: var(--mechanic-background);
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  height: calc(var(--mechanic-param-height) - 4px);
-  padding: 0 var(--mechanic-param-height-quart);
+  height: calc(var(--mechanic-input-height) - 4px);
+  padding: 0 var(--mechanic-input-height-quart);
 }
 
 .background {
@@ -118,10 +118,10 @@
   top: 0;
   left: 0;
   right: 0;
-  height: var(--mechanic-param-height);
+  height: var(--mechanic-input-height);
   z-index: 8;
   background-color: white;
-  border-radius: var(--mechanic-param-height-half);
+  border-radius: var(--mechanic-input-height-half);
 }
 
 .invalid .background:after {
@@ -132,7 +132,7 @@
   top: 0;
   left: 0;
   opacity: 0.15;
-  border-radius: var(--mechanic-param-height-half);
+  border-radius: var(--mechanic-input-height-half);
   background-color: currentColor;
   z-index: 9;
 }
