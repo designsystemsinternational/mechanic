@@ -7,6 +7,7 @@
 }
 .swatch {
   display: inline-block;
+  vertical-align: text-top;
   margin-right: var(--mechanic-input-height-quart);
   border-radius: var(--mechanic-input-height-quart);
   width: var(--mechanic-input-height-half);
