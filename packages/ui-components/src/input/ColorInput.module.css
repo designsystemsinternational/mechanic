@@ -1,13 +1,9 @@
 @import "../variables.css";
 
 .root {
-  z-index: 50;
 }
 .root .button {
   justify-content: flex-start;
-  &:not([disabled]):hover {
-    transform: translateY(0);
-  }
 }
 .swatch {
   display: inline-block;

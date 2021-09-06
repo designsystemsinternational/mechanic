@@ -69,7 +69,7 @@ export const ImageInput = props => {
 
   const rootClasses = classnames(commonCss.root, {
     [className]: className,
-    [css.invalid]: invalid,
+    [commonCss.invalid]: invalid,
     [css.disabled]: disabled,
     [css.focus]: focus
   });
@@ -140,7 +140,7 @@ export const ImageInput = props => {
             <Add className={css.plus} />
           </button>
         </div>
-        {invalid && <div className={commonCss.background} />}
+        <div className={commonCss.background} />
       </div>
       {preview && <img className={css.preview} src={preview} />}
       {invalid && error && (

@@ -54,6 +54,7 @@ export const NumberInput = props => {
     [commonCss.disabled]: disabled,
     [css.disabled]: disabled,
     [commonCss.focus]: focus,
+    [commonCss.invalid]: invalid,
     [css.focus]: focus
   });
 
@@ -133,7 +134,7 @@ export const NumberInput = props => {
             aria-invalid={invalid}
           />
           <div className={commonCss.suffix}>{invalid && <Invalid />}</div>
-          {invalid && <div className={commonCss.background} />}
+          <div className={commonCss.background} />
         </div>
       )}
       {invalid && error && (

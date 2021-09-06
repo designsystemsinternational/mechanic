@@ -76,10 +76,8 @@
     /* Hides the slider so custom styles can be added */
     border-color: transparent;
     width: 100%;
-
     background: transparent;
     cursor: pointer;
-
     color: transparent;
   }
 
@@ -90,6 +88,7 @@
     border-radius: var(--mechanic-param-height-half);
     height: var(--mechanic-param-height-half);
     width: var(--mechanic-param-height-half);
+    cursor: pointer;
   }
 
   /* All the same stuff for IE */
@@ -105,7 +104,7 @@
     border: 1px solid currentColor;
     border-radius: 2px;
     width: 100%;
-    height: 2px;
+    height: 0;
     background-color: currentColor;
     cursor: pointer;
   }
@@ -118,7 +117,7 @@
     border: 1px solid currentColor;
     border-radius: 2px;
     width: 100%;
-    height: 2px;
+    height: 0;
     background-color: currentColor;
     cursor: pointer;
   }
@@ -127,7 +126,7 @@
     border: 1px solid currentColor;
     border-radius: 2px;
     width: 100%;
-    height: 2px;
+    height: 0;
     background-color: currentColor;
     cursor: pointer;
     color: transparent;
