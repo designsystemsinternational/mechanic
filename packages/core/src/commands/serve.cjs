@@ -1,5 +1,6 @@
 const path = require("path");
 const express = require("express");
+const portfinder = require("portfinder");
 const history = require("connect-history-api-fallback");
 const { getConfig, setCustomInterrupt, greet, goodbye } = require("./utils.cjs");
 
@@ -30,7 +31,8 @@ const command = async argv => {
 
   spinner.start("Starting off server...");
   // Set port and express server
-  const port = await getPort({ port: config.port ? config.port : argv.port });
+  portfinder.basePort = config.port ?? argv.port;
+  const port = await portfinder.getPortPromise();
   const app = express();
   let status = "start-server";
 
