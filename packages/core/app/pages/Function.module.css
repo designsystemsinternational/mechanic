@@ -29,20 +29,20 @@
   border: none;
 }
 
-.params {
+.inputs {
   flex-grow: 1;
   overflow: auto;
   padding-right: 30px;
 
-  & > .param:first-child {
+  & > .input:first-child {
     padding-top: 10px;
   }
-  & > .param:last-child {
+  & > .input:last-child {
     padding-bottom: 5px;
   }
 }
 
-.param {
+.input {
   margin-bottom: 1em;
 }
 

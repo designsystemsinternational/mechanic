@@ -2,7 +2,7 @@
   position: relative;
   display: flex;
   margin-top: 8px;
-  font-family: var(--mechanic-param-font);
+  font-family: var(--mechanic-input-font);
 
   flex-direction: column;
 }

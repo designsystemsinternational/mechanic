@@ -7,7 +7,7 @@ import {
 } from "../../utils/blocks";
 import { Block } from "../../utils/blocks-components";
 
-export const handler = ({ params, mechanic }) => {
+export const handler = ({ inputs, mechanic }) => {
   const {
     width,
     ratio,
@@ -17,7 +17,7 @@ export const handler = ({ params, mechanic }) => {
     colors: colorsString,
     offset,
     image,
-  } = params;
+  } = inputs;
   const { done } = mechanic;
 
   const [href, setHref] = useState("");
@@ -66,7 +66,7 @@ export const handler = ({ params, mechanic }) => {
   );
 };
 
-export const params = {
+export const inputs = {
   width: {
     type: "number",
     default: 500,

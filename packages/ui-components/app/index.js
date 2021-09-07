@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { render } from "react-dom";
 import {
-  ParamInput,
+  MechanicInput,
   TextInput,
   NumberInput,
   ColorInput,
@@ -36,9 +36,9 @@ const App = () => {
 
   return (
     <div className={css.root}>
-      <h3>ParamInput component</h3>
+      <h3>MechanicInput component</h3>
       <div className={css.simpleBlock}>
-        <ParamInput
+        <MechanicInput
           name={"text"}
           values={values}
           attributes={{
@@ -51,7 +51,7 @@ const App = () => {
         />
       </div>
       <div className={css.simpleBlock}>
-        <ParamInput
+        <MechanicInput
           name={"toggle"}
           values={values}
           attributes={{
@@ -63,7 +63,7 @@ const App = () => {
         />
       </div>
       <div className={css.simpleBlock}>
-        <ParamInput
+        <MechanicInput
           name={"number"}
           values={values}
           attributes={{
@@ -75,7 +75,7 @@ const App = () => {
         />
       </div>
       <div className={css.simpleBlock}>
-        <ParamInput
+        <MechanicInput
           name={"range"}
           values={values}
           attributes={{
@@ -90,7 +90,7 @@ const App = () => {
         />
       </div>
       <div className={css.simpleBlock}>
-        <ParamInput
+        <MechanicInput
           name={"slider"}
           values={values}
           attributes={{
@@ -106,7 +106,7 @@ const App = () => {
         />
       </div>
       <div className={css.simpleBlock}>
-        <ParamInput
+        <MechanicInput
           name={"colorHex"}
           values={values}
           attributes={{
@@ -119,7 +119,7 @@ const App = () => {
         />
       </div>
       <div className={css.simpleBlock}>
-        <ParamInput
+        <MechanicInput
           name={"colorRgba"}
           values={values}
           attributes={{
@@ -131,7 +131,7 @@ const App = () => {
         />
       </div>
       <div className={css.simpleBlock}>
-        <ParamInput
+        <MechanicInput
           name={"textOption"}
           values={values}
           attributes={{
@@ -144,7 +144,7 @@ const App = () => {
         />
       </div>
       <div className={css.simpleBlock}>
-        <ParamInput
+        <MechanicInput
           name={"numberOption"}
           values={values}
           attributes={{
@@ -157,7 +157,7 @@ const App = () => {
         />
       </div>
       <div className={css.simpleBlock}>
-        <ParamInput
+        <MechanicInput
           name={"objectOption"}
           values={values}
           attributes={{
@@ -170,7 +170,7 @@ const App = () => {
         />
       </div>
       <div className={css.simpleBlock}>
-        <ParamInput
+        <MechanicInput
           name={"singleImage"}
           values={values}
           attributes={{
@@ -182,7 +182,7 @@ const App = () => {
         />
       </div>
       <div className={css.simpleBlock}>
-        <ParamInput
+        <MechanicInput
           name={"multipleImages"}
           values={values}
           attributes={{
@@ -193,9 +193,9 @@ const App = () => {
           onChange={handleChange}
         />
       </div>
-      <h3>Editable ParamInput components</h3>
+      <h3>Editable MechanicInput components</h3>
       <div className={css.pairBlock}>
-        <ParamInput
+        <MechanicInput
           name={"text"}
           values={values}
           attributes={{
@@ -206,7 +206,7 @@ const App = () => {
         />
       </div>
       <div className={css.pairBlock}>
-        <ParamInput
+        <MechanicInput
           name={"text"}
           values={values}
           attributes={{
@@ -218,7 +218,7 @@ const App = () => {
         />
       </div>
       <div className={css.pairBlock}>
-        <ParamInput
+        <MechanicInput
           name={"toggle"}
           values={values}
           attributes={{
@@ -229,7 +229,7 @@ const App = () => {
         />
       </div>
       <div className={css.pairBlock}>
-        <ParamInput
+        <MechanicInput
           name={"toggle"}
           values={values}
           attributes={{
@@ -241,7 +241,7 @@ const App = () => {
         />
       </div>
       <div className={css.pairBlock}>
-        <ParamInput
+        <MechanicInput
           name={"number"}
           values={values}
           attributes={{
@@ -252,7 +252,7 @@ const App = () => {
         />
       </div>
       <div className={css.pairBlock}>
-        <ParamInput
+        <MechanicInput
           name={"number"}
           values={values}
           attributes={{
@@ -264,7 +264,7 @@ const App = () => {
         />
       </div>
       <div className={css.pairBlock}>
-        <ParamInput
+        <MechanicInput
           name={"slider"}
           values={values}
           attributes={{
@@ -279,7 +279,7 @@ const App = () => {
         />
       </div>
       <div className={css.pairBlock}>
-        <ParamInput
+        <MechanicInput
           name={"slider"}
           values={values}
           attributes={{
@@ -295,7 +295,7 @@ const App = () => {
         />
       </div>
       <div className={css.pairBlock}>
-        <ParamInput
+        <MechanicInput
           name={"colorHex"}
           values={values}
           attributes={{
@@ -307,7 +307,7 @@ const App = () => {
         />
       </div>
       <div className={css.pairBlock}>
-        <ParamInput
+        <MechanicInput
           name={"colorHex"}
           values={values}
           attributes={{
@@ -320,7 +320,7 @@ const App = () => {
         />
       </div>
       <div className={css.pairBlock}>
-        <ParamInput
+        <MechanicInput
           name={"textOption"}
           values={values}
           attributes={{
@@ -332,7 +332,7 @@ const App = () => {
         />
       </div>
       <div className={css.pairBlock}>
-        <ParamInput
+        <MechanicInput
           name={"textOption"}
           values={values}
           attributes={{
@@ -345,7 +345,7 @@ const App = () => {
         />
       </div>
       <div className={css.pairBlock}>
-        <ParamInput
+        <MechanicInput
           name={"singleImage"}
           values={values}
           attributes={{
@@ -356,7 +356,7 @@ const App = () => {
         />
       </div>
       <div className={css.pairBlock}>
-        <ParamInput
+        <MechanicInput
           name={"singleImage"}
           values={values}
           attributes={{

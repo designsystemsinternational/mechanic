@@ -5,8 +5,8 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const NodePolyfillPlugin = require("node-polyfill-webpack-plugin");
 
-module.exports = (modeParam, designFunctions, distDir, publicPath) => {
-  const mode = modeParam === "dev" ? "development" : "production";
+module.exports = (modeParameter, designFunctions, distDir, publicPath) => {
+  const mode = modeParameter === "dev" ? "development" : "production";
   const isProduction = mode === "production";
 
   const devtool = isProduction ? "source-map" : "eval-source-map";

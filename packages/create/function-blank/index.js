@@ -1,5 +1,5 @@
-export const handler = ({ params, mechanic }) => {};
+export const handler = ({ inputs, mechanic }) => {};
 
-export const params = {};
+export const inputs = {};
 
 export const settings = {};

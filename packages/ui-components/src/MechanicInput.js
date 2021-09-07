@@ -2,7 +2,7 @@ import React, { useRef } from "react";
 import PropTypes from "prop-types";
 import classnames from "classnames";
 import Case from "case";
-import * as css from "./ParamInput.module.css";
+import * as css from "./MechanicInput.module.css";
 import { TextInput } from "./input/TextInput.js";
 import { NumberInput } from "./input/NumberInput.js";
 import { BooleanInput } from "./input/BooleanInput.js";
@@ -11,8 +11,8 @@ import { ColorInput } from "./input/ColorInput.js";
 import { ImageInput } from "./input/ImageInput.js";
 import { uid } from "./uid.js";
 
-export const ParamInput = ({ name, className, values, attributes, onChange, children }) => {
-  const id = useRef(uid("param-input"));
+export const MechanicInput = ({ name, className, values, attributes, onChange, children }) => {
+  const id = useRef(uid("mechanic-input"));
   const { type, label: _label, options, validation, editable } = attributes;
   const _default = attributes["default"];
   const label = _label || Case.title(name);
@@ -139,11 +139,11 @@ export const ParamInput = ({ name, className, values, attributes, onChange, chil
   );
 };
 
-ParamInput.defaultProps = {
+MechanicInput.defaultProps = {
   onChange: () => {}
 };
 
-ParamInput.propTypes = {
+MechanicInput.propTypes = {
   children: PropTypes.node,
   onChange: PropTypes.func,
   name: PropTypes.string,

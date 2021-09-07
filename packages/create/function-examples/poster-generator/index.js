@@ -14,9 +14,9 @@ import fontRegular from "./assets/PPObjectSans-Regular.otf";
 import fontHeavy from "./assets/PPObjectSans-Heavy.otf";
 import fontHeavySlanted from "./assets/PPObjectSans-HeavySlanted.otf";
 
-export const handler = ({ params, mechanic, sketch }) => {
+export const handler = ({ inputs, mechanic, sketch }) => {
   const { width, height, date, dayAndTime, artist, description, image, color } =
-    params;
+    inputs;
   const artistText = artist.toUpperCase();
   const descriptionText = description.toUpperCase();
   const dateText = date.toUpperCase();
@@ -353,7 +353,7 @@ export const handler = ({ params, mechanic, sketch }) => {
   };
 };
 
-export const params = {
+export const inputs = {
   date: {
     type: "text",
     default: "12.9.2021",

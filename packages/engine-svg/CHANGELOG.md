@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## 0.5.0 - 2021-09-06
+
+### Changed
+
+- Renamed design function's `params` export to `inputs`. This is not backwards compatible and is an API change.
+
 ## 0.4.1 - 2021-08-24
 
 ### Changed

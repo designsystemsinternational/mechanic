@@ -120,21 +120,21 @@ const cleanValues = (object, reference) =>
           return acc;
         }, {})
     : Object.entries(reference).reduce(
-        (current, param) => {
-          if (param[1].default) current[param[0]] = param[1].default;
-          else current[param[0]] = undefined;
+        (current, input) => {
+          if (input[1].default) current[input[0]] = input[1].default;
+          else current[input[0]] = undefined;
           return current;
         },
         { preset: "" }
       );
 
-const useValues = (name, params) => {
+const useValues = (name, inputs) => {
   const [allValues, setAllValues] = useLocalStorageState("function-values", {});
 
-  const values = cleanValues(allValues[name], params);
+  const values = cleanValues(allValues[name], inputs);
   const setValues = assignFunc => {
     setAllValues(allValues => {
-      const newValues = assignFunc(cleanValues(allValues[name], params));
+      const newValues = assignFunc(cleanValues(allValues[name], inputs));
       return Object.assign({}, allValues, { [name]: newValues });
     });
   };
