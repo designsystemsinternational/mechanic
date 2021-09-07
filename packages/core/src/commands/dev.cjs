@@ -1,5 +1,6 @@
 const path = require("path");
 const express = require("express");
+const getPort = require("get-port");
 const webpack = require("webpack");
 const webpackDevMiddleware = require("webpack-dev-middleware");
 const webpackHotMiddleware = require("webpack-hot-middleware");
@@ -51,7 +52,7 @@ const command = async argv => {
 
   spinner.start("Starting off server...");
   // Set port and express server
-  const port = config.port ? config.port : argv.port;
+  const port = await getPort({ port: config.port ? config.port : argv.port });
   const app = express();
 
   let status = "start-server";
