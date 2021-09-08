@@ -3,14 +3,14 @@ const inquirer = require("inquirer");
 const {
   spinners: { mechanicSpinner: spinner },
 } = require("@mechanic-design/utils");
-const { create, options, askToInstall } = require("@mechanic-design/create");
+const { create, options, askToInstall } = require("create-mechanic");
 const {
   baseExists,
   directoryExists,
   generateFunctionTemplate,
   getFunctionQuestions,
   content,
-} = require("@mechanic-design/create/new-function");
+} = require("create-mechanic/new-function");
 
 const { getIsMechanicProject } = require("./utils");
 

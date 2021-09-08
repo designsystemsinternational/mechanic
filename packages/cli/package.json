@@ -42,7 +42,7 @@
     "start": "node cli.js"
   },
   "dependencies": {
-    "@mechanic-design/create": "^0.5.2",
+    "create-mechanic": "^0.5.2",
     "@mechanic-design/utils": "^0.5.1",
     "inquirer": "^8.1.1",
     "resolve-cwd": "^3.0.0",

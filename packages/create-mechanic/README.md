@@ -1,4 +1,4 @@
-# @mechanic-design/create
+# create-mechanic
 
 ## Create Mechanic projects.
 

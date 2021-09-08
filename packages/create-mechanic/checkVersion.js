@@ -6,7 +6,7 @@ const {
   spinners: { mechanicSpinner: spinner },
 } = require("@mechanic-design/utils");
 
-const getLatestCommand = "npm exec @mechanic-design/create@latest";
+const getLatestCommand = "npm init mechanic@latest";
 
 const checkVersion = async () => {
   try {
