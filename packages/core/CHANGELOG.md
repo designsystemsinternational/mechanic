@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## 0.5.1 - 2021-09-07
+
+### Fixed
+
+- `dev` and `serve` commands look for available port to use instead of crushing.
+
 ## 0.5.0 - 2021-09-06
 
 ### Changed
