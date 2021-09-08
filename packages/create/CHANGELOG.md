@@ -7,7 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
-## 0.5.1 - 2021-09-07
+## 0.6.0 - 2021-09-08
+
+Deprecated package and moved to `create-mechanic`.
+
+## 0.5.2 - 2021-09-08
 
 ### Added
 
