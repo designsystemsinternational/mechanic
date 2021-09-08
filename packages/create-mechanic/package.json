@@ -7,7 +7,7 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/designsystemsinternational/mechanic",
-    "directory": "packages/create"
+    "directory": "packages/create-mechanic"
   },
   "bugs": {
     "url": "https://github.com/designsystemsinternational/mechanic/issues",
