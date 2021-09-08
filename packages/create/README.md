@@ -1,47 +1,5 @@
 # @mechanic-design/create
 
-## Create Mechanic projects.
+## DEPRECATED
 
-With NPM:
-
-`$ npm init @mechanic-design`
-
-## Use templates
-
-```
-# npm 6.x
-npm init @@mechanic-design my-project --template p5-video
-```
-
-```
-# npm 7+, extra double-dash is needed:
-npm init @@mechanic-design my-project -- --template p5-video
-```
-
-Current templates:
-
-- `svg-image`
-- `svg-video`
-- `canvas-image`
-- `canvas-video`
-- `p5-image`
-- `p5-video`
-- `react-image`
-- `react-video`
-
-## Use examples
-
-```
-# npm 6.x
-npm init @@mechanic-design my-project --example poster-generator
-```
-
-```
-# npm 7+, extra double-dash is needed:
-npm init @@mechanic-design my-project -- --example poster-generator
-```
-
-Current examples:
-
-- `poster-generator`
-- More coming soon!
+Use `npm init mechanic` instead or check [`create-mechanic`](https://github.com/designsystemsinternational/mechanic/tree/main/packages/create-mechanic).

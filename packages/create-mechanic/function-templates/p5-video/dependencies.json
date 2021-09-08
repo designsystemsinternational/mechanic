@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "@mechanic-design/engine-p5": "^0.6.0"
+  }
+}
