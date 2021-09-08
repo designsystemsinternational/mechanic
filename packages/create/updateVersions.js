@@ -2,8 +2,6 @@
 const fs = require("fs");
 const path = require("path");
 
-const currentVersion = require("../../lerna.json").version;
-
 (async () => {
   const projectTemplatePkgPath = path.join(
     __dirname,
@@ -11,12 +9,12 @@ const currentVersion = require("../../lerna.json").version;
     `package.json`
   );
   const projectTemplatePkg = require(projectTemplatePkgPath);
-  projectTemplatePkg.devDependencies[
-    "@mechanic-design/core"
-  ] = `^${currentVersion}`;
-  projectTemplatePkg.devDependencies[
-    "@mechanic-design/cli"
-  ] = `^${currentVersion}`;
+  projectTemplatePkg.devDependencies["@mechanic-design/core"] = `^${
+    require("../core/package.json").version
+  }`;
+  projectTemplatePkg.devDependencies["@mechanic-design/cli"] = `^${
+    require("../cli/package.json").version
+  }`;
   fs.writeFileSync(
     projectTemplatePkgPath,
     JSON.stringify(projectTemplatePkg, null, 2) + "\n"
@@ -37,6 +35,9 @@ const currentVersion = require("../../lerna.json").version;
       for (const depType in dependencies) {
         for (const dep in dependencies[depType]) {
           if (dep.startsWith("@mechanic-design/")) {
+            const mechanicDep = dep.replace("@mechanic-design", "");
+            const currentVersion =
+              require(`../${mechanicDep}/package.json`).version;
             dependencies[depType][dep] = `^${currentVersion}`;
           }
         }
