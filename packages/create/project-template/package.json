@@ -8,6 +8,6 @@
   },
   "devDependencies": {
     "@mechanic-design/core": "^0.5.1",
-    "@mechanic-design/cli": "^0.5.1"
+    "@mechanic-design/cli": "^0.5.2"
   }
 }
