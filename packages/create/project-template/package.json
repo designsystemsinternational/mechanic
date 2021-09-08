@@ -7,7 +7,7 @@
     "new": "mechanic new function"
   },
   "devDependencies": {
-    "@mechanic-design/core": "latest",
-    "@mechanic-design/cli": "latest"
+    "@mechanic-design/core": "^0.5.1",
+    "@mechanic-design/cli": "^0.5.1"
   }
 }

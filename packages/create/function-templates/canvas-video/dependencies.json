@@ -1,5 +1,5 @@
 {
   "dependencies": {
-    "@mechanic-design/engine-canvas": "latest"
+    "@mechanic-design/engine-canvas": "^0.5.1"
   }
 }
