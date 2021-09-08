@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## 0.5.1 - 2021-09-07
+
+### Added
+
+- Checks that current running version matches the latest release.
+- Version update script so that dependencies use versions instead of "latest"
+
 ## 0.5.0 - 2021-09-06
 
 ### Changed
