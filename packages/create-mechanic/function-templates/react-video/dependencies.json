@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "@mechanic-design/engine-react": "^0.5.1"
+  }
+}
