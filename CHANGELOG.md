@@ -7,13 +7,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## 0.6.1 - 2021-09-08
+## [0.6.2] - 2021-09-09
+
+### Changed
+
+- Tweaked CLI language
+
+### Fixed
+
+- Fixed bug when running on Windows
+- Fixed p5-video template creation bug
+
+## [0.6.1] - 2021-09-08
 
 ### Fixed
 
 - Fixed bug in `create-mechanic`.
 
-## 0.6.0 - 2021-09-08
+## [0.6.0] - 2021-09-08
 
 ### Changed
 
@@ -103,7 +114,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 First logged release
 
-[unreleased]: https://github.com/designsystemsinternational/mechanic/compare/v0.5.1...main
+[unreleased]: https://github.com/designsystemsinternational/mechanic/compare/v0.6.2...main
+[0.6.2]: https://github.com/designsystemsinternational/mechanic/releases/tag/v0.6.2
+[0.6.1]: https://github.com/designsystemsinternational/mechanic/releases/tag/v0.6.1
+[0.6.0]: https://github.com/designsystemsinternational/mechanic/releases/tag/v0.6.0
 [0.5.1]: https://github.com/designsystemsinternational/mechanic/releases/tag/v0.5.1
 [0.5.0]: https://github.com/designsystemsinternational/mechanic/releases/tag/v0.5.0
 [0.4.1]: https://github.com/designsystemsinternational/mechanic/releases/tag/v0.4.1
