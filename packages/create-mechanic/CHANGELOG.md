@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### Fixed
+
+- Tweaked CLI language. Installation message shortened and tweaked "first" design function creation talk.
+
 ## 0.6.1 - 2021-09-08
 
 ### Fixed

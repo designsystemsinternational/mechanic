@@ -67,7 +67,7 @@ const newFunctionCommand = async (argv) => {
       usesBase: typeOfBaseUsed,
       base,
     },
-    { ...config, isFirst: true }
+    { ...config, isFirst: false }
   );
   const functionAnswers = await inquirer.prompt(questions);
   await sleep();
