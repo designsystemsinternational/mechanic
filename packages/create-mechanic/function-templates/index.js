@@ -27,7 +27,7 @@ const options = [
   {
     name: "p5.js Video",
     type: "Canvas",
-    dir: "p5-animation",
+    dir: "p5-video",
   },
   {
     name: "React Image",

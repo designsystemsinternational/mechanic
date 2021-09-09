@@ -65,12 +65,17 @@ ${bgBlue(
 `,
 
   functionBaseQuestion: (isFirst = true) =>
-    `Do you want to use a template or an example as a base for your ${
-      isFirst ? "first" : ""
+    `Do you want to use a template or an example as a base for your${
+      isFirst ? " first" : ""
     } design function?`,
-  functionTemplateQuestion: `Select template for your first design function`,
-  functionExampleQuestion: `Select example to use as base for your first design function`,
-  functionNameQuestion: "Name your first design function",
+  functionTemplateQuestion: (isFirst = true) =>
+    `Select template for your${isFirst ? " first" : ""} design function`,
+  functionExampleQuestion: (isFirst = true) =>
+    `Select example to use as base for your${
+      isFirst ? " first" : ""
+    } design function`,
+  functionNameQuestion: (isFirst = true) =>
+    `Name your${isFirst ? " first" : ""} design function`,
   functionNameExistsError:
     "Directory already exists. Enter name that doesn't exists.",
   generateFunctionStart: "Adding design function to project...",
@@ -89,9 +94,9 @@ ${bgBlue(
 
   confirmInstallQuestion:
     "Do you wish to install dependencies for your project right away?",
-  installStart:
-    "Installing dependencies. This may take a few minutes. Trying with yarn.",
-  installSuccess: (method) => `Failed to install with ${method}.`,
+  installTry: (method) => `Trying with ${method}.`,
+  installSucceed: (method) => `Installed dependencies with ${method}.`,
+  installFailed: (method) => `Failed to install with ${method}.`,
   installFail:
     "Failed to install with npm. Try installing by yourself to check the issue.",
 

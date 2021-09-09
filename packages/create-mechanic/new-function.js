@@ -65,7 +65,7 @@ const getFunctionQuestions = (initialAnswers, config = {}) => [
   {
     name: "template",
     type: "list",
-    message: content.functionTemplateQuestion,
+    message: content.functionTemplateQuestion(config.isFirst),
     default:
       initialAnswers.usesBase === "template" ? initialAnswers.base : null,
     choices: Object.values(functionTemplateOptions).map((option) => ({
@@ -78,7 +78,7 @@ const getFunctionQuestions = (initialAnswers, config = {}) => [
   {
     name: "example",
     type: "list",
-    message: content.functionExampleQuestion,
+    message: content.functionExampleQuestion(config.isFirst),
     default: initialAnswers.usesBase === "example" ? initialAnswers.base : null,
     choices: Object.values(functionExampleOptions).map((option) => ({
       name: `${option.name} (${option.type})`,
@@ -90,7 +90,7 @@ const getFunctionQuestions = (initialAnswers, config = {}) => [
   {
     name: "functionName",
     type: "input",
-    message: content.functionNameQuestion,
+    message: content.functionNameQuestion(config.isFirst),
     default: initialAnswers.usesBase
       ? initialAnswers.base
       : initialAnswers.functionName || "my-function",

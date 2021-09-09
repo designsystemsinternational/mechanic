@@ -84,27 +84,26 @@ const generateProjectTemplate = async (projectName, typeOfBaseUsed) => {
 };
 
 const installDependencies = async (projectName) => {
-  spinner.start(content.installStart);
-
   // Project directory
   const cwd = path.resolve(projectName);
 
   try {
+    spinner.start(content.installTry("yarn"));
     // Install with yarn
     await execa("yarn", ["install"], { cwd });
     // End success UI spinner
-    spinner.succeed("Installed dependencies with yarn.");
+    spinner.succeed(content.installSucceed("yarn"));
     return "yarn";
   } catch (err) {
     if (err.failed) {
       // Notify failure
-      spinner.warn(content.installSuccess("yarn"));
-      spinner.start("Trying with npm.");
+      spinner.warn(content.installFailed("yarn"));
+      spinner.start(content.installTry("npm"));
       try {
         // Install with npm
         await execa("npm", ["install"], { cwd });
         // End success UI spinner
-        spinner.succeed(content.installSuccess("npm"));
+        spinner.succeed(content.installSucceed("npm"));
         return "npm";
       } catch (npmErr) {
         // Notify failure

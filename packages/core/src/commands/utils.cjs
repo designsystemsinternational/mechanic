@@ -36,8 +36,8 @@ const searchDesignFunctions = (dir, callback, depth = 0) => {
 
 const setUpFunctionDir = path.resolve(path.join(__dirname, "..", "function-set-up.js"));
 const getScripContent = designFunctionPath => `
-const designFunction = require("${designFunctionPath}");
-const { setUp } = require("${setUpFunctionDir}");
+const designFunction = require("${designFunctionPath.split(path.sep).join("/")}");
+const { setUp } = require("${setUpFunctionDir.split(path.sep).join("/")}");
 setUp(designFunction)
 if (module.hot) {
   // Accept hot update
