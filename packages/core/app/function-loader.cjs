@@ -1,3 +1,4 @@
+const path = require("path");
 const { getOptions } = require("loader-utils");
 
 module.exports = function () {
@@ -8,7 +9,9 @@ module.exports = function () {
     if (requireFunctions !== "") {
       requireFunctions += ",\n";
     }
-    requireFunctions += `"${name}": require("${designFunctionObj.original}")`;
+    requireFunctions += `"${name}": require("${designFunctionObj.original
+      .split(path.sep)
+      .join("/")}")`;
   });
 
   const result = `
