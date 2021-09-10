@@ -1,0 +1,36 @@
+.root {
+  position: fixed;
+  right: 0;
+  bottom: 150px;
+  z-index: 1;
+
+  -webkit-transform-origin: 100% 0;
+  -moz-transform-origin: 100% 0;
+  -ms-transform-origin: 100% 0;
+  -o-transform-origin: 100% 0;
+
+  -webkit-transform: translate(-35px) rotate(270deg);
+  -moz-transform: translate(-35px) rotate(270deg);
+  -ms-transform: translate(-35px) rotate(270deg);
+  -o-transform: translate(-35px) rotate(270deg);
+
+  padding: 0;
+  height: 35px;
+  color: currentColor;
+  border-top: 1px solid currentColor;
+  border-left: 1px solid currentColor;
+  border-right: 1px solid currentColor;
+  border-bottom: none;
+  background-color: #f7f7f7;
+  border-radius: 20px 20px 0 0;
+  font-family: inherit;
+  font-size: var(--mechanic-input-font-size);
+
+  & a {
+    color: inherit;
+    text-decoration: none;
+    font-weight: initial;
+    padding: 1em;
+    font-family: inherit;
+  }
+}
