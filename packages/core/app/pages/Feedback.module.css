@@ -4,15 +4,8 @@
   bottom: 150px;
   z-index: 1;
 
-  -webkit-transform-origin: 100% 0;
-  -moz-transform-origin: 100% 0;
-  -ms-transform-origin: 100% 0;
-  -o-transform-origin: 100% 0;
-
-  -webkit-transform: translate(-35px) rotate(270deg);
-  -moz-transform: translate(-35px) rotate(270deg);
-  -ms-transform: translate(-35px) rotate(270deg);
-  -o-transform: translate(-35px) rotate(270deg);
+  transform-origin: 100% 0;
+  transform: translate(-35px) rotate(270deg);
 
   padding: 0;
   height: 35px;
