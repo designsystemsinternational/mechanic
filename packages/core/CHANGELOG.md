@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## 0.6.4 - 2021-09-10
+
+### Added
+
+- Fixed anchor into App that link to feedback form.
+
 ## 0.6.3 - 2021-09-10
 
 ### Fixed
