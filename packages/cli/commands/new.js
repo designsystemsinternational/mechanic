@@ -18,6 +18,7 @@ const log = console.log;
 const logSuccess = spinner.succeed;
 const logFail = spinner.fail;
 const sleep = (ms = 1000) => new Promise((resolve) => setTimeout(resolve, ms));
+const nullishCoalescingOp = (arg1, arg2) => (arg1 != null ? arg1 : arg2);
 
 const newFunctionCommand = async (argv) => {
   const isMechanicProject = getIsMechanicProject();
@@ -72,15 +73,20 @@ const newFunctionCommand = async (argv) => {
   const functionAnswers = await inquirer.prompt(questions);
   await sleep();
 
-  const usesBase = functionAnswers.usesBase ?? questions[0].default;
+  const usesBase = nullishCoalescingOp(
+    functionAnswers.usesBase,
+    questions[0].default
+  );
   const finalBase =
     usesBase === "Template"
-      ? functionAnswers.template ?? questions[1].default
+      ? nullishCoalescingOp(functionAnswers.template, questions[1].default)
       : usesBase === "Example"
-      ? functionAnswers.example ?? questions[2].default
+      ? nullishCoalescingOp(functionAnswers.example, questions[2].default)
       : null;
-  const finalFunctionName =
-    functionAnswers.functionName ?? questions[3].default;
+  const finalFunctionName = nullishCoalescingOp(
+    functionAnswers.functionName,
+    questions[3].default
+  );
   const functionDir = await generateFunctionTemplate(
     ".",
     {

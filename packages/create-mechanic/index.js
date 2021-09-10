@@ -23,6 +23,7 @@ const log = console.log;
 const logSuccess = spinner.succeed;
 const logFail = spinner.fail;
 const sleep = (ms = 1000) => new Promise((resolve) => setTimeout(resolve, ms));
+const nullishCoalescingOp = (arg1, arg2) => (arg1 != null ? arg1 : arg2);
 
 const askToInstall = async (projectName) => {
   // Install dependencies in new project directory
@@ -76,7 +77,10 @@ const command = async (argv) => {
   });
   const answers = await inquirer.prompt(projectQuestion);
   await sleep();
-  const projectName = answers.project ?? projectQuestion[0].default;
+  const projectName = nullishCoalescingOp(
+    answers.project,
+    projectQuestion[0].default
+  );
   await generateProjectTemplate(projectName, typeOfBaseUsed);
 
   // Explain design functions and confirm
@@ -99,15 +103,26 @@ const command = async (argv) => {
     });
     const functionAnswers = await inquirer.prompt(functionQuestions);
     await sleep();
-    const usesBase = functionAnswers.usesBase ?? functionQuestions[0].default;
+    const usesBase = nullishCoalescingOp(
+      functionAnswers.usesBase,
+      functionQuestions[0].default
+    );
     const finalBase =
       usesBase === "Template"
-        ? functionAnswers.template ?? functionQuestions[1].default
+        ? nullishCoalescingOp(
+            functionAnswers.template,
+            functionQuestions[1].default
+          )
         : usesBase === "Example"
-        ? functionAnswers.example ?? functionQuestions[2].default
+        ? nullishCoalescingOp(
+            functionAnswers.example,
+            functionQuestions[2].default
+          )
         : null;
-    const functionName =
-      functionAnswers.functionName ?? functionQuestions[3].default;
+    const functionName = nullishCoalescingOp(
+      functionAnswers.functionName,
+      functionQuestions[3].default
+    );
     await generateFunctionTemplate(projectName, {
       typeOfBaseUsed: usesBase,
       base: finalBase,

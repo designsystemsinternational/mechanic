@@ -41,7 +41,9 @@ const command = async argv => {
   const [designFunctions] = generateTempScripts(functionsPath);
   spinner.succeed("Temp files created!");
 
-  const distDir = path.normalize(config.distDir ?? argv.distDir ?? "./dist");
+  const distDir = path.normalize(
+    config.distDir != null ? config.distDir : argv.distDir != null ? argv.distDir : "./dist"
+  );
   const publicPath = config.publicPath;
 
   spinner.start("Loading webpack compilation...");
