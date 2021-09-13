@@ -7,11 +7,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
-## 0.6.4 - 2021-09-13
+## 0.6.4 - 2021-09-14
 
 ### Added
 
 - Fixed anchor into App that link to feedback form.
+
+### Changed
+
+- Default preset is named "Custom" now and behaves more nicely
+
+### Fixed
+
+- Changed colors in ui-components to be consistent with colors in docs
 
 ## 0.6.3 - 2021-09-10
 
