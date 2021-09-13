@@ -4,11 +4,8 @@
   bottom: 150px;
   z-index: 1;
 
-  transform-origin: 100% 0;
-  transform: translate(-35px) rotate(270deg);
-
   padding: 0;
-  height: 35px;
+  height: 45px;
   color: currentColor;
   border-top: 1px solid currentColor;
   border-left: 1px solid currentColor;
@@ -19,11 +16,20 @@
   font-family: inherit;
   font-size: var(--mechanic-input-font-size);
 
+  transform-origin: 100% 0;
+  transform: translate(-35px) rotate(270deg);
+  transition: transform 0.25s ease;
+  &:hover {
+    transform: translate(-45px) rotate(270deg);
+  }
+
   & a {
     color: inherit;
     text-decoration: none;
     font-weight: initial;
-    padding: 1em;
     font-family: inherit;
+    display: block;
+    margin-top: -7px;
+    padding: 0em 1em;
   }
 }
