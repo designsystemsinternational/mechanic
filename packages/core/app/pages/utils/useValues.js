@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback, useRef } from "react";
+import { NO_PRESET_VALUE } from "./presets.js";
 
 const copySerializable = obj => {
   if (typeof obj !== "object") {
@@ -125,7 +126,7 @@ const cleanValues = (object, reference) =>
           else current[input[0]] = undefined;
           return current;
         },
-        { preset: "" }
+        { preset: NO_PRESET_VALUE }
       );
 
 const useValues = (name, inputs) => {
