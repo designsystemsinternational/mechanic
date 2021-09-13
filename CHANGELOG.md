@@ -13,6 +13,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Fixed anchor into App that link to feedback form.
 
+### Changed
+
+- Default preset is named "Custom" now
+- Preset value changes to "Custom" after value of input is changed away from current preset
+
 ### Fixed
 
 - Changed colors in ui-components to be consistent with colors in docs
