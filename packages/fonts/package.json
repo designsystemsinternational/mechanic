@@ -1,6 +1,6 @@
 {
   "name": "@mechanic-design/fonts",
-  "version": "0.4.2",
+  "version": "0.6.3",
   "description": "Fonts used by Mechanic.",
   "license": "MIT",
   "homepage": "https://github.com/designsystemsinternational/mechanic#readme",
@@ -41,5 +41,6 @@
     "IBM-Plex-Mono/IBMPlexMono-Italic.otf",
     "IBM-Plex-Mono/IBMPlexMono-Bold.otf",
     "IBM-Plex-Mono/IBMPlexMono-BoldItalic.otf"
-  ]
+  ],
+  "gitHead": "a40b8eb1dba5138782d47cbc6d25a18ec8cb1cea"
 }

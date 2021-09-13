@@ -8,8 +8,8 @@ import {
 } from "../../utils/blocks";
 import { Block } from "../../utils/blocks-components";
 
-export const handler = ({ params, mechanic }) => {
-  const { width, height, allSameColors } = params;
+export const handler = ({ inputs, mechanic }) => {
+  const { width, height, allSameColors } = inputs;
   const { done } = mechanic;
 
   const words = ["DESIGN", "SYSTEMS", "INTERNATIONAL"];
@@ -113,7 +113,7 @@ export const handler = ({ params, mechanic }) => {
   );
 };
 
-export const params = {
+export const inputs = {
   width: {
     type: "number",
     default: 300,

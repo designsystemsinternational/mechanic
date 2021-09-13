@@ -7,6 +7,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## 0.6.0 - 2021-09-08
+
+Deprecated package and moved to `create-mechanic`.
+
+## 0.5.2 - 2021-09-08
+
+### Added
+
+- Checks that current running version matches the latest release.
+- Version update script so that dependencies use versions instead of "latest"
+
+## 0.5.0 - 2021-09-06
+
+### Changed
+
+- Renamed design function's `params` export to `inputs`. This is not backwards compatible and is an API change.
+
 ## 0.4.1 - 2021-08-24
 
 ### Changed

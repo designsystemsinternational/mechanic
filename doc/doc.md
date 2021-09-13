@@ -32,21 +32,21 @@ The following are the main exports needed to define a Mechanic design function:
 
 Actual function to run that would generate static or dynamic assets.
 The received parameters for this function depend on the engine that renders what it produces.
-Usually receives custom parameter values defined in the `params` export, and a `Mechanic` instance that allows the actual rendering to occur.
+Usually receives custom input values defined in the `inputs` export, and a `mechanic` instance that allows the actual rendering to occur.
 
 [Go to Engines and Handlers](#engines-and-handlers) for further details on how to write handlers.
 
-### `params`
+### `inputs`
 
-Object that defines custom parameters for the design function.
-Every key is used as a name for each parameter, and the corresponding object value describes the parameter. Each parameter must have a `type` key, which defines the type of value.
+Object that defines custom inputs for the design function.
+Every key is used as a name for each input, and the corresponding object value describes the input. Each input must have a `type` key, which defines the type of value.
 
-From this the React app shows input controls that lets the user change the values of each parameter.
+From this the Mechanic UI app shows input controls that lets the user change the values of each input.
 
-For example, the following `params` export says the corresponding design function will receive changable parameters `width`, `height` and `name`. Both `width` and `height` are numbers but only the latter has mininum and maximum values.
+For example, the following `inputs` export says the corresponding design function will receive changable inputs `width`, `height` and `name`. Both `width` and `height` are numbers but only the latter has minimum and maximum values.
 
 ```javascript
-export const params = {
+export const inputs = {
   width: {
     type: "number",
     default: 400,
@@ -64,7 +64,7 @@ export const params = {
 };
 ```
 
-[Go to parameters](#parameters) to check the supported types of parameters and customization options.
+[Go to inputs](#inputs) to check the supported types of inputs and customization options.
 
 ### `settings`
 
@@ -84,13 +84,13 @@ export const settings = {
 
 ### (Optional) `presets`
 
-Option object export that defines different named preseted values for the design function parameters.
+Option object export that defines different named sets of values for the design function inputs.
 
 #### Bigger Example
 
 ```javascript
-export const handler = (params, mechanic) => {
-  const { width, height, primaryColor, secondaryColor, numberOfRects } = params;
+export const handler = ({ inputs, mechanic }) => {
+  const { width, height, primaryColor, secondaryColor, numberOfRects } = inputs;
 
   const canvas = document.createElement("canvas");
   canvas.width = width;
@@ -114,7 +114,7 @@ export const handler = (params, mechanic) => {
   mechanic.done(canvas);
 };
 
-export const params = {
+export const inputs = {
   width: {
     type: "number",
     default: 400,
@@ -165,11 +165,11 @@ export const settings = {
 
 ...
 
-### Parameters
+### Inputs
 
 > Required props marked with (\*)
 
-Parameters are defined by their `type`:
+Inputs are defined by their `type`:
 
 | Type      | UI                     | Resulting Value Type        |
 | --------- | ---------------------- | --------------------------- |
@@ -183,9 +183,9 @@ Parameters are defined by their `type`:
 
 | Prop         | Type                                        | Default   | Description                                                                                                        |
 | ------------ | ------------------------------------------- | --------- | ------------------------------------------------------------------------------------------------------------------ |
-| type (\*)    | `string`                                    |           | `"text"` defines a param of type 'text'                                                                            |
+| type (\*)    | `string`                                    |           | `"text"` defines a input of type 'text'                                                                            |
 | default (\*) | `string`                                    |           | Default to this value.                                                                                             |
-| editable     | `boolean\|function(params){return boolean}` | true      | Enables or disables the field in the UI.                                                                           |
+| editable     | `boolean\|function(inputs){return boolean}` | true      | Enables or disables the field in the UI.                                                                           |
 | options      | `['value']` \| `{label: value, ...}`        | undefined | If present, displays a dropdown with the provided options. All option values must match be a valid `text`          |
 | validation   | `function`                                  | undefined | If present, executes function with the new value. Should return a string describing the error or null if no error. |
 | label        | `string`                                    | undefined | If present, it's used as a label for the corresponding UI input in the Mechanic app.                               |
@@ -194,13 +194,13 @@ Parameters are defined by their `type`:
 
 | Prop         | Type                                        | Default   | Description                                                                                                        |
 | ------------ | ------------------------------------------- | --------- | ------------------------------------------------------------------------------------------------------------------ |
-| type (\*)    | `string`                                    |           | `"number"` defines a param of type 'number'                                                                        |
+| type (\*)    | `string`                                    |           | `"number"` defines a input of type 'number'                                                                        |
 | default (\*) | `number`                                    |           | Default to this value.                                                                                             |
-| min          | `number`                                    | undefined | Mininum acceptable value (required if `slider: true`)                                                              |
+| min          | `number`                                    | undefined | Minimum acceptable value (required if `slider: true`)                                                              |
 | max          | `number`                                    | undefined | Maximum acceptable value (required if `slider: true`)                                                              |
 | step         | `number`                                    | undefined | Step to increase of decrease value by                                                                              |
 | slider       | `boolean`                                   | undefined | Wether to display input as as range slider. (if true, min and max are required)                                    |
-| editable     | `boolean\|function(params){return boolean}` | true      | Enables or disables the field in the UI.                                                                           |
+| editable     | `boolean\|function(inputs){return boolean}` | true      | Enables or disables the field in the UI.                                                                           |
 | options      | `[value]` \| `{label: value, ...}`          | undefined | If present, displays a dropdown with the provided options. All option values must match be a valid `number`        |
 | validation   | `function`                                  | undefined | If present, executes function with the new value. Should return a string describing the error or null if no error. |
 | label        | `string`                                    | undefined | If present, it's used as a label for the corresponding UI input in the Mechanic app.                               |
@@ -209,9 +209,9 @@ Parameters are defined by their `type`:
 
 | Prop       | Type                                        | Default   | Description                                                                                                        |
 | ---------- | ------------------------------------------- | --------- | ------------------------------------------------------------------------------------------------------------------ |
-| type (\*)  | `string`                                    |           | `"boolean"` defines a param of type 'boolean'                                                                      |
+| type (\*)  | `string`                                    |           | `"boolean"` defines a input of type 'boolean'                                                                      |
 | default    | `boolean`                                   | false     | Default to this value.                                                                                             |
-| editable   | `boolean\|function(params){return boolean}` | true      | Enables or disables the field in the UI.                                                                           |
+| editable   | `boolean\|function(inputs){return boolean}` | true      | Enables or disables the field in the UI.                                                                           |
 | validation | `function`                                  | undefined | If present, executes function with the new value. Should return a string describing the error or null if no error. |
 | label      | `string`                                    | undefined | If present, it's used as a label for the corresponding UI input in the Mechanic app.                               |
 
@@ -219,10 +219,10 @@ Parameters are defined by their `type`:
 
 | Prop         | Type                                        | Default   | Description                                                                                                        |
 | ------------ | ------------------------------------------- | --------- | ------------------------------------------------------------------------------------------------------------------ |
-| type (\*)    | `string`                                    |           | `"color"` defines a param of type 'color'                                                                          |
+| type (\*)    | `string`                                    |           | `"color"` defines a input of type 'color'                                                                          |
 | default (\*) | `string`                                    | undefined | Default to this value.                                                                                             |
 | model        | `rgba\|hex`                                 | `rgba`    | The color model to be used                                                                                         |
-| editable     | `boolean\|function(params){return boolean}` | true      | Enables or disables the field in the UI.                                                                           |
+| editable     | `boolean\|function(inputs){return boolean}` | true      | Enables or disables the field in the UI.                                                                           |
 | options      | `['value']` \| `{label: value, ...}`        | undefined | If present, displays a dropdown with the provided options. All option values must match be a valid `color`         |
 | validation   | `function`                                  | undefined | If present, executes function with the new value. Should return a string describing the error or null if no error. |
 | label        | `string`                                    | undefined | If present, it's used as a label for the corresponding UI input in the Mechanic app.                               |
@@ -231,9 +231,9 @@ Parameters are defined by their `type`:
 
 | Prop       | Type                                        | Default   | Description                                                                                                                     |
 | ---------- | ------------------------------------------- | --------- | ------------------------------------------------------------------------------------------------------------------------------- |
-| type (\*)  | `string`                                    |           | `"image"` defines a param of type 'image'                                                                                       |
+| type (\*)  | `string`                                    |           | `"image"` defines a input of type 'image'                                                                                       |
 | multiple   | `boolean`                                   | false     | Wether it should accept multiple images. If it's `false` it returns an `File` object, if `true` it returns a `FileList` object. |
-| editable   | `boolean\|function(params){return boolean}` | true      | Enables or disables the field in the UI.                                                                                        |
+| editable   | `boolean\|function(inputs){return boolean}` | true      | Enables or disables the field in the UI.                                                                                        |
 | validation | `function`                                  | undefined | If present, executes function with file object to validate. Should return a string describing the error or `null` if no error   |
 | label      | `string`                                    | undefined | If present, it's used as a label for the corresponding UI input in the Mechanic app.                                            |
 

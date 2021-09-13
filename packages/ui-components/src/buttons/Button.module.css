@@ -8,7 +8,7 @@
   }
 
   &:active:not([disabled]) {
-    transform: translate(0, 1px);
+    transform: translateY(1px);
   }
 }
 

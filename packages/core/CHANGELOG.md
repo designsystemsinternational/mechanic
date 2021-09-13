@@ -7,6 +7,30 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## 0.6.3 - 2021-09-10
+
+### Fixed
+
+- Replaced nullish coalescing operator used in node scripts to support 12.20 onwards
+
+## 0.6.2 - 2021-09-09
+
+### Fixed
+
+- Fixed bug involving importing scripts in Windows without using POSIX.
+
+## 0.5.1 - 2021-09-07
+
+### Fixed
+
+- `dev` and `serve` commands look for available port to use instead of crushing.
+
+## 0.5.0 - 2021-09-06
+
+### Changed
+
+- Renamed design function's `params` export to `inputs`. This is not backwards compatible and is an API change.
+
 ### Fixed
 
 - HMR is now correctly enabled while running `npm run dev` on Mechanic project.

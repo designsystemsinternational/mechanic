@@ -7,7 +7,7 @@ import {
 } from "../../utils/blocks";
 import { Block } from "../../utils/blocks-components";
 
-export const handler = ({ params, mechanic }) => {
+export const handler = ({ inputs, mechanic }) => {
   const {
     width,
     ratio,
@@ -17,7 +17,7 @@ export const handler = ({ params, mechanic }) => {
     secondColor,
     thirdColor,
     offset,
-  } = params;
+  } = inputs;
   const { done } = mechanic;
 
   const rows = 2;
@@ -79,7 +79,7 @@ export const handler = ({ params, mechanic }) => {
     </svg>
   );
 };
-export const params = {
+export const inputs = {
   width: {
     type: "number",
     default: 500,
@@ -102,25 +102,25 @@ export const params = {
     type: "text",
     options: flagNames,
     default: flagNames[0],
-    editable: (params) => params.colorMode === "Pick Flag",
+    editable: (inputs) => inputs.colorMode === "Pick Flag",
   },
   firstColor: {
     type: "color",
     model: "hex",
     default: "#11457e",
-    editable: (params) => params.colorMode === "Custom Colors",
+    editable: (inputs) => inputs.colorMode === "Custom Colors",
   },
   secondColor: {
     type: "color",
     model: "hex",
     default: "#d7141a",
-    editable: (params) => params.colorMode === "Custom Colors",
+    editable: (inputs) => inputs.colorMode === "Custom Colors",
   },
   thirdColor: {
     type: "color",
     model: "hex",
     default: "#f1f1f1",
-    editable: (params) => params.colorMode === "Custom Colors",
+    editable: (inputs) => inputs.colorMode === "Custom Colors",
   },
   offset: {
     type: "number",

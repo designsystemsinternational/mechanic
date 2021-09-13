@@ -5,8 +5,8 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const NodePolyfillPlugin = require("node-polyfill-webpack-plugin");
 
-module.exports = (modeParam, designFunctions, distDir, publicPath) => {
-  const mode = modeParam === "dev" ? "development" : "production";
+module.exports = (modeParameter, designFunctions, distDir, publicPath) => {
+  const mode = modeParameter === "dev" ? "development" : "production";
   const isProduction = mode === "production";
 
   const devtool = isProduction ? "source-map" : "eval-source-map";
@@ -167,7 +167,7 @@ module.exports = (modeParam, designFunctions, distDir, publicPath) => {
     library: {
       type: "umd"
     },
-    publicPath: publicPath ?? "",
+    publicPath: publicPath != null ? publicPath : "",
     filename: isProduction ? "[contenthash]-[name].js" : "[fullhash]-[name].js",
     chunkFilename: isProduction
       ? "[contenthash]-[name].[id].chunk.js"

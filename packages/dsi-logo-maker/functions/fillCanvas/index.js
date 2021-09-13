@@ -7,8 +7,8 @@ import {
 } from "../../utils/blocks";
 import { drawBlock } from "../../utils/blocks-canvas";
 
-export const handler = ({ params, mechanic }) => {
-  const { width, height, logoWidth, logoRatio } = params;
+export const handler = ({ inputs, mechanic }) => {
+  const { width, height, logoWidth, logoRatio } = inputs;
 
   const rows = 2;
   const cols = 13;
@@ -51,7 +51,7 @@ export const handler = ({ params, mechanic }) => {
   mechanic.done(canvas);
 };
 
-export const params = {
+export const inputs = {
   width: {
     type: "number",
     default: 300,

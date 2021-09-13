@@ -6,7 +6,7 @@ import {
 } from "../../utils/blocks";
 import { drawBlock } from "../../utils/blocks-canvas";
 
-export const handler = ({ params, mechanic }) => {
+export const handler = ({ inputs, mechanic }) => {
   const {
     width,
     ratio,
@@ -15,7 +15,7 @@ export const handler = ({ params, mechanic }) => {
     rows,
     colors: colorsString,
     offset,
-  } = params;
+  } = inputs;
 
   const words = text.split(" ").map((s) => s.toUpperCase());
   const colors = getColors("Custom Colors", null, colorsString.split(","));
@@ -43,7 +43,7 @@ export const handler = ({ params, mechanic }) => {
   mechanic.done(canvas);
 };
 
-export const params = {
+export const inputs = {
   width: {
     type: "number",
     default: 500,

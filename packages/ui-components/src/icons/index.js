@@ -1,13 +1,13 @@
 import React from "react";
 
-export const Invalid = ({ width = 12, height = 20, ...otherParams }) => {
+export const Invalid = ({ width = 12, height = 20, ...otherProps }) => {
   return (
     <svg
       width={width}
       height={height}
       viewBox="0 0 12 20"
       fill="none"
-      {...otherParams}
+      {...otherProps}
       xmlns="http://www.w3.org/2000/svg">
       <circle cx="6" cy="15.5" r="1.5" fill="currentColor" />
       <path
@@ -18,14 +18,14 @@ export const Invalid = ({ width = 12, height = 20, ...otherParams }) => {
   );
 };
 
-export const Dropdown = ({ width = 20, height = 20, open, ...otherParams }) => {
+export const Dropdown = ({ width = 20, height = 20, open, ...otherProps }) => {
   return (
     <svg
       width={width}
       height={height}
       viewBox="0 0 20 20"
       fill="none"
-      {...otherParams}
+      {...otherProps}
       xmlns="http://www.w3.org/2000/svg">
       {open ? (
         <path d="M10 7L16.9282 14.5L3.0718 14.5L10 7Z" fill="currentColor" />
@@ -36,14 +36,14 @@ export const Dropdown = ({ width = 20, height = 20, open, ...otherParams }) => {
   );
 };
 
-export const Add = ({ width = 20, height = 20, ...otherParams }) => {
+export const Add = ({ width = 20, height = 20, ...otherProps }) => {
   return (
     <svg
       width="20"
       height="20"
       viewBox="0 0 20 20"
       fill="none"
-      {...otherParams}
+      {...otherProps}
       xmlns="http://www.w3.org/2000/svg">
       <rect x="9" y="4" width="2" height="12" fill="currentColor" />
       <rect x="16" y="9" width="2" height="12" transform="rotate(90 16 9)" fill="currentColor" />

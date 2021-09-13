@@ -7,9 +7,54 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.6.3] - 2021-09-10
+
+### Fixed
+
+- Replaced nullish coalescing operator used in node scripts to support 12.20 onwards
+
+## [0.6.2] - 2021-09-09
+
+### Changed
+
+- Tweaked CLI language
+
+### Fixed
+
+- Fixed bug when running on Windows
+- Fixed p5-video template creation bug
+
+## [0.6.1] - 2021-09-08
+
+### Fixed
+
+- Fixed bug in `create-mechanic`.
+
+## [0.6.0] - 2021-09-08
+
+### Changed
+
+- Renamed creation CLI package to `create-mechanic`. Creation command is now `npm init mechanic`. `@mechanic-design/create` gets deprecated.
+
+## [0.5.1] - 2021-09-07
+
+### Fixed
+
+- CLI commands now look for available port if one specified is used.
+
+## [0.5.0] - 2021-09-06
+
+### Changed
+
+- Renamed design function's `params` export to `inputs`. From now on it's inputs everywhere. This is not backwards compatible and is an API change.
+
 ### Fixed
 
 - Correctly enabled HMR to use while running `npm run dev` in Mechanic projects.
+- Improved visual consistency and fixed minor bugs in ui components
+- Animation export from SVG assets
+- Fixed color input bugs (closing and z-index issues)
+- Fixed inconsistencies on hover and active states across all inputs and buttons
 
 ## [0.4.2] - 2021-08-27
 
@@ -75,7 +120,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 First logged release
 
-[unreleased]: https://github.com/designsystemsinternational/mechanic/compare/v0.4.1...main
+[unreleased]: https://github.com/designsystemsinternational/mechanic/compare/v0.6.3...main
+[0.6.3]: https://github.com/designsystemsinternational/mechanic/releases/tag/v0.6.3
+[0.6.2]: https://github.com/designsystemsinternational/mechanic/releases/tag/v0.6.2
+[0.6.1]: https://github.com/designsystemsinternational/mechanic/releases/tag/v0.6.1
+[0.6.0]: https://github.com/designsystemsinternational/mechanic/releases/tag/v0.6.0
+[0.5.1]: https://github.com/designsystemsinternational/mechanic/releases/tag/v0.5.1
+[0.5.0]: https://github.com/designsystemsinternational/mechanic/releases/tag/v0.5.0
 [0.4.1]: https://github.com/designsystemsinternational/mechanic/releases/tag/v0.4.1
 [0.4.0]: https://github.com/designsystemsinternational/mechanic/releases/tag/v0.4.0
 [0.3.0]: https://github.com/designsystemsinternational/mechanic/releases/tag/v0.3.0

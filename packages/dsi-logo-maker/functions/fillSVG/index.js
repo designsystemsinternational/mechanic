@@ -8,8 +8,8 @@ import {
 } from "../../utils/blocks";
 import { Block } from "../../utils/blocks-components";
 
-export const handler = ({ params, mechanic }) => {
-  const { width, height, logoWidth, logoRatio } = params;
+export const handler = ({ inputs, mechanic }) => {
+  const { width, height, logoWidth, logoRatio } = inputs;
   const { done } = mechanic;
 
   const rows = 2;
@@ -59,7 +59,7 @@ export const handler = ({ params, mechanic }) => {
   );
 };
 
-export const params = {
+export const inputs = {
   width: {
     type: "number",
     default: 300,

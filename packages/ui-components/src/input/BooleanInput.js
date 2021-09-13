@@ -27,7 +27,8 @@ export const BooleanInput = props => {
 
   const rootClasses = classnames(css.root, commonCss.root, {
     [className]: className,
-    [commonCss.disabled]: disabled
+    [commonCss.disabled]: disabled,
+    [commonCss.invalid]: invalid
   });
 
   return (
@@ -53,7 +54,7 @@ export const BooleanInput = props => {
           {children}
         </Toggle>
         <div className={commonCss.suffix}>{invalid && <Invalid />}</div>
-        {invalid && <div className={commonCss.background} />}
+        <div className={commonCss.background} />
       </div>
       {invalid && error && (
         <div className={commonCss.error} id={`error-${id}`} aria-live="polite">

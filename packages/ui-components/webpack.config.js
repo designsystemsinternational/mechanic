@@ -54,7 +54,7 @@ export default async (env, argv) => {
       filename: "index.html",
       chunks: ["app"]
     }),
-    new BundleAnalyzerPlugin(),
+    // new BundleAnalyzerPlugin(),
     new webpack.HotModuleReplacementPlugin()
   ];
 

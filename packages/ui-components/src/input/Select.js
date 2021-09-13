@@ -45,6 +45,7 @@ export const Select = props => {
   const rootClasses = classnames(css.root, commonCss.root, {
     [className]: className,
     [commonCss.focus]: focus,
+    [commonCss.invalid]: invalid,
     [commonCss.disabled]: disabled
   });
 
@@ -75,7 +76,7 @@ export const Select = props => {
         <div className={commonCss.suffix}>
           <Dropdown open={false} />
         </div>
-        {invalid && <div className={commonCss.background} />}
+        <div className={commonCss.background} />
       </div>
       {invalid && error && (
         <div className={commonCss.error} id={`error-${id}`} aria-live="polite">
