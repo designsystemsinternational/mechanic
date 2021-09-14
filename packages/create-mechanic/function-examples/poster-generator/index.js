@@ -15,16 +15,16 @@ import fontHeavy from "./assets/PPObjectSans-Heavy.otf";
 import fontHeavySlanted from "./assets/PPObjectSans-HeavySlanted.otf";
 
 export const handler = ({ inputs, mechanic, sketch }) => {
-  const { width, height, date, dayAndTime, artist, description, image, color } =
+  const { width, height, dates, location, artist, title, image, color } =
     inputs;
   const artistText = artist.toUpperCase();
-  const descriptionText = description.toUpperCase();
-  const dateText = date.toUpperCase();
-  const dayAndTimeText = dayAndTime.toUpperCase();
+  const titleText = title.toUpperCase();
+  const datesText = dates.toUpperCase();
+  const locationText = location.toUpperCase();
 
   let artistElement;
-  let dateElement;
-  let descriptionElement;
+  let datesElement;
+  let titleElement;
 
   const rows = 32;
   const separation = height / rows;
@@ -100,14 +100,14 @@ export const handler = ({ inputs, mechanic, sketch }) => {
     return element;
   };
 
-  const drawDescriptionElement = () => {
+  const drawTitleElement = () => {
     const element = {};
     element.baseRowSize = 2;
     element.baseSize = element.baseRowSize * separation;
 
     sketch.textSize(element.baseSize);
     sketch.textStyle(sketch.NORMAL);
-    element.length = sketch.textWidth(descriptionText) + width / 20;
+    element.length = sketch.textWidth(titleText) + width / 20;
 
     element.startRow = choice(
       getPossibleStartPositions(availableRows, element.baseRowSize + 1)
@@ -117,12 +117,12 @@ export const handler = ({ inputs, mechanic, sketch }) => {
     element.x1 = 0;
     element.x2 = element.x1 + element.length;
 
-    sketch.text(descriptionText, 0, element.y + element.baseSize);
+    sketch.text(titleText, 0, element.y + element.baseSize);
 
     return element;
   };
 
-  const drawDateElement = () => {
+  const drawDatesElement = () => {
     const element = {};
     element.isSingleRow = flipCoin();
     element.baseRowSize = 1;
@@ -132,18 +132,18 @@ export const handler = ({ inputs, mechanic, sketch }) => {
     sketch.textFont(objSansHeavy);
     const minLength =
       (element.isSingleRow
-        ? sketch.textWidth(dateText) +
+        ? sketch.textWidth(datesText) +
           width / 20 +
-          sketch.textWidth(dayAndTimeText)
+          sketch.textWidth(locationText)
         : Math.max(
-            sketch.textWidth(dateText),
-            sketch.textWidth(dayAndTimeText)
+            sketch.textWidth(datesText),
+            sketch.textWidth(locationText)
           )) +
       width / 20;
 
-    if (minLength + descriptionElement.length >= width) {
+    if (minLength + titleElement.length >= width) {
       const rowsWithoutDescription = [...availableRows];
-      removeRowsUsedByElement(rowsWithoutDescription, descriptionElement);
+      removeRowsUsedByElement(rowsWithoutDescription, titleElement);
       element.startRow = choice(
         getPossibleStartPositions(
           rowsWithoutDescription,
@@ -161,7 +161,7 @@ export const handler = ({ inputs, mechanic, sketch }) => {
     element.endRow =
       element.startRow + (element.isSingleRow ? 1 : 2) * element.baseRowSize;
     element.y = element.startRow * separation;
-    const offset = getIntersectionOffset(element, [descriptionElement]);
+    const offset = getIntersectionOffset(element, [titleElement]);
     const leftWidth = width - offset;
     element.midDistance = randInt(
       Math.floor(leftWidth / 20),
@@ -171,15 +171,15 @@ export const handler = ({ inputs, mechanic, sketch }) => {
       (element.isSingleRow
         ? Math.max(
             leftWidth / 2,
-            sketch.textWidth(dateText) +
+            sketch.textWidth(datesText) +
               element.midDistance +
-              sketch.textWidth(dayAndTimeText)
+              sketch.textWidth(locationText)
           )
         : Math.max(
             leftWidth / 4,
             Math.max(
-              sketch.textWidth(dateText),
-              sketch.textWidth(dayAndTimeText)
+              sketch.textWidth(datesText),
+              sketch.textWidth(locationText)
             )
           )) +
       leftWidth / 20;
@@ -189,8 +189,8 @@ export const handler = ({ inputs, mechanic, sketch }) => {
     element.x2 = element.x1 + element.length;
 
     const [first, second] = flipCoin()
-      ? [dateText, dayAndTimeText]
-      : [dayAndTimeText, dateText];
+      ? [datesText, locationText]
+      : [locationText, datesText];
 
     if (element.isSingleRow) {
       sketch.text(first, element.x1, element.y + element.baseSize);
@@ -245,8 +245,8 @@ export const handler = ({ inputs, mechanic, sketch }) => {
   const drawRectangles = () => {
     const maxUsedSpace = Math.max(
       artistElement.x2,
-      descriptionElement.x2,
-      dateElement.x2
+      titleElement.x2,
+      datesElement.x2
     );
     const canThereBeTwoColumns = width - maxUsedSpace > width / 4 + width / 20;
     const columnLength = width / 4;
@@ -255,7 +255,7 @@ export const handler = ({ inputs, mechanic, sketch }) => {
       bigColumnDrawn = true;
     }
 
-    const elementRows = getRowsFromElements([descriptionElement, dateElement]);
+    const elementRows = getRowsFromElements([titleElement, datesElement]);
     const usedSections = getSections(elementRows, 3);
     const freeSections = getSections(availableRows, 3);
     const sections = [
@@ -277,7 +277,7 @@ export const handler = ({ inputs, mechanic, sketch }) => {
           startRow: row,
           endRow: row + rowLength - 1,
         },
-        [descriptionElement, dateElement]
+        [titleElement, datesElement]
       );
       const leftWidth = width - offset;
       const rectY = row * separation;
@@ -340,12 +340,12 @@ export const handler = ({ inputs, mechanic, sketch }) => {
 
     removeRowsUsedByElement(availableRows, artistElement);
 
-    descriptionElement = drawDescriptionElement();
+    titleElement = drawTitleElement();
 
-    dateElement = drawDateElement();
+    datesElement = drawDatesElement();
 
-    removeRowsUsedByElement(availableRows, descriptionElement);
-    removeRowsUsedByElement(availableRows, dateElement);
+    removeRowsUsedByElement(availableRows, titleElement);
+    removeRowsUsedByElement(availableRows, datesElement);
 
     drawRectangles();
 
@@ -354,21 +354,21 @@ export const handler = ({ inputs, mechanic, sketch }) => {
 };
 
 export const inputs = {
-  date: {
+  dates: {
     type: "text",
-    default: "12.9.2021",
+    default: "Sept 9 – Oct 30, 2021",
   },
-  dayAndTime: {
+  location: {
     type: "text",
-    default: "Thursday, 8PM",
+    default: "Jack Shainman Gallery",
   },
   artist: {
     type: "text",
-    default: "Ariana Grande",
+    default: "Tyler Mitchell",
   },
-  description: {
+  title: {
     type: "text",
-    default: "Live",
+    default: "Dreaming in Real Time",
   },
   image: {
     type: "image",

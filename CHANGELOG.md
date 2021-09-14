@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.0.0] - 2021-09-14
+
+Beta release
+
+## [0.6.5] - 2021-09-14
+
+### Changed
+
+- Changed base of poster generator example to feel a bit more broad
+
 ## [0.6.4] - 2021-09-14
 
 ### Added
@@ -135,7 +145,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 First logged release
 
-[unreleased]: https://github.com/designsystemsinternational/mechanic/compare/v0.6.4...main
+[unreleased]: https://github.com/designsystemsinternational/mechanic/compare/v0.6.5...main
+[0.6.4]: https://github.com/designsystemsinternational/mechanic/releases/tag/v0.6.5
 [0.6.4]: https://github.com/designsystemsinternational/mechanic/releases/tag/v0.6.4
 [0.6.3]: https://github.com/designsystemsinternational/mechanic/releases/tag/v0.6.3
 [0.6.2]: https://github.com/designsystemsinternational/mechanic/releases/tag/v0.6.2
