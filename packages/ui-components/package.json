@@ -1,6 +1,6 @@
 {
   "name": "@mechanic-design/ui-components",
-  "version": "0.6.3",
+  "version": "0.6.4",
   "description": "UI component library for Mechanic's app.",
   "license": "MIT",
   "homepage": "https://github.com/designsystemsinternational/mechanic#readme",
@@ -39,7 +39,7 @@
     "dev": "webpack serve --mode development"
   },
   "dependencies": {
-    "@mechanic-design/fonts": "^0.6.3",
+    "@mechanic-design/fonts": "^0.6.4",
     "react-color": "^2.19.3"
   },
   "devDependencies": {
