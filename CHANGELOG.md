@@ -7,6 +7,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.6.4] - 2021-09-14
+
+### Added
+
+- Fixed anchor into App that link to feedback form.
+
+### Changed
+
+- Default preset is named "Custom" now
+- Preset value changes to "Custom" after value of input is changed away from current preset
+
+### Fixed
+
+- Changed colors in ui-components to be consistent with colors in docs
+
 ## [0.6.3] - 2021-09-10
 
 ### Fixed
@@ -120,7 +135,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 First logged release
 
-[unreleased]: https://github.com/designsystemsinternational/mechanic/compare/v0.6.3...main
+[unreleased]: https://github.com/designsystemsinternational/mechanic/compare/v0.6.4...main
+[0.6.4]: https://github.com/designsystemsinternational/mechanic/releases/tag/v0.6.4
 [0.6.3]: https://github.com/designsystemsinternational/mechanic/releases/tag/v0.6.3
 [0.6.2]: https://github.com/designsystemsinternational/mechanic/releases/tag/v0.6.2
 [0.6.1]: https://github.com/designsystemsinternational/mechanic/releases/tag/v0.6.1
