@@ -1,6 +1,6 @@
 {
   "name": "@mechanic-design/dsi-logo-maker",
-  "version": "0.6.4",
+  "version": "0.6.5",
   "description": "DSI Logo Maker based on Mechanic.",
   "license": "MIT",
   "homepage": "https://github.com/designsystemsinternational/mechanic#readme",
@@ -37,7 +37,7 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.14.6",
-    "@mechanic-design/cli": "^0.6.4",
+    "@mechanic-design/cli": "^0.6.5",
     "@mechanic-design/core": "^0.6.4",
     "@mechanic-design/engine-canvas": "^0.6.4",
     "@mechanic-design/engine-react": "^0.6.4"
