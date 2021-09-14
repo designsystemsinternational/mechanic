@@ -1,5 +1,5 @@
 {
   "dependencies": {
-    "@mechanic-design/engine-svg": "^0.6.4"
+    "@mechanic-design/engine-svg": "^1.0.0"
   }
 }
