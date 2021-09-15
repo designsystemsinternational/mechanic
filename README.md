@@ -7,14 +7,14 @@
 
 [Mechanic](https://mechanic.design/) is a powerful design toolchain that helps forward-looking organizations move away from a manual design workflow by automating their design operations. Built with love by your friends at [Design Systems International](https://designsystems.international/).
 
-**CURRENT STATUS**: We are working towards a 1.0 release and aim to start inviting beta testers in Q3, 2021
+**CURRENT STATUS**: `v1.0.0` is out now! Try it and tell us what you think! 
 
 ## Get Started
 
 To start using right away and create a new Mechanic project, run the following:
 
 ```
-npm init @mechanic-design
+npm init @mechanic-design@latest
 ```
 
 This will build a new base Mechanic project, with one **design function**! Follow the CLI instructions to customize, install and start running.
