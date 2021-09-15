@@ -170,9 +170,11 @@ const validateSettings = settings => {
  */
 const prepareValues = (inputs, settings, baseValues) => {
   const values = Object.assign({}, baseValues);
+  const persistRandomOnExport =
+    !hasKey(settings, "persistRandomOnExport") || settings.persistRandomOnExport;
 
   // Sets random seed
-  if (settings.usesRandom) {
+  if (persistRandomOnExport) {
     if (values.randomSeed === undefined) {
       values.randomSeed = seedrandom(null, { global: true });
     }

@@ -94,5 +94,4 @@ export const presets = {
 
 export const settings = {
   engine: require("@mechanic-design/engine-canvas"),
-  usesRandom: true,
 };

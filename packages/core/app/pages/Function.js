@@ -21,7 +21,7 @@ export const Function = ({ name, exports: functionExports, children }) => {
   const {
     inputs,
     presets: exportedPresets,
-    settings: { usesRandom }
+    settings: { persistRandomOnExport }
   } = functionExports;
   const presets = getPossiblePresets(exportedPresets ?? {});
   const canScale = !!(inputs.width && inputs.height);
@@ -128,7 +128,11 @@ export const Function = ({ name, exports: functionExports, children }) => {
           <div className={css.sep} />
           <div className={css.row}>
             <Button className={css.grow} onClick={handlePreview} disabled={!iframeLoaded}>
-              {iframeLoaded ? (usesRandom ? "Preview / Randomize" : "Preview") : "Loading content"}
+              {iframeLoaded
+                ? persistRandomOnExport
+                  ? "Preview / Randomize"
+                  : "Preview"
+                : "Loading content"}
             </Button>
           </div>
           <div className={css.sep} />

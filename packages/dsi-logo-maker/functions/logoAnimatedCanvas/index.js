@@ -161,5 +161,4 @@ export const presets = {
 export const settings = {
   engine: require("@mechanic-design/engine-canvas"),
   animated: true,
-  usesRandom: true,
 };
