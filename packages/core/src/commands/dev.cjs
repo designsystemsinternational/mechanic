@@ -61,15 +61,19 @@ const command = async argv => {
     if (status === "started") {
       next();
     } else {
-      res.format({
-        default: () => res.sendFile(path.resolve(__dirname, "./html/loading.html")),
-        "text/html": () => res.sendFile(path.resolve(__dirname, "./html/loading.html")),
-        "font/otf": () =>
-          res.sendFile(
-            require.resolve("@mechanic-design/fonts/PP-Object-Sans/PPObjectSans-Regular.otf")
-          ),
-        "application/json": () => res.json({ loading: true, status })
-      });
+      if (req.originalUrl === "/font")
+        res.format({
+          "font/otf": () =>
+            res.sendFile(
+              require.resolve("@mechanic-design/fonts/PP-Object-Sans/PPObjectSans-Regular.otf")
+            )
+        });
+      else
+        res.format({
+          default: () => res.sendFile(path.resolve(__dirname, "./html/loading.html")),
+          "text/html": () => res.sendFile(path.resolve(__dirname, "./html/loading.html")),
+          "application/json": () => res.json({ loading: true, status })
+        });
     }
   });
 
