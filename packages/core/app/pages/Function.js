@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import classnames from "classnames";
 
 import { useValues } from "./utils/useValues.js";
-import { getPossiblePresets, addPresetsAsSources } from "./utils/presets.js";
+import { getPossiblePresets, addPresetsAsSources, NO_PRESET_VALUE } from "./utils/presets.js";
 import { useShortcuts } from "./utils/useShortcuts.js";
 
 import { Button, Toggle, MechanicInput } from "@mechanic-design/ui-components";
@@ -27,8 +27,7 @@ export const Function = ({ name, exports: functionExports, children }) => {
   const canScale = !!(inputs.width && inputs.height);
   const [values, setValues] = useValues(name, inputs);
   const handleOnChange = (e, name, value) => {
-    const sources = [{ [name]: value }];
-    if (name === "preset") addPresetsAsSources(value, exportedPresets, inputs, sources);
+    const sources = addPresetsAsSources(value, name, exportedPresets, inputs, values);
     setValues(values => Object.assign({}, values, ...sources));
   };
 
@@ -90,7 +89,7 @@ export const Function = ({ name, exports: functionExports, children }) => {
             key="input-preset"
             name="preset"
             values={values}
-            attributes={{ type: "string", options: presets, default: presets[0] }}
+            attributes={{ type: "string", options: presets, default: NO_PRESET_VALUE }}
             onChange={handleOnChange}
           />
           {Object.entries(inputs).map(([name, input]) => (

@@ -1,0 +1,33 @@
+.root {
+  position: fixed;
+  right: 0;
+  bottom: 150px;
+  z-index: 1;
+
+  padding: 0;
+  height: 45px;
+  color: currentColor;
+  border: 1px solid currentColor;
+  border-bottom: none;
+  background-color: #f7f7f7;
+  border-radius: 20px 20px 0 0;
+  font-family: inherit;
+  font-size: var(--mechanic-input-font-size);
+
+  transform-origin: 100% 0;
+  transform: translate(-35px) rotate(270deg);
+  transition: transform 0.25s ease;
+  &:hover {
+    transform: translate(-45px) rotate(270deg);
+  }
+
+  & a {
+    color: inherit;
+    text-decoration: none;
+    font-weight: initial;
+    font-family: inherit;
+    display: block;
+    margin-top: -7px;
+    padding: 0em 1em;
+  }
+}

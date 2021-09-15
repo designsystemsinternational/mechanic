@@ -1,6 +1,6 @@
 {
   "name": "@mechanic-design/engine-react",
-  "version": "0.6.3",
+  "version": "1.0.0",
   "description": "Mechanic engine that powers React SVG declaration.",
   "license": "MIT",
   "homepage": "https://github.com/designsystemsinternational/mechanic#readme",
@@ -40,7 +40,7 @@
     "react-dom": "^17.0.2"
   },
   "dependencies": {
-    "@mechanic-design/core": "^0.6.3"
+    "@mechanic-design/core": "^1.0.0"
   },
   "engines": {
     "node": "^12.20.0 || ^14.13.1 || >=16.0.0"
