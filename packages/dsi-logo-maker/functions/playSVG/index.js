@@ -8,7 +8,10 @@ import {
 } from "../../utils/blocks";
 import { Block } from "../../utils/blocks-components";
 
-export const handler = ({ width, height, done, allSameColors }) => {
+export const handler = ({ inputs, mechanic }) => {
+  const { width, height, allSameColors } = inputs;
+  const { done } = mechanic;
+
   const words = ["DESIGN", "SYSTEMS", "INTERNATIONAL"];
   const blockConfigs = [];
   let colors = getColors("Random Flag");
@@ -110,7 +113,7 @@ export const handler = ({ width, height, done, allSameColors }) => {
   );
 };
 
-export const params = {
+export const inputs = {
   width: {
     type: "number",
     default: 300,
@@ -135,6 +138,6 @@ export const presets = {
 };
 
 export const settings = {
-  engine: require("@designsystemsinternational/mechanic-engine-react"),
+  engine: require("@mechanic-design/engine-react"),
   usesRandom: true,
 };

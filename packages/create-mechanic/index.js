@@ -1,166 +1,160 @@
-const fs = require("fs-extra");
 const path = require("path");
-const execa = require("execa");
 const inquirer = require("inquirer");
 const {
   spinners: { mechanicSpinner: spinner },
-  logo: { mechanic: logo },
-  colors: { success },
-} = require("@designsystemsinternational/mechanic-utils");
+} = require("@mechanic-design/utils");
 
+const content = require("./script-content");
 const {
+  getProjectQuestion,
+  confirmDFQuestion,
+  confirmInstallQuestion,
+  generateProjectTemplate,
+  installDependencies,
+} = require("./new-project");
+const {
+  baseExists,
+  directoryExists,
   generateFunctionTemplate,
   getFunctionQuestions,
 } = require("./new-function");
 
-const projectTemplateDir = path.join(__dirname, "project-template");
-const generateProjectTemplate = async (projectName) => {
-  spinner.start("Generating mechanic project directory...");
+const log = console.log;
+const logSuccess = spinner.succeed;
+const logFail = spinner.fail;
+const sleep = (ms = 1000) => new Promise((resolve) => setTimeout(resolve, ms));
+const nullishCoalescingOp = (arg1, arg2) => (arg1 != null ? arg1 : arg2);
 
-  // Make new directories
-  const directory = path.resolve(projectName);
-  await fs.mkdir(directory); // Main
-  await fs.mkdir(path.join(directory, "functions")); // Functions folder
-
-  // Copying content promises
-  await Promise.all([
-    // Copy array of files that get duplicated without change
-    ...["mechanic.config.js", "_gitignore", "README.md"].map((filename) =>
-      fs.copyFile(
-        path.join(projectTemplateDir, filename),
-        path.join(directory, filename.replace(/^_/, "."))
-      )
-    ),
-    // Modifications
-    (async () => {
-      const packageJson = await fs.readJson(
-        path.join(projectTemplateDir, "package.json"),
-        "utf8"
-      );
-      const packageObj = {
-        name: projectName, // Adds name of project
-        ...packageJson,
-      };
-      // Write the resulting package
-      await fs.writeFile(
-        path.join(directory, "package.json"),
-        JSON.stringify(packageObj, null, 2)
-      );
-    })(),
-  ]);
-
-  // End UI spinner
-  spinner.succeed("Mechanic project directory created!");
-};
-
-const installDependencies = async (projectName) => {
-  spinner.start("Installing dependencies. This may take a few minutes.");
-
-  // Project directory
-  const cwd = path.resolve(projectName);
-
-  try {
-    // Install with yarn
-    await execa("yarn", ["install"], { cwd });
-    // End success UI spinner
-    spinner.succeed("Installed dependencies with yarn.");
-    return "yarn";
-  } catch (err) {
-    if (err.failed) {
-      // Notify failure
-      spinner.warn("Failed to install with yarn.");
-      spinner.start("Trying with npm.");
-      try {
-        // Install with npm
-        await execa("npm", ["install"], { cwd });
-        // End success UI spinner
-        spinner.succeed("Installed dependencies with npm.");
-      } catch (npmErr) {
-        // Notify failure
-        spinner.fail("Failed to install with npm.");
-        throw npmErr;
-      }
-      return "npm";
-    }
-    throw err;
+const askToInstall = async (projectName) => {
+  // Install dependencies in new project directory
+  const { install } = await inquirer.prompt(confirmInstallQuestion);
+  await sleep();
+  if (install) {
+    await installDependencies(projectName);
   }
+  return install;
 };
-
-const getQuestions = (initialAnswers) => ({
-  project: [
-    {
-      name: "project",
-      type: "input",
-      message: "Name your project",
-      default: initialAnswers.project || "my-project",
-      validate: async (project) => {
-        const exists = await fs.pathExists(path.resolve(project));
-        return !exists
-          ? true
-          : "Directory already exists. Enter name that doesn't exists.";
-      },
-    },
-  ],
-  function: getFunctionQuestions(initialAnswers),
-});
 
 const command = async (argv) => {
   const project = argv._[0];
   const template = argv.template || argv.t;
   const example = argv.example || argv.e;
-  const questions = getQuestions({ project, template, example });
+  const typeOfBaseUsed = !!template
+    ? "template"
+    : !!example
+    ? "example"
+    : false;
+  const base = !!template ? template : !!example ? example : null;
 
-  // Welcome to mechanic!
-  console.log(logo, "\n");
-  if (project || template || example) {
-    console.log("Received arguments loaded as defaults");
+  // Welcome
+  log(content.welcome);
+  if (!typeOfBaseUsed) {
+    log(content.questionnaireDescription);
+  } else {
+    log(content.useBaseNotice);
   }
 
-  // Confirm and generate project
-  const { project: projectName } = await inquirer.prompt(questions.project);
-  await generateProjectTemplate(projectName);
+  // Check that base exists and can be created
+  if (typeOfBaseUsed) {
+    if (!baseExists(typeOfBaseUsed, base)) {
+      logFail(content.baseDoesNotExist(typeOfBaseUsed, base));
+      return;
+    } else {
+      logSuccess(content.baseExist(typeOfBaseUsed, base));
+    }
+    const alreadyExists = await directoryExists(path.resolve(base));
+    if (alreadyExists) {
+      logFail(content.directoryAlreadyExist(typeOfBaseUsed, base));
+      return;
+    }
+  }
 
-  // Confirm and generate new project directory and content files
-  const functionAnswers = await inquirer.prompt(questions.function);
-  await generateFunctionTemplate(projectName, functionAnswers);
+  // Generate project and prompt if necessary
+  const projectQuestion = getProjectQuestion({
+    project,
+    usesBase: typeOfBaseUsed,
+    base,
+  });
+  const answers = await inquirer.prompt(projectQuestion);
+  await sleep();
+  const projectName = nullishCoalescingOp(
+    answers.project,
+    projectQuestion[0].default
+  );
+  await generateProjectTemplate(projectName, typeOfBaseUsed);
+
+  // Explain design functions and confirm
+  let skipFunctions = false;
+  if (!typeOfBaseUsed) {
+    log(content.designFunctionDescription);
+    const { confirmContinue } = await inquirer.prompt(confirmDFQuestion);
+    await sleep();
+    if (confirmContinue) {
+      log(content.designFunctionBasesDescription);
+    } else {
+      skipFunctions = true;
+    }
+  }
+  if (!skipFunctions) {
+    // Generate new functions directory and design function files and prompt if necessary
+    const functionQuestions = getFunctionQuestions({
+      usesBase: typeOfBaseUsed,
+      base,
+    });
+    const functionAnswers = await inquirer.prompt(functionQuestions);
+    await sleep();
+    const usesBase = nullishCoalescingOp(
+      functionAnswers.usesBase,
+      functionQuestions[0].default
+    );
+    const finalBase =
+      usesBase === "Template"
+        ? nullishCoalescingOp(
+            functionAnswers.template,
+            functionQuestions[1].default
+          )
+        : usesBase === "Example"
+        ? nullishCoalescingOp(
+            functionAnswers.example,
+            functionQuestions[2].default
+          )
+        : null;
+    const functionName = nullishCoalescingOp(
+      functionAnswers.functionName,
+      functionQuestions[3].default
+    );
+    await generateFunctionTemplate(projectName, {
+      typeOfBaseUsed: usesBase,
+      base: finalBase,
+      functionName,
+    });
+  }
 
   // Install dependencies in new project directory
-  const { install } = await inquirer.prompt([
-    {
-      name: "install",
-      type: "confirm",
-      message: "Do you wish to install dependencies right away?",
-      default: true,
-    },
-  ]);
-  if (install) {
-    await installDependencies(projectName);
-  }
+  const install = await askToInstall(projectName);
 
   // Done!
-  console.log(`\nDone! Mechanic project created at ${success(projectName)}
-To start you now can run:
-> \`cd ${projectName}\`${install ? "" : "\n> `npm i`"}
-> \`npm run dev\`
-`);
-  console.log(logo);
+  log(content.doneAndNextStepsMessage(projectName, install));
+  log(content.bye);
 };
 
-const options = {
+const commandOptions = {
   template: {
     alias: "t",
     type: "string",
-    description: "Use certain template for first design function",
+    description:
+      "Use simple design functions we created to show how to use Mechanic with specific web technologies.",
   },
   example: {
     alias: "e",
     type: "string",
-    description: "Use certain example as base for first design function",
+    description:
+      "Use more complicated design functions we created to show how to use Mechanic to tackle some common use cases.",
   },
 };
 
 module.exports = {
   create: command,
-  options,
-  installDependencies,
+  options: commandOptions,
+  askToInstall,
 };

@@ -7,8 +7,8 @@ import {
 } from "../../utils/blocks";
 import { drawBlock } from "../../utils/blocks-canvas";
 
-export const handler = (params, mechanic) => {
-  const { width, height, allSameColors } = params;
+export const handler = ({ inputs, mechanic }) => {
+  const { width, height, allSameColors } = inputs;
 
   const words = ["DESIGN", "SYSTEMS", "INTERNATIONAL"];
   const blockConfigs = [];
@@ -105,7 +105,7 @@ export const handler = (params, mechanic) => {
   mechanic.done(canvas);
 };
 
-export const params = {
+export const inputs = {
   width: {
     type: "number",
     default: 300,
@@ -130,6 +130,6 @@ export const presets = {
 };
 
 export const settings = {
-  engine: require("@designsystemsinternational/mechanic-engine-canvas"),
+  engine: require("@mechanic-design/engine-canvas"),
   usesRandom: true,
 };

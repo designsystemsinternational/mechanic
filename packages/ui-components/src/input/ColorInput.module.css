@@ -1,0 +1,54 @@
+@import "../variables.css";
+
+.root {
+}
+.root .button {
+  justify-content: flex-start;
+}
+.swatch {
+  display: inline-block;
+  vertical-align: text-top;
+  margin-right: var(--mechanic-input-height-quart);
+  border-radius: var(--mechanic-input-height-quart);
+  width: var(--mechanic-input-height-half);
+  height: var(--mechanic-input-height-half);
+}
+
+.value {
+}
+
+.picking .button {
+  border-radius: var(--mechanic-input-height-half) var(--mechanic-input-height-half) 0 0;
+}
+
+.popover {
+  position: absolute;
+  z-index: 20;
+  top: calc(var(--mechanic-input-height) - 2px);
+  left: 0;
+
+  padding-bottom: 30px;
+  width: 100%;
+
+  & > .chrome-picker {
+    box-shadow: none !important;
+    border-top: none !important;
+    border-right: 1px solid currentColor !important;
+    border-left: 1px solid currentColor !important;
+    border-bottom: 1px solid currentColor !important;
+
+    /* border-top: none !important; */
+    border-radius: 0 0 var(--mechanic-input-height-half) var(--mechanic-input-height-half) !important;
+    padding: 0.5em;
+    overflow: hidden;
+    box-sizing: border-box !important;
+    width: 100% !important;
+  }
+}
+
+.focus .popover .chrome-picker {
+  border-right: 2px solid currentColor !important;
+  border-left: 2px solid currentColor !important;
+  border-bottom: 2px solid currentColor !important;
+  padding: 0.5em calc(0.5em - 1px) calc(0.5em - 1px);
+}

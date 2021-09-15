@@ -7,14 +7,14 @@
 
 [Mechanic](https://mechanic.design/) is a powerful design toolchain that helps forward-looking organizations move away from a manual design workflow by automating their design operations. Built with love by your friends at [Design Systems International](https://designsystems.international/).
 
-**CURRENT STATUS**: We are working towards a 1.0 release and aim to start inviting beta testers in Q3, 2021
+**CURRENT STATUS**: `v1.0.0` is out now! Try it and tell us what you think! 
 
 ## Get Started
 
 To start using right away and create a new Mechanic project, run the following:
 
 ```
-$ npm init @designsystemsinternational/mechanic@latest mechanic-project
+npm init @mechanic-design@latest
 ```
 
 This will build a new base Mechanic project, with one **design function**! Follow the CLI instructions to customize, install and start running.
@@ -25,24 +25,24 @@ This will build a new base Mechanic project, with one **design function**! Follo
 
 ## Documentation
 
-Check the [docs](doc/doc.md).
+Check the [docs site](https://mechanic.design/docs).
 
 ## Monorepo Content
 
 The repo is managed via [lerna](https://github.com/lerna/lerna).
 
-| Repository                                                | Description                                                                                                                                                                                                                        |
-| --------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| [create-mechanic](packages/create-mechanic)               | Mechanic project skeleton creator.                                                                                                                                                                                                 |
-| [mechanic-cli](packages/mechanic-cli)                     | Command-line tool to generate new Mechanic projects, design functions and build app.                                                                                                                                               |
-| [mechanic](packages/mechanic)                             | Core Mechanic functionalities. Used by Mechanic's design tools and defines `Mechanic` class to be extended as **Engines**.                                                                                                         |
-| [mechanic-ui-components](packages/mechanic-ui-components) | React component library intended to be used as inputs for design function parameters.                                                                                                                                              |
-| [mechanic-engine-canvas](packages/mechanic-engine-canvas) | Engine function that extends base `Mechanic` class, intended to render static assets or animations built using the [HTML Canvas API](https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API).                                 |
-| [mechanic-engine-p5](packages/mechanic-engine-p5)         | Engine function that extends base `Mechanic` class, intended to render static assets or animations built using [p5.js](https://p5js.org/).                                                                                         |
-| [mechanic-engine-react](packages/mechanic-engine-react)   | Engine function that extends base `Mechanic` class, intended to render static assets or animations built using [React](https://reactjs.org/) components that renders [SVG](https://developer.mozilla.org/en-US/docs/Glossary/SVG). |
-| [mechanic-engine-svg](packages/mechanic-engine-svg)       | Engine function that extends base `Mechanic` class, indended to render static assets or animations built using through [SVG](https://developer.mozilla.org/en-US/docs/Glossary/SVG) strings.                                       |
-| [mechanic-utils](packages/mechanic-utils)                 | General purpose CLI definitions to be used by other Mechanic packages.                                                                                                                                                             |
-| [dsi-logo-maker](packages/dsi-logo-maker)                 | A design tool project made with Mechanic to build assets and animations that follows [DSI's identity logo](https://designsystems.international/).                                                                                  |
+| Repository                                                 | Description                                                                                                                                                                                                                        |
+| ---------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [create-mechanic](packages/create-mechanic)                | Mechanic project skeleton creator.                                                                                                                                                                                                 |
+| [@mechanic-design/cli](packages/cli)                       | Command-line tool to generate new Mechanic projects, design functions and build app.                                                                                                                                               |
+| [@mechanic-design/core](packages/core)                     | Core Mechanic functionalities. Used by Mechanic's design tools and defines `Mechanic` class to be extended as **Engines**.                                                                                                         |
+| [@mechanic-design/ui-components](packages/ui-components)   | React component library intended to be used as inputs for design function inputs.                                                                                                                                                  |
+| [@mechanic-design/engine-canvas](packages/engine-canvas)   | Engine function that extends base `Mechanic` class, intended to render static assets or animations built using the [HTML Canvas API](https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API).                                 |
+| [@mechanic-design/engine-p5](packages/engine-p5)           | Engine function that extends base `Mechanic` class, intended to render static assets or animations built using [p5.js](https://p5js.org/).                                                                                         |
+| [@mechanic-design/engine-react](packages/engine-react)     | Engine function that extends base `Mechanic` class, intended to render static assets or animations built using [React](https://reactjs.org/) components that renders [SVG](https://developer.mozilla.org/en-US/docs/Glossary/SVG). |
+| [@mechanic-design/engine-svg](packages/engine-svg)         | Engine function that extends base `Mechanic` class, indended to render static assets or animations built using through [SVG](https://developer.mozilla.org/en-US/docs/Glossary/SVG) strings.                                       |
+| [@mechanic-design/utils](packages/utils)                   | General purpose CLI definitions to be used by other Mechanic packages.                                                                                                                                                             |
+| [@mechanic-design/dsi-logo-maker](packages/dsi-logo-maker) | A design tool project made with Mechanic to build assets and animations that follows [DSI's identity logo](https://designsystems.international/).                                                                                  |
 
 ## Development
 
@@ -59,7 +59,7 @@ To publish all packages in the repo, run `npm run publish:local`. To publish an 
 
 Then in the project to test the package(s), before installing dependencies run `yalc add [package]` for all packages you wish to test. Then install normally with `npm i`.
 
-For any other needs, check [`yalc's documentation](https://github.com/wclr/yalc).
+For any other needs, check [`yalc`'s documentation](https://github.com/wclr/yalc).
 
 ## Publish
 

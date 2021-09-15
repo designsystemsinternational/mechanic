@@ -7,7 +7,7 @@ import {
 } from "../../utils/blocks";
 import { drawBlock } from "../../utils/blocks-canvas";
 
-export const handler = (params, mechanic) => {
+export const handler = ({ inputs, mechanic }) => {
   const {
     width,
     ratio,
@@ -18,7 +18,7 @@ export const handler = (params, mechanic) => {
     offset,
     duration,
     loops,
-  } = params;
+  } = inputs;
 
   const words = text.split(" ").map((s) => s.toUpperCase());
   const height = Math.floor((width / ratio) * rows);
@@ -76,7 +76,7 @@ export const handler = (params, mechanic) => {
   requestAnimationFrame(animationHandler);
 };
 
-export const params = {
+export const inputs = {
   width: {
     type: "number",
     default: 500,
@@ -136,13 +136,13 @@ export const presets = {
     width: 500,
     ratio: 9,
   },
-  biggerr: {
+  evenBigger: {
     width: 500,
     ratio: 9,
   },
 };
 
 export const settings = {
-  engine: require("@designsystemsinternational/mechanic-engine-canvas"),
+  engine: require("@mechanic-design/engine-canvas"),
   animated: true,
 };

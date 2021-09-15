@@ -6,7 +6,7 @@ import {
 } from "../../utils/blocks";
 import { drawBlock } from "../../utils/blocks-canvas";
 
-export const handler = (params, mechanic) => {
+export const handler = ({ inputs, mechanic }) => {
   const {
     width,
     ratio,
@@ -16,7 +16,7 @@ export const handler = (params, mechanic) => {
     secondColor,
     thirdColor,
     offset,
-  } = params;
+  } = inputs;
 
   const rows = 2;
   const cols = 13;
@@ -53,7 +53,7 @@ export const handler = (params, mechanic) => {
   );
 };
 
-export const params = {
+export const inputs = {
   width: {
     type: "number",
     default: 500,
@@ -76,21 +76,25 @@ export const params = {
     type: "text",
     options: flagNames,
     default: flagNames[0],
+    editable: (inputs) => inputs.colorMode === "Pick Flag",
   },
   firstColor: {
     type: "color",
     model: "hex",
     default: "#11457e",
+    editable: (inputs) => inputs.colorMode === "Custom Colors",
   },
   secondColor: {
     type: "color",
     model: "hex",
     default: "#d7141a",
+    editable: (inputs) => inputs.colorMode === "Custom Colors",
   },
   thirdColor: {
     type: "color",
     model: "hex",
     default: "#f1f1f1",
+    editable: (inputs) => inputs.colorMode === "Custom Colors",
   },
   offset: {
     type: "number",
@@ -114,6 +118,6 @@ export const presets = {
 };
 
 export const settings = {
-  engine: require("@designsystemsinternational/mechanic-engine-canvas"),
+  engine: require("@mechanic-design/engine-canvas"),
   usesRandom: true,
 };

@@ -32,20 +32,21 @@ The following are the main exports needed to define a Mechanic design function:
 
 Actual function to run that would generate static or dynamic assets.
 The received parameters for this function depend on the engine that renders what it produces.
-Usually receives custom parameter values defined in the `params` export, and a `Mechanic` instance that allows the actual rendering to occur.
+Usually receives custom input values defined in the `inputs` export, and a `mechanic` instance that allows the actual rendering to occur.
 
 [Go to Engines and Handlers](#engines-and-handlers) for further details on how to write handlers.
 
-### `params`
+### `inputs`
 
-Object that defines custom parameters for the design function.
-Every key is used as a name for a single parameter, and the corresponding object value describes the parameter.
-From this the React app shows input controls that lets the user change the values of each parameter.
+Object that defines custom inputs for the design function.
+Every key is used as a name for each input, and the corresponding object value describes the input. Each input must have a `type` key, which defines the type of value.
 
-For example, the following `params` export says the corresponding design function will receive changable parameters `width`, `height` and `name`. Both `width` and `height` are numbers but only the latter has mininum and maximum values.
+From this the Mechanic UI app shows input controls that lets the user change the values of each input.
+
+For example, the following `inputs` export says the corresponding design function will receive changable inputs `width`, `height` and `name`. Both `width` and `height` are numbers but only the latter has minimum and maximum values.
 
 ```javascript
-export const params = {
+export const inputs = {
   width: {
     type: "number",
     default: 400,
@@ -63,7 +64,7 @@ export const params = {
 };
 ```
 
-[Go to parameters](#parameters) to check the supported types of parameters and customization options.
+[Go to inputs](#inputs) to check the supported types of inputs and customization options.
 
 ### `settings`
 
@@ -74,22 +75,22 @@ For example, the following `settings` export is for an function that generates a
 
 ```javascript
 export const settings = {
-  engine: require("@designsystemsinternational/mechanic-engine-p5"),
+  engine: require("@mechanic-design/engine-p5"),
   animated: true,
 };
 ```
 
-[Go to settings](#settings-for-df) to check the supported types of parameters and customization options.
+[Go to settings](#available-settings) to check the supported settings and customization options.
 
 ### (Optional) `presets`
 
-Option object export that defines different named preseted values for the design function parameters.
+Option object export that defines different named sets of values for the design function inputs.
 
 #### Bigger Example
 
 ```javascript
-export const handler = (params, mechanic) => {
-  const { width, height, primaryColor, secondaryColor, numberOfRects } = params;
+export const handler = ({ inputs, mechanic }) => {
+  const { width, height, primaryColor, secondaryColor, numberOfRects } = inputs;
 
   const canvas = document.createElement("canvas");
   canvas.width = width;
@@ -113,7 +114,7 @@ export const handler = (params, mechanic) => {
   mechanic.done(canvas);
 };
 
-export const params = {
+export const inputs = {
   width: {
     type: "number",
     default: 400,
@@ -149,14 +150,14 @@ export const presets = {
     width: 1600,
     height: 1200,
   },
-  xlarge: {
+  extraLarge: {
     width: 3200,
     height: 2400,
   },
 };
 
 export const settings = {
-  engine: require("@designsystemsinternational/mechanic-engine-canvas"),
+  engine: require("@mechanic-design/engine-canvas"),
 };
 ```
 
@@ -164,10 +165,88 @@ export const settings = {
 
 ...
 
-### Parameters
+### Inputs
 
-...
+> Required props marked with (\*)
 
-### Settings for df
+Inputs are defined by their `type`:
 
-...
+| Type      | UI                     | Resulting Value Type        |
+| --------- | ---------------------- | --------------------------- |
+| `text`    | Text field             | `string`                    |
+| `number`  | Number field or slider | `number`                    |
+| `boolean` | Toggle                 | `boolean`                   |
+| `color`   | Color picker           | Color `string`              |
+| `image`   | File selector          | `File` or `FileList` object |
+
+#### Text
+
+| Prop         | Type                                        | Default   | Description                                                                                                        |
+| ------------ | ------------------------------------------- | --------- | ------------------------------------------------------------------------------------------------------------------ |
+| type (\*)    | `string`                                    |           | `"text"` defines a input of type 'text'                                                                            |
+| default (\*) | `string`                                    |           | Default to this value.                                                                                             |
+| editable     | `boolean\|function(inputs){return boolean}` | true      | Enables or disables the field in the UI.                                                                           |
+| options      | `['value']` \| `{label: value, ...}`        | undefined | If present, displays a dropdown with the provided options. All option values must match be a valid `text`          |
+| validation   | `function`                                  | undefined | If present, executes function with the new value. Should return a string describing the error or null if no error. |
+| label        | `string`                                    | undefined | If present, it's used as a label for the corresponding UI input in the Mechanic app.                               |
+
+#### Number
+
+| Prop         | Type                                        | Default   | Description                                                                                                        |
+| ------------ | ------------------------------------------- | --------- | ------------------------------------------------------------------------------------------------------------------ |
+| type (\*)    | `string`                                    |           | `"number"` defines a input of type 'number'                                                                        |
+| default (\*) | `number`                                    |           | Default to this value.                                                                                             |
+| min          | `number`                                    | undefined | Minimum acceptable value (required if `slider: true`)                                                              |
+| max          | `number`                                    | undefined | Maximum acceptable value (required if `slider: true`)                                                              |
+| step         | `number`                                    | undefined | Step to increase of decrease value by                                                                              |
+| slider       | `boolean`                                   | undefined | Wether to display input as as range slider. (if true, min and max are required)                                    |
+| editable     | `boolean\|function(inputs){return boolean}` | true      | Enables or disables the field in the UI.                                                                           |
+| options      | `[value]` \| `{label: value, ...}`          | undefined | If present, displays a dropdown with the provided options. All option values must match be a valid `number`        |
+| validation   | `function`                                  | undefined | If present, executes function with the new value. Should return a string describing the error or null if no error. |
+| label        | `string`                                    | undefined | If present, it's used as a label for the corresponding UI input in the Mechanic app.                               |
+
+#### Boolean or Toggle
+
+| Prop       | Type                                        | Default   | Description                                                                                                        |
+| ---------- | ------------------------------------------- | --------- | ------------------------------------------------------------------------------------------------------------------ |
+| type (\*)  | `string`                                    |           | `"boolean"` defines a input of type 'boolean'                                                                      |
+| default    | `boolean`                                   | false     | Default to this value.                                                                                             |
+| editable   | `boolean\|function(inputs){return boolean}` | true      | Enables or disables the field in the UI.                                                                           |
+| validation | `function`                                  | undefined | If present, executes function with the new value. Should return a string describing the error or null if no error. |
+| label      | `string`                                    | undefined | If present, it's used as a label for the corresponding UI input in the Mechanic app.                               |
+
+#### Color
+
+| Prop         | Type                                        | Default   | Description                                                                                                        |
+| ------------ | ------------------------------------------- | --------- | ------------------------------------------------------------------------------------------------------------------ |
+| type (\*)    | `string`                                    |           | `"color"` defines a input of type 'color'                                                                          |
+| default (\*) | `string`                                    | undefined | Default to this value.                                                                                             |
+| model        | `rgba\|hex`                                 | `rgba`    | The color model to be used                                                                                         |
+| editable     | `boolean\|function(inputs){return boolean}` | true      | Enables or disables the field in the UI.                                                                           |
+| options      | `['value']` \| `{label: value, ...}`        | undefined | If present, displays a dropdown with the provided options. All option values must match be a valid `color`         |
+| validation   | `function`                                  | undefined | If present, executes function with the new value. Should return a string describing the error or null if no error. |
+| label        | `string`                                    | undefined | If present, it's used as a label for the corresponding UI input in the Mechanic app.                               |
+
+#### Image
+
+| Prop       | Type                                        | Default   | Description                                                                                                                     |
+| ---------- | ------------------------------------------- | --------- | ------------------------------------------------------------------------------------------------------------------------------- |
+| type (\*)  | `string`                                    |           | `"image"` defines a input of type 'image'                                                                                       |
+| multiple   | `boolean`                                   | false     | Wether it should accept multiple images. If it's `false` it returns an `File` object, if `true` it returns a `FileList` object. |
+| editable   | `boolean\|function(inputs){return boolean}` | true      | Enables or disables the field in the UI.                                                                                        |
+| validation | `function`                                  | undefined | If present, executes function with file object to validate. Should return a string describing the error or `null` if no error   |
+| label      | `string`                                    | undefined | If present, it's used as a label for the corresponding UI input in the Mechanic app.                                            |
+
+---
+
+### Available Settings
+
+These are the available settings:
+
+| Setting     | Value                                      | Default   | Description                                                                                                                                                                                                       |
+| ----------- | ------------------------------------------ | --------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| engine (\*) | `require('@mechanic-design/engine-[...]')` | undefined | Requires the engine to handle the design function. [See engines and handlers](#engines-and-handlers)                                                                                                              |
+| name        | `string`                                   | undefined | If present it is used as the display name for the function                                                                                                                                                        |
+| animate     | `boolean`                                  | false     | Determines wether the design function is an animated sequence or a static image                                                                                                                                   |
+| usesRandom  | `boolean`                                  | false     | If true, enables a seeded random that forces the export to generate the same output as the last preview                                                                                                           |
+| optimize    | `boolean\|{options object}`                | true      | Optimizes the output using [SVGO](https://github.com/svg/svgo). If an object is received, it is merged with the default SVGO options and passed to the [optimize function](https://github.com/svg/svgo#optimize). |

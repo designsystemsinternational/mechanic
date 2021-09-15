@@ -8,7 +8,10 @@ import {
 } from "../../utils/blocks";
 import { Block } from "../../utils/blocks-components";
 
-export const handler = ({ width, height, done, logoWidth, logoRatio }) => {
+export const handler = ({ inputs, mechanic }) => {
+  const { width, height, logoWidth, logoRatio } = inputs;
+  const { done } = mechanic;
+
   const rows = 2;
   const cols = 13;
   const logoHeight = Math.floor((logoWidth / logoRatio) * rows);
@@ -56,7 +59,7 @@ export const handler = ({ width, height, done, logoWidth, logoRatio }) => {
   );
 };
 
-export const params = {
+export const inputs = {
   width: {
     type: "number",
     default: 300,
@@ -98,6 +101,6 @@ export const presets = {
 };
 
 export const settings = {
-  engine: require("@designsystemsinternational/mechanic-engine-react"),
+  engine: require("@mechanic-design/engine-react"),
   usesRandom: true,
 };

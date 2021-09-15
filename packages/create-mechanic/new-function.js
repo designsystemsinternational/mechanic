@@ -2,68 +2,114 @@ const fs = require("fs-extra");
 const path = require("path");
 const {
   spinners: { mechanicSpinner: spinner },
-} = require("@designsystemsinternational/mechanic-utils");
+} = require("@mechanic-design/utils");
 
 const functionExampleOptions = require("./function-examples");
 const functionTemplateOptions = require("./function-templates");
+const content = require("./script-content");
+
+const log = console.log;
+
+// https://gist.github.com/lovasoa/8691344#gistcomment-3299018
+const walk = (dir, fileCallback, directoryCallback) => {
+  const files = fs.readdirSync(dir);
+  files.forEach((file) => {
+    const filepath = path.join(dir, file);
+    const stats = fs.statSync(filepath);
+    if (stats.isDirectory()) {
+      directoryCallback(file, filepath, stats);
+      walk(filepath, fileCallback, directoryCallback);
+    } else if (stats.isFile()) {
+      fileCallback(file, filepath, stats);
+    }
+  });
+};
+
+const copyDirAndContents = (baseFunctionDir, newFunctionDir) => {
+  const copyFile = (_, filepath) => {
+    if (path.join(baseFunctionDir, "dependencies.json") === filepath) return;
+    const relativePath = path.relative(baseFunctionDir, filepath);
+    fs.copyFileSync(filepath, path.join(newFunctionDir, relativePath));
+  };
+  const copyDir = (_, filepath) => {
+    const relativePath = path.relative(baseFunctionDir, filepath);
+    fs.mkdirSync(path.join(newFunctionDir, relativePath));
+  };
+  walk(baseFunctionDir, copyFile, copyDir);
+};
+
+const baseExists = (typeOfBaseUsed, base) => {
+  if (typeOfBaseUsed === "template" && base in functionTemplateOptions)
+    return true;
+  if (typeOfBaseUsed === "example" && base in functionExampleOptions)
+    return true;
+  return false;
+};
+
+const directoryExists = async (dirPath) => await fs.pathExists(dirPath);
 
 const getFunctionQuestions = (initialAnswers, config = {}) => [
   {
-    name: "base",
+    name: "usesBase",
     type: "list",
-    message: `Do you want to use a template or an example as a base for your first design function?`,
-    default: initialAnswers.example
-      ? "Example"
-      : initialAnswers.template
-      ? "Template"
-      : null,
-    choices: ["Template", "Example"],
+    message: content.functionBaseQuestion(config.isFirst),
+    default:
+      initialAnswers.usesBase === "example"
+        ? "Example"
+        : initialAnswers.usesBase === "template"
+        ? "Template"
+        : null,
+    choices: ["Template", "Example", "Neither"],
+    when: initialAnswers.noSkip || !initialAnswers.usesBase,
   },
   {
     name: "template",
     type: "list",
-    message: `Select template for your first design function`,
-    default: initialAnswers.template,
+    message: content.functionTemplateQuestion(config.isFirst),
+    default:
+      initialAnswers.usesBase === "template" ? initialAnswers.base : null,
     choices: Object.values(functionTemplateOptions).map((option) => ({
       name: `${option.name} (${option.type})`,
       value: option.dir,
     })),
-    when: (answers) => answers.base === "Template",
+    when: (answers) =>
+      !initialAnswers.usesBase && answers.usesBase === "Template",
   },
   {
     name: "example",
     type: "list",
-    message: `Select example to use as base for your first design function`,
-    default: initialAnswers.example,
+    message: content.functionExampleQuestion(config.isFirst),
+    default: initialAnswers.usesBase === "example" ? initialAnswers.base : null,
     choices: Object.values(functionExampleOptions).map((option) => ({
       name: `${option.name} (${option.type})`,
       value: option.dir,
     })),
-    when: (answers) => answers.base === "Example",
+    when: (answers) =>
+      !initialAnswers.usesBase && answers.usesBase === "Example",
   },
   {
     name: "functionName",
     type: "input",
-    message:
-      "Name your first design function (you can always create more with `mechanic new function`)",
-    default: initialAnswers.functionName || "my-function",
+    message: content.functionNameQuestion(config.isFirst),
+    default: initialAnswers.usesBase
+      ? initialAnswers.base
+      : initialAnswers.functionName || "my-function",
     validate: async (functionName) => {
       const exists = await fs.pathExists(
         path.resolve(config.functionsPath || "functions", functionName)
       );
-      return !exists
-        ? true
-        : "Directory already exists. Enter name that doesn't exists.";
+      return !exists ? true : content.functionNameExistsError;
     },
+    when: initialAnswers.noSkip || !initialAnswers.usesBase,
   },
 ];
 
 const generateFunctionTemplate = async (
   projectName,
-  { base, template, example, functionName },
+  { typeOfBaseUsed, base, functionName },
   config = {}
 ) => {
-  spinner.start("Adding design function to project...");
+  spinner.start(content.generateFunctionStart);
 
   // Create design function folder
   const directory = path.resolve(projectName);
@@ -77,13 +123,19 @@ const generateFunctionTemplate = async (
   // Path of template directory to copy
   const baseFunctionDir = path.join(
     __dirname,
-    base === "Template" ? "function-templates" : "function-examples",
-    base === "Template"
-      ? functionTemplateOptions[template].dir
-      : functionExampleOptions[example].dir
+    typeOfBaseUsed === "Template"
+      ? "function-templates"
+      : typeOfBaseUsed === "Example"
+      ? "function-examples"
+      : "function-blank",
+    typeOfBaseUsed === "Template"
+      ? functionTemplateOptions[base].dir
+      : typeOfBaseUsed === "Example"
+      ? functionExampleOptions[base].dir
+      : ""
   );
 
-  // Add dependencies and copy files
+  // Add dependencies and copy basic files
   await Promise.all([
     (async () => {
       const packageObj = JSON.parse(
@@ -104,23 +156,35 @@ const generateFunctionTemplate = async (
           packageObj[depType][dep] = baseDependencies[depType][dep];
         }
       }
-
       // Write the resulting package
       await fs.writeFile(
         path.join(directory, "package.json"),
         JSON.stringify(packageObj, null, 2)
       );
     })(),
-    // Copy template design function with different names
-    fs.copyFile(
-      path.join(baseFunctionDir, "index.js"),
-      path.join(newFunctionDir, "index.js")
-    ),
   ]);
+  // Copy all files in base dir
+  copyDirAndContents(baseFunctionDir, newFunctionDir);
 
-  // End UI spinner
-  spinner.succeed(`Design function "${functionName}" added to project!`);
+  spinner.succeed(content.generateFunctionSuccess(functionName));
+  log(content.functionCreationDetails(functionName));
   return newFunctionDir;
 };
 
-module.exports = { generateFunctionTemplate, getFunctionQuestions };
+module.exports = {
+  baseExists,
+  directoryExists,
+  generateFunctionTemplate,
+  getFunctionQuestions,
+  copyDirAndContents,
+  content: {
+    notMechanicProjectError: content.notMechanicProjectError,
+    welcome: content.welcomeNewFunction,
+    useBaseNotice: content.useBaseNotice,
+    baseExist: content.baseExist,
+    baseDoesNotExist: content.baseDoesNotExist,
+    directoryAlreadyExist: content.directoryAlreadyExist,
+    doneAndNextStepsMessage: content.newFunctionNextStepsMessage,
+    bye: content.bye,
+  },
+};

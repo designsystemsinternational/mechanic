@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "@mechanic-design/engine-canvas": "^1.0.0"
+  }
+}

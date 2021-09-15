@@ -1,0 +1,7 @@
+@import "../variables.css";
+
+.root {
+}
+.select {
+  cursor: pointer;
+}

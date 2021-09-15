@@ -9,15 +9,10 @@ import {
 import { Unit } from "../../utils/blocks-components";
 import { useDrawLoop } from "../../utils/drawLoopHook";
 
-export const handler = ({
-  width,
-  height,
-  frame,
-  done,
-  logoWidth,
-  logoRatio,
-  duration,
-}) => {
+export const handler = ({ inputs, mechanic }) => {
+  const { width, height, logoWidth, logoRatio, duration } = inputs;
+  const { frame, done } = mechanic;
+
   const [blockParams, setBlockParams] = useState({
     blocksByIndex: [],
     blockConfigs: [],
@@ -96,7 +91,7 @@ export const handler = ({
   );
 };
 
-export const params = {
+export const inputs = {
   width: {
     type: "number",
     default: 100,
@@ -129,7 +124,7 @@ export const params = {
 };
 
 export const settings = {
-  engine: require("@designsystemsinternational/mechanic-engine-react"),
+  engine: require("@mechanic-design/engine-react"),
   animated: true,
   usesRandom: true,
 };

@@ -9,20 +9,21 @@ import {
 import { Unit } from "../../utils/blocks-components";
 import { useDrawLoop } from "../../utils/drawLoopHook";
 
-export const handler = ({
-  width,
-  ratio,
-  frame,
-  done,
-  colorMode,
-  flag,
-  firstColor,
-  secondColor,
-  thirdColor,
-  offset,
-  duration,
-  loops,
-}) => {
+export const handler = ({ inputs, mechanic }) => {
+  const {
+    width,
+    ratio,
+    colorMode,
+    flag,
+    firstColor,
+    secondColor,
+    thirdColor,
+    offset,
+    duration,
+    loops,
+  } = inputs;
+  const { frame, done } = mechanic;
+
   const [blockParams, setBlockParams] = useState({
     colors: [],
     blocksByIndex: [],
@@ -95,7 +96,7 @@ export const handler = ({
   );
 };
 
-export const params = {
+export const inputs = {
   width: {
     type: "number",
     default: 500,
@@ -118,21 +119,25 @@ export const params = {
     type: "text",
     options: flagNames,
     default: flagNames[0],
+    editable: (inputs) => inputs.colorMode === "Pick Flag",
   },
   firstColor: {
     type: "color",
     model: "hex",
     default: "#11457e",
+    editable: (inputs) => inputs.colorMode === "Custom Colors",
   },
   secondColor: {
     type: "color",
     model: "hex",
     default: "#d7141a",
+    editable: (inputs) => inputs.colorMode === "Custom Colors",
   },
   thirdColor: {
     type: "color",
     model: "hex",
     default: "#f1f1f1",
+    editable: (inputs) => inputs.colorMode === "Custom Colors",
   },
   offset: {
     type: "number",
@@ -168,7 +173,7 @@ export const presets = {
 };
 
 export const settings = {
-  engine: require("@designsystemsinternational/mechanic-engine-react"),
+  engine: require("@mechanic-design/engine-react"),
   animated: true,
   usesRandom: true,
 };

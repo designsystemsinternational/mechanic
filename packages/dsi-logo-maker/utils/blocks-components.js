@@ -19,7 +19,7 @@ const Brick = ({ brick, block, colors, stroke }) => {
       <text
         fill={stroke || blackOrWhite}
         fontSize={fontSize}
-        fontFamily={`F, Helvetica, Sans-Serif`}
+        fontFamily={`F Grotesk Thin, Helvetica, Sans-Serif`}
         x={charX}
         y={charY}
       >
