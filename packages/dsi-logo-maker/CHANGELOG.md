@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### Changed
+
+- Updated all functions to follow `persistRandomOnExport` behavior instead of `usesRandom`.
+
 ## 0.5.0 - 2021-09-06
 
 ### Changed

@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- Changed `usesRandom` setting name to `persistRandomOnExport` at it's default value to `true`.
+
 ## [1.0.0] - 2021-09-14
 
 Beta release
