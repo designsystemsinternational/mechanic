@@ -18,6 +18,12 @@ module.exports = (modeParameter, designFunctions, distDir, publicPath) => {
     return isMechanicModule;
   };
 
+  // this is necessary to load the assets (i.e. favicon) in the html template
+  const template = {
+    test: /\.html$/i,
+    loader: "html-loader"
+  };
+
   // https://stackoverflow.com/questions/33527653/babel-6-regeneratorruntime-is-not-defined
   const js = {
     test: /\.(js|jsx)$/,
@@ -145,6 +151,18 @@ module.exports = (modeParameter, designFunctions, distDir, publicPath) => {
     exclude: isMechanicCondition
   };
 
+  const mechanicImages = {
+    test: /\.(jpe?g|png|gif|svg)$/,
+    type: "asset/resource",
+    include: isMechanicCondition
+  };
+
+  const functionsImages = {
+    test: /\.(jpe?g|png|gif|svg)$/,
+    type: "asset/inline",
+    exclude: isMechanicCondition
+  };
+
   const entry = Object.entries(designFunctions).reduce(
     (acc, [name, designFunctionObj]) => {
       acc[name] = isProduction
@@ -218,7 +236,17 @@ module.exports = (modeParameter, designFunctions, distDir, publicPath) => {
       }
     },
     module: {
-      rules: [js, functions, mechanicCss, functionsCss, mechanicFonts, functionsFonts]
+      rules: [
+        template,
+        js,
+        functions,
+        mechanicCss,
+        functionsCss,
+        mechanicFonts,
+        functionsFonts,
+        mechanicImages,
+        functionsImages
+      ]
     },
     plugins
   };
