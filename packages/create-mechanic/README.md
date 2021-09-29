@@ -43,5 +43,7 @@ npm init mechanic@latest my-project -- --example poster-generator
 
 Current examples:
 
+- `business-card-generator`
+- `instagram-story-generator`
 - `poster-generator`
 - More coming soon!
