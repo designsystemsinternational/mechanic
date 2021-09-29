@@ -21,10 +21,11 @@ export const Function = ({ name, exports: functionExports, children }) => {
   const {
     inputs,
     presets: exportedPresets,
-    settings: { usesRandom }
+    settings: { persistRandomOnExport }
   } = functionExports;
   const presets = getPossiblePresets(exportedPresets ?? {});
   const canScale = !!(inputs.width && inputs.height);
+  const persistRandom = persistRandomOnExport === undefined || persistRandomOnExport;
   const [values, setValues] = useValues(name, inputs);
   const handleOnChange = (e, name, value) => {
     const sources = addPresetsAsSources(value, name, exportedPresets, inputs, values);
@@ -128,7 +129,11 @@ export const Function = ({ name, exports: functionExports, children }) => {
           <div className={css.sep} />
           <div className={css.row}>
             <Button className={css.grow} onClick={handlePreview} disabled={!iframeLoaded}>
-              {iframeLoaded ? (usesRandom ? "Preview / Randomize" : "Preview") : "Loading content"}
+              {iframeLoaded
+                ? persistRandom
+                  ? "Preview / Randomize"
+                  : "Preview"
+                : "Loading content"}
             </Button>
           </div>
           <div className={css.sep} />
