@@ -80,5 +80,4 @@ export const presets = {
 
 export const settings = {
   engine: require("@mechanic-design/engine-svg"),
-  usesRandom: true,
 };

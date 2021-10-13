@@ -7,6 +7,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.1.0] - 2021-09-29
+
+### Added
+
+- New business card generator example
+- New instagram story generator example
+
+### Changed
+
+- Changed `usesRandom` setting name to `persistRandomOnExport` at it's default value to `true`.
+- Code base for `react-image` template
+
 ## [1.0.0] - 2021-09-14
 
 Beta release
@@ -145,8 +157,10 @@ Beta release
 
 First logged release
 
-[unreleased]: https://github.com/designsystemsinternational/mechanic/compare/v0.6.5...main
-[0.6.4]: https://github.com/designsystemsinternational/mechanic/releases/tag/v0.6.5
+[unreleased]: https://github.com/designsystemsinternational/mechanic/compare/v1.1.0...main
+[1.1.0]: https://github.com/designsystemsinternational/mechanic/releases/tag/v1.1.0
+[1.0.0]: https://github.com/designsystemsinternational/mechanic/releases/tag/v1.0.0
+[0.6.5]: https://github.com/designsystemsinternational/mechanic/releases/tag/v0.6.5
 [0.6.4]: https://github.com/designsystemsinternational/mechanic/releases/tag/v0.6.4
 [0.6.3]: https://github.com/designsystemsinternational/mechanic/releases/tag/v0.6.3
 [0.6.2]: https://github.com/designsystemsinternational/mechanic/releases/tag/v0.6.2

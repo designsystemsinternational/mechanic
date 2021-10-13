@@ -77,5 +77,4 @@ export const presets = {
 
 export const settings = {
   engine: require("@mechanic-design/engine-p5"),
-  usesRandom: true,
 };

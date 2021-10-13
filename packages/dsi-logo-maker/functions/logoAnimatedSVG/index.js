@@ -175,5 +175,4 @@ export const presets = {
 export const settings = {
   engine: require("@mechanic-design/engine-react"),
   animated: true,
-  usesRandom: true,
 };
