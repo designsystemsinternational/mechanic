@@ -12,11 +12,15 @@ module.exports = (modeParameter, designFunctions, distDir, publicPath) => {
   const devtool = isProduction ? "source-map" : "eval-source-map";
 
   // condition function used to determine if a path belongs to mechanic or not
+
   const isMechanicCondition = pathname => {
-    const isMechanicModule = /node_modules.+mechanic/.test(pathname);
-    // if (pathname) console.log(path.relative(process.cwd(), pathname), isMechanicModule);
-    return isMechanicModule;
+    const isMechanic = /\/@mechanic-design\//.test(pathname);
+    if (pathname)
+      console.log(">> mechanic-issuer: ", path.relative(process.cwd(), pathname), isMechanic);
+    return isMechanic;
   };
+
+  const isNotMechanicCondition = pathname => !isMechanicCondition(pathname);
 
   // this is necessary to load the assets (i.e. favicon) in the html template
   const template = {
@@ -71,7 +75,7 @@ module.exports = (modeParameter, designFunctions, distDir, publicPath) => {
 
   const mechanicCss = {
     test: /\.(css)$/,
-    include: isMechanicCondition,
+    issuer: isMechanicCondition,
     use: [isProduction ? MiniCssExtractPlugin.loader : require.resolve("style-loader")].concat([
       {
         loader: require.resolve("css-loader"),
@@ -105,7 +109,7 @@ module.exports = (modeParameter, designFunctions, distDir, publicPath) => {
 
   const functionsCss = {
     test: /\.(css)$/,
-    exclude: isMechanicCondition,
+    issuer: isNotMechanicCondition,
     use: [
       require.resolve("style-loader"),
       {
@@ -142,25 +146,25 @@ module.exports = (modeParameter, designFunctions, distDir, publicPath) => {
   const mechanicFonts = {
     test: /\.(woff2?|otf|ttf)$/,
     type: "asset/resource",
-    include: isMechanicCondition
+    issuer: isMechanicCondition
   };
 
   const functionsFonts = {
     test: /\.(woff2?|otf|ttf)$/,
     type: "asset/inline",
-    exclude: isMechanicCondition
+    issuer: isNotMechanicCondition
   };
 
   const mechanicImages = {
     test: /\.(jpe?g|png|gif|svg)$/,
     type: "asset/resource",
-    include: isMechanicCondition
+    issuer: isMechanicCondition
   };
 
   const functionsImages = {
     test: /\.(jpe?g|png|gif|svg)$/,
     type: "asset/inline",
-    exclude: isMechanicCondition
+    issuer: isNotMechanicCondition
   };
 
   const entry = Object.entries(designFunctions).reduce(
