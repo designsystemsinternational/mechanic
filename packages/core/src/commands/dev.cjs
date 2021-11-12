@@ -71,6 +71,7 @@ const command = async argv => {
       else
         res.format({
           default: () => res.sendFile(path.resolve(__dirname, "./html/loading.html")),
+          "image/svg+xml": () => res.sendFile(path.resolve(__dirname, "../../app/favicon.svg")),
           "text/html": () => res.sendFile(path.resolve(__dirname, "./html/loading.html")),
           "application/json": () => res.json({ loading: true, status })
         });
