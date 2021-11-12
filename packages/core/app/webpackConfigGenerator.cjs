@@ -15,8 +15,6 @@ module.exports = (modeParameter, designFunctions, distDir, publicPath) => {
 
   const isMechanicCondition = pathname => {
     const isMechanic = /\/@mechanic-design\//.test(pathname);
-    if (pathname)
-      console.log(">> mechanic-issuer: ", path.relative(process.cwd(), pathname), isMechanic);
     return isMechanic;
   };
 
