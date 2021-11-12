@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 - Changed `usesRandom` setting name to `persistRandomOnExport` at it's default value to `true`.
+- Added favicon to mechanic app and loading page.
 
 ## 0.6.4 - 2021-09-14
 
