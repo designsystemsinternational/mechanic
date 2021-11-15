@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### Added
+
+- Added styles (& fonts) to SVG frames for animated exports, so they export correctly.
+
 ### Changed
 
 - Changed `usesRandom` setting name to `persistRandomOnExport` at it's default value to `true`.
