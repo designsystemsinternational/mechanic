@@ -1,6 +1,7 @@
 import { download } from "./download.js";
 import { WebMWriter } from "./webm-writer.js";
 import {
+  svgAppendStyles,
   svgOptimize,
   svgPrepare,
   svgToDataUrl,
@@ -58,8 +59,9 @@ export class Mechanic {
   /**
    * Register a frame for an animated design function
    * @param {SVGElement|HTMLCanvasElement} el - Element with the current drawing state of the design function
+   * @param {Object} extras  - object containing extra elements needed by some engines
    */
-  frame(el) {
+  frame(el, extras = {}) {
     if (!this.settings.animated) {
       throw new MechanicError("The frame() function can only be used for animations");
     }
@@ -92,6 +94,9 @@ export class Mechanic {
       if (!this.svgFrames) {
         this.svgFrames = [];
       }
+
+      el = svgAppendStyles(el, extras.head);
+
       this.svgFrames.push(svgToDataUrl(svgPrepare(el, this.serializer)));
       if (!this.svgSize) {
         this.svgSize = extractSvgSize(el);
@@ -104,17 +109,12 @@ export class Mechanic {
   /**
    * Finish a static or animated design function
    * @param {SVGElement|HTMLCanvasElement} el - Element with the current drawing state of the design function
+   * @param {Object} extras  - object containing extra elements needed by some engines
    */
   async done(el, extras = {}) {
     if (!this.settings.animated) {
       if (validation.isSVG(el)) {
-        if (extras.head) {
-          const styles = extras.head.querySelectorAll("style");
-
-          for (var i = 0; i < styles.length; i++) {
-            el.append(styles[i].cloneNode(true));
-          }
-        }
+        el = svgAppendStyles(el, extras.head);
 
         this.serializer = new XMLSerializer();
 
