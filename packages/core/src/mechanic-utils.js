@@ -1,6 +1,24 @@
 import { optimize, extendDefaultPlugins } from "svgo/dist/svgo.browser.js";
 
 /**
+ * Appends linked styles to an SVG, returns a copy of the element
+ * @param {SVGElement} el - SVG element to convert
+ * @param {HTMLElement} head - Head element to copy styles from
+ */
+const svgAppendStyles = (el, head) => {
+  let copy = el;
+
+  if (head) {
+    copy = el.cloneNode(true);
+    const styles = head.querySelectorAll("style");
+    for (var i = 0; i < styles.length; i++) {
+      copy.append(styles[i].cloneNode(true));
+    }
+  }
+  return copy;
+};
+
+/**
  * Prepares an SVG element with sensible defaults and returns serialized svg string
  * @param {SVGElement} el - SVG element to convert
  * @param {XMLSerializer} serializer - An instance of XMLSerializer to use for serialization
@@ -81,4 +99,12 @@ const getTimeStamp = () => {
   return `${year}-${month}-${day}-${hour}-${minute}`;
 };
 
-export { svgPrepare, svgOptimize, svgToDataUrl, extractSvgSize, dataUrlToCanvas, getTimeStamp };
+export {
+  svgAppendStyles,
+  svgPrepare,
+  svgOptimize,
+  svgToDataUrl,
+  extractSvgSize,
+  dataUrlToCanvas,
+  getTimeStamp
+};

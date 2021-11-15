@@ -12,7 +12,7 @@ export const run = (functionName, func, values, isPreview) => {
     // Pending virtual-dom approach
     root.innerHTML = el.trim();
     if (!isPreview) {
-      mechanic.frame(root.childNodes[0]);
+      mechanic.frame(root.childNodes[0], { head });
     }
   };
 
