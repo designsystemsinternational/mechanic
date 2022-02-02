@@ -5,6 +5,7 @@ import {
   svgOptimize,
   svgPrepare,
   svgToDataUrl,
+  htmlToDataUrl,
   extractSvgSize,
   dataUrlToCanvas,
   getTimeStamp
@@ -101,17 +102,21 @@ export class Mechanic {
       if (!this.svgSize) {
         this.svgSize = extractSvgSize(el);
       }
-    } else {
+    } else if (validation.isCanvas(el)) {
       this.videoWriter.addFrame(el);
+    }
+    else {
+      // TODO: Support animation for HTMLElement
     }
   }
 
   /**
    * Finish a static or animated design function
-   * @param {SVGElement|HTMLCanvasElement} el - Element with the current drawing state of the design function
+   * @param {SVGElement|HTMLCanvasElement|HTMLElement} el - Element with the current drawing state of the design function
    * @param {Object} extras  - object containing extra elements needed by some engines
    */
   async done(el, extras = {}) {
+    console.log('MECHANIC DONE', '\n - animated', this.settings.animated, '\n - isSvg', validation.isSVG(el), '\n - isCanvas', validation.isCanvas(el), '\n - el', el)
     if (!this.settings.animated) {
       if (validation.isSVG(el)) {
         el = svgAppendStyles(el, extras.head);
@@ -124,8 +129,10 @@ export class Mechanic {
           svgString = svgOptimize(svgString, this.settings.optimize);
         }
         this.svgData = svgToDataUrl(svgString);
-      } else {
+      } else if (validation.isCanvas(el)) {
         this.canvasData = el.toDataURL();
+      } else {
+        this.htmlData = await htmlToDataUrl(el);
       }
     } else {
       if (!validation.supportsFormatWebP()) {
@@ -143,8 +150,17 @@ export class Mechanic {
           await dataUrlToCanvas(this.svgFrames[i], cacheCanvas);
           this.videoWriter.addFrame(cacheCanvas);
         }
+        this.videoData = await this.videoWriter.complete();
       }
-      this.videoData = await this.videoWriter.complete();
+      else if (validation.isCanvas(el)) {
+        this.videoData = await this.videoWriter.complete();
+      }
+      else {
+        // TODO: Support animation for HTMLElement
+        // convert to canvas -> then to image
+        console.warn('HTMLElements are not supported when exporting animated content.')
+        alert('HTMLElements are not supported when exporting animated content.')
+      }
     }
     this.isDone = true;
   }
@@ -166,6 +182,8 @@ export class Mechanic {
       download(this.svgData, `${name}.svg`, "image/svg+xml");
     } else if (this.canvasData) {
       download(this.canvasData, `${name}.png`, "image/png");
+    } else if (this.htmlData) {
+      download(this.htmlData, `${name}.png`, "image/png");
     } else if (this.videoData) {
       download(this.videoData, `${name}.webm`, "video/webm");
     }

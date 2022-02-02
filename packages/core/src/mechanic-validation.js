@@ -124,9 +124,8 @@ const validateValues = (inputs, values = {}) => {
       if (Array.isArray(options) && !options.includes(values[inputName])) {
         return `Supplied input "${inputName}" is not available in the template options: ${options}`;
       } else if (!Array.isArray(options) && !hasKey(options, values[inputName])) {
-        return `Supplied input "${inputName}" (${
-          values[inputName]
-        }) is not available in the template options: ${Object.keys(options)}`;
+        return `Supplied input "${inputName}" (${values[inputName]
+          }) is not available in the template options: ${Object.keys(options)}`;
       }
     }
     // Run validation functions for values.
@@ -219,14 +218,20 @@ const prepareValues = (inputs, settings, baseValues) => {
 const isSVG = el => el instanceof SVGElement;
 
 /**
+ * Checks whether a DOM element is instance of HTMLCanvasElement
+ * @param {object} el - A DOM element to check
+ */
+const isCanvas = el => el instanceof HTMLCanvasElement;
+
+/**
  * Validates that a DOM element is SVG or Canvas
  * @param {object} el - A DOM element to check
  */
 const validateEl = el => {
-  if (isSVG(el) || el instanceof HTMLCanvasElement) {
+  if (isSVG(el) || isCanvas(el) || el instanceof HTMLElement) {
     return null;
   }
-  return "Element passed to the frame() function must be SVGElement or HTMLCanvasElement";
+  return "Element passed to the frame() function must be SVGElement, HTMLCanvasElement or HTMLElement";
 };
 
 /**
@@ -254,6 +259,7 @@ export {
   validateSettings,
   prepareValues,
   isSVG,
+  isCanvas,
   validateEl,
   supportsFormatWebP
 };
