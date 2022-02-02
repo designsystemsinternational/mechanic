@@ -6,6 +6,7 @@ import {
   svgPrepare,
   svgToDataUrl,
   htmlToDataUrl,
+  htmlToCanvas,
   extractSvgSize,
   dataUrlToCanvas,
   getTimeStamp
@@ -62,7 +63,7 @@ export class Mechanic {
    * @param {SVGElement|HTMLCanvasElement} el - Element with the current drawing state of the design function
    * @param {Object} extras  - object containing extra elements needed by some engines
    */
-  frame(el, extras = {}) {
+  async frame(el, extras = {}) {
     if (!this.settings.animated) {
       throw new MechanicError("The frame() function can only be used for animations");
     }
@@ -106,7 +107,9 @@ export class Mechanic {
       this.videoWriter.addFrame(el);
     }
     else {
-      // TODO: Support animation for HTMLElement
+      // This is slow. We should find a more efficient way
+      const frame = await htmlToCanvas(el);
+      this.videoWriter.addFrame(frame);
     }
   }
 
@@ -116,7 +119,6 @@ export class Mechanic {
    * @param {Object} extras  - object containing extra elements needed by some engines
    */
   async done(el, extras = {}) {
-    console.log('MECHANIC DONE', '\n - animated', this.settings.animated, '\n - isSvg', validation.isSVG(el), '\n - isCanvas', validation.isCanvas(el), '\n - el', el)
     if (!this.settings.animated) {
       if (validation.isSVG(el)) {
         el = svgAppendStyles(el, extras.head);
@@ -150,17 +152,8 @@ export class Mechanic {
           await dataUrlToCanvas(this.svgFrames[i], cacheCanvas);
           this.videoWriter.addFrame(cacheCanvas);
         }
-        this.videoData = await this.videoWriter.complete();
       }
-      else if (validation.isCanvas(el)) {
-        this.videoData = await this.videoWriter.complete();
-      }
-      else {
-        // TODO: Support animation for HTMLElement
-        // convert to canvas -> then to image
-        console.warn('HTMLElements are not supported when exporting animated content.')
-        alert('HTMLElements are not supported when exporting animated content.')
-      }
+      this.videoData = await this.videoWriter.complete();
     }
     this.isDone = true;
   }
