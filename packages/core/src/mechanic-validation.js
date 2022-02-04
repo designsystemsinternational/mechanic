@@ -196,16 +196,24 @@ const prepareValues = (inputs, settings, baseValues) => {
     }
   });
 
-  // Scale down to fit if width and height are inputs
-  if (baseValues.scaleToFit && values.width && values.height) {
-    const ratioWidth = baseValues.scaleToFit.width ? baseValues.scaleToFit.width / values.width : 1;
-    const ratioHeight = baseValues.scaleToFit.height
-      ? baseValues.scaleToFit.height / values.height
-      : 1;
-    if (ratioWidth < 1 || ratioHeight < 1) {
-      const ratio = ratioWidth < ratioHeight ? ratioWidth : ratioHeight;
-      values.width = Math.floor(values.width * ratio);
-      values.height = Math.floor(values.height * ratio);
+  // Add ratio and original values if width and height are inputs
+  if (values.width && values.height) {
+    values.widthOriginal = values.width
+    values.heightOriginal = values.height
+    values.ratio = 1
+
+    // Calculate new width, height and ratio if scale down to fit is active
+    if (baseValues.scaleToFit) {
+      const ratioWidth = baseValues.scaleToFit.width ? baseValues.scaleToFit.width / values.width : 1;
+      const ratioHeight = baseValues.scaleToFit.height
+        ? baseValues.scaleToFit.height / values.height
+        : 1;
+      if (ratioWidth < 1 || ratioHeight < 1) {
+        const ratio = ratioWidth < ratioHeight ? ratioWidth : ratioHeight;
+        values.width = Math.floor(values.width * ratio);
+        values.height = Math.floor(values.height * ratio);
+        values.ratio = ratio
+      }
     }
   }
   return values;

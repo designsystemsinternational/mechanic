@@ -34,20 +34,12 @@ export const Function = ({ name, exports: functionExports, children }) => {
 
   const prepareValues = (useScale, useRandomSeed) => {
     const valuesCopy = Object.assign({}, values);
-    valuesCopy.scaleToFit = {
-      widthOriginal: values.width,
-      heightOriginal: values.height,
-      width: values.width,
-      height: values.height,
-      factor: 1,
-    };
     if (useScale && canScale && scaleToFit) {
       const bounds = mainRef.current.getBoundingClientRect();
-      const availableWidth = bounds.width - 100
-      const availableHeight = bounds.height - 100
-      valuesCopy.scaleToFit.width = availableWidth < values.width ? availableWidth : values.width;
-      valuesCopy.scaleToFit.height = availableHeight < values.height ? availableHeight : values.height;
-      valuesCopy.scaleToFit.factor = valuesCopy.scaleToFit.width / values.width
+      valuesCopy.scaleToFit = {
+        width: bounds.width - 100,
+        height: bounds.height - 100
+      };
     }
     if (useRandomSeed && lastRun.current?.values) {
       valuesCopy.randomSeed = lastRun.current.values.randomSeed;
