@@ -20,7 +20,7 @@ const addPresetsAsSources = (inputValue, inputName, presets, inputs, values) => 
     }
   } else if (
     values.hasOwnProperty("preset") &&
-    values.preset != NO_PRESET_VALUE &&
+    values.preset !== NO_PRESET_VALUE &&
     (values.preset === DEFAULT_PRESET_VALUE || presets[values.preset].hasOwnProperty(inputName))
   ) {
     sources.push({ preset: NO_PRESET_VALUE });

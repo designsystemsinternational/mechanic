@@ -1,6 +1,10 @@
+import seedrandom from "seedrandom";
 import { download } from "./download.js";
 import { WebMWriter } from "./webm-writer.js";
 import {
+  isSVG,
+  validateEl,
+  supportsFormatWebP,
   svgOptimize,
   svgPrepare,
   svgToDataUrl,
@@ -8,7 +12,6 @@ import {
   dataUrlToCanvas,
   getTimeStamp
 } from "./mechanic-utils.js";
-import * as validation from "./mechanic-validation.js";
 import { MechanicError } from "./mechanic-error.js";
 
 /**
@@ -17,29 +20,39 @@ import { MechanicError } from "./mechanic-error.js";
 export class Mechanic {
   /**
    * Mechanic class constructor
-   * @param {object} inputs - Inputs from the design function
    * @param {object} settings - Settings from the design function
-   * @param {object} values - Values for some or all of the design function inputs
+   * @param {object} baseValues - Values for some or all of the design function inputs
    */
-  constructor(inputs, settings, values) {
-    const err1 = validation.validateInputs(inputs);
-    if (err1) {
-      throw new MechanicError(err1);
+  constructor(settings, baseValues) {
+    const values = Object.assign({}, baseValues);
+
+    const persistRandomOnExport =
+      !settings.hasOwnProperty("persistRandomOnExport") || settings.persistRandomOnExport;
+    // Sets random seed
+    if (persistRandomOnExport) {
+      if (values.randomSeed === undefined) {
+        values.randomSeed = seedrandom(null, { global: true });
+      }
+      seedrandom(values.randomSeed, { global: true });
     }
 
-    const err2 = validation.validateSettings(settings);
-    if (err2) {
-      throw new MechanicError(err2);
+    // Scale down to fit if width and height are inputs
+    if (baseValues.scaleToFit && values.width && values.height) {
+      const ratioWidth = baseValues.scaleToFit.width
+        ? baseValues.scaleToFit.width / values.width
+        : 1;
+      const ratioHeight = baseValues.scaleToFit.height
+        ? baseValues.scaleToFit.height / values.height
+        : 1;
+      if (ratioWidth < 1 || ratioHeight < 1) {
+        const ratio = ratioWidth < ratioHeight ? ratioWidth : ratioHeight;
+        values.width = Math.floor(values.width * ratio);
+        values.height = Math.floor(values.height * ratio);
+      }
     }
 
-    const err3 = validation.validateValues(inputs, values);
-    if (err3) {
-      throw new MechanicError(err3);
-    }
-
-    this.inputs = inputs;
     this.settings = settings;
-    this.values = validation.prepareValues(inputs, settings, values);
+    this.values = values;
   }
 
   /**
@@ -63,13 +76,13 @@ export class Mechanic {
     if (!this.settings.animated) {
       throw new MechanicError("The frame() function can only be used for animations");
     }
-    if (!validation.supportsFormatWebP()) {
+    if (!supportsFormatWebP()) {
       throw new MechanicError(
         "Your running browser doesn't support WebP generation. Try using Chrome for exporting."
       );
     }
 
-    const err = validation.validateEl(el);
+    const err = validateEl(el);
     if (err) {
       throw new MechanicError(err);
     }
@@ -85,7 +98,7 @@ export class Mechanic {
       });
     }
 
-    if (validation.isSVG(el)) {
+    if (isSVG(el)) {
       // Because drawing an SVG to canvas is asynchronous,
       // We wait until the end to render it all.
       // TODO: This needs to be revisited.
@@ -107,7 +120,7 @@ export class Mechanic {
    */
   async done(el, extras = {}) {
     if (!this.settings.animated) {
-      if (validation.isSVG(el)) {
+      if (isSVG(el)) {
         if (extras.head) {
           const styles = extras.head.querySelectorAll("style");
 
@@ -128,12 +141,12 @@ export class Mechanic {
         this.canvasData = el.toDataURL();
       }
     } else {
-      if (!validation.supportsFormatWebP()) {
+      if (!supportsFormatWebP()) {
         throw new MechanicError(
           "Your running browser doesn't support WebP generation. Try using Chrome for exporting."
         );
       }
-      if (validation.isSVG(el)) {
+      if (isSVG(el)) {
         // This is slow. We should figure out a way to draw into canvas on every frame
         // or at least do Promise.all
         const cacheCanvas = document.createElement("canvas");

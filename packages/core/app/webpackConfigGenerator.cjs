@@ -5,7 +5,9 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const NodePolyfillPlugin = require("node-polyfill-webpack-plugin");
 
-module.exports = (modeParameter, designFunctions, distDir, publicPath) => {
+const { resolve } = require;
+
+module.exports = function (modeParameter, designFunctions, inputsData, distDir, publicPath) {
   const mode = modeParameter === "dev" ? "development" : "production";
   const isProduction = mode === "production";
 
@@ -37,12 +39,12 @@ module.exports = (modeParameter, designFunctions, distDir, publicPath) => {
       );
     },
     use: {
-      loader: require.resolve("babel-loader"),
+      loader: resolve("babel-loader"),
       options: {
         presets: [
-          require.resolve("@babel/preset-react"),
+          resolve("@babel/preset-react"),
           [
-            require.resolve("@babel/preset-env"),
+            resolve("@babel/preset-env"),
             {
               targets: {
                 browsers: ["last 2 versions", "ie >= 11"]
@@ -51,13 +53,10 @@ module.exports = (modeParameter, designFunctions, distDir, publicPath) => {
             }
           ]
         ],
-        plugins: [
-          require.resolve("react-hot-loader/babel"),
-          require.resolve("@babel/plugin-transform-runtime")
-        ],
+        plugins: [resolve("react-hot-loader/babel"), resolve("@babel/plugin-transform-runtime")],
         env: {
           test: {
-            presets: [require.resolve("@babel/preset-env")]
+            presets: [resolve("@babel/preset-env")]
           }
         }
       }
@@ -71,12 +70,19 @@ module.exports = (modeParameter, designFunctions, distDir, publicPath) => {
     ]
   };
 
+  const inputs = {
+    test: /INPUTS/,
+    use: [
+      { loader: path.resolve(__dirname, "./input-loader.cjs"), options: { inputs: inputsData } }
+    ]
+  };
+
   const mechanicCss = {
     test: /\.(css)$/,
     issuer: isMechanicCondition,
-    use: [isProduction ? MiniCssExtractPlugin.loader : require.resolve("style-loader")].concat([
+    use: [isProduction ? MiniCssExtractPlugin.loader : resolve("style-loader")].concat([
       {
-        loader: require.resolve("css-loader"),
+        loader: resolve("css-loader"),
         options: {
           modules: {
             localIdentName: "[name]__[local]",
@@ -87,13 +93,13 @@ module.exports = (modeParameter, designFunctions, distDir, publicPath) => {
         }
       },
       {
-        loader: require.resolve("postcss-loader"),
+        loader: resolve("postcss-loader"),
         options: {
           sourceMap: true,
           postcssOptions: {
             plugins: [
               [
-                require.resolve("postcss-preset-env"),
+                resolve("postcss-preset-env"),
                 {
                   stage: 0
                 }
@@ -109,9 +115,9 @@ module.exports = (modeParameter, designFunctions, distDir, publicPath) => {
     test: /\.(css)$/,
     issuer: isNotMechanicCondition,
     use: [
-      require.resolve("style-loader"),
+      resolve("style-loader"),
       {
-        loader: require.resolve("css-loader"),
+        loader: resolve("css-loader"),
         options: {
           modules: {
             auto: true,
@@ -123,13 +129,13 @@ module.exports = (modeParameter, designFunctions, distDir, publicPath) => {
         }
       },
       {
-        loader: require.resolve("postcss-loader"),
+        loader: resolve("postcss-loader"),
         options: {
           sourceMap: true,
           postcssOptions: {
             plugins: [
               [
-                require.resolve("postcss-preset-env"),
+                resolve("postcss-preset-env"),
                 {
                   stage: 0
                 }
@@ -169,13 +175,13 @@ module.exports = (modeParameter, designFunctions, distDir, publicPath) => {
     (acc, [name, designFunctionObj]) => {
       acc[name] = isProduction
         ? designFunctionObj.temp
-        : [require.resolve("webpack-hot-middleware/client"), designFunctionObj.temp];
+        : [resolve("webpack-hot-middleware/client"), designFunctionObj.temp];
       return acc;
     },
     {
       app: isProduction
         ? path.resolve(__dirname, "./index.js")
-        : [require.resolve("webpack-hot-middleware/client"), path.resolve(__dirname, "./index.js")]
+        : [resolve("webpack-hot-middleware/client"), path.resolve(__dirname, "./index.js")]
     }
   );
 
@@ -233,8 +239,8 @@ module.exports = (modeParameter, designFunctions, distDir, publicPath) => {
     resolve: {
       extensions: [".js", ".jsx", ".json"],
       alias: {
-        react: require.resolve("react"),
-        "react-dom": require.resolve("react-dom")
+        react: resolve("react"),
+        "react-dom": resolve("react-dom")
       }
     },
     module: {
@@ -242,6 +248,7 @@ module.exports = (modeParameter, designFunctions, distDir, publicPath) => {
         template,
         js,
         functions,
+        inputs,
         mechanicCss,
         functionsCss,
         mechanicFonts,

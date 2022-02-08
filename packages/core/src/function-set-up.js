@@ -1,34 +1,57 @@
-import { MechanicError } from "./mechanic-error.js";
+import { MechanicValidator } from "./validation.js";
+
+const showError = (mainMessage, error) => {
+  // const div = document.createElement("div");
+  // div.style = "position: absolute; top: 0; bottom: 0; right: 0; left: 0; font-family: Helvetica;";
+  // const p = document.createElement("p");
+  // const text = document.createTextNode(
+  //   `There was an error running ${functionName} function and/or engine. Check the console to see details!`
+  // );
+  // p.appendChild(text);
+  // div.appendChild(p);
+  // document.body.appendChild(div);
+
+  alert(mainMessage);
+};
 
 /**
  * Sets up iframe's window function that call
  * the corresponding engine and design function.
  * @param {object} designFunction - Object exported by user that holds the design function's definition.
  */
-const setUp = designFunction => {
-  const engine = designFunction.settings?.engine?.run;
-  if (engine === undefined) {
-    window.run = functionName => {
-      alert(
-        "Design function is either missing a settings export or doesn't define a proper engine."
-      );
-      throw new MechanicError(`Invalid engine for design function: ${functionName}`);
-    };
-    console.error("Couldn't load design function's engine.");
-    return;
-  }
+const setUp = (inputsDefs, designFunction) => {
+  const validator = new MechanicValidator(inputsDefs, designFunction);
 
-  window.run = (functionName, values, isPreview) => {
-    // TODO: Do performance stats here?
-    try {
-      const mechanic = engine(functionName, designFunction, values, isPreview);
-      return mechanic ? mechanic : null;
-    } catch (error) {
-      alert("There was an error running the engine and/or function. Check the console!");
-      throw error;
-    }
-  };
-  console.info("Design function definition set.");
+  try {
+    validator.validateFunctionExports();
+    validator.validateSettings();
+    validator.validateInputs();
+
+    window.run = (functionName, values, isPreview) => {
+      try {
+        validator.validateValues(values);
+        const preparedValues = validator.prepareValues(values);
+        const engine = designFunction.settings.engine.run;
+        const mechanic = engine(functionName, designFunction, preparedValues, isPreview);
+        return mechanic ? mechanic : null;
+      } catch (error) {
+        showError(
+          `There was an error running ${functionName} function and/or engine. Check the console to see details!`,
+          error
+        );
+        throw error;
+      }
+    };
+    console.info("Design function definition set.");
+  } catch (error) {
+    window.run = functionName => {
+      showError(
+        `There was an error loading ${functionName} function and/or engine. Check the console to see details!`,
+        error
+      );
+    };
+    throw error;
+  }
 };
 
 export { setUp };

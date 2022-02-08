@@ -6,7 +6,9 @@ import { useValues } from "./utils/useValues.js";
 import { getPossiblePresets, addPresetsAsSources, NO_PRESET_VALUE } from "./utils/presets.js";
 import { useShortcuts } from "./utils/useShortcuts.js";
 
-import { Button, Toggle, MechanicInput } from "@mechanic-design/ui-components";
+import { Button, Toggle } from "@mechanic-design/ui-components";
+import { Input } from "./Input.js";
+
 import * as css from "./Function.module.css";
 
 export const Function = ({ name, exports: functionExports, children }) => {
@@ -85,21 +87,21 @@ export const Function = ({ name, exports: functionExports, children }) => {
 
         <div className={classnames(css.edge, css.top)} />
         <div className={css.inputs}>
-          <MechanicInput
+          <Input
             className={css.input}
             key="input-preset"
             name="preset"
             values={values}
-            attributes={{ type: "string", options: presets, default: NO_PRESET_VALUE }}
+            inputDef={{ type: "text", options: presets, default: NO_PRESET_VALUE }}
             onChange={handleOnChange}
           />
           {Object.entries(inputs).map(([name, input]) => (
-            <MechanicInput
+            <Input
               className={css.input}
               key={`input-${name}`}
               name={name}
               values={values}
-              attributes={input}
+              inputDef={input}
               onChange={handleOnChange}
             />
           ))}

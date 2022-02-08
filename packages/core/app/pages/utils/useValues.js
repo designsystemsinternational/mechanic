@@ -1,14 +1,29 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 import { NO_PRESET_VALUE } from "./presets.js";
 
+const isEmptyObject = obj =>
+  obj && Object.keys(obj).length === 0 && Object.getPrototypeOf(obj) === Object.prototype;
+
+const isSerializable = obj => isEmptyObject(obj) || !(JSON.stringify(obj) === "{}");
+
 const copySerializable = obj => {
   if (typeof obj !== "object") {
     return obj;
   }
-  const copy = {};
-  for (const key in obj) {
-    if (!(obj[key] instanceof File || obj[key] instanceof FileList)) {
-      copy[key] = copySerializable(obj[key]);
+  let copy;
+  if (Array.isArray(obj)) {
+    copy = [];
+    for (const o of obj) {
+      if (isSerializable(o)) {
+        copy.push(copySerializable(o));
+      } else console.warn("Unserializable object ignored for local storage persistance.");
+    }
+  } else {
+    copy = {};
+    for (const key in obj) {
+      if (isSerializable(obj[key])) {
+        copy[key] = copySerializable(obj[key]);
+      } else console.warn("Unserializable object ignored for local storage persistance.");
     }
   }
   return copy;
@@ -113,30 +128,20 @@ function useLocalStorageState(key, initialState) {
 }
 
 const cleanValues = (object, reference) =>
-  object
-    ? Object.entries(object)
-        .filter(entry => entry[0] in reference || entry[0] === "preset")
-        .reduce((acc, cur) => {
-          acc[cur[0]] = cur[1];
-          return acc;
-        }, {})
-    : Object.entries(reference).reduce(
-        (current, input) => {
-          if (input[1].default) current[input[0]] = input[1].default;
-          else current[input[0]] = undefined;
-          return current;
-        },
-        { preset: NO_PRESET_VALUE }
-      );
+  Object.fromEntries(
+    object
+      ? Object.entries(object).filter(([k, v]) => k in reference || k === "preset")
+      : [["preset", NO_PRESET_VALUE], ...Object.entries(reference).map(([k, v]) => [k, v.default])]
+  );
 
-const useValues = (name, inputs) => {
+const useValues = (functionName, functionInputs) => {
   const [allValues, setAllValues] = useLocalStorageState("function-values", {});
 
-  const values = cleanValues(allValues[name], inputs);
+  const values = cleanValues(allValues[functionName], functionInputs);
   const setValues = assignFunc => {
     setAllValues(allValues => {
-      const newValues = assignFunc(cleanValues(allValues[name], inputs));
-      return Object.assign({}, allValues, { [name]: newValues });
+      const newValues = assignFunc(cleanValues(allValues[functionName], functionInputs));
+      return Object.assign({}, allValues, { [functionName]: newValues });
     });
   };
   return [values, setValues];

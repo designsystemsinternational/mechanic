@@ -5,7 +5,7 @@ const root = document.getElementById("root");
 export const run = (functionName, func, values, isPreview) => {
   root.innerHTML = "";
 
-  const mechanic = new Mechanic(func.inputs, func.settings, values);
+  const mechanic = new Mechanic(func.settings, values);
 
   let isElAdded = false;
 

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Case from "case";
 import { useHistory } from "react-router-dom";
 import { DropdownIcon } from "@mechanic-design/ui-components";
@@ -10,6 +10,11 @@ export const Nav = ({ name, functions }) => {
 
   const currentFn = functions[name];
   const currentLabel = currentFn.settings.name || Case.title(name);
+
+  useEffect(() => {
+    document.title = currentLabel;
+  }, [currentLabel]);
+
   return (
     <div className={css.root}>
       {functionsNames.length > 1 ? (

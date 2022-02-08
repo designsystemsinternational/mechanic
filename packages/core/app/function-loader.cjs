@@ -4,20 +4,26 @@ const { getOptions } = require("loader-utils");
 module.exports = function () {
   const { designFunctions } = getOptions(this);
 
-  let requireFunctions = "";
+  let importSection = "";
+  let codeSection = "";
+  let count = 0;
   Object.entries(designFunctions).map(([name, designFunctionObj]) => {
-    if (requireFunctions !== "") {
-      requireFunctions += ",\n";
-    }
-    requireFunctions += `"${name}": require("${designFunctionObj.original
+    importSection += `import * as export${count} from "${designFunctionObj.original
       .split(path.sep)
-      .join("/")}")`;
+      .join("/")}";\n`;
+    if (codeSection !== "") {
+      codeSection += ",\n";
+    }
+    codeSection += `"${name}": export${count}`;
+    count += 1;
   });
 
   const result = `
-module.exports = {
-  ${requireFunctions}
+${importSection}
+export default {
+  ${codeSection}
 };
 `;
+  // console.log(result);
   return result;
 };

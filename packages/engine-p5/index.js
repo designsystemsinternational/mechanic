@@ -9,7 +9,7 @@ export const run = (functionName, func, values, isPreview) => {
   if (p5Sketch) {
     p5Sketch.remove();
   }
-  const mechanic = new Mechanic(func.inputs, func.settings, values);
+  const mechanic = new Mechanic(func.settings, values);
   const onFrame = () => {
     if (!isPreview) {
       mechanic.frame(root.childNodes[0]);

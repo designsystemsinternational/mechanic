@@ -14,6 +14,10 @@ module.exports = (getCommandHandler) => ({
           type: "string",
           description: "Path to directory containing design functions",
         },
+        inputsPath: {
+          type: "string",
+          description: "Path to directory containing custom input components",
+        },
         distDir: {
           type: "string",
           description: "Custom build directory",
@@ -21,6 +25,7 @@ module.exports = (getCommandHandler) => ({
       })
       .default("configPath", path.normalize("./mechanic.config.js"))
       .default("functionsPath", path.normalize("./functions"))
-      .default("distDir", path.normalize("./dist")),
+      .default("distDir", path.normalize("./dist"))
+      .default("inputsPath", path.normalize("./inputs")),
   handler: getCommandHandler("build"),
 });

@@ -1,6 +1,39 @@
 import { optimize, extendDefaultPlugins } from "svgo/dist/svgo.browser.js";
 
 /**
+ * Checks whether a DOM element is instance of SVGElement
+ * @param {object} el - A DOM element to check
+ */
+const isSVG = el => el instanceof SVGElement;
+
+/**
+ * Validates that a DOM element is SVG or Canvas
+ * @param {object} el - A DOM element to check
+ */
+const validateEl = el => {
+  if (isSVG(el) || el instanceof HTMLCanvasElement) {
+    return null;
+  }
+  return "Element passed to the frame() function must be SVGElement or HTMLCanvasElement";
+};
+
+/**
+ * Validates that running browser supports webp generations.
+ * Extracted from: https://stackoverflow.com/questions/5573096/detecting-webp-support
+ */
+function supportsFormatWebP() {
+  const elem = document.createElement("canvas");
+
+  if (!!(elem.getContext && elem.getContext("2d"))) {
+    // was able or not to get WebP representation
+    return elem.toDataURL("image/webp").indexOf("data:image/webp") == 0;
+  } else {
+    // very old browser like IE 8, canvas not supported
+    return false;
+  }
+}
+
+/**
  * Prepares an SVG element with sensible defaults and returns serialized svg string
  * @param {SVGElement} el - SVG element to convert
  * @param {XMLSerializer} serializer - An instance of XMLSerializer to use for serialization
@@ -81,4 +114,14 @@ const getTimeStamp = () => {
   return `${year}-${month}-${day}-${hour}-${minute}`;
 };
 
-export { svgPrepare, svgOptimize, svgToDataUrl, extractSvgSize, dataUrlToCanvas, getTimeStamp };
+export {
+  isSVG,
+  validateEl,
+  supportsFormatWebP,
+  svgPrepare,
+  svgOptimize,
+  svgToDataUrl,
+  extractSvgSize,
+  dataUrlToCanvas,
+  getTimeStamp
+};
