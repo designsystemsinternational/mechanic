@@ -77,8 +77,8 @@ const generateFuncTempScripts = functionsPath => {
 const setUpInputsPath = path.resolve(path.join(__dirname, "..", "input-set-up.js"));
 const inputScriptContent = `
 import { setUp } from "${setUpInputsPath.split(path.sep).join("/")}";
-const [inputsDefs, customComponents] = setUp(customInputs);
-export {inputsDefs, customComponents};
+const [inputsDefs, customComponents, interactiveInputs] = setUp(customInputs);
+export {inputsDefs, customComponents, interactiveInputs};
 `;
 
 const generateInputScript = inputsPath => {

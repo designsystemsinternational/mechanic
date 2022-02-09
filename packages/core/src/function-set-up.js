@@ -20,6 +20,8 @@ const showError = (mainMessage, error) => {
  * @param {object} designFunction - Object exported by user that holds the design function's definition.
  */
 const setUp = (inputsDefs, designFunction) => {
+  document.body.style = "margin: 0;";
+
   const validator = new MechanicValidator(inputsDefs, designFunction);
 
   try {
@@ -29,6 +31,7 @@ const setUp = (inputsDefs, designFunction) => {
 
     window.run = (functionName, values, isPreview) => {
       try {
+        console.log({ values });
         validator.validateValues(values);
         const preparedValues = validator.prepareValues(values);
         const engine = designFunction.settings.engine.run;

@@ -8,6 +8,7 @@ import { useShortcuts } from "./utils/useShortcuts.js";
 
 import { Button, Toggle } from "@mechanic-design/ui-components";
 import { Input } from "./Input.js";
+import { useInteractiveInputs } from "./utils/useInteractiveInputs.js";
 
 import * as css from "./Function.module.css";
 
@@ -31,6 +32,7 @@ export const Function = ({ name, exports: functionExports, children }) => {
   const [values, setValues] = useValues(name, inputs);
   const handleOnChange = (e, name, value) => {
     const sources = addPresetsAsSources(value, name, exportedPresets, inputs, values);
+    console.log({ sources });
     setValues(values => Object.assign({}, values, ...sources));
   };
 
@@ -68,12 +70,24 @@ export const Function = ({ name, exports: functionExports, children }) => {
     if (autoRefreshOn && iframeLoaded) handleAutoPreview();
   });
 
+  const iframeRoot = useRef();
+  const interactiveHandlers = useInteractiveInputs(inputs, handleOnChange);
+
   // Check when iframe is done loading
   useEffect(() => {
-    const onLoad = () => setIframeLoaded(true);
+    const onLoad = () => {
+      setIframeLoaded(true);
+      iframeRoot.current = iframe.current.contentDocument.getElementById("root");
+      for (const [eventType, handler] of interactiveHandlers) {
+        iframeRoot.current.addEventListener(eventType, handler);
+      }
+    };
     iframe.current?.addEventListener?.("load", onLoad);
     return () => {
       iframe.current?.removeEventListener?.("load", onLoad);
+      for (const [eventType, handler] of interactiveHandlers) {
+        iframeRoot.current.removeEventListener(eventType, handler);
+      }
     };
   }, [name]);
 
