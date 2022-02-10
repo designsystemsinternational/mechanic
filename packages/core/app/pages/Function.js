@@ -47,11 +47,6 @@ export const Function = ({ name, exports: functionExports, children }) => {
     return valuesCopy;
   };
 
-  const handleScaleToFit = () => {
-    setScaleToFit(!scaleToFit);
-    iframe.current.contentWindow?.dispatchEvent?.(new CustomEvent('scaleToFit', { detail: { scaleToFit: !scaleToFit } }));
-  };
-
   const handlePreview = async () => {
     const valuesCopy = prepareValues(true, false);
     lastRun.current = iframe.current.contentWindow?.run?.(name, valuesCopy, true);
@@ -116,7 +111,7 @@ export const Function = ({ name, exports: functionExports, children }) => {
             <Toggle
               status={canScale && scaleToFit}
               disabled={!canScale}
-              onClick={handleScaleToFit}>
+              onClick={() => setScaleToFit(scaleToFit => !scaleToFit)}>
               {canScale ? (scaleToFit ? "Scale to fit On" : "Scale to fit Off") : "Scale to Fit"}
             </Toggle>
             {!canScale && <span className={css.error}>Inputs missing for scaling</span>}
