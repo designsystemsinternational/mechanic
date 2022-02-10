@@ -124,9 +124,8 @@ const validateValues = (inputs, values = {}) => {
       if (Array.isArray(options) && !options.includes(values[inputName])) {
         return `Supplied input "${inputName}" is not available in the template options: ${options}`;
       } else if (!Array.isArray(options) && !hasKey(options, values[inputName])) {
-        return `Supplied input "${inputName}" (${
-          values[inputName]
-        }) is not available in the template options: ${Object.keys(options)}`;
+        return `Supplied input "${inputName}" (${values[inputName]
+          }) is not available in the template options: ${Object.keys(options)}`;
       }
     }
     // Run validation functions for values.
@@ -197,16 +196,24 @@ const prepareValues = (inputs, settings, baseValues) => {
     }
   });
 
-  // Scale down to fit if width and height are inputs
-  if (baseValues.scaleToFit && values.width && values.height) {
-    const ratioWidth = baseValues.scaleToFit.width ? baseValues.scaleToFit.width / values.width : 1;
-    const ratioHeight = baseValues.scaleToFit.height
-      ? baseValues.scaleToFit.height / values.height
-      : 1;
-    if (ratioWidth < 1 || ratioHeight < 1) {
-      const ratio = ratioWidth < ratioHeight ? ratioWidth : ratioHeight;
-      values.width = Math.floor(values.width * ratio);
-      values.height = Math.floor(values.height * ratio);
+  // Add ratio and original values if width and height are inputs
+  if (values.width && values.height) {
+    values._widthOriginal = values.width
+    values._heightOriginal = values.height
+    values._ratio = 1
+
+    // Calculate new width, height and ratio if scale down to fit is active
+    if (baseValues.scaleToFit) {
+      const ratioWidth = baseValues.scaleToFit.width ? baseValues.scaleToFit.width / values.width : 1;
+      const ratioHeight = baseValues.scaleToFit.height
+        ? baseValues.scaleToFit.height / values.height
+        : 1;
+      if (ratioWidth < 1 || ratioHeight < 1) {
+        const ratio = ratioWidth < ratioHeight ? ratioWidth : ratioHeight;
+        values.width = Math.floor(values.width * ratio);
+        values.height = Math.floor(values.height * ratio);
+        values._ratio = ratio
+      }
     }
   }
   return values;
@@ -219,14 +226,20 @@ const prepareValues = (inputs, settings, baseValues) => {
 const isSVG = el => el instanceof SVGElement;
 
 /**
+ * Checks whether a DOM element is instance of HTMLCanvasElement
+ * @param {object} el - A DOM element to check
+ */
+const isCanvas = el => el instanceof HTMLCanvasElement;
+
+/**
  * Validates that a DOM element is SVG or Canvas
  * @param {object} el - A DOM element to check
  */
 const validateEl = el => {
-  if (isSVG(el) || el instanceof HTMLCanvasElement) {
+  if (isSVG(el) || el instanceof HTMLElement) {
     return null;
   }
-  return "Element passed to the frame() function must be SVGElement or HTMLCanvasElement";
+  return "Element passed to the frame() function must be SVGElement or HTMLElement";
 };
 
 /**
@@ -254,6 +267,7 @@ export {
   validateSettings,
   prepareValues,
   isSVG,
+  isCanvas,
   validateEl,
   supportsFormatWebP
 };

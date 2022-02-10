@@ -1,4 +1,5 @@
 import { optimize, extendDefaultPlugins } from "svgo/dist/svgo.browser.js";
+import { toPng, toCanvas } from 'html-to-image';
 
 /**
  * Appends linked styles to an SVG, returns a copy of the element
@@ -60,6 +61,30 @@ const svgToDataUrl = str => {
 };
 
 /**
+ * Converts a HTML node to a data url
+ * @param {Node} node - SVG string to convert
+ */
+const htmlToDataUrl = async node => {
+  return new Promise((resolve, reject) => {
+    toPng(node)
+      .then(resolve)
+      .catch(reject);
+  });
+}
+
+/**
+ * Converts a HTML node to a canvas
+ * @param {Node} node - SVG string to convert
+ */
+const htmlToCanvas = async node => {
+  return new Promise((resolve, reject) => {
+    toCanvas(node)
+      .then(resolve)
+      .catch(reject);
+  });
+}
+
+/**
  * Extracts size of an SVG element
  * @param {SVGElement} el - SVG element
  */
@@ -104,6 +129,8 @@ export {
   svgPrepare,
   svgOptimize,
   svgToDataUrl,
+  htmlToDataUrl,
+  htmlToCanvas,
   extractSvgSize,
   dataUrlToCanvas,
   getTimeStamp

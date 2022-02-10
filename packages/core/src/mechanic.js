@@ -5,6 +5,8 @@ import {
   svgOptimize,
   svgPrepare,
   svgToDataUrl,
+  htmlToDataUrl,
+  htmlToCanvas,
   extractSvgSize,
   dataUrlToCanvas,
   getTimeStamp
@@ -61,7 +63,7 @@ export class Mechanic {
    * @param {SVGElement|HTMLCanvasElement} el - Element with the current drawing state of the design function
    * @param {Object} extras  - object containing extra elements needed by some engines
    */
-  frame(el, extras = {}) {
+  async frame(el, extras = {}) {
     if (!this.settings.animated) {
       throw new MechanicError("The frame() function can only be used for animations");
     }
@@ -101,14 +103,19 @@ export class Mechanic {
       if (!this.svgSize) {
         this.svgSize = extractSvgSize(el);
       }
-    } else {
+    } else if (validation.isCanvas(el)) {
       this.videoWriter.addFrame(el);
+    }
+    else {
+      // This is slow. We should find a more efficient way
+      const frame = await htmlToCanvas(el);
+      this.videoWriter.addFrame(frame);
     }
   }
 
   /**
    * Finish a static or animated design function
-   * @param {SVGElement|HTMLCanvasElement} el - Element with the current drawing state of the design function
+   * @param {SVGElement|HTMLCanvasElement|HTMLElement} el - Element with the current drawing state of the design function
    * @param {Object} extras  - object containing extra elements needed by some engines
    */
   async done(el, extras = {}) {
@@ -124,8 +131,10 @@ export class Mechanic {
           svgString = svgOptimize(svgString, this.settings.optimize);
         }
         this.svgData = svgToDataUrl(svgString);
-      } else {
+      } else if (validation.isCanvas(el)) {
         this.canvasData = el.toDataURL();
+      } else {
+        this.htmlData = await htmlToDataUrl(el);
       }
     } else {
       if (!validation.supportsFormatWebP()) {
@@ -166,6 +175,8 @@ export class Mechanic {
       download(this.svgData, `${name}.svg`, "image/svg+xml");
     } else if (this.canvasData) {
       download(this.canvasData, `${name}.png`, "image/png");
+    } else if (this.htmlData) {
+      download(this.htmlData, `${name}.png`, "image/png");
     } else if (this.videoData) {
       download(this.videoData, `${name}.webm`, "video/webm");
     }
