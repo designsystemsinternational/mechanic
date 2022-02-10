@@ -198,9 +198,9 @@ const prepareValues = (inputs, settings, baseValues) => {
 
   // Add ratio and original values if width and height are inputs
   if (values.width && values.height) {
-    values.widthOriginal = values.width
-    values.heightOriginal = values.height
-    values.ratio = 1
+    values._widthOriginal = values.width
+    values._heightOriginal = values.height
+    values._ratio = 1
 
     // Calculate new width, height and ratio if scale down to fit is active
     if (baseValues.scaleToFit) {
@@ -212,7 +212,7 @@ const prepareValues = (inputs, settings, baseValues) => {
         const ratio = ratioWidth < ratioHeight ? ratioWidth : ratioHeight;
         values.width = Math.floor(values.width * ratio);
         values.height = Math.floor(values.height * ratio);
-        values.ratio = ratio
+        values._ratio = ratio
       }
     }
   }
@@ -236,10 +236,10 @@ const isCanvas = el => el instanceof HTMLCanvasElement;
  * @param {object} el - A DOM element to check
  */
 const validateEl = el => {
-  if (isSVG(el) || isCanvas(el) || el instanceof HTMLElement) {
+  if (isSVG(el) || el instanceof HTMLElement) {
     return null;
   }
-  return "Element passed to the frame() function must be SVGElement, HTMLCanvasElement or HTMLElement";
+  return "Element passed to the frame() function must be SVGElement or HTMLElement";
 };
 
 /**
