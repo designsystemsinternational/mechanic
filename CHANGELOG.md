@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+- Added support to export images and video from HTML elements from React engine (credits to [@caroillemann](https://github.com/caroillemann))
+
 ## [1.1.0] - 2021-09-29
 
 ### Added

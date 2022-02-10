@@ -10,11 +10,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - Added styles (& fonts) to SVG frames for animated exports, so they export correctly.
+- Added support to export images and video from HTML elements from React engine (credits to [@caroillemann](https://github.com/caroillemann))
 
 ### Changed
 
 - Changed `usesRandom` setting name to `persistRandomOnExport` at it's default value to `true`.
 - Added favicon to mechanic app and loading page.
+- Extra input values are passed to design function handler (`_widthOriginal`, `_heightOriginal` and `_ratio`) (credits to [@caroillemann](https://github.com/caroillemann))
 
 ## 0.6.4 - 2021-09-14
 

@@ -1,0 +1,10 @@
+.root {
+}
+
+.root option {
+  color: var(--mechanic-black);
+}
+
+.root option:disabled {
+  color: var(--mechanic-disabled);
+}

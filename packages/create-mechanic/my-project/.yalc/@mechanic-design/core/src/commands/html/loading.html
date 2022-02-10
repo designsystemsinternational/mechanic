@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+    <title>Mechanic</title>
+    <link rel="icon" href="." type="image/svg+xml" />
+    <style type="text/css">
+      @font-face {
+        font-family: "Object Sans";
+        src: url("./font") format("opentype");
+      }
+
+      html,
+      body {
+        height: 100vh;
+        font-family: "Object Sans", Helvetica, sans-serif;
+      }
+
+      body {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+
+        margin: 0;
+        padding: 0;
+      }
+
+      p {
+        margin-top: 100px;
+      }
+
+      .container {
+        padding-left: 1em;
+        padding-right: 1em;
+        text-align: center;
+      }
+
+      .mini-logo {
+        max-width: 70vw;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <svg class="mini-logo" viewBox="0 0 800 400" width="600">
+        <path
+          d="M 200 200
+           A 200 200, 0, 0, 0, 600 200 Z"
+          fill="#0f21c3"
+        >
+          <animateTransform
+            attributeName="transform"
+            attributeType="XML"
+            type="rotate"
+            from="0 400 200"
+            to="360 400 200"
+            dur="4s"
+            repeatCount="indefinite"
+          />
+        </path>
+        <path
+          d="M 600 200
+           A 200 200, 0, 0, 0, 200 200 Z"
+          fill="#ff2f00"
+        >
+          <animateTransform
+            attributeName="transform"
+            attributeType="XML"
+            type="rotate"
+            from="0 400 200"
+            to="360 400 200"
+            dur="4s"
+            repeatCount="indefinite"
+          />
+        </path>
+      </svg>
+
+      <p>This page will reload when <strong>Mechanic</strong> project is ready!</p>
+    </div>
+    <script>
+      let ready = false;
+
+      function onReady() {
+        ready = true;
+        location.reload(true);
+      }
+
+      function checkAndSetStatus() {
+        let cancelled = false;
+        fetch("/", { headers: { Accept: "application/json" } })
+          .then(result => result.json())
+          .catch(error => {
+            // We can get back an error "Cannot parse JSON" when a HTML
+            // response is returned, so we assume the server is ready
+            onReady();
+          })
+          .then(({ loading, status } = {}) => {
+            if (!loading) {
+              onReady();
+              return;
+            }
+            if (cancelled) {
+              return;
+            }
+          });
+        return () => {
+          cancelled = true;
+        };
+      }
+
+      let cancelLastCall = checkAndSetStatus();
+      const interval = setInterval(() => {
+        cancelLastCall();
+        if (ready) {
+          clearInterval(interval);
+          return;
+        }
+        cancelLastCall = checkAndSetStatus();
+      }, 500);
+    </script>
+  </body>
+</html>

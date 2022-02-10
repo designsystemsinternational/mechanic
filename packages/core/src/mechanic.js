@@ -105,8 +105,7 @@ export class Mechanic {
       }
     } else if (validation.isCanvas(el)) {
       this.videoWriter.addFrame(el);
-    }
-    else {
+    } else {
       // This is slow. We should find a more efficient way
       const frame = await htmlToCanvas(el);
       this.videoWriter.addFrame(frame);

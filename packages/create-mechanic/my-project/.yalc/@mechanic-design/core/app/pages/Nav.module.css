@@ -1,0 +1,61 @@
+.root {
+  position: relative;
+  display: flex;
+  margin-top: 8px;
+  font-family: var(--mechanic-input-font);
+
+  flex-direction: column;
+}
+
+.functionName {
+  font-size: 1.6em;
+  line-height: 1.1;
+  font-weight: bolder;
+  margin: 0.15em 1em 0 0;
+}
+
+.selectContainer {
+  display: flex;
+
+  align-items: center;
+  justify-content: space-between;
+}
+
+.functionLabel {
+}
+
+/* Adapted from: https://www.filamentgroup.com/lab/select-css.html */
+.navigation-select {
+  position: absolute;
+  left: 0;
+  top: 0;
+  font-size: 1em;
+  color: transparent;
+  font-weight: bolder;
+  font-family: inherit;
+  border: 1px solid white;
+  /* width: 2em; */
+  width: 100%;
+  padding: 0 2em 0;
+  height: 100%;
+  background: none;
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  appearance: none;
+  outline: none;
+  transition: border 0.25s ease;
+  border-radius: 4em;
+  border: 1px solid transparent;
+
+  & option {
+    color: var(--mechanic-black);
+  }
+}
+
+.navigationSelectSuffix {
+  pointer-events: none;
+  width: 20px;
+  position: absolute;
+  right: 0.75em;
+  top: 0.5em;
+}

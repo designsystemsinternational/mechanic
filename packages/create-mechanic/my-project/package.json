@@ -1,0 +1,22 @@
+{
+  "name": "my-project",
+  "version": "0.0.0",
+  "scripts": {
+    "dev": "mechanic dev",
+    "build": "mechanic build",
+    "serve": "mechanic serve",
+    "new": "mechanic new function"
+  },
+  "devDependencies": {
+    "@mechanic-design/cli": "file:.yalc/@mechanic-design/cli",
+    "@mechanic-design/core": "file:.yalc/@mechanic-design/core"
+  },
+  "dependencies": {
+    "@mechanic-design/engine-canvas": "file:.yalc/@mechanic-design/engine-canvas",
+    "@mechanic-design/engine-p5": "file:.yalc/@mechanic-design/engine-p5",
+    "@mechanic-design/engine-react": "file:.yalc/@mechanic-design/engine-react",
+    "@mechanic-design/ui-components": "file:.yalc/@mechanic-design/ui-components",
+    "@mechanic-design/utils": "file:.yalc/@mechanic-design/utils",
+    "create-mechanic": "file:.yalc/create-mechanic"
+  }
+}

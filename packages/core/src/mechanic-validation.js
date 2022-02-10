@@ -124,8 +124,9 @@ const validateValues = (inputs, values = {}) => {
       if (Array.isArray(options) && !options.includes(values[inputName])) {
         return `Supplied input "${inputName}" is not available in the template options: ${options}`;
       } else if (!Array.isArray(options) && !hasKey(options, values[inputName])) {
-        return `Supplied input "${inputName}" (${values[inputName]
-          }) is not available in the template options: ${Object.keys(options)}`;
+        return `Supplied input "${inputName}" (${
+          values[inputName]
+        }) is not available in the template options: ${Object.keys(options)}`;
       }
     }
     // Run validation functions for values.
@@ -198,13 +199,15 @@ const prepareValues = (inputs, settings, baseValues) => {
 
   // Add ratio and original values if width and height are inputs
   if (values.width && values.height) {
-    values._widthOriginal = values.width
-    values._heightOriginal = values.height
-    values._ratio = 1
+    values._widthOriginal = values.width;
+    values._heightOriginal = values.height;
+    values._ratio = 1;
 
     // Calculate new width, height and ratio if scale down to fit is active
     if (baseValues.scaleToFit) {
-      const ratioWidth = baseValues.scaleToFit.width ? baseValues.scaleToFit.width / values.width : 1;
+      const ratioWidth = baseValues.scaleToFit.width
+        ? baseValues.scaleToFit.width / values.width
+        : 1;
       const ratioHeight = baseValues.scaleToFit.height
         ? baseValues.scaleToFit.height / values.height
         : 1;
@@ -212,7 +215,7 @@ const prepareValues = (inputs, settings, baseValues) => {
         const ratio = ratioWidth < ratioHeight ? ratioWidth : ratioHeight;
         values.width = Math.floor(values.width * ratio);
         values.height = Math.floor(values.height * ratio);
-        values._ratio = ratio
+        values._ratio = ratio;
       }
     }
   }
