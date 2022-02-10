@@ -40,7 +40,7 @@ export class Mechanic {
       throw new MechanicError(err3);
     }
 
-    this.inputs = inputs
+    this.inputs = inputs;
     this.settings = settings;
     this.values = validation.prepareValues(inputs, settings, values);
   }
