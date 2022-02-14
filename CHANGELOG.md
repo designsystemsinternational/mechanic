@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.2.0] - 2021-02-14
+
 ### Added
 
 - Added styles (& fonts) to SVG frames for animated exports, so they export correctly.
@@ -172,7 +174,8 @@ Beta release
 
 First logged release
 
-[unreleased]: https://github.com/designsystemsinternational/mechanic/compare/v1.1.0...main
+[unreleased]: https://github.com/designsystemsinternational/mechanic/compare/v1.2.0...main
+[1.2.0]: https://github.com/designsystemsinternational/mechanic/releases/tag/v1.2.0
 [1.1.0]: https://github.com/designsystemsinternational/mechanic/releases/tag/v1.1.0
 [1.0.0]: https://github.com/designsystemsinternational/mechanic/releases/tag/v1.0.0
 [0.6.5]: https://github.com/designsystemsinternational/mechanic/releases/tag/v0.6.5
