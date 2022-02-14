@@ -21,6 +21,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 - Code base for `react-image` template
+- Updated all templates and examples to follow `persistRandomOnExport` behavior instead of `usesRandom`.
 
 ## 0.6.5 - 2021-09-14
 
