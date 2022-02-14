@@ -32,7 +32,6 @@ export const Function = ({ name, exports: functionExports, children }) => {
   const [values, setValues] = useValues(name, inputs);
   const handleOnChange = (e, name, value) => {
     const sources = addPresetsAsSources(value, name, exportedPresets, inputs, values);
-    console.log({ sources });
     setValues(values => Object.assign({}, values, ...sources));
   };
 

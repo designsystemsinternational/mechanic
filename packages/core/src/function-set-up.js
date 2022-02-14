@@ -31,7 +31,6 @@ const setUp = (inputsDefs, designFunction) => {
 
     window.run = (functionName, values, isPreview) => {
       try {
-        console.log({ values });
         validator.validateValues(values);
         const preparedValues = validator.prepareValues(values);
         const engine = designFunction.settings.engine.run;
