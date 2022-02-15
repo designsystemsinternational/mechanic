@@ -7,6 +7,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.2.0] - 2021-02-14
+
+### Added
+
+- Added styles (& fonts) to SVG frames for animated exports, so they export correctly.
+- Added favicon to mechanic app and loading page.
+- Added support to export images and video from HTML elements from React engine (credits to [@caroillemann](https://github.com/caroillemann))
+
+### Changed
+
+- Extra input values are passed to design function handler (`_widthOriginal`, `_heightOriginal` and `_ratio`) (credits to [@caroillemann](https://github.com/caroillemann))
+
+### Fixed
+
+- Included fonts in example functions
+
 ## [1.1.0] - 2021-09-29
 
 ### Added
@@ -17,6 +33,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 - Changed `usesRandom` setting name to `persistRandomOnExport` at it's default value to `true`.
+- Updated all templates and examples to follow `persistRandomOnExport` behavior instead of `usesRandom`.
 - Code base for `react-image` template
 
 ## [1.0.0] - 2021-09-14
@@ -157,7 +174,8 @@ Beta release
 
 First logged release
 
-[unreleased]: https://github.com/designsystemsinternational/mechanic/compare/v1.1.0...main
+[unreleased]: https://github.com/designsystemsinternational/mechanic/compare/v1.2.0...main
+[1.2.0]: https://github.com/designsystemsinternational/mechanic/releases/tag/v1.2.0
 [1.1.0]: https://github.com/designsystemsinternational/mechanic/releases/tag/v1.1.0
 [1.0.0]: https://github.com/designsystemsinternational/mechanic/releases/tag/v1.0.0
 [0.6.5]: https://github.com/designsystemsinternational/mechanic/releases/tag/v0.6.5

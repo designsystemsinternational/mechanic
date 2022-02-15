@@ -11,7 +11,7 @@ export const run = (functionName, func, values, isPreview) => {
   const Handler = func.handler;
   const onFrame = () => {
     if (!isPreview) {
-      mechanic.frame(root.childNodes[0]);
+      mechanic.frame(root.childNodes[0], { head });
     }
   };
   const onDone = async (name) => {

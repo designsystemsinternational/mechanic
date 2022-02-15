@@ -1,0 +1,13 @@
+{
+  "version": "v1",
+  "packages": {
+    "@mechanic-design/engine-canvas": {
+      "signature": "0da514b4d36dc365c73cbe32812a3fe3",
+      "file": true
+    },
+    "@mechanic-design/core": {
+      "signature": "b3920fbe5d3abd7add5fd65a8250c812",
+      "file": true
+    }
+  }
+}

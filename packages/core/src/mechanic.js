@@ -3,11 +3,15 @@ import { download } from "./download.js";
 import { WebMWriter } from "./webm-writer.js";
 import {
   isSVG,
+  isCanvas,
   validateEl,
   supportsFormatWebP,
+  svgAppendStyles,
   svgOptimize,
   svgPrepare,
   svgToDataUrl,
+  htmlToDataUrl,
+  htmlToCanvas,
   extractSvgSize,
   dataUrlToCanvas,
   getTimeStamp
@@ -36,18 +40,26 @@ export class Mechanic {
       seedrandom(values.randomSeed, { global: true });
     }
 
-    // Scale down to fit if width and height are inputs
-    if (baseValues.scaleToFit && values.width && values.height) {
-      const ratioWidth = baseValues.scaleToFit.width
-        ? baseValues.scaleToFit.width / values.width
-        : 1;
-      const ratioHeight = baseValues.scaleToFit.height
-        ? baseValues.scaleToFit.height / values.height
-        : 1;
-      if (ratioWidth < 1 || ratioHeight < 1) {
-        const ratio = ratioWidth < ratioHeight ? ratioWidth : ratioHeight;
-        values.width = Math.floor(values.width * ratio);
-        values.height = Math.floor(values.height * ratio);
+    // Add ratio and original values if width and height are inputs
+    if (values.width && values.height) {
+      values._widthOriginal = values.width;
+      values._heightOriginal = values.height;
+      values._ratio = 1;
+
+      // Calculate new width, height and ratio if scale down to fit is active
+      if (baseValues.scaleToFit) {
+        const ratioWidth = baseValues.scaleToFit.width
+          ? baseValues.scaleToFit.width / values.width
+          : 1;
+        const ratioHeight = baseValues.scaleToFit.height
+          ? baseValues.scaleToFit.height / values.height
+          : 1;
+        if (ratioWidth < 1 || ratioHeight < 1) {
+          const ratio = ratioWidth < ratioHeight ? ratioWidth : ratioHeight;
+          values.width = Math.floor(values.width * ratio);
+          values.height = Math.floor(values.height * ratio);
+          values._ratio = ratio;
+        }
       }
     }
 
@@ -71,8 +83,9 @@ export class Mechanic {
   /**
    * Register a frame for an animated design function
    * @param {SVGElement|HTMLCanvasElement} el - Element with the current drawing state of the design function
+   * @param {Object} extras  - object containing extra elements needed by some engines
    */
-  frame(el) {
+  async frame(el, extras = {}) {
     if (!this.settings.animated) {
       throw new MechanicError("The frame() function can only be used for animations");
     }
@@ -105,29 +118,31 @@ export class Mechanic {
       if (!this.svgFrames) {
         this.svgFrames = [];
       }
+
+      el = svgAppendStyles(el, extras.head);
+
       this.svgFrames.push(svgToDataUrl(svgPrepare(el, this.serializer)));
       if (!this.svgSize) {
         this.svgSize = extractSvgSize(el);
       }
-    } else {
+    } else if (isCanvas(el)) {
       this.videoWriter.addFrame(el);
+    } else {
+      // This is slow. We should find a more efficient way
+      const frame = await htmlToCanvas(el);
+      this.videoWriter.addFrame(frame);
     }
   }
 
   /**
    * Finish a static or animated design function
-   * @param {SVGElement|HTMLCanvasElement} el - Element with the current drawing state of the design function
+   * @param {SVGElement|HTMLCanvasElement|HTMLElement} el - Element with the current drawing state of the design function
+   * @param {Object} extras  - object containing extra elements needed by some engines
    */
   async done(el, extras = {}) {
     if (!this.settings.animated) {
       if (isSVG(el)) {
-        if (extras.head) {
-          const styles = extras.head.querySelectorAll("style");
-
-          for (var i = 0; i < styles.length; i++) {
-            el.append(styles[i].cloneNode(true));
-          }
-        }
+        el = svgAppendStyles(el, extras.head);
 
         this.serializer = new XMLSerializer();
 
@@ -137,8 +152,10 @@ export class Mechanic {
           svgString = svgOptimize(svgString, this.settings.optimize);
         }
         this.svgData = svgToDataUrl(svgString);
-      } else {
+      } else if (isCanvas(el)) {
         this.canvasData = el.toDataURL();
+      } else {
+        this.htmlData = await htmlToDataUrl(el);
       }
     } else {
       if (!supportsFormatWebP()) {
@@ -179,6 +196,8 @@ export class Mechanic {
       download(this.svgData, `${name}.svg`, "image/svg+xml");
     } else if (this.canvasData) {
       download(this.canvasData, `${name}.png`, "image/png");
+    } else if (this.htmlData) {
+      download(this.htmlData, `${name}.png`, "image/png");
     } else if (this.videoData) {
       download(this.videoData, `${name}.webm`, "video/webm");
     }

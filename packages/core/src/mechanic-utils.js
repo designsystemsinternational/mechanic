@@ -1,4 +1,5 @@
 import { optimize, extendDefaultPlugins } from "svgo/dist/svgo.browser.js";
+import { toPng, toCanvas } from "html-to-image";
 
 /**
  * Checks whether a DOM element is instance of SVGElement
@@ -7,14 +8,20 @@ import { optimize, extendDefaultPlugins } from "svgo/dist/svgo.browser.js";
 const isSVG = el => el instanceof SVGElement;
 
 /**
+ * Checks whether a DOM element is instance of HTMLCanvasElement
+ * @param {object} el - A DOM element to check
+ */
+const isCanvas = el => el instanceof HTMLCanvasElement;
+
+/**
  * Validates that a DOM element is SVG or Canvas
  * @param {object} el - A DOM element to check
  */
 const validateEl = el => {
-  if (isSVG(el) || el instanceof HTMLCanvasElement) {
+  if (isSVG(el) || el instanceof HTMLElement) {
     return null;
   }
-  return "Element passed to the frame() function must be SVGElement or HTMLCanvasElement";
+  return "Element passed to the frame() function must be SVGElement or HTMLElement";
 };
 
 /**
@@ -32,6 +39,24 @@ function supportsFormatWebP() {
     return false;
   }
 }
+
+/**
+ * Appends linked styles to an SVG, returns a copy of the element
+ * @param {SVGElement} el - SVG element to convert
+ * @param {HTMLElement} head - Head element to copy styles from
+ */
+const svgAppendStyles = (el, head) => {
+  let copy = el;
+
+  if (head) {
+    copy = el.cloneNode(true);
+    const styles = head.querySelectorAll("style");
+    for (var i = 0; i < styles.length; i++) {
+      copy.append(styles[i].cloneNode(true));
+    }
+  }
+  return copy;
+};
 
 /**
  * Prepares an SVG element with sensible defaults and returns serialized svg string
@@ -72,6 +97,26 @@ const svgOptimize = (svgString, optimizeOptions) => {
  */
 const svgToDataUrl = str => {
   return "data:image/svg+xml;charset=utf-8," + encodeURIComponent(str);
+};
+
+/**
+ * Converts a HTML node to a data url
+ * @param {Node} node - SVG string to convert
+ */
+const htmlToDataUrl = async node => {
+  return new Promise((resolve, reject) => {
+    toPng(node).then(resolve).catch(reject);
+  });
+};
+
+/**
+ * Converts a HTML node to a canvas
+ * @param {Node} node - SVG string to convert
+ */
+const htmlToCanvas = async node => {
+  return new Promise((resolve, reject) => {
+    toCanvas(node).then(resolve).catch(reject);
+  });
 };
 
 /**
@@ -116,11 +161,15 @@ const getTimeStamp = () => {
 
 export {
   isSVG,
+  isCanvas,
   validateEl,
   supportsFormatWebP,
+  svgAppendStyles,
   svgPrepare,
   svgOptimize,
   svgToDataUrl,
+  htmlToDataUrl,
+  htmlToCanvas,
   extractSvgSize,
   dataUrlToCanvas,
   getTimeStamp

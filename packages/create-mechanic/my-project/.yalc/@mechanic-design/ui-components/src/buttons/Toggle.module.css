@@ -1,0 +1,23 @@
+@import "../variables.css";
+
+.status {
+  display: inline-block;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  left: 1em;
+  width: var(--mechanic-input-height-quart);
+  height: var(--mechanic-input-height-quart);
+  border-radius: var(--mechanic-input-height-eighth);
+  border: 1px solid currentColor;
+  &.on {
+    background: currentColor;
+  }
+}
+
+.label {
+}
+
+.focus .status {
+  margin-left: -1px;
+}
