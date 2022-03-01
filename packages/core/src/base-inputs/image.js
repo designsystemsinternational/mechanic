@@ -9,5 +9,6 @@ export default {
   },
   requiredProperties: [],
   validation: () => null,
+  initValue: input => undefined,
   prepareValue: v => v
 };

@@ -11,9 +11,9 @@ const setUp = customInputs => {
         requiredProperties: fileExport.requiredProperties ?? [],
         validation: fileExport.validation ?? (() => null),
         prepareValue: fileExport.prepareValue ?? (v => v),
+        initValue: fileExport.initValue ?? (() => undefined),
         Input: fileExport.Input,
-        eventType: fileExport.eventType,
-        eventHandler: fileExport.eventHandler
+        eventHandlers: fileExport.eventHandlers ?? {}
       }
     ])
   );
@@ -28,11 +28,8 @@ const setUp = customInputs => {
   };
   const interactiveInputs = Object.fromEntries(
     Object.entries(inputs)
-      .map(([name, properties]) => [
-        name,
-        { type: properties.eventType, handler: properties.eventHandler }
-      ])
-      .filter(([name, eventObject]) => !!eventObject.type)
+      .map(([name, properties]) => [name, properties.eventHandlers])
+      .filter(([_, eventObject]) => !!eventObject && Object.keys(eventObject).length > 0)
   );
   return [inputs, customComponents, interactiveInputs];
 };

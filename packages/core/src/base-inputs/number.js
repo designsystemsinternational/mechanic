@@ -39,6 +39,7 @@ export default {
       return `Supplied input value ${inputValue} is greater than maximum value: ${input.min}`;
     }
   },
+  initValue: input => input.default,
   prepareValue: (value, input) => {
     const v = value === undefined || value === null ? input.default : value;
     if (hasKey(input, "options")) {

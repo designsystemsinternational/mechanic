@@ -2,13 +2,14 @@ import { Mechanic } from "@mechanic-design/core";
 
 const root = document.getElementById("root");
 
-export const run = (functionName, func, values, isPreview) => {
+export const run = (functionName, func, values, config) => {
+  const { isPreview } = config;
+
   root.innerHTML = "";
 
-  const mechanic = new Mechanic(func.settings, values);
+  const mechanic = new Mechanic(func.settings, values, config);
 
   let isElAdded = false;
-
   const onFrame = (el) => {
     if (!isElAdded) {
       isElAdded = true;
@@ -18,7 +19,6 @@ export const run = (functionName, func, values, isPreview) => {
       mechanic.frame(el);
     }
   };
-
   const onDone = async (el, name) => {
     if (!isElAdded) {
       isElAdded = true;
@@ -29,10 +29,18 @@ export const run = (functionName, func, values, isPreview) => {
       mechanic.download(name || functionName);
     }
   };
+  const onSetState = async (obj) => {
+    mechanic.setState(obj);
+  };
 
   func.handler({
     inputs: mechanic.values,
-    mechanic: { frame: onFrame, done: onDone },
+    mechanic: {
+      frame: onFrame,
+      done: onDone,
+      state: mechanic.functionState,
+      setState: onSetState,
+    },
   });
   return mechanic;
 };

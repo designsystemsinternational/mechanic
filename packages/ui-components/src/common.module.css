@@ -97,6 +97,11 @@
   padding-right: calc(var(--mechanic-input-height-quart) - 1px);
 }
 
+.focus.disabled .button,
+.button.focus.disabled {
+  border: 1px solid currentColor;
+}
+
 .suffix {
   pointer-events: none;
   position: absolute;

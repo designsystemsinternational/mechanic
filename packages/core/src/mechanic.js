@@ -27,33 +27,35 @@ export class Mechanic {
    * @param {object} settings - Settings from the design function
    * @param {object} baseValues - Values for some or all of the design function inputs
    */
-  constructor(settings, baseValues) {
+  constructor(settings, baseValues, config) {
     const values = Object.assign({}, baseValues);
+    const { lastRun, boundingClient, scale, randomSeed } = config;
 
     const persistRandomOnExport =
       !settings.hasOwnProperty("persistRandomOnExport") || settings.persistRandomOnExport;
     // Sets random seed
+    values._randomSeed = randomSeed;
     if (persistRandomOnExport) {
-      if (values.randomSeed === undefined) {
-        values.randomSeed = seedrandom(null, { global: true });
+      if (randomSeed === undefined) {
+        values._randomSeed = seedrandom(null, { global: true });
       }
-      seedrandom(values.randomSeed, { global: true });
+      seedrandom(values._randomSeed, { global: true });
     }
 
     // Add ratio and original values if width and height are inputs
     if (values.width && values.height) {
-      values._widthOriginal = values.width;
-      values._heightOriginal = values.height;
+      values._width = values.width;
+      values._height = values.height;
       values._ratio = 1;
 
       // Calculate new width, height and ratio if scale down to fit is active
-      if (baseValues.scaleToFit) {
-        const ratioWidth = baseValues.scaleToFit.width
-          ? baseValues.scaleToFit.width / values.width
-          : 1;
-        const ratioHeight = baseValues.scaleToFit.height
-          ? baseValues.scaleToFit.height / values.height
-          : 1;
+      if (scale) {
+        const bounds = {
+          width: boundingClient.width - 100,
+          height: boundingClient.height - 100
+        };
+        const ratioWidth = bounds.width ? bounds.width / values.width : 1;
+        const ratioHeight = bounds.height ? bounds.height / values.height : 1;
         if (ratioWidth < 1 || ratioHeight < 1) {
           const ratio = ratioWidth < ratioHeight ? ratioWidth : ratioHeight;
           values.width = Math.floor(values.width * ratio);
@@ -65,6 +67,7 @@ export class Mechanic {
 
     this.settings = settings;
     this.values = values;
+    this.functionState = lastRun?.functionState;
   }
 
   /**
@@ -201,5 +204,20 @@ export class Mechanic {
     } else if (this.videoData) {
       download(this.videoData, `${name}.webm`, "video/webm");
     }
+  }
+
+  downloadState(fileName, addTimeStamp = true) {
+    let name = fileName;
+    if (addTimeStamp) {
+      name += getTimeStamp();
+    }
+    if (!this.functionState) {
+      throw "The downloadState if a state has been set.";
+    }
+    download(JSON.stringify(this.functionState), `${name}.json`, "application/json");
+  }
+
+  setState(obj) {
+    this.functionState = obj;
   }
 }

@@ -31,6 +31,7 @@ export default {
       }
     }
   },
+  initValue: input => input.default,
   prepareValue: (value, input) => {
     const v = value === undefined || value === null ? input.default : value;
     if (hasKey(input, "options")) {

@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## 1.2.0 - 2022-02-14
+
 ### Added
 
 - Added `extras = { head }` attribute to the `frame()` callback, to enable adding styles to svg animation frames

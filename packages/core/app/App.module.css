@@ -1,5 +1,26 @@
-.root {
+.base {
   margin: 0;
   height: 100vh;
   padding: 0;
+}
+
+.root {
+  display: flex;
+  height: 100%;
+}
+
+.main {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  height: 100%;
+  background-color: #f7f7f7;
+  padding-left: 1em;
+  padding-top: 1em;
+}
+
+.iframe {
+  flex-grow: 1;
+
+  border: none;
 }

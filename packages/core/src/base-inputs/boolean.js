@@ -14,6 +14,7 @@ export default {
       return `Supplied input value ${inputValue} is expected to be of type "boolean", not ${typeof inputValue}.`;
     }
   },
+  initValue: input => (input.default !== undefined ? input.default : true),
   prepareValue: (value, input) => {
     return value === undefined || value === null ? input.default : value;
   }
