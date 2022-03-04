@@ -5,7 +5,7 @@ import { DropdownIcon } from "@mechanic-design/ui-components";
 import * as css from "./Nav.module.css";
 
 export const Nav = ({ name, functions }) => {
-  let history = useHistory();
+  const history = useHistory();
   const functionsNames = Object.keys(functions);
 
   const currentFn = functions[name];
@@ -23,7 +23,7 @@ export const Nav = ({ name, functions }) => {
           <select
             id="navigation-select"
             className={css.navigationSelect}
-            onChange={({ target }) => history.push(target.value)}
+            onChange={({ target }) => history.push(`/${target.value}`)}
             name={name}
             value={name}>
             <option key="disabled" disabled>

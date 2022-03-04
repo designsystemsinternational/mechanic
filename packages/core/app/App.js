@@ -10,35 +10,53 @@ import functions from "./FUNCTIONS";
 
 import * as css from "./App.module.css";
 
+const Layout = (funcName, func, mainRef, iframeRef) => {
+  return (
+    <div className={css.root}>
+      <SideBar name={funcName} exports={func} iframe={iframe} mainRef={mainRef}>
+        <Nav name={funcName} functions={functions} />
+      </SideBar>
+      <main className={css.main} ref={mainRef}>
+        <iframe
+          title={`Design function ${funcName} document.`}
+          src={`/${funcName}.html`}
+          className={css.iframe}
+          ref={iframeRef}
+        />
+      </main>
+    </div>
+  );
+};
+
 const AppComponent = () => {
   const mainRef = useRef();
   const iframe = useRef();
+  const firstFunctionName = Object.keys(functions)[0];
   return (
     <div className={css.base}>
       <Feedback href="https://forms.gle/uBTn8oVThZHVghV89">Got feedback?</Feedback>
       <Switch>
         {Object.keys(functions).map((name, i) => (
           <Route
-            exact
             key={`route-${name}`}
-            path={i == 0 ? ["/", `/${name}`] : `/${name}`}
+            path={[`/${name}`]}
             render={() => (
-              <div className={css.root}>
-                <SideBar name={name} exports={functions[name]} iframe={iframe} mainRef={mainRef}>
-                  <Nav name={name} functions={functions} />
-                </SideBar>
-                <main className={css.main} ref={mainRef}>
-                  <iframe
-                    title={`Design function ${name} document.`}
-                    src={`${name}.html`}
-                    className={css.iframe}
-                    ref={iframe}
-                  />
-                </main>
-              </div>
+              <Layout funcName={name} func={functions[name]} iframeRef={iframe} mainRef={mainRef} />
             )}
           />
         ))}
+        <Route
+          exact
+          path="/"
+          render={() => (
+            <Layout
+              funcName={firstFunctionName}
+              func={functions[firstFunctionName]}
+              iframeRef={iframe}
+              mainRef={mainRef}
+            />
+          )}
+        />
         <Route component={NotFound} />
       </Switch>
     </div>

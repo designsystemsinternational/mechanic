@@ -193,7 +193,7 @@ module.exports = function (modeParameter, designFunctions, inputsData, distDir, 
     library: {
       type: "umd"
     },
-    publicPath: publicPath != null ? publicPath : "",
+    publicPath: publicPath !== null ? publicPath : "",
     filename: isProduction ? "[contenthash]-[name].js" : "[fullhash]-[name].js",
     chunkFilename: isProduction
       ? "[contenthash]-[name].[id].chunk.js"

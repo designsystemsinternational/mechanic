@@ -61,7 +61,7 @@ const command = async argv => {
   const distDir = path.normalize(
     config.distDir != null ? config.distDir : argv.distDir != null ? argv.distDir : "./dist"
   );
-  const publicPath = config.publicPath;
+  const publicPath = config.publicPath ?? "/";
 
   spinner.start("Loading webpack compilation...");
   const webpackConfig = webpackConfigGenerator(

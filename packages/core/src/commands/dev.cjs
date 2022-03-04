@@ -104,7 +104,7 @@ const command = async argv => {
   spinner.start("Loading webpack compilation...");
 
   // Load webpack middleware to load mechanic app
-  const webpackConfig = webpackConfigGenerator("dev", designFunctions, inputs);
+  const webpackConfig = webpackConfigGenerator("dev", designFunctions, inputs, null, "/");
   const compiler = webpack(webpackConfig);
   // https://stackoverflow.com/questions/43921770/webpack-dev-middleware-pass-through-for-all-routes
   app.use(history());
