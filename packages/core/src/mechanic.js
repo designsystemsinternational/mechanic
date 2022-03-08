@@ -67,7 +67,7 @@ export class Mechanic {
 
     this.settings = settings;
     this.values = values;
-    this.functionState = lastRun?.functionState;
+    this.functionState = lastRun?.functionState ?? {};
   }
 
   /**
@@ -206,6 +206,10 @@ export class Mechanic {
     }
   }
 
+  setState(obj) {
+    this.functionState = obj;
+  }
+
   downloadState(fileName, addTimeStamp = true) {
     let name = fileName;
     if (addTimeStamp) {
@@ -215,9 +219,5 @@ export class Mechanic {
       throw "The downloadState if a state has been set.";
     }
     download(JSON.stringify(this.functionState), `${name}.json`, "application/json");
-  }
-
-  setState(obj) {
-    this.functionState = obj;
   }
 }

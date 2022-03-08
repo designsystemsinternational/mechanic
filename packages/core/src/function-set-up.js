@@ -77,15 +77,9 @@ const setUp = (inputsDefs, designFunction) => {
         throw error;
       }
     };
-    window.downloadState = (functionName, lastRun) => {
-      lastRun.downloadState(functionName, true);
-    };
     console.info("Design function definition set.");
   } catch (error) {
     window.run = functionName => {
-      showError(`There was an error loading ${functionName} function and/or engine.`, error);
-    };
-    window.downloadState = functionName => {
       showError(`There was an error loading ${functionName} function and/or engine.`, error);
     };
     throw error;

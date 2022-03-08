@@ -22,16 +22,15 @@ export const SideBar = ({ name, exports: functionExports, iframe, mainRef, child
 
   const iframeLoaded = useIframeLoaded(iframe, name);
 
-  // console.log(lastRun, { seedHistory });
-
   const {
     inputs,
     presets: exportedPresets,
-    settings: { persistRandomOnExport }
+    settings: { persistRandomOnExport, showStateExport }
   } = functionExports;
   const presets = getPossiblePresets(exportedPresets ?? {});
   const canScale = !!(inputs.width && inputs.height);
   const persistRandom = persistRandomOnExport === undefined || persistRandomOnExport;
+  const canExportState = showStateExport !== undefined || showStateExport;
 
   const [values, setValues] = useValues(name, inputs, exportedPresets);
   const handleOnChange = (e, name, value) => setValues(name, value);
@@ -63,13 +62,13 @@ export const SideBar = ({ name, exports: functionExports, iframe, mainRef, child
     );
   };
 
-  // const handleDownloadState = async () => {
-  //   iframe.current.contentWindow?.downloadState?.(name, lastRun);
-  // };
+  const handleDownloadState = async () => {
+    lastRun.downloadState(name);
+  };
 
   useEffect(() => {
     if (autoRefreshOn && iframeLoaded) handleAutoPreview();
-  }, [values, autoRefreshOn, iframeLoaded, scaleToFit, seedHistory.current]);
+  }, [values, autoRefreshOn, iframeLoaded, scaleToFit]);
 
   useInteractiveInputs(inputs, iframe, handleOnChange);
   useShortcuts(handleExport);
@@ -124,7 +123,7 @@ export const SideBar = ({ name, exports: functionExports, iframe, mainRef, child
           </Toggle>
         </div>
         <div className={css.sep} />
-        <div className={cn(css.row, css.historyRow)}>
+        <div className={cn(css.row, css.noWrapRow)}>
           {
             <Button
               className={cn(css.grow, css.historyButton)}
@@ -149,7 +148,7 @@ export const SideBar = ({ name, exports: functionExports, iframe, mainRef, child
           }
         </div>
         <div className={css.sep} />
-        <div className={css.row}>
+        <div className={cn(css.row, css.noWrapRow)}>
           <Button
             className={css.grow}
             primary={iframeLoaded}
@@ -157,13 +156,16 @@ export const SideBar = ({ name, exports: functionExports, iframe, mainRef, child
             disabled={!iframeLoaded || lastRun === undefined}>
             {lastRun === undefined ? "Error" : iframeLoaded ? "Export" : "Loading content"}
           </Button>
-          {/* <Button
+          {lastRun && canExportState && (
+            <Button
               className={css.grow}
+              style={{ marginLeft: "5px" }}
               primary={iframeLoaded}
               onClick={handleDownloadState}
-              disabled={!iframeLoaded}>
+              disabled={!iframeLoaded || !lastRun}>
               {iframeLoaded ? "Export state" : "Loading content"}
-            </Button> */}
+            </Button>
+          )}
         </div>
         <div className={css.sep} />
       </div>
