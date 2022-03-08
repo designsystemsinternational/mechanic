@@ -3,8 +3,7 @@ import { Link } from "react-router-dom";
 
 import * as css from "./NotFound.module.css";
 
-export const NotFound = props => {
-  console.log({ props });
+export const NotFound = () => {
   return (
     <div className={css.root}>
       <p>

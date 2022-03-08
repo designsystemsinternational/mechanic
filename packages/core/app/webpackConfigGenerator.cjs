@@ -202,7 +202,7 @@ module.exports = function (modeParameter, designFunctions, inputsData, distDir, 
 
   const plugins = [
     new webpack.DefinePlugin({
-      BASENAME: JSON.stringify(publicPath ? `${publicPath}index.html` : "")
+      BASENAME: JSON.stringify(publicPath ? `${publicPath}` : "")
     }),
     new webpack.EnvironmentPlugin({
       "process.env.NODE_ENV": mode
