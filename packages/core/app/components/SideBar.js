@@ -18,7 +18,7 @@ export const SideBar = ({ name, exports: functionExports, iframe, mainRef, child
   const [scaleToFit, setScaleToFit] = useState(true);
   const [autoRefreshOn, setAutoRefreshOn] = useState(true);
   const [lastRun, setLastRun] = useState(null);
-  const [seedHistory, setSeedHistory] = useSeedHistory();
+  const [seedHistory, setSeedHistory] = useSeedHistory(name);
 
   const iframeLoaded = useIframeLoaded(iframe, name);
 
