@@ -1,4 +1,5 @@
 import { useReducer, useCallback, useEffect } from "react";
+import seedrandom from "seedrandom";
 
 function undoReducer(state, action) {
   const { past, current, future } = state;
@@ -49,10 +50,12 @@ function undoReducer(state, action) {
   }
 }
 
-export function useSeedHistory(initialCurrent) {
+const getNewSeed = () => seedrandom(null, { pass: (_, seed) => ({ seed }) }).seed;
+
+export function useSeedHistory() {
   const [state, dispatch] = useReducer(undoReducer, {
     past: [],
-    current: initialCurrent,
+    current: getNewSeed(),
     future: []
   });
 
@@ -67,27 +70,17 @@ export function useSeedHistory(initialCurrent) {
     dispatch({ type: "REDO" });
   }, []);
 
-  const set = useCallback(newCurrent => {
+  const set = useCallback(() => {
+    const newCurrent = getNewSeed();
     dispatch({ type: "SET", newCurrent });
+    return newCurrent;
   }, []);
 
-  const reset = useCallback(newCurrent => {
-    dispatch({ type: "RESET", newCurrent });
+  const reset = useCallback(() => {
+    const newCurrent = getNewSeed();
+    dispatch({ type: "RESET", newCurrent: getNewSeed() });
+    return newCurrent;
   }, []);
 
   return [state, { set, reset, undo, redo, canUndo, canRedo }];
 }
-
-export const useLastRunUpdate = (lastRun, seedHistory, setSeedHistory) => {
-  useEffect(() => {
-    if (
-      lastRun?.values?._randomSeed &&
-      lastRun.values._randomSeed !== seedHistory.current &&
-      !seedHistory.past.includes(lastRun.values._randomSeed) &&
-      !seedHistory.future.includes(lastRun.values._randomSeed)
-    ) {
-      if (seedHistory.current === undefined) setSeedHistory.reset(lastRun?.values?._randomSeed);
-      else setSeedHistory.set(lastRun?.values?._randomSeed);
-    }
-  }, [lastRun, seedHistory.current, seedHistory.past, seedHistory.future]);
-};

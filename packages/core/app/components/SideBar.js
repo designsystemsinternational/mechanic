@@ -6,7 +6,7 @@ import { useIframeLoaded } from "./utils/useIframeLoaded.js";
 import { useValues } from "./utils/useValues.js";
 import { getPossiblePresets, NO_PRESET_VALUE } from "./utils/presets.js";
 import { useShortcuts } from "./utils/useShortcuts.js";
-import { useSeedHistory, useLastRunUpdate } from "./utils/useSeedHistory.js";
+import { useSeedHistory } from "./utils/useSeedHistory.js";
 
 import { Button, Toggle } from "@mechanic-design/ui-components";
 import { Input } from "./Input.js";
@@ -43,12 +43,7 @@ export const SideBar = ({ name, exports: functionExports, iframe, mainRef, child
     randomSeed: random
   });
 
-  const handlePreview = async () => {
-    const run = iframe.current.contentWindow?.run;
-    setLastRun(lastRun => run?.(name, values, getRunConfig(lastRun, true, undefined, true)));
-  };
-
-  const handleAutoPreview = async () => {
+  const preview = async () => {
     const run = iframe.current.contentWindow?.run;
     setLastRun(lastRun =>
       run?.(name, values, getRunConfig(lastRun, true, seedHistory.current, true))
@@ -67,12 +62,15 @@ export const SideBar = ({ name, exports: functionExports, iframe, mainRef, child
   };
 
   useEffect(() => {
-    if (autoRefreshOn && iframeLoaded) handleAutoPreview();
+    if (autoRefreshOn && iframeLoaded) preview();
   }, [values, autoRefreshOn, iframeLoaded, scaleToFit]);
+
+  useEffect(() => {
+    preview();
+  }, [seedHistory.current]);
 
   useInteractiveInputs(inputs, iframe, handleOnChange);
   useShortcuts(handleExport);
-  useLastRunUpdate(lastRun, seedHistory, setSeedHistory);
 
   return (
     <aside className={css.root}>
@@ -134,7 +132,7 @@ export const SideBar = ({ name, exports: functionExports, iframe, mainRef, child
           }
           <Button
             className={cn(css.grow)}
-            onClick={handlePreview}
+            onClick={() => setSeedHistory.set()}
             disabled={!iframeLoaded || lastRun === undefined}>
             {iframeLoaded ? (persistRandom ? "Preview / Randomize" : "Preview") : "Loading content"}
           </Button>
