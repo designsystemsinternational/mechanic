@@ -38,6 +38,8 @@ const command = async argv => {
   const inputsPath = await getInputsPath(argv.inputsPath, config);
   if (inputsPath) {
     spinner.succeed(`Custom inputs directory found: ${success(path.relative(".", inputsPath))}`);
+  } else {
+    spinner.succeed(`Custom inputs directory not found. No custom inputs being used!`);
   }
 
   // Seek functions path

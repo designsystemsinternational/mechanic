@@ -85,15 +85,19 @@ const generateInputScript = inputsPath => {
   const customInputs = {};
   let importSection = "";
   let codeSection = " const customInputs = {";
-  let counter = 0;
-  searchExports(inputsPath, (_, filepath) => {
-    const name = path.dirname(filepath).split(path.sep).pop();
-    importSection += `import * as export${counter} from "${filepath.split(path.sep).join("/")}";\n`;
-    if (codeSection[codeSection.length - 1] !== "{") codeSection += ",\n";
-    codeSection += `"${name}": export${counter}`;
-    counter += 1;
-    customInputs[name] = { original: filepath, fileName: name };
-  });
+  if (inputsPath) {
+    let counter = 0;
+    searchExports(inputsPath, (_, filepath) => {
+      const name = path.dirname(filepath).split(path.sep).pop();
+      importSection += `import * as export${counter} from "${filepath
+        .split(path.sep)
+        .join("/")}";\n`;
+      if (codeSection[codeSection.length - 1] !== "{") codeSection += ",\n";
+      codeSection += `"${name}": export${counter}`;
+      counter += 1;
+      customInputs[name] = { original: filepath, fileName: name };
+    });
+  }
   codeSection += "\n};";
   const result = importSection + codeSection + inputScriptContent;
   // console.log(result);

@@ -10,10 +10,10 @@ import functions from "./FUNCTIONS";
 
 import * as css from "./App.module.css";
 
-const Layout = (funcName, func, mainRef, iframeRef) => {
+const Layout = ({ funcName, functions, mainRef, iframeRef }) => {
   return (
     <div className={css.root}>
-      <SideBar name={funcName} exports={func} iframe={iframe} mainRef={mainRef}>
+      <SideBar name={funcName} exports={functions[funcName]} iframe={iframeRef} mainRef={mainRef}>
         <Nav name={funcName} functions={functions} />
       </SideBar>
       <main className={css.main} ref={mainRef}>
@@ -41,7 +41,7 @@ const AppComponent = () => {
             key={`route-${name}`}
             path={[`/${name}`]}
             render={() => (
-              <Layout funcName={name} func={functions[name]} iframeRef={iframe} mainRef={mainRef} />
+              <Layout funcName={name} functions={functions} iframeRef={iframe} mainRef={mainRef} />
             )}
           />
         ))}
@@ -51,7 +51,7 @@ const AppComponent = () => {
           render={() => (
             <Layout
               funcName={firstFunctionName}
-              func={functions[firstFunctionName]}
+              functions={functions}
               iframeRef={iframe}
               mainRef={mainRef}
             />
