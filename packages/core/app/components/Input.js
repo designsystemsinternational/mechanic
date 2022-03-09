@@ -52,7 +52,7 @@ export const Input = ({ name, className, values, inputDef, onChange, children })
   if (type in customComponents) {
     const CustomComponent = customComponents[type];
     return (
-      <div style={{ all: "initial" }}>
+      <div>
         <CustomComponent
           id={id}
           className={className}
