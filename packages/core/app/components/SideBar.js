@@ -30,7 +30,6 @@ export const SideBar = ({ name, exports: functionExports, iframe, mainRef, child
   const presets = getPossiblePresets(exportedPresets ?? {});
   const canScale = !!(inputs.width && inputs.height);
   const persistRandom = persistRandomOnExport === undefined || persistRandomOnExport;
-  const canExportState = showStateExport !== undefined || showStateExport;
 
   const [values, setValues] = useValues(name, inputs, exportedPresets);
   const handleOnChange = (e, name, value) => setValues(name, value);
@@ -154,16 +153,6 @@ export const SideBar = ({ name, exports: functionExports, iframe, mainRef, child
             disabled={!iframeLoaded || lastRun === undefined}>
             {lastRun === undefined ? "Error" : iframeLoaded ? "Export" : "Loading content"}
           </Button>
-          {lastRun && canExportState && (
-            <Button
-              className={css.grow}
-              style={{ marginLeft: "5px" }}
-              primary={iframeLoaded}
-              onClick={handleDownloadState}
-              disabled={!iframeLoaded || !lastRun}>
-              {iframeLoaded ? "Export state" : "Loading content"}
-            </Button>
-          )}
         </div>
         <div className={css.sep} />
       </div>
