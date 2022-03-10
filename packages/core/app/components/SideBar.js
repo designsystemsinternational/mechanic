@@ -121,28 +121,28 @@ export const SideBar = ({ name, exports: functionExports, iframe, mainRef, child
         </div>
         <div className={css.sep} />
         <div className={cn(css.row, css.noWrapRow)}>
-          {
+          {persistRandom && (
             <Button
               className={cn(css.grow, css.historyButton)}
               onClick={() => setSeedHistory.undo()}
               disabled={!iframeLoaded || !setSeedHistory.canUndo || lastRun === undefined}>
               {"<"}
             </Button>
-          }
+          )}
           <Button
             className={cn(css.grow)}
             onClick={() => setSeedHistory.set()}
             disabled={!iframeLoaded || lastRun === undefined}>
             {iframeLoaded ? (persistRandom ? "Preview / Randomize" : "Preview") : "Loading content"}
           </Button>
-          {
+          {persistRandom && (
             <Button
               className={cn(css.grow, css.historyButton)}
               onClick={() => setSeedHistory.redo()}
               disabled={!iframeLoaded || lastRun === undefined || !setSeedHistory.canRedo}>
               {">"}
             </Button>
-          }
+          )}
         </div>
         <div className={css.sep} />
         <div className={cn(css.row, css.noWrapRow)}>
