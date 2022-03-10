@@ -37,7 +37,6 @@ export const Button = props => {
 
   return (
     <button
-      {...props}
       id={id}
       className={classes}
       onClick={onClick}
