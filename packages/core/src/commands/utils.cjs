@@ -44,10 +44,10 @@ const searchExports = (dir, callback, depth = 0) => {
 const setUpFunctionPath = path.resolve(path.join(__dirname, "..", "function-set-up.js"));
 const inputsPath = path.resolve(path.join(__dirname, "..", "..", "app", "INPUTS"));
 const getFuncScriptContent = designFunctionPath => `
-import { inputsDefs } from "${inputsPath}";
+import { inputsDefs, inputErrors } from "${inputsPath}";
 import * as designFunction from "${designFunctionPath.split(path.sep).join("/")}";
 import { setUp } from "${setUpFunctionPath.split(path.sep).join("/")}";
-setUp(inputsDefs, designFunction)
+setUp(inputsDefs, designFunction, inputErrors)
 if (module.hot) {
   // Accept hot update
   module.hot.accept();
@@ -77,8 +77,8 @@ const generateFuncTempScripts = functionsPath => {
 const setUpInputsPath = path.resolve(path.join(__dirname, "..", "input-set-up.js"));
 const inputScriptContent = `
 import { setUp } from "${setUpInputsPath.split(path.sep).join("/")}";
-const [inputsDefs, customComponents, interactiveInputs] = setUp(customInputs);
-export {inputsDefs, customComponents, interactiveInputs};
+const [inputsDefs, customComponents, interactiveInputs, inputErrors] = setUp(customInputs);
+export {inputsDefs, customComponents, interactiveInputs, inputErrors};
 `;
 
 const generateInputScript = inputsPath => {

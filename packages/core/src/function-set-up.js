@@ -1,3 +1,4 @@
+import { MechanicInputError } from "./mechanic-error.js";
 import { MechanicValidator } from "./validation.js";
 
 const modalStyle = `position: absolute;
@@ -55,12 +56,14 @@ const showError = (mainMessage, error) => {
  * the corresponding engine and design function.
  * @param {object} designFunction - Object exported by user that holds the design function's definition.
  */
-const setUp = (inputsDefs, designFunction) => {
+const setUp = (inputsDefs, designFunction, inputErrors) => {
   document.body.style = "margin: 0;";
 
   const validator = new MechanicValidator(inputsDefs, designFunction);
 
   try {
+    if (inputErrors.length > 0) throw inputErrors[0];
+
     validator.validateFunctionExports();
     validator.validateSettings();
     validator.validateInputs();
@@ -80,7 +83,9 @@ const setUp = (inputsDefs, designFunction) => {
     console.info("Design function definition set.");
   } catch (error) {
     window.run = functionName => {
-      showError(`There was an error loading ${functionName} function and/or engine.`, error);
+      if (error instanceof MechanicInputError) {
+        showError(`There was an error loading custom inputs.`, error);
+      } else showError(`There was an error loading ${functionName} function and/or engine.`, error);
     };
     throw error;
   }

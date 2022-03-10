@@ -148,10 +148,9 @@ const useValues = (functionName, functionInputs, presets) => {
   const initialValue = useMemo(() => {
     return Object.fromEntries([
       ["preset", NO_PRESET_VALUE],
-      ...Object.entries(functionInputs).map(([name, input]) => [
-        name,
-        inputsDefs[input.type].initValue(input)
-      ])
+      ...Object.entries(functionInputs)
+        .filter(([_, input]) => input.type in inputsDefs)
+        .map(([name, input]) => [name, inputsDefs[input.type].initValue(input)])
     ]);
   }, [functionInputs]);
 
