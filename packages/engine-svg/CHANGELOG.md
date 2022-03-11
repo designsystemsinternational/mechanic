@@ -9,6 +9,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- Provides design functions `state` and `setState` in mechanic instance.
+
+### Changed
+
+- Updates inner workings to fit new loading and running flow.
+
+## 1.2.0 - 2022-02-14
+
+### Added
+
 - Added `extras = { head }` attribute to the `frame()` callback, to enable adding styles to svg animation frames
 
 ## 0.5.0 - 2021-09-06

@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### Added
+
+- `dev` and `build` commands have new `inputsPath` option can be passed to define folder containing custom inputs for project
+
 ## 0.6.3 - 2021-09-10
 
 ### Fixed
