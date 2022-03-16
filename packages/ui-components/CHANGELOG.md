@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### Added
+
+- `OptionInput` is now also an export of the package.
+
+### Changed
+
+- Reset border width in buttons that are both disabled and on focus
+- Updated `html-loader` dependency to match one in `core`
+- Updated PostCSS dependencies: `postcss-loader`and `postcss-preset-env`
+
 ## 0.6.4 - 2021-09-14
 
 ### Fixed

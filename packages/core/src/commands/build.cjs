@@ -1,6 +1,14 @@
 const path = require("path");
 const webpack = require("webpack");
-const { getConfig, getFunctionsPath, generateTempScripts, greet, goodbye } = require("./utils.cjs");
+const {
+  getConfig,
+  getFunctionsPath,
+  getInputsPath,
+  generateInputScript,
+  generateFuncTempScripts,
+  greet,
+  goodbye
+} = require("./utils.cjs");
 const webpackConfigGenerator = require("../../app/webpackConfigGenerator.cjs");
 
 const {
@@ -25,6 +33,15 @@ const command = async argv => {
     spinner.succeed(`Mechanic config file loaded: ${success(path.relative(".", configPath))}`);
   }
 
+  // Seek custom inputs path
+  spinner.start("Seeking custom inputs directory...");
+  const inputsPath = await getInputsPath(argv.inputsPath, config);
+  if (inputsPath) {
+    spinner.succeed(`Custom inputs directory found: ${success(path.relative(".", inputsPath))}`);
+  } else {
+    spinner.succeed(`Custom inputs directory not found. No custom inputs being used!`);
+  }
+
   // Seek functions path
   spinner.start("Seeking design function directory...");
   const functionsPath = await getFunctionsPath(argv.functionsPath, config);
@@ -38,16 +55,24 @@ const command = async argv => {
   }
 
   spinner.start("Generating temp files to serve...");
-  const [designFunctions] = generateTempScripts(functionsPath);
+  const [customInputs, inputScriptContent] = generateInputScript(inputsPath);
+  const inputs = { inputsPath, inputScriptContent, customInputs };
+  const [designFunctions] = generateFuncTempScripts(functionsPath);
   spinner.succeed("Temp files created!");
 
   const distDir = path.normalize(
     config.distDir != null ? config.distDir : argv.distDir != null ? argv.distDir : "./dist"
   );
-  const publicPath = config.publicPath;
+  const publicPath = config.publicPath ?? "/";
 
   spinner.start("Loading webpack compilation...");
-  const webpackConfig = webpackConfigGenerator("prod", designFunctions, distDir, publicPath);
+  const webpackConfig = webpackConfigGenerator(
+    "prod",
+    designFunctions,
+    inputs,
+    distDir,
+    publicPath
+  );
   const compiler = webpack(webpackConfig);
   compiler.run((err, stats) => {
     // [Stats Object](#stats-object) https://webpack.js.org/api/node/#stats-object

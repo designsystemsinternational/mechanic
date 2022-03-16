@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### Added
+
+- Provides design functions `state` and `setState` in mechanic instance.
+
+### Changed
+
+- Updates inner workings to fit new loading and running flow.
+
 ## 0.5.0 - 2021-09-06
 
 ### Changed

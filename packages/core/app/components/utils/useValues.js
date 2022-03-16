@@ -1,14 +1,32 @@
-import { useState, useEffect, useCallback, useRef } from "react";
-import { NO_PRESET_VALUE } from "./presets.js";
+import { useEffect, useCallback, useRef, useMemo } from "react";
+import { useImmer } from "use-immer";
+import { inputsDefs } from "../../INPUTS";
+import { NO_PRESET_VALUE, addPresetsAsSources } from "./presets.js";
+import { resetOtherInteractive } from "./useInteractiveInputs.js";
+
+const isEmptyObject = obj =>
+  obj && Object.keys(obj).length === 0 && Object.getPrototypeOf(obj) === Object.prototype;
+
+const isSerializable = obj => isEmptyObject(obj) || !(JSON.stringify(obj) === "{}");
 
 const copySerializable = obj => {
   if (typeof obj !== "object") {
     return obj;
   }
-  const copy = {};
-  for (const key in obj) {
-    if (!(obj[key] instanceof File || obj[key] instanceof FileList)) {
-      copy[key] = copySerializable(obj[key]);
+  let copy;
+  if (Array.isArray(obj)) {
+    copy = [];
+    for (const o of obj) {
+      if (isSerializable(o)) {
+        copy.push(copySerializable(o));
+      } else console.warn("Unserializable object ignored for local storage persistance.");
+    }
+  } else {
+    copy = {};
+    for (const key in obj) {
+      if (isSerializable(obj[key])) {
+        copy[key] = copySerializable(obj[key]);
+      } else console.warn("Unserializable object ignored for local storage persistance.");
     }
   }
   return copy;
@@ -62,8 +80,8 @@ function initialize(key, initialState) {
  * @param {string} key - Key of the localStorage object
  * @param {any} initialState - Default initial value
  */
-function useLocalStorageState(key, initialState) {
-  const [value, __setValue] = useState(() => initialize(key, initialState));
+function useLocalStorageState(key, initialState, clean) {
+  const [value, __setValue] = useImmer(() => clean(initialize(key, initialState)));
   const isUpdateFromListener = useRef(false);
 
   useEffect(() => {
@@ -84,7 +102,7 @@ function useLocalStorageState(key, initialState) {
         isUpdateFromListener.current = true;
         const newValue = JSON.parse(e.newValue || "null");
         if (value !== newValue) {
-          __setValue(newValue);
+          __setValue(() => newValue);
         }
       } catch (err) {
         console.log(err);
@@ -100,9 +118,12 @@ function useLocalStorageState(key, initialState) {
     };
   }, []);
 
-  function setValue(newValue) {
+  function setValue(recipe) {
     isUpdateFromListener.current = false;
-    __setValue(newValue);
+    __setValue(draft => {
+      recipe(draft);
+      clean(draft);
+    });
   }
 
   function remove() {
@@ -112,31 +133,38 @@ function useLocalStorageState(key, initialState) {
   return [value, setValue, remove];
 }
 
-const cleanValues = (object, reference) =>
-  object
-    ? Object.entries(object)
-        .filter(entry => entry[0] in reference || entry[0] === "preset")
-        .reduce((acc, cur) => {
-          acc[cur[0]] = cur[1];
-          return acc;
-        }, {})
-    : Object.entries(reference).reduce(
-        (current, input) => {
-          if (input[1].default) current[input[0]] = input[1].default;
-          else current[input[0]] = undefined;
-          return current;
-        },
-        { preset: NO_PRESET_VALUE }
-      );
+const cleanValues = (object, reference) => {
+  for (let property in object) {
+    if (!(property in reference) && property !== "preset") {
+      delete object[property];
+    }
+  }
+  // Add values that are missing?
+  return object;
+};
 
-const useValues = (name, inputs) => {
-  const [allValues, setAllValues] = useLocalStorageState("function-values", {});
+const useValues = (functionName, functionInputs, presets) => {
+  const clean = useCallback(object => cleanValues(object, functionInputs), [functionInputs]);
+  const initialValue = useMemo(() => {
+    return Object.fromEntries([
+      ["preset", NO_PRESET_VALUE],
+      ...Object.entries(functionInputs)
+        .filter(([_, input]) => input.type in inputsDefs)
+        .map(([name, input]) => [name, inputsDefs[input.type].initValue(input)])
+    ]);
+  }, [functionInputs]);
 
-  const values = cleanValues(allValues[name], inputs);
-  const setValues = assignFunc => {
-    setAllValues(allValues => {
-      const newValues = assignFunc(cleanValues(allValues[name], inputs));
-      return Object.assign({}, allValues, { [name]: newValues });
+  const [values, __setValues] = useLocalStorageState(`df_${functionName}`, initialValue, clean);
+
+  const setValues = (name, value) => {
+    __setValues(draft => {
+      const sources = addPresetsAsSources(value, name, presets, functionInputs, draft);
+      const sourcesAndInteractive = resetOtherInteractive(sources, functionInputs, name);
+      for (let source of sourcesAndInteractive) {
+        for (let prop in source) {
+          draft[prop] = source[prop];
+        }
+      }
     });
   };
   return [values, setValues];

@@ -9,16 +9,17 @@ const webpackConfigGenerator = require("../../app/webpackConfigGenerator.cjs");
 const {
   getConfig,
   getFunctionsPath,
+  getInputsPath,
   setCustomInterrupt,
-  generateTempScripts,
+  generateInputScript,
+  generateFuncTempScripts,
   greet,
   goodbye
 } = require("./utils.cjs");
 
-const {
-  spinners: { mechanicSpinner: spinner },
-  colors: { success }
-} = require("@mechanic-design/utils");
+const { spinners, colors } = require("@mechanic-design/utils");
+const { mechanicSpinner: spinner } = spinners;
+const { success } = colors;
 
 const command = async argv => {
   // Greet and intro command
@@ -38,6 +39,15 @@ const command = async argv => {
     spinner.succeed(`Mechanic config file loaded: ${success(path.relative(".", configPath))}`);
   }
 
+  // Seek custom inputs path
+  spinner.start("Seeking custom inputs directory...");
+  const inputsPath = await getInputsPath(argv.inputsPath, config);
+  if (inputsPath) {
+    spinner.succeed(`Custom inputs directory found: ${success(path.relative(".", inputsPath))}`);
+  } else {
+    spinner.succeed(`Custom inputs directory not found. No custom inputs being used!`);
+  }
+
   // Seek functions path
   spinner.start("Seeking design function directory...");
   const functionsPath = await getFunctionsPath(argv.functionsPath, config);
@@ -52,7 +62,7 @@ const command = async argv => {
 
   spinner.start("Starting off server...");
   // Set port and express server
-  portfinder.basePort = config.port != null ? config.port : argv.port;
+  portfinder.basePort = argv.port !== null ? argv.port : config.port;
   const port = await portfinder.getPortPromise();
   const app = express();
 
@@ -89,12 +99,14 @@ const command = async argv => {
   spinner.succeed(`Server listening on port ${port}`);
 
   spinner.start("Generating temp files to serve...");
-  const [designFunctions, tempDirObj] = generateTempScripts(functionsPath);
+  const [customInputs, inputScriptContent] = generateInputScript(inputsPath);
+  const inputs = { inputsPath, inputScriptContent, customInputs };
+  const [designFunctions, funcsTempDirObj] = generateFuncTempScripts(functionsPath);
   spinner.succeed("Temp files created!");
   spinner.start("Loading webpack compilation...");
 
   // Load webpack middleware to load mechanic app
-  const webpackConfig = webpackConfigGenerator("dev", designFunctions);
+  const webpackConfig = webpackConfigGenerator("dev", designFunctions, inputs, null, "/");
   const compiler = webpack(webpackConfig);
   // https://stackoverflow.com/questions/43921770/webpack-dev-middleware-pass-through-for-all-routes
   app.use(history());
@@ -121,7 +133,7 @@ const command = async argv => {
   );
   console.log();
 
-  setCustomInterrupt(goodbye, tempDirObj);
+  setCustomInterrupt(goodbye, [funcsTempDirObj]);
 };
 
 module.exports = command;

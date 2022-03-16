@@ -5,9 +5,10 @@ import { Mechanic } from "@mechanic-design/core";
 const root = document.getElementById("root");
 const head = document.querySelector("head");
 
-export const run = (functionName, func, values, isPreview) => {
+export const run = (functionName, func, values, config) => {
+  const { isPreview } = config;
   unmountComponentAtNode(root);
-  const mechanic = new Mechanic(func.inputs, func.settings, values);
+  const mechanic = new Mechanic(func.settings, values, config);
   const Handler = func.handler;
   const onFrame = () => {
     if (!isPreview) {
@@ -20,10 +21,18 @@ export const run = (functionName, func, values, isPreview) => {
       mechanic.download(name || functionName);
     }
   };
+  const onSetState = async (obj) => {
+    mechanic.setState(obj);
+  };
   render(
     <Handler
       inputs={mechanic.values}
-      mechanic={{ frame: onFrame, done: onDone }}
+      mechanic={{
+        frame: onFrame,
+        done: onDone,
+        state: mechanic.functionState,
+        setState: onSetState,
+      }}
     />,
     root
   );

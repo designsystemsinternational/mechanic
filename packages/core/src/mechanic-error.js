@@ -8,4 +8,11 @@ class MechanicError extends Error {
   }
 }
 
-export { MechanicError };
+class MechanicInputError extends MechanicError {
+  constructor(message) {
+    super(message);
+    this.name = "MechanicInputError";
+  }
+}
+
+export { MechanicError, MechanicInputError };

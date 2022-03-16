@@ -5,11 +5,12 @@ const root = document.getElementById("root");
 
 let p5Sketch;
 
-export const run = (functionName, func, values, isPreview) => {
+export const run = (functionName, func, values, config) => {
+  const { isPreview } = config;
   if (p5Sketch) {
     p5Sketch.remove();
   }
-  const mechanic = new Mechanic(func.inputs, func.settings, values);
+  const mechanic = new Mechanic(func.settings, values, config);
   const onFrame = () => {
     if (!isPreview) {
       mechanic.frame(root.childNodes[0]);
@@ -22,11 +23,20 @@ export const run = (functionName, func, values, isPreview) => {
       mechanic.download(name || functionName);
     }
   };
+  const onSetState = async (obj) => {
+    mechanic.setState(obj);
+  };
+
   p5Sketch = new p5(
     (sketch) =>
       func.handler({
         inputs: mechanic.values,
-        mechanic: { frame: onFrame, done: onDone },
+        mechanic: {
+          frame: onFrame,
+          done: onDone,
+          state: mechanic.functionState,
+          setState: onSetState,
+        },
         sketch,
       }),
     root

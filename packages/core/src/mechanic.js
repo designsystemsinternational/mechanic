@@ -1,6 +1,11 @@
+import seedrandom from "seedrandom";
 import { download } from "./download.js";
 import { WebMWriter } from "./webm-writer.js";
 import {
+  isSVG,
+  isCanvas,
+  validateEl,
+  supportsFormatWebP,
   svgAppendStyles,
   svgOptimize,
   svgPrepare,
@@ -11,7 +16,6 @@ import {
   dataUrlToCanvas,
   getTimeStamp
 } from "./mechanic-utils.js";
-import * as validation from "./mechanic-validation.js";
 import { MechanicError } from "./mechanic-error.js";
 
 /**
@@ -20,29 +24,50 @@ import { MechanicError } from "./mechanic-error.js";
 export class Mechanic {
   /**
    * Mechanic class constructor
-   * @param {object} inputs - Inputs from the design function
    * @param {object} settings - Settings from the design function
-   * @param {object} values - Values for some or all of the design function inputs
+   * @param {object} baseValues - Values for some or all of the design function inputs
    */
-  constructor(inputs, settings, values) {
-    const err1 = validation.validateInputs(inputs);
-    if (err1) {
-      throw new MechanicError(err1);
+  constructor(settings, baseValues, config) {
+    const values = Object.assign({}, baseValues);
+    const { lastRun, boundingClient, scale, randomSeed } = config;
+
+    const persistRandomOnExport =
+      !settings.hasOwnProperty("persistRandomOnExport") || settings.persistRandomOnExport;
+    // Sets random seed
+    values._randomSeed = randomSeed;
+    if (persistRandomOnExport) {
+      if (randomSeed === undefined) {
+        values._randomSeed = seedrandom(null, { global: true });
+      }
+      seedrandom(values._randomSeed, { global: true });
     }
 
-    const err2 = validation.validateSettings(settings);
-    if (err2) {
-      throw new MechanicError(err2);
+    // Add ratio and original values if width and height are inputs
+    if (values.width && values.height) {
+      values._width = values.width;
+      values._height = values.height;
+      values._ratio = 1;
+
+      // Calculate new width, height and ratio if scale down to fit is active
+      if (scale) {
+        const bounds = {
+          width: boundingClient.width - 100,
+          height: boundingClient.height - 100
+        };
+        const ratioWidth = bounds.width ? bounds.width / values.width : 1;
+        const ratioHeight = bounds.height ? bounds.height / values.height : 1;
+        if (ratioWidth < 1 || ratioHeight < 1) {
+          const ratio = ratioWidth < ratioHeight ? ratioWidth : ratioHeight;
+          values.width = Math.floor(values.width * ratio);
+          values.height = Math.floor(values.height * ratio);
+          values._ratio = ratio;
+        }
+      }
     }
 
-    const err3 = validation.validateValues(inputs, values);
-    if (err3) {
-      throw new MechanicError(err3);
-    }
-
-    this.inputs = inputs;
     this.settings = settings;
-    this.values = validation.prepareValues(inputs, settings, values);
+    this.values = values;
+    this.functionState = lastRun?.functionState ?? {};
   }
 
   /**
@@ -67,13 +92,13 @@ export class Mechanic {
     if (!this.settings.animated) {
       throw new MechanicError("The frame() function can only be used for animations");
     }
-    if (!validation.supportsFormatWebP()) {
+    if (!supportsFormatWebP()) {
       throw new MechanicError(
         "Your running browser doesn't support WebP generation. Try using Chrome for exporting."
       );
     }
 
-    const err = validation.validateEl(el);
+    const err = validateEl(el);
     if (err) {
       throw new MechanicError(err);
     }
@@ -89,7 +114,7 @@ export class Mechanic {
       });
     }
 
-    if (validation.isSVG(el)) {
+    if (isSVG(el)) {
       // Because drawing an SVG to canvas is asynchronous,
       // We wait until the end to render it all.
       // TODO: This needs to be revisited.
@@ -103,7 +128,7 @@ export class Mechanic {
       if (!this.svgSize) {
         this.svgSize = extractSvgSize(el);
       }
-    } else if (validation.isCanvas(el)) {
+    } else if (isCanvas(el)) {
       this.videoWriter.addFrame(el);
     } else {
       // This is slow. We should find a more efficient way
@@ -119,7 +144,7 @@ export class Mechanic {
    */
   async done(el, extras = {}) {
     if (!this.settings.animated) {
-      if (validation.isSVG(el)) {
+      if (isSVG(el)) {
         el = svgAppendStyles(el, extras.head);
 
         this.serializer = new XMLSerializer();
@@ -130,18 +155,18 @@ export class Mechanic {
           svgString = svgOptimize(svgString, this.settings.optimize);
         }
         this.svgData = svgToDataUrl(svgString);
-      } else if (validation.isCanvas(el)) {
+      } else if (isCanvas(el)) {
         this.canvasData = el.toDataURL();
       } else {
         this.htmlData = await htmlToDataUrl(el);
       }
     } else {
-      if (!validation.supportsFormatWebP()) {
+      if (!supportsFormatWebP()) {
         throw new MechanicError(
           "Your running browser doesn't support WebP generation. Try using Chrome for exporting."
         );
       }
-      if (validation.isSVG(el)) {
+      if (isSVG(el)) {
         // This is slow. We should figure out a way to draw into canvas on every frame
         // or at least do Promise.all
         const cacheCanvas = document.createElement("canvas");
@@ -179,5 +204,20 @@ export class Mechanic {
     } else if (this.videoData) {
       download(this.videoData, `${name}.webm`, "video/webm");
     }
+  }
+
+  setState(obj) {
+    this.functionState = obj;
+  }
+
+  downloadState(fileName, addTimeStamp = true) {
+    let name = fileName;
+    if (addTimeStamp) {
+      name += getTimeStamp();
+    }
+    if (!this.functionState) {
+      throw "The downloadState if a state has been set.";
+    }
+    download(JSON.stringify(this.functionState), `${name}.json`, "application/json");
   }
 }

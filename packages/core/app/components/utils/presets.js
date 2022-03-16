@@ -10,8 +10,7 @@ const addPresetsAsSources = (inputValue, inputName, presets, inputs, values) => 
     if (inputValue === DEFAULT_PRESET_VALUE) {
       sources.push(
         Object.entries(inputs).reduce((source, input) => {
-          if (input[1].default) source[input[0]] = input[1].default;
-          else source[input[0]] = undefined;
+          source[input[0]] = input[1].default;
           return source;
         }, {})
       );
@@ -20,7 +19,7 @@ const addPresetsAsSources = (inputValue, inputName, presets, inputs, values) => 
     }
   } else if (
     values.hasOwnProperty("preset") &&
-    values.preset != NO_PRESET_VALUE &&
+    values.preset !== NO_PRESET_VALUE &&
     (values.preset === DEFAULT_PRESET_VALUE || presets[values.preset].hasOwnProperty(inputName))
   ) {
     sources.push({ preset: NO_PRESET_VALUE });

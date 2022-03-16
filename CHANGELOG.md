@@ -7,7 +7,32 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [1.2.0] - 2021-02-14
+### Added
+
+- Custom inputs as components can be defined and imported into a mechanic project
+- Custom inputs as interaction observers can be defined and imported into a mechanic project
+- Random seed history, with undo and redo options and local storage persistency
+- State can be set in mechanic instances and passed to the next instance through `state` and `setState` values
+- Title in app shows open design function's name
+- Not found page renders link to home
+
+### Changed
+
+- Not found page is centered
+- Loading and running errors are now shown in app as a modal instead of as an alert
+- Uses [`immer`](https://github.com/immerjs/immer) to manage input values in app
+- Generated script from function loader is now written in ESM
+- Updated PostCSS dependencies: `postcss-loader`and `postcss-preset-env`
+- Generalized and streamlined input validation, and added basic inputs definitions and behaviors
+- Renamed original width and height values passed from `_widthOriginal` and `_heightOriginal`to just `_width`and `_height`.
+
+### Fixed
+
+- Feedback tag gets lifted in UI
+- Added array case to local storage input values serialization
+- Allows nested URLs in app that redirect to first level of URL (to main design functions)
+
+## [1.2.0] - 2022-02-14
 
 ### Added
 

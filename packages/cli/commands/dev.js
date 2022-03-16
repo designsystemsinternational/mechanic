@@ -17,9 +17,14 @@ module.exports = (getCommandHandler) => ({
           type: "string",
           description: "Path to directory containing design functions",
         },
+        inputsPath: {
+          type: "string",
+          description: "Path to directory containing custom input components",
+        },
       })
       .default("port", 3000)
       .default("configPath", path.normalize("./mechanic.config.js"))
-      .default("functionsPath", path.normalize("./functions")),
+      .default("functionsPath", path.normalize("./functions"))
+      .default("inputsPath", path.normalize("./inputs")),
   handler: getCommandHandler("dev"),
 });

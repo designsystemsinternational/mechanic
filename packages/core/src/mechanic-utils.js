@@ -2,6 +2,45 @@ import { optimize, extendDefaultPlugins } from "svgo/dist/svgo.browser.js";
 import { toPng, toCanvas } from "html-to-image";
 
 /**
+ * Checks whether a DOM element is instance of SVGElement
+ * @param {object} el - A DOM element to check
+ */
+const isSVG = el => el instanceof SVGElement;
+
+/**
+ * Checks whether a DOM element is instance of HTMLCanvasElement
+ * @param {object} el - A DOM element to check
+ */
+const isCanvas = el => el instanceof HTMLCanvasElement;
+
+/**
+ * Validates that a DOM element is SVG or Canvas
+ * @param {object} el - A DOM element to check
+ */
+const validateEl = el => {
+  if (isSVG(el) || el instanceof HTMLElement) {
+    return null;
+  }
+  return "Element passed to the frame() function must be SVGElement or HTMLElement";
+};
+
+/**
+ * Validates that running browser supports webp generations.
+ * Extracted from: https://stackoverflow.com/questions/5573096/detecting-webp-support
+ */
+function supportsFormatWebP() {
+  const elem = document.createElement("canvas");
+
+  if (!!(elem.getContext && elem.getContext("2d"))) {
+    // was able or not to get WebP representation
+    return elem.toDataURL("image/webp").indexOf("data:image/webp") == 0;
+  } else {
+    // very old browser like IE 8, canvas not supported
+    return false;
+  }
+}
+
+/**
  * Appends linked styles to an SVG, returns a copy of the element
  * @param {SVGElement} el - SVG element to convert
  * @param {HTMLElement} head - Head element to copy styles from
@@ -121,6 +160,10 @@ const getTimeStamp = () => {
 };
 
 export {
+  isSVG,
+  isCanvas,
+  validateEl,
+  supportsFormatWebP,
   svgAppendStyles,
   svgPrepare,
   svgOptimize,
