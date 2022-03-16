@@ -58,5 +58,6 @@
     "package-json": "^7.0.0",
     "semver": "^7.3.5",
     "yargs": "^17.0.1"
-  }
+  },
+  "gitHead": "123dc6a0f0532663d411bb9cf1b99271e185436f"
 }
