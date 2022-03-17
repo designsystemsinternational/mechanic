@@ -1,5 +1,5 @@
 {
   "dependencies": {
-    "@mechanic-design/engine-react": "^1.2.0"
+    "@mechanic-design/engine-react": "^2.0.0-beta.1"
   }
 }
