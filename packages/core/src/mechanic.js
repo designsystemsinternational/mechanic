@@ -135,6 +135,7 @@ export class Mechanic {
       const frame = await htmlToCanvas(el);
       this.videoWriter.addFrame(frame);
     }
+    this.frameCalled = true;
   }
 
   /**
@@ -165,6 +166,9 @@ export class Mechanic {
         throw new MechanicError(
           "Your running browser doesn't support WebP generation. Try using Chrome for exporting."
         );
+      }
+      if (!this.frameCalled) {
+        throw new MechanicError("Animated export only called done, frame() hasn't been called.");
       }
       if (isSVG(el)) {
         // This is slow. We should figure out a way to draw into canvas on every frame
