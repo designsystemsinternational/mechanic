@@ -47,7 +47,7 @@ export const getOptionsProperty = type => ({
     // If it's an array
     else if (Array.isArray(value)) {
       // It should be consistent with 'default' property
-      if (!values.includes(input.default)) {
+      if (!value.includes(input.default)) {
         return `Default value ${input.default} is not present in given options: ${value} `;
       }
       // All values should be consistent with the input type

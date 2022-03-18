@@ -77,7 +77,10 @@ const setUp = (inputsDefs, designFunction, inputErrors) => {
         return mechanic ? mechanic : null;
       } catch (error) {
         showError(`There was an error running ${functionName} function and/or engine.`, error);
-        throw error;
+        setTimeout(() => {
+          throw error;
+        }, 0);
+        return null;
       }
     };
     console.info("Design function definition set.");
@@ -86,6 +89,7 @@ const setUp = (inputsDefs, designFunction, inputErrors) => {
       if (error instanceof MechanicInputError) {
         showError(`There was an error loading custom inputs.`, error);
       } else showError(`There was an error loading ${functionName} function and/or engine.`, error);
+      return null;
     };
     throw error;
   }
