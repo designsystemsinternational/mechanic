@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import PropTypes from "prop-types";
 import classnames from "classnames";
 import { uid } from "../uid.js";
@@ -21,9 +21,14 @@ export const Button = props => {
   const classes = classnames(css.root, commonCss.button, {
     [className]: className,
     [css.primary]: primary,
-    [commonCss.focus]: focus,
+    [commonCss.focus]: focus && !disabled,
     [commonCss.disabled]: disabled
   });
+
+  // set focus to false when disabled
+  useEffect(() => {
+    setFocus(false);
+  }, [disabled]);
 
   const handleOnFocus = event => {
     onFocus && onFocus(event);
@@ -42,7 +47,8 @@ export const Button = props => {
       onClick={onClick}
       onFocus={handleOnFocus}
       onBlur={handleOnBlur}
-      disabled={disabled}>
+      disabled={disabled}
+      tabIndex={disabled ? "-1" : undefined}>
       <span>{children}</span>
     </button>
   );
