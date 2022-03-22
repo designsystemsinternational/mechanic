@@ -14,7 +14,7 @@
 To start using right away and create a new Mechanic project, run the following:
 
 ```
-npm init @mechanic-design@latest
+npm init mechanic@latest
 ```
 
 This will build a new base Mechanic project, with one **design function**! Follow the CLI instructions to customize, install and start running.
