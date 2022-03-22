@@ -24,6 +24,7 @@ const path = require("path");
     const bases = fs
       .readdirSync(path.join(__dirname, directory))
       .filter((d) => d !== "index.js");
+
     for (const base of bases) {
       const dependenciesPath = path.join(
         __dirname,
@@ -31,7 +32,11 @@ const path = require("path");
         base,
         `dependencies.json`
       );
+      // skip if file doesn't exist
+      if (!fs.existsSync(dependenciesPath)) continue;
+
       const dependencies = require(dependenciesPath);
+
       for (const depType in dependencies) {
         for (const dep in dependencies[depType]) {
           if (dep.startsWith("@mechanic-design/")) {
@@ -42,6 +47,7 @@ const path = require("path");
           }
         }
       }
+
       fs.writeFileSync(
         dependenciesPath,
         JSON.stringify(dependencies, null, 2) + "\n"
