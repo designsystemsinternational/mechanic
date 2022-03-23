@@ -44,8 +44,28 @@
   flex-wrap: nowrap;
 }
 
-.historyButton {
-  flex: 0 0 fit-content;
+.withUndo {
+  position: relative;
+}
+
+.undo,
+.redo {
+  width: var(--mechanic-input-height);
+  position: absolute;
+  z-index: 10;
+  border: none;
+  height: var(--mechanic-input-height);
+}
+
+.undo {
+  left: 0;
+
+  border-radius: var(--mechanic-input-height-half) 0 0 var(--mechanic-input-height-half);
+}
+
+.redo {
+  right: 0;
+  border-radius: 0 var(--mechanic-input-height-half) var(--mechanic-input-height-half) 0;
 }
 
 .grow {

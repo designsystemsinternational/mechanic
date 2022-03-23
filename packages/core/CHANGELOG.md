@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### Changed
+
+- Preview / Randomize button was renamed to Generate and styled as a single button with undo / redo
+
 ## 2.0.0 - 2022-03-16
 
 ### Added

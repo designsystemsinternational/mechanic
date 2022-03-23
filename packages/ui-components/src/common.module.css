@@ -13,8 +13,15 @@
 
 .disabled {
   opacity: 0.4;
-  pointer-events: none;
-  /* to prevent buttons inside inputs to be double-dimmed */
+  cursor: default;
+  &:focus {
+    border: none !important;
+  }
+  &:active {
+    transform: none !important;
+  }
+
+  /* prevents buttons inside inputs to be double-dimmed */
   & .disabled {
     opacity: 1;
   }

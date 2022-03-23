@@ -120,10 +120,10 @@ export const SideBar = ({ name, exports: functionExports, iframe, mainRef, child
           </Toggle>
         </div>
         <div className={css.sep} />
-        <div className={cn(css.row, css.noWrapRow)}>
+        <div className={cn(css.row, css.noWrapRow, { [css.withUndo]: persistRandom })}>
           {persistRandom && (
             <Button
-              className={cn(css.grow, css.historyButton)}
+              className={cn(css.grow, css.undo)}
               onClick={() => setSeedHistory.undo()}
               disabled={!iframeLoaded || !setSeedHistory.canUndo || lastRun === undefined}>
               {"<"}
@@ -133,11 +133,11 @@ export const SideBar = ({ name, exports: functionExports, iframe, mainRef, child
             className={cn(css.grow)}
             onClick={() => setSeedHistory.set()}
             disabled={!iframeLoaded || lastRun === undefined}>
-            {iframeLoaded ? (persistRandom ? "Preview / Randomize" : "Preview") : "Loading content"}
+            {iframeLoaded ? "Generate" : "Loading content"}
           </Button>
           {persistRandom && (
             <Button
-              className={cn(css.grow, css.historyButton)}
+              className={cn(css.grow, css.redo)}
               onClick={() => setSeedHistory.redo()}
               disabled={!iframeLoaded || lastRun === undefined || !setSeedHistory.canRedo}>
               {">"}

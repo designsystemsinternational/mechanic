@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## Changed
+
+- Button was changed to prevent it to be focused and disabled at the same time.
+- The `common` disabled state was changed to prevent events from triggering behind a disabled element.
+
 ## 2.0.0 - 2022-03-16
 
 ### Added
