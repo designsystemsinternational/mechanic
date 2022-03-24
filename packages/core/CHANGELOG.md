@@ -7,11 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
-### Changed
-
-- Preview / Randomize button was renamed to Generate and styled as a single button with undo / redo
-
-## 2.0.0 - 2022-03-16
+## 2.0.0-beta - 2022-03-24
 
 ### Added
 
@@ -32,6 +28,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Updated PostCSS dependencies: `postcss-loader`and `postcss-preset-env`
 - Generalized and streamlined input validation, and added basic inputs definitions and behaviors
 - Renamed original width and height values passed from `_widthOriginal` and `_heightOriginal`to just `_width`and `_height`.
+- Preview / Randomize button was renamed to Generate and styled as a single button with undo / redo
 
 ### Fixed
 

@@ -7,7 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [2.0.0] - 2022-03-16
+## [2.0.0-beta] - 2022-03-24
 
 ### Added
 
@@ -202,7 +202,7 @@ Beta release
 First logged release
 
 [unreleased]: https://github.com/designsystemsinternational/mechanic/compare/v2.0.0...main
-[2.0.0]: https://github.com/designsystemsinternational/mechanic/releases/tag/v2.0.0
+[2.0.0-beta]: https://github.com/designsystemsinternational/mechanic/releases/tag/v2.0.0-beta.3
 [1.2.0]: https://github.com/designsystemsinternational/mechanic/releases/tag/v1.2.0
 [1.1.0]: https://github.com/designsystemsinternational/mechanic/releases/tag/v1.1.0
 [1.0.0]: https://github.com/designsystemsinternational/mechanic/releases/tag/v1.0.0

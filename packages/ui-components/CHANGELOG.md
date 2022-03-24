@@ -7,12 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
-## Changed
-
-- Button was changed to prevent it to be focused and disabled at the same time.
-- The `common` disabled state was changed to prevent events from triggering behind a disabled element.
-
-## 2.0.0 - 2022-03-16
+## 2.0.0-beta - 2022-03-24
 
 ### Added
 
@@ -23,6 +18,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Reset border width in buttons that are both disabled and on focus
 - Updated `html-loader` dependency to match one in `core`
 - Updated PostCSS dependencies: `postcss-loader`and `postcss-preset-env`
+- Button was changed to prevent it to be focused and disabled at the same time.
+- The `common` disabled state was changed to prevent events from triggering behind a disabled element.
 
 ## 0.6.4 - 2021-09-14
 
