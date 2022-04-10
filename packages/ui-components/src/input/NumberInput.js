@@ -77,7 +77,7 @@ export const NumberInput = props => {
         <div className={css.rangeWrapper}>
           {value !== undefined && (
             <input
-              style={{ flexBasis: maxDigits ? `${maxDigits * 0.8}em` : null }}
+              style={{ flexBasis: maxDigits ? `${maxDigits + 1}ch` : null }}
               className={classnames(css.rangeNumberInput)}
               type={"number"}
               onChange={handleOnChange}
