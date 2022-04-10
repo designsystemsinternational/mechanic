@@ -62,9 +62,16 @@ export const NumberInput = props => {
   const maxDigits = useMemo(() => {
     let digits = max ? max.toString().length : 0;
     const stepParts = step ? step.toString().split(".") : [];
-    digits += stepParts[1] ? stepParts[1].length : 0;
+    // Add 1 to the decimal digits count to compensate for the decimal point
+    digits += stepParts[1] ? stepParts[1].length + 1 : 0;
     return digits;
   }, [max, step]);
+
+  // this is used to pad the value with trailing zeros
+  const decimalDigits = useMemo(() => {
+    const stepParts = step ? step.toString().split(".") : [];
+    return stepParts[1] ? stepParts[1].length : 0;
+  }, [step]);
 
   return (
     <div className={rootClasses}>
@@ -77,7 +84,7 @@ export const NumberInput = props => {
         <div className={css.rangeWrapper}>
           {value !== undefined && (
             <input
-              style={{ flexBasis: maxDigits ? `${maxDigits + 1}ch` : null }}
+              style={{ flexBasis: maxDigits ? `${maxDigits}ch` : null }}
               className={classnames(css.rangeNumberInput)}
               type={"number"}
               onChange={handleOnChange}
@@ -85,7 +92,7 @@ export const NumberInput = props => {
               max={max ? "" + max : max}
               step={step ? "" + step : step}
               name={name}
-              value={value}
+              value={value.toFixed(decimalDigits)}
             />
           )}
           <input
