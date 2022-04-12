@@ -12,6 +12,12 @@ import { Button, Toggle } from "@mechanic-design/ui-components";
 import { Input } from "./Input.js";
 import { useInteractiveInputs } from "./utils/useInteractiveInputs.js";
 
+import { appComponents } from "../APP";
+
+const AsideComponent = appComponents.SideBar
+  ? appComponents.SideBar
+  : ({ children }) => <aside className={css.root}>{children}</aside>;
+
 import * as css from "./SideBar.module.css";
 
 export const SideBar = ({ name, exports: functionExports, iframe, mainRef, children }) => {
@@ -25,7 +31,15 @@ export const SideBar = ({ name, exports: functionExports, iframe, mainRef, child
   const {
     inputs,
     presets: exportedPresets,
-    settings: { persistRandomOnExport, showStateExport }
+    settings: {
+      persistRandomOnExport,
+      showStateExport,
+      hidePresets,
+      hideScaleToFit,
+      hideAutoRefresh,
+      hideGenerate,
+      showMultipleExports
+    }
   } = functionExports;
   const presets = getPossiblePresets(exportedPresets ?? {});
   const canScale = !!(inputs.width && inputs.height);
@@ -34,12 +48,13 @@ export const SideBar = ({ name, exports: functionExports, iframe, mainRef, child
   const [values, setValues] = useValues(name, inputs, exportedPresets);
   const handleOnChange = (e, name, value) => setValues(name, value);
 
-  const getRunConfig = (lastRun, isPreview, random, scale) => ({
+  const getRunConfig = (lastRun, isPreview, random, scale, exportType) => ({
     isPreview,
     lastRun,
     boundingClient: mainRef.current.getBoundingClientRect(),
     scale: scale && canScale && scaleToFit,
-    randomSeed: random
+    randomSeed: random,
+    exportType: exportType
   });
 
   const preview = async () => {
@@ -49,10 +64,10 @@ export const SideBar = ({ name, exports: functionExports, iframe, mainRef, child
     );
   };
 
-  const handleExport = async () => {
+  const handleExport = async type => {
     const run = iframe.current.contentWindow?.run;
     setLastRun(lastRun =>
-      run?.(name, values, getRunConfig(lastRun, false, seedHistory.current, false))
+      run?.(name, values, getRunConfig(lastRun, false, seedHistory.current, false, type))
     );
   };
 
@@ -72,20 +87,22 @@ export const SideBar = ({ name, exports: functionExports, iframe, mainRef, child
   useShortcuts(handleExport);
 
   return (
-    <aside className={css.root}>
+    <AsideComponent>
       <div className={css.section}>{children}</div>
       <div className={css.sep} />
 
       <div className={cn(css.edge, css.top)} />
       <div className={css.inputs}>
-        <Input
-          className={css.input}
-          key="input-preset"
-          name="preset"
-          values={values}
-          inputDef={{ type: "text", options: presets, default: NO_PRESET_VALUE }}
-          onChange={handleOnChange}
-        />
+        {!hidePresets && (
+          <Input
+            className={css.input}
+            key="input-preset"
+            name="preset"
+            values={values}
+            inputDef={{ type: "text", options: presets, default: NO_PRESET_VALUE }}
+            onChange={handleOnChange}
+          />
+        )}
         {Object.entries(inputs).map(([name, input]) => (
           <Input
             className={css.input}
@@ -100,63 +117,97 @@ export const SideBar = ({ name, exports: functionExports, iframe, mainRef, child
       <div className={cn(css.edge, css.bottom)} />
 
       <div className={css.section}>
-        <div className={css.row}>
-          <Toggle
-            status={canScale && scaleToFit}
-            disabled={!canScale || lastRun === undefined}
-            onClick={() => setScaleToFit(scaleToFit => !scaleToFit)}>
-            Scale to Fit
-          </Toggle>
-          {!canScale && <span className={css.error}>Inputs missing for scaling</span>}
-        </div>
+        {!hideScaleToFit && (
+          <div className={css.row}>
+            <Toggle
+              status={canScale && scaleToFit}
+              disabled={!canScale || lastRun === undefined}
+              onClick={() => setScaleToFit(scaleToFit => !scaleToFit)}>
+              Scale to Fit
+            </Toggle>
+            {!canScale && <span className={css.error}>Inputs missing for scaling</span>}
+          </div>
+        )}
+
+        {!hideAutoRefresh && (
+          <>
+            <div className={css.sep} />
+            <div className={css.row}>
+              <Toggle
+                className={css.grow}
+                status={autoRefreshOn}
+                onClick={() => setAutoRefreshOn(autoRefreshOn => !autoRefreshOn)}
+                disabled={!iframeLoaded || lastRun === undefined}>
+                Auto-refresh
+              </Toggle>
+            </div>
+          </>
+        )}
+
+        {!hideGenerate && (
+          <>
+            <div className={css.sep} />
+            <div className={cn(css.row, css.noWrapRow, { [css.withUndo]: persistRandom })}>
+              {persistRandom && (
+                <Button
+                  className={cn(css.grow, css.undo)}
+                  onClick={() => setSeedHistory.undo()}
+                  disabled={!iframeLoaded || !setSeedHistory.canUndo || lastRun === undefined}>
+                  {"<"}
+                </Button>
+              )}
+              <Button
+                className={cn(css.grow)}
+                onClick={() => setSeedHistory.set()}
+                disabled={!iframeLoaded || lastRun === undefined}>
+                {iframeLoaded ? "Generate" : "Loading content"}
+              </Button>
+              {persistRandom && (
+                <Button
+                  className={cn(css.grow, css.redo)}
+                  onClick={() => setSeedHistory.redo()}
+                  disabled={!iframeLoaded || lastRun === undefined || !setSeedHistory.canRedo}>
+                  {">"}
+                </Button>
+              )}
+            </div>
+          </>
+        )}
+
         <div className={css.sep} />
-        <div className={css.row}>
-          <Toggle
-            className={css.grow}
-            status={autoRefreshOn}
-            onClick={() => setAutoRefreshOn(autoRefreshOn => !autoRefreshOn)}
-            disabled={!iframeLoaded || lastRun === undefined}>
-            Auto-refresh
-          </Toggle>
-        </div>
-        <div className={css.sep} />
-        <div className={cn(css.row, css.noWrapRow, { [css.withUndo]: persistRandom })}>
-          {persistRandom && (
+        {!showMultipleExports ? (
+          <div className={cn(css.row, css.noWrapRow)}>
             <Button
-              className={cn(css.grow, css.undo)}
-              onClick={() => setSeedHistory.undo()}
-              disabled={!iframeLoaded || !setSeedHistory.canUndo || lastRun === undefined}>
-              {"<"}
+              className={css.grow}
+              primary={iframeLoaded}
+              onClick={() => handleExport()}
+              disabled={!iframeLoaded || lastRun === undefined}>
+              {lastRun === undefined ? "Error" : iframeLoaded ? "Export" : "Loading content"}
             </Button>
-          )}
-          <Button
-            className={cn(css.grow)}
-            onClick={() => setSeedHistory.set()}
-            disabled={!iframeLoaded || lastRun === undefined}>
-            {iframeLoaded ? "Generate" : "Loading content"}
-          </Button>
-          {persistRandom && (
+          </div>
+        ) : (
+          <>
             <Button
-              className={cn(css.grow, css.redo)}
-              onClick={() => setSeedHistory.redo()}
-              disabled={!iframeLoaded || lastRun === undefined || !setSeedHistory.canRedo}>
-              {">"}
+              className={css.grow}
+              primary={iframeLoaded}
+              onClick={() => handleExport("svg")}
+              disabled={!iframeLoaded || lastRun === undefined}>
+              {lastRun === undefined ? "Error" : iframeLoaded ? "Export SVG" : "Loading content"}
             </Button>
-          )}
-        </div>
-        <div className={css.sep} />
-        <div className={cn(css.row, css.noWrapRow)}>
-          <Button
-            className={css.grow}
-            primary={iframeLoaded}
-            onClick={handleExport}
-            disabled={!iframeLoaded || lastRun === undefined}>
-            {lastRun === undefined ? "Error" : iframeLoaded ? "Export" : "Loading content"}
-          </Button>
-        </div>
+            <div className={css.sep} />
+            <Button
+              className={css.grow}
+              primary={iframeLoaded}
+              onClick={() => handleExport("png")}
+              disabled={!iframeLoaded || lastRun === undefined}>
+              {lastRun === undefined ? "Error" : iframeLoaded ? "Export PNG" : "Loading content"}
+            </Button>
+          </>
+        )}
+
         <div className={css.sep} />
       </div>
-    </aside>
+    </AsideComponent>
   );
 };
 

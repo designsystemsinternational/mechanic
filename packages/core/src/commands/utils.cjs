@@ -28,6 +28,13 @@ const getInputsPath = async (inputsPath, config) => {
   return exists ? fullPath : null;
 };
 
+const getAppCompsPath = async (appCompsPath, config) => {
+  const relativePath = appCompsPath || config.appCompsPath || "./app";
+  const fullPath = path.resolve(relativePath);
+  const exists = await fs.pathExists(fullPath);
+  return exists ? fullPath : null;
+};
+
 const searchExports = (dir, callback, depth = 0) => {
   const files = fs.readdirSync(dir);
   files.forEach(file => {
@@ -129,6 +136,7 @@ module.exports = {
   getConfig,
   getFunctionsPath,
   getInputsPath,
+  getAppCompsPath,
   generateInputScript,
   generateFuncTempScripts,
   setCustomInterrupt,

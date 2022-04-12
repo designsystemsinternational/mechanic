@@ -11,10 +11,11 @@ import functions from "./FUNCTIONS";
 import * as css from "./App.module.css";
 
 const Layout = ({ funcName, functions, mainRef, iframeRef }) => {
+  const { settings } = functions[funcName];
   return (
     <div className={css.root}>
       <SideBar name={funcName} exports={functions[funcName]} iframe={iframeRef} mainRef={mainRef}>
-        <Nav name={funcName} functions={functions} />
+        {!settings.hideNavigation && <Nav name={funcName} functions={functions} />}
       </SideBar>
       <main className={css.main} ref={mainRef}>
         <iframe

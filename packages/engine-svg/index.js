@@ -4,7 +4,7 @@ const root = document.getElementById("root");
 const head = document.querySelector("head");
 
 export const run = (functionName, func, values, config) => {
-  const { isPreview } = config;
+  const { isPreview, exportType } = config;
 
   root.innerHTML = "";
 

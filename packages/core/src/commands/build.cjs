@@ -5,6 +5,7 @@ const {
   getFunctionsPath,
   getInputsPath,
   generateInputScript,
+  getAppCompsPath,
   generateFuncTempScripts,
   greet,
   goodbye
@@ -42,6 +43,19 @@ const command = async argv => {
     spinner.succeed(`Custom inputs directory not found. No custom inputs being used!`);
   }
 
+  // Seek custom app components path
+  spinner.start("Seeking custom app components directory...");
+  const appCompsPath = await getAppCompsPath(argv.appCompsPath, config);
+  if (appCompsPath) {
+    spinner.succeed(
+      `Custom app components directory found: ${success(path.relative(".", appCompsPath))}`
+    );
+  } else {
+    spinner.succeed(
+      `Custom app components directory not found. No custom app components being used!`
+    );
+  }
+
   // Seek functions path
   spinner.start("Seeking design function directory...");
   const functionsPath = await getFunctionsPath(argv.functionsPath, config);
@@ -56,7 +70,7 @@ const command = async argv => {
 
   spinner.start("Generating temp files to serve...");
   const [customInputs, inputScriptContent] = generateInputScript(inputsPath);
-  const inputs = { inputsPath, inputScriptContent, customInputs };
+  const inputsData = { inputsPath, inputScriptContent, customInputs };
   const [designFunctions] = generateFuncTempScripts(functionsPath);
   spinner.succeed("Temp files created!");
 
@@ -68,8 +82,7 @@ const command = async argv => {
   spinner.start("Loading webpack compilation...");
   const webpackConfig = webpackConfigGenerator(
     "prod",
-    designFunctions,
-    inputs,
+    { designFunctions, inputsData, appCompsPath },
     distDir,
     publicPath
   );

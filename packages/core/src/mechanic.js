@@ -29,7 +29,9 @@ export class Mechanic {
    */
   constructor(settings, baseValues, config) {
     const values = Object.assign({}, baseValues);
-    const { lastRun, boundingClient, scale, randomSeed } = config;
+    const { lastRun, boundingClient, scale, randomSeed, isPreview, exportType } = config;
+
+    values._isPreview = isPreview;
 
     const persistRandomOnExport =
       !settings.hasOwnProperty("persistRandomOnExport") || settings.persistRandomOnExport;
@@ -68,6 +70,7 @@ export class Mechanic {
     this.settings = settings;
     this.values = values;
     this.functionState = lastRun?.functionState ?? {};
+    this.exportType = exportType;
   }
 
   /**
@@ -122,7 +125,7 @@ export class Mechanic {
         this.svgFrames = [];
       }
 
-      el = svgAppendStyles(el, extras.head);
+      if (this.settings.ignoreStyles !== true) el = svgAppendStyles(el, extras.head);
 
       this.svgFrames.push(svgToDataUrl(svgPrepare(el, this.serializer)));
       if (!this.svgSize) {
@@ -146,7 +149,7 @@ export class Mechanic {
   async done(el, extras = {}) {
     if (!this.settings.animated) {
       if (isSVG(el)) {
-        el = svgAppendStyles(el, extras.head);
+        if (this.settings.ignoreStyles !== true) el = svgAppendStyles(el, extras.head);
 
         this.serializer = new XMLSerializer();
 
@@ -155,7 +158,17 @@ export class Mechanic {
         if (this.settings.optimize !== false) {
           svgString = svgOptimize(svgString, this.settings.optimize);
         }
-        this.svgData = svgToDataUrl(svgString);
+        const data = svgToDataUrl(svgString);
+        if (this.exportType === "png") {
+          const cacheCanvas = document.createElement("canvas");
+          const size = extractSvgSize(el);
+          cacheCanvas.width = size.width;
+          cacheCanvas.height = size.height;
+          await dataUrlToCanvas(data, cacheCanvas);
+          this.canvasData = cacheCanvas.toDataURL();
+        } else {
+          this.svgData = data;
+        }
       } else if (isCanvas(el)) {
         this.canvasData = el.toDataURL();
       } else {
