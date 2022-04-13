@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### Fixed
+
+- Updated width of number value display to `ch` units in slider so it does not overflow
+
 ## 2.0.0-beta - 2022-03-24
 
 ### Added
