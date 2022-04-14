@@ -7,10 +7,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
-### Fixed
-
-- Updated width of number value display to `ch` units in slider so it does not overflow
-
 ## 2.0.0-beta - 2022-03-24
 
 ### Added
@@ -24,6 +20,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Updated PostCSS dependencies: `postcss-loader`and `postcss-preset-env`
 - Button was changed to prevent it to be focused and disabled at the same time.
 - The `common` disabled state was changed to prevent events from triggering behind a disabled element.
+
+### Fixed
+
+- Updated width of number value display to `ch` units in slider so it does not overflow
 
 ## 0.6.4 - 2021-09-14
 
