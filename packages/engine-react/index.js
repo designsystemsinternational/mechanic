@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { render, unmountComponentAtNode } from "react-dom";
 import { Mechanic } from "@mechanic-design/core";
 
@@ -39,4 +39,52 @@ export const run = (functionName, func, values, config) => {
     root
   );
   return mechanic;
+};
+
+/**
+ * Reactive version of the throttled drawloop.
+ *
+ * @param ref to a boolean
+ * @param target framerate
+ */
+export const useDrawLoop = (isPlaying, fps = 60) => {
+  const fpsInterval = 1000 / fps;
+
+  const raf = useRef();
+  const [frameCount, setFrameCount] = useState(0);
+
+  // FPS Throttling
+  // @see https://stackoverflow.com/questions/19764018/controlling-fps-with-requestanimationframe
+  useEffect(() => {
+    let now;
+    let then = Date.now();
+    let elapsed;
+
+    cancelAnimationFrame(raf.current);
+
+    if (!isPlaying) {
+      return;
+    }
+
+    const draw = () => {
+      raf.current = requestAnimationFrame(draw);
+
+      now = Date.now();
+      elapsed = now - then;
+
+      if (elapsed > fpsInterval) {
+        then = now - (elapsed % fpsInterval);
+
+        setFrameCount((cur) => cur + 1);
+      }
+    };
+
+    draw();
+
+    return () => {
+      cancelAnimationFrame(raf.current);
+    };
+  }, [isPlaying]);
+
+  return frameCount;
 };
