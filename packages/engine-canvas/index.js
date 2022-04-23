@@ -40,6 +40,7 @@ export const run = (functionName, func, values, config) => {
       done: onDone,
       state: mechanic.functionState,
       setState: onSetState,
+      frameRate: mechanic.settings.frameRate,
     },
   });
   return mechanic;

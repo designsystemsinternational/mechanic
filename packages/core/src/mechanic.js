@@ -65,7 +65,11 @@ export class Mechanic {
       }
     }
 
-    this.settings = settings;
+    this.settings = {
+      frameRate: settings.frameRate || 60,
+      ...settings
+    };
+
     this.values = values;
     this.functionState = lastRun?.functionState ?? {};
   }
@@ -110,7 +114,7 @@ export class Mechanic {
       this.serializer = new XMLSerializer();
       this.videoWriter = new WebMWriter({
         quality: 0.95,
-        frameRate: 60
+        frameRate: this.settings.frameRate
       });
     }
 

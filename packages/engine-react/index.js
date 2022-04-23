@@ -24,6 +24,7 @@ export const run = (functionName, func, values, config) => {
   const onSetState = async (obj) => {
     mechanic.setState(obj);
   };
+
   render(
     <Handler
       inputs={mechanic.values}
@@ -32,6 +33,7 @@ export const run = (functionName, func, values, config) => {
         done: onDone,
         state: mechanic.functionState,
         setState: onSetState,
+        frameRate: mechanic.settings.frameRate,
       }}
     />,
     root
