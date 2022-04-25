@@ -49,6 +49,7 @@ export const run = (functionName, func, values, config) => {
  */
 export const useDrawLoop = (isPlaying, fps = 60) => {
   const fpsInterval = 1000 / fps;
+  const epsilon = 5;
 
   const raf = useRef();
   const [frameCount, setFrameCount] = useState(0);
@@ -72,7 +73,9 @@ export const useDrawLoop = (isPlaying, fps = 60) => {
       now = Date.now();
       elapsed = now - then;
 
-      if (elapsed > fpsInterval) {
+      // Same epsilon logic as in core/mechanic-utils.
+      // See there for an explanation.
+      if (elapsed >= fpsInterval - epsilon) {
         then = now - (elapsed % fpsInterval);
 
         setFrameCount((cur) => cur + 1);
