@@ -208,6 +208,8 @@ const drawLoop = (drawingFunction, frameRate = 60) => {
       raf = window.requestAnimationFrame(draw);
     }
   };
+
+  draw();
 };
 
 export {
