@@ -31,6 +31,7 @@ export const SideBar = ({ name, exports: functionExports, iframe, mainRef, child
   const {
     inputs,
     presets: exportedPresets,
+    ExtraUi,
     settings: {
       persistRandomOnExport,
       showStateExport,
@@ -117,6 +118,7 @@ export const SideBar = ({ name, exports: functionExports, iframe, mainRef, child
       <div className={cn(css.edge, css.bottom)} />
 
       <div className={css.section}>
+        {ExtraUi && <ExtraUi values={values} onChange={handleOnChange} />}
         {!hideScaleToFit && (
           <div className={css.row}>
             <Toggle
