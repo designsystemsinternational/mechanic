@@ -170,9 +170,19 @@ export class Mechanic {
           this.svgData = data;
         }
       } else if (isCanvas(el)) {
-        this.canvasData = el.toDataURL();
+        if (this.exportType === "svg") {
+          throw new MechanicError("Cannot export SVG of Canvas element. Try PNG.");
+        } else {
+          this.canvasData = el.toDataURL();
+        }
       } else {
-        this.htmlData = await htmlToDataUrl(el);
+        if (this.exportType === "svg") {
+          throw new MechanicError(
+            "Mechanic currently doesn't support HTML to SVG conversion. Try PNG."
+          );
+        } else {
+          this.htmlData = await htmlToDataUrl(el);
+        }
       }
     } else {
       if (!supportsFormatWebP()) {
