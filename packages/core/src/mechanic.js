@@ -217,7 +217,7 @@ export class Mechanic {
   download(fileName, addTimeStamp = true) {
     let name = fileName;
     if (addTimeStamp) {
-      name += getTimeStamp();
+      name += "-" + getTimeStamp();
     }
     if (!this.isDone) {
       throw "The download function can only be called after the done() function has finished";
@@ -240,7 +240,7 @@ export class Mechanic {
   downloadState(fileName, addTimeStamp = true) {
     let name = fileName;
     if (addTimeStamp) {
-      name += getTimeStamp();
+      name += "-" + getTimeStamp();
     }
     if (!this.functionState) {
       throw "The downloadState if a state has been set.";

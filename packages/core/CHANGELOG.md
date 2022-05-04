@@ -25,6 +25,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Support to serve `static/` folder for all design functions.
 - `_isPreview` value is passed to design function handler in `inputs` argument.
 
+### Changed
+
+- Changed filename from `[name][timestamp].[ext]` to `[filename]-[timestamp].[ext]` for better readability
+
 ## 2.0.0-beta - 2022-03-24
 
 ### Added
