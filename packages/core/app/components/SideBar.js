@@ -21,13 +21,6 @@ const AsideComponent = appComponents.SideBar
 import * as css from "./SideBar.module.css";
 
 export const SideBar = ({ name, exports: functionExports, iframe, mainRef, children }) => {
-  const [scaleToFit, setScaleToFit] = useState(true);
-  const [autoRefreshOn, setAutoRefreshOn] = useState(true);
-  const [lastRun, setLastRun] = useState(null);
-  const [seedHistory, setSeedHistory] = useSeedHistory(name);
-
-  const iframeLoaded = useIframeLoaded(iframe, name);
-
   const {
     inputs,
     presets: exportedPresets,
@@ -37,7 +30,9 @@ export const SideBar = ({ name, exports: functionExports, iframe, mainRef, child
       showStateExport,
       hidePresets,
       hideScaleToFit,
+      scaleToFit: scaleToFitInit,
       hideAutoRefresh,
+      autoRefresh: autoRefreshInit,
       hideGenerate,
       showMultipleExports
     }
@@ -45,6 +40,13 @@ export const SideBar = ({ name, exports: functionExports, iframe, mainRef, child
   const presets = getPossiblePresets(exportedPresets ?? {});
   const canScale = !!(inputs.width && inputs.height);
   const persistRandom = persistRandomOnExport === undefined || persistRandomOnExport;
+
+  const [scaleToFit, setScaleToFit] = useState(scaleToFitInit ?? true);
+  const [autoRefreshOn, setAutoRefreshOn] = useState(autoRefreshInit ?? true);
+  const [lastRun, setLastRun] = useState(null);
+  const [seedHistory, setSeedHistory] = useSeedHistory(name);
+
+  const iframeLoaded = useIframeLoaded(iframe, name);
 
   const [values, setValues] = useValues(name, inputs, exportedPresets);
   const handleOnChange = (e, name, value) => setValues(name, value);
@@ -61,14 +63,14 @@ export const SideBar = ({ name, exports: functionExports, iframe, mainRef, child
   const preview = async () => {
     const run = iframe.current.contentWindow?.run;
     setLastRun(lastRun =>
-      run?.(name, values, getRunConfig(lastRun, true, seedHistory.current, true))
+      run ? run(name, values, getRunConfig(lastRun, true, seedHistory.current, true)) : null
     );
   };
 
   const handleExport = async type => {
     const run = iframe.current.contentWindow?.run;
     setLastRun(lastRun =>
-      run?.(name, values, getRunConfig(lastRun, false, seedHistory.current, false, type))
+      run ? run(name, values, getRunConfig(lastRun, false, seedHistory.current, false, type)) : null
     );
   };
 
@@ -119,6 +121,7 @@ export const SideBar = ({ name, exports: functionExports, iframe, mainRef, child
 
       <div className={css.section}>
         {ExtraUi && <ExtraUi values={values} onChange={handleOnChange} />}
+
         {!hideScaleToFit && (
           <div className={css.row}>
             <Toggle
