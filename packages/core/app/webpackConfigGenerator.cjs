@@ -4,10 +4,16 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const NodePolyfillPlugin = require("node-polyfill-webpack-plugin");
+const CopyPlugin = require("copy-webpack-plugin");
 
 const { resolve } = require;
 
-module.exports = function (modeParameter, designFunctions, inputsData, distDir, publicPath) {
+module.exports = function (
+  modeParameter,
+  { designFunctions, inputsData, appCompsPath },
+  distDir,
+  publicPath
+) {
   const mode = modeParameter === "dev" ? "development" : "production";
   const isProduction = mode === "production";
 
@@ -74,6 +80,13 @@ module.exports = function (modeParameter, designFunctions, inputsData, distDir, 
     test: /INPUTS/,
     use: [
       { loader: path.resolve(__dirname, "./input-loader.cjs"), options: { inputs: inputsData } }
+    ]
+  };
+
+  const appComponents = {
+    test: /APP/,
+    use: [
+      { loader: path.resolve(__dirname, "./app-components-loader.cjs"), options: { appCompsPath } }
     ]
   };
 
@@ -211,6 +224,9 @@ module.exports = function (modeParameter, designFunctions, inputsData, distDir, 
       template: path.resolve(__dirname, "./index.html"),
       chunks: ["app"]
     }),
+    new CopyPlugin({
+      patterns: [{ from: "./static/", to: "static" }]
+    }),
     ...Object.keys(designFunctions).map(
       name =>
         new HtmlWebpackPlugin({
@@ -249,6 +265,7 @@ module.exports = function (modeParameter, designFunctions, inputsData, distDir, 
         js,
         functions,
         inputs,
+        appComponents,
         mechanicCss,
         functionsCss,
         mechanicFonts,

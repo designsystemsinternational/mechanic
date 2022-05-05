@@ -68,12 +68,12 @@ const setUp = (inputsDefs, designFunction, inputErrors) => {
     validator.validateSettings();
     validator.validateInputs();
 
-    window.run = (functionName, values, lastRun, isPreview) => {
+    window.run = (functionName, values, config) => {
       try {
         validator.validateValues(values);
         const preparedValues = validator.prepareValues(values);
         const engine = designFunction.settings.engine.run;
-        const mechanic = engine(functionName, designFunction, preparedValues, lastRun, isPreview);
+        const mechanic = engine(functionName, designFunction, preparedValues, config);
         return mechanic ? mechanic : null;
       } catch (error) {
         showError(`There was an error running ${functionName} function and/or engine.`, error);
