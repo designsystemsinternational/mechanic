@@ -30,9 +30,9 @@ export const SideBar = ({ name, exports: functionExports, iframe, mainRef, child
       showStateExport,
       hidePresets,
       hideScaleToFit,
-      scaleToFit: scaleToFitInit,
+      initialScaleToFit,
       hideAutoRefresh,
-      autoRefresh: autoRefreshInit,
+      initialAutoRefresh,
       hideGenerate,
       showMultipleExports
     }
@@ -41,8 +41,8 @@ export const SideBar = ({ name, exports: functionExports, iframe, mainRef, child
   const canScale = !!(inputs.width && inputs.height);
   const persistRandom = persistRandomOnExport === undefined || persistRandomOnExport;
 
-  const [scaleToFit, setScaleToFit] = useState(scaleToFitInit ?? true);
-  const [autoRefreshOn, setAutoRefreshOn] = useState(autoRefreshInit ?? true);
+  const [scaleToFit, setScaleToFit] = useState(initialScaleToFit ?? true);
+  const [autoRefreshOn, setAutoRefreshOn] = useState(initialAutoRefresh ?? true);
   const [lastRun, setLastRun] = useState(null);
   const [seedHistory, setSeedHistory] = useSeedHistory(name);
 

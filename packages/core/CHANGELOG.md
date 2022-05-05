@@ -13,12 +13,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - New design function export `ExtraUi`, expected to be a React component that's added to the bottom section of sidebar, on top of default toggles and buttons.
 - Support for SVG and PNG exports for SVG based engines like `engine-react` and `engine-svg`.
 - New `hideFeedback` design function setting. When true, Mechanic's feedback button is hidden. Defaults to false.
-- New `hideNavigation` design function setting. When true, the navigation input that let's users select a design function is hidden. Defaults to false.
+- New `hideNavigation` design function setting. When true, the navigation input that lets users select a design function is hidden. Defaults to false.
 - New `hidePresets` design function setting. When true, preset selection input is hidden. Defaults to false.
 - New `hideScaleToFit` design function setting. When true, Scale to Fit toggle is hidden. Defaults to false.
-- New `scaleToFit` design function setting. When false, Scale to Fit will be off initially. Defaults to true.
+- New `initialScaleToFit` design function setting. When false, Scale to Fit will be off initially. Defaults to true.
 - New `hideAutoRefresh` design function setting. When true, Auto Refresh toggle is hidden. Defaults to false.
-- New `autoRefresh` design function setting. When false, Auto Refresh will be off initially. Defaults to true.
+- New `initialAutoRefresh` design function setting. When false, Auto Refresh will be off initially. Defaults to true.
 - New `hideGenerate` design function setting. When true, Generate button is hidden. Defaults to false.
 - New `showMultipleExports` design function setting. When false, single export button is shown. When true, two separate export buttons are shown: one for PNG export and another for SVG export. Defaults to false.
 - New `ignoreStyles` design function setting. When true, CSS in iframe is injected into design function's SVG output. Defaults to false.
@@ -142,7 +142,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
-- Changed how design functions are bundled, instead of a single functions bundle that mixes definitions, one per design function bundle is generated through temporal scripts. This let's CSS stylings to not get mixed in the loaded iframe of the app.
+- Changed how design functions are bundled, instead of a single functions bundle that mixes definitions, one per design function bundle is generated through temporal scripts. This lets CSS stylings to not get mixed in the loaded iframe of the app.
 - Improved language and logs in main Mechanic commands (`dev`, `build`, `serve`)
 - Updated app loading page to use rotating mini Mechanic logo.
 
