@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## 2.0.0-beta.5 - 2022-05-04
+
 ### Added
 
 - Support to import custom `SideBar` component in `app/` folder that replaces sidebar in Mechanic UI.
@@ -29,7 +31,32 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Changed filename from `[name][timestamp].[ext]` to `[filename]-[timestamp].[ext]` for better readability
 
-## 2.0.0-beta - 2022-03-24
+## 2.0.0-beta.4 - 2022-04-14
+
+### Fixed
+
+- Adds `immer` as dependency.
+
+## 2.0.0-beta.3 - 2022-03-24
+
+### Changed
+
+- Preview / Randomize button was renamed to Generate and styled as a single button with undo / redo
+
+## 2.0.0-beta.2 - 2022-03-18
+
+### Fixed
+
+- Error capturing during df render
+- Typos in input validation
+
+## 2.0.0-beta.1 - 2022-03-17
+
+### Fixed
+
+- Captured instance when animation only calls done and never frame.
+
+## 2.0.0-beta.0 - 2022-03-16
 
 ### Added
 
@@ -50,14 +77,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Updated PostCSS dependencies: `postcss-loader`and `postcss-preset-env`
 - Generalized and streamlined input validation, and added basic inputs definitions and behaviors
 - Renamed original width and height values passed from `_widthOriginal` and `_heightOriginal`to just `_width`and `_height`.
-- Preview / Randomize button was renamed to Generate and styled as a single button with undo / redo
 
 ### Fixed
 
 - Feedback tag gets lifted
 - Added array case to local storage input values serialization
 - Allows nested URLs in app that redirect to first level of URL (to main design functions)
-- Captured instance when animation only calls done and never frame.
 
 ## 1.2.0 - 2022-02-14
 
