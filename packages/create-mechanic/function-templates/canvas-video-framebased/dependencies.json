@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "@mechanic-design/engine-canvas": "^2.0.0-beta.4"
+  }
+}

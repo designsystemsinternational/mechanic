@@ -8,6 +8,7 @@ export const handler = ({ inputs, mechanic, sketch }) => {
 
   sketch.setup = () => {
     sketch.createCanvas(width, height);
+    sketch.frameRate(mechanic.frameRate);
   };
 
   sketch.draw = () => {
@@ -89,4 +90,5 @@ export const presets = {
 export const settings = {
   engine: require("@mechanic-design/engine-p5"),
   animated: true,
+  frameRate: 60,
 };

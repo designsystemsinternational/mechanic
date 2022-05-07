@@ -10,6 +10,11 @@ const options = [
     dir: "canvas-video",
   },
   {
+    name: "Vanilla JS Video (Framebased)",
+    type: "Canvas",
+    dir: "canvas-video-framebased",
+  },
+  {
     name: "Vanilla JS Image",
     type: "SVG",
     dir: "svg-image",
@@ -18,6 +23,11 @@ const options = [
     name: "Vanilla JS Video",
     type: "SVG",
     dir: "svg-video",
+  },
+  {
+    name: "Vanilla JS Video (Framebased)",
+    type: "Canvas",
+    dir: "svg-video-framebased",
   },
   {
     name: "p5.js Image",
@@ -38,6 +48,11 @@ const options = [
     name: "React Video",
     type: "SVG",
     dir: "react-video",
+  },
+  {
+    name: "React Video (Framebased)",
+    type: "SVG",
+    dir: "react-video-framebased",
   },
 ];
 

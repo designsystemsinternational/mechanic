@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "@mechanic-design/engine-react": "^2.0.0-beta.4"
+  }
+}

@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### Added
+- Added function templates for framebased animations
+
 ## 1.2.0 - 2022-02-14
 
 ### Fixed
