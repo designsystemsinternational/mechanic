@@ -67,11 +67,34 @@ export class Mechanic {
 
     this.settings = {
       frameRate: settings.frameRate || 60,
+      videoQuality: settings.videoQuality || 0.95,
       ...settings
     };
 
     this.values = values;
     this.functionState = lastRun?.functionState ?? {};
+
+    // Validate the settings
+    this.validateSettings();
+  }
+
+  /**
+   * Helper function to validate settings
+   * Throws an exception if invalid settings
+   * are applied.
+   */
+  validateSettings() {
+    // Validates that quality is within 0–0.99
+    //
+    // 1 isn't a working value for the webm-writer we use, as it doesn't support
+    // losless export. The webm-writer clamps the quality value, so passing 1 to
+    // it would technically work. But this way is more transparent towards the
+    // users. We currently do not support losless video export.
+    if (this.settings.videoQuality < 0 || this.settings.videoQuality > 0.99) {
+      throw new MechanicError(
+        `The given videoQuality setting (${this.settings.videoQuality}) does not match the expected range (0–0.99)`
+      );
+    }
   }
 
   /**
@@ -113,7 +136,7 @@ export class Mechanic {
       this.exportInit = true;
       this.serializer = new XMLSerializer();
       this.videoWriter = new WebMWriter({
-        quality: 0.95,
+        quality: this.settings.videoQuality,
         frameRate: this.settings.frameRate
       });
     }
