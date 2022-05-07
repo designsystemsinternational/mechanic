@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### Added
+
+- Add frameRate and videoQuality options to settings
+- Add drawLoop utility function that allows previewing an animation at a specified frameRate
+
 ## 2.0.0-beta - 2022-03-24
 
 ### Added
