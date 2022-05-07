@@ -11,10 +11,14 @@ import functions from "./FUNCTIONS";
 import * as css from "./App.module.css";
 
 const Layout = ({ funcName, functions, mainRef, iframeRef }) => {
+  const { settings } = functions[funcName];
   return (
     <div className={css.root}>
+      {!settings.hideFeedback && (
+        <Feedback href="https://forms.gle/uBTn8oVThZHVghV89">Got feedback?</Feedback>
+      )}
       <SideBar name={funcName} exports={functions[funcName]} iframe={iframeRef} mainRef={mainRef}>
-        <Nav name={funcName} functions={functions} />
+        {!settings.hideNavigation && <Nav name={funcName} functions={functions} />}
       </SideBar>
       <main className={css.main} ref={mainRef}>
         <iframe
@@ -34,7 +38,6 @@ const AppComponent = () => {
   const firstFunctionName = Object.keys(functions)[0];
   return (
     <div className={css.base}>
-      <Feedback href="https://forms.gle/uBTn8oVThZHVghV89">Got feedback?</Feedback>
       <Switch>
         {Object.keys(functions).map((name, i) => (
           <Route

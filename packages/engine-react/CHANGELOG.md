@@ -11,7 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Exports `useDrawLoop` hook to allow previewing an animation at a specified frameRate
 
-## 2.0.0-beta - 2022-03-24
+## 2.0.0-beta.0 - 2022-03-16
 
 ### Added
 
