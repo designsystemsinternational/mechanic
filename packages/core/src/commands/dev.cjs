@@ -12,6 +12,8 @@ const {
   getInputsPath,
   setCustomInterrupt,
   generateInputScript,
+  getAppCompsPath,
+  getStaticPath,
   generateFuncTempScripts,
   greet,
   goodbye
@@ -39,15 +41,6 @@ const command = async argv => {
     spinner.succeed(`Mechanic config file loaded: ${success(path.relative(".", configPath))}`);
   }
 
-  // Seek custom inputs path
-  spinner.start("Seeking custom inputs directory...");
-  const inputsPath = await getInputsPath(argv.inputsPath, config);
-  if (inputsPath) {
-    spinner.succeed(`Custom inputs directory found: ${success(path.relative(".", inputsPath))}`);
-  } else {
-    spinner.succeed(`Custom inputs directory not found. No custom inputs being used!`);
-  }
-
   // Seek functions path
   spinner.start("Seeking design function directory...");
   const functionsPath = await getFunctionsPath(argv.functionsPath, config);
@@ -57,6 +50,37 @@ const command = async argv => {
   } else {
     spinner.succeed(
       `Design functions directory found: ${success(path.relative(".", functionsPath))}`
+    );
+  }
+
+  // Seek static folder path
+  spinner.start("Seeking static directory...");
+  const staticPath = await getStaticPath(argv.staticPath, config);
+  if (!staticPath) {
+    spinner.succeed(`Static directory file not found.`);
+  } else {
+    spinner.succeed(`Static directory found: ${success(path.relative(".", staticPath))}`);
+  }
+
+  // Seek custom inputs path
+  spinner.start("Seeking custom inputs directory...");
+  const inputsPath = await getInputsPath(argv.inputsPath, config);
+  if (inputsPath) {
+    spinner.succeed(`Custom inputs directory found: ${success(path.relative(".", inputsPath))}`);
+  } else {
+    spinner.succeed(`Custom inputs directory not found. No custom inputs being used!`);
+  }
+
+  // Seek custom app components path
+  spinner.start("Seeking custom app components directory...");
+  const appCompsPath = await getAppCompsPath(argv.appCompsPath, config);
+  if (appCompsPath) {
+    spinner.succeed(
+      `Custom app components directory found: ${success(path.relative(".", appCompsPath))}`
+    );
+  } else {
+    spinner.succeed(
+      `Custom app components directory not found. No custom app components being used!`
     );
   }
 
@@ -100,13 +124,18 @@ const command = async argv => {
 
   spinner.start("Generating temp files to serve...");
   const [customInputs, inputScriptContent] = generateInputScript(inputsPath);
-  const inputs = { inputsPath, inputScriptContent, customInputs };
+  const inputsData = { inputsPath, inputScriptContent, customInputs };
   const [designFunctions, funcsTempDirObj] = generateFuncTempScripts(functionsPath);
   spinner.succeed("Temp files created!");
   spinner.start("Loading webpack compilation...");
 
   // Load webpack middleware to load mechanic app
-  const webpackConfig = webpackConfigGenerator("dev", designFunctions, inputs, null, "/");
+  const webpackConfig = webpackConfigGenerator(
+    "dev",
+    { designFunctions, inputsData, appCompsPath, staticPath },
+    null,
+    "/"
+  );
   const compiler = webpack(webpackConfig);
   // https://stackoverflow.com/questions/43921770/webpack-dev-middleware-pass-through-for-all-routes
   app.use(history());

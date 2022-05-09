@@ -7,7 +7,72 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [2.0.0-beta] - 2022-04-14
+## [2.0.0-beta.6] - 2022-05-08
+
+### Added
+
+- Adds cli and config file options to define static folder (`staticPath`) and custom app components ( `appCompsPath`)
+
+### Fixed
+
+- App breaking when no custom app components are defined
+- Error log when no static folder is included in project
+
+## [2.0.0-beta.5] - 2022-05-04
+
+### Added
+
+- Support to import custom `SideBar` component in `app/` folder that replaces sidebar in Mechanic UI.
+- New design function export `ExtraUi`, expected to be a React component that's added to the bottom section of sidebar, on top of default toggles and buttons.
+- Support for SVG and PNG exports for SVG based engines like `engine-react` and `engine-svg`.
+- New `hideFeedback` design function setting. When true, Mechanic's feedback button is hidden. Defaults to false.
+- New `hideNavigation` design function setting. When true, the navigation input that lets users select a design function is hidden. Defaults to false.
+- New `hidePresets` design function setting. When true, preset selection input is hidden. Defaults to false.
+- New `hideScaleToFit` design function setting. When true, Scale to Fit toggle is hidden. Defaults to false.
+- New `initialScaleToFit` design function setting. When false, Scale to Fit will be off initially. Defaults to true.
+- New `hideAutoRefresh` design function setting. When true, Auto Refresh toggle is hidden. Defaults to false.
+- New `initialAutoRefresh` design function setting. When false, Auto Refresh will be off initially. Defaults to true.
+- New `hideGenerate` design function setting. When true, Generate button is hidden. Defaults to false.
+- New `showMultipleExports` design function setting. When false, single export button is shown. When true, two separate export buttons are shown: one for PNG export and another for SVG export. Defaults to false.
+- New `ignoreStyles` design function setting. When true, CSS in iframe is injected into design function's SVG output. Defaults to false.
+- Support to serve `static/` folder for all design functions.
+- `_isPreview` value is passed to design function handler in `inputs` argument.
+
+### Changed
+
+- Changed filename from `[name][timestamp].[ext]` to `[filename]-[timestamp].[ext]` for better readability
+
+## [2.0.0-beta.4] - 2022-04-14
+
+### Fixed
+
+- Adds `immer` as dependency.
+- Updated width of number value display to `ch` units in slider so it does not overflow
+
+## [2.0.0-beta.3] - 2022-03-24
+
+### Changed
+
+- Preview / Randomize button was renamed to Generate and styled as a single button with undo / redo
+
+### Fixed
+
+- Update script checks that dependency file exist before requiring.
+
+## [2.0.0-beta.2] - 2022-03-18
+
+### Fixed
+
+- Error capturing during df render
+- Typos in input validation
+
+## [2.0.0-beta.1] - 2022-03-17
+
+### Fixed
+
+- Captured instance when animation only calls done and never frame.
+
+## [2.0.0-beta.0] - 2022-03-16
 
 ### Added
 
@@ -26,7 +91,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Generated script from function loader is now written in ESM
 - Updated PostCSS dependencies: `postcss-loader`and `postcss-preset-env`
 - Generalized and streamlined input validation, and added basic inputs definitions and behaviors
-- Renamed original width and height values passed from `_widthOriginal` and `_heightOriginal`to just `_width`and `_height`.
+- Renamed original width and height values passed from `_widthOriginal` and `_heightOriginal`to just `_width`and `_height`
 
 ### Fixed
 
@@ -201,8 +266,14 @@ Beta release
 
 First logged release
 
-[unreleased]: https://github.com/designsystemsinternational/mechanic/compare/v2.0.0...main
-[2.0.0-beta]: https://github.com/designsystemsinternational/mechanic/releases/tag/v2.0.0-beta.3
+[unreleased]: https://github.com/designsystemsinternational/mechanic/compare/v2.0.0-beta.6...main
+[2.0.0-beta.6]: https://github.com/designsystemsinternational/mechanic/releases/tag/v2.0.0-beta.6
+[2.0.0-beta.5]: https://github.com/designsystemsinternational/mechanic/releases/tag/v2.0.0-beta.5
+[2.0.0-beta.4]: https://github.com/designsystemsinternational/mechanic/releases/tag/v2.0.0-beta.4
+[2.0.0-beta.3]: https://github.com/designsystemsinternational/mechanic/releases/tag/v2.0.0-beta.3
+[2.0.0-beta.2]: https://github.com/designsystemsinternational/mechanic/releases/tag/v2.0.0-beta.2
+[2.0.0-beta.1]: https://github.com/designsystemsinternational/mechanic/releases/tag/v2.0.0-beta.1
+[2.0.0-beta.0]: https://github.com/designsystemsinternational/mechanic/releases/tag/v2.0.0-beta.0
 [1.2.0]: https://github.com/designsystemsinternational/mechanic/releases/tag/v1.2.0
 [1.1.0]: https://github.com/designsystemsinternational/mechanic/releases/tag/v1.1.0
 [1.0.0]: https://github.com/designsystemsinternational/mechanic/releases/tag/v1.0.0
