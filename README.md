@@ -7,7 +7,7 @@
 
 [Mechanic](https://mechanic.design/) is a powerful design toolchain that helps forward-looking organizations move away from a manual design workflow by automating their design operations. Built with love by your friends at [Design Systems International](https://designsystems.international/).
 
-**CURRENT STATUS**: `v1.2.0` is out now! Try it and tell us what you think! `v2.0.0-beta.5` is also out and we're testing it! Feel free to test it out too!
+**CURRENT STATUS**: `v1.2.0` is out now! Try it and tell us what you think! `v2.0.0-beta.6` is also out and we're testing it! Feel free to test it out too!
 
 ## Get Started
 
