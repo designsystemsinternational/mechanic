@@ -18,6 +18,14 @@ module.exports = (getCommandHandler) => ({
           type: "string",
           description: "Path to directory containing custom input components",
         },
+        appCompsPath: {
+          type: "string",
+          description: "Path to directory containing custom app components",
+        },
+        staticPath: {
+          type: "string",
+          description: "Path to static directory of files to serve",
+        },
         distDir: {
           type: "string",
           description: "Custom build directory",
@@ -26,6 +34,8 @@ module.exports = (getCommandHandler) => ({
       .default("configPath", path.normalize("./mechanic.config.js"))
       .default("functionsPath", path.normalize("./functions"))
       .default("distDir", path.normalize("./dist"))
-      .default("inputsPath", path.normalize("./inputs")),
+      .default("inputsPath", path.normalize("./inputs"))
+      .default("appCompsPath", path.normalize("./app"))
+      .default("staticPath", path.normalize("./static")),
   handler: getCommandHandler("build"),
 });

@@ -13,6 +13,7 @@ const {
   setCustomInterrupt,
   generateInputScript,
   getAppCompsPath,
+  getStaticPath,
   generateFuncTempScripts,
   greet,
   goodbye
@@ -40,6 +41,27 @@ const command = async argv => {
     spinner.succeed(`Mechanic config file loaded: ${success(path.relative(".", configPath))}`);
   }
 
+  // Seek functions path
+  spinner.start("Seeking design function directory...");
+  const functionsPath = await getFunctionsPath(argv.functionsPath, config);
+  if (!functionsPath) {
+    spinner.fail(`Design functions directory file not found`);
+    return;
+  } else {
+    spinner.succeed(
+      `Design functions directory found: ${success(path.relative(".", functionsPath))}`
+    );
+  }
+
+  // Seek static folder path
+  spinner.start("Seeking static directory...");
+  const staticPath = await getStaticPath(argv.staticPath, config);
+  if (!staticPath) {
+    spinner.succeed(`Static directory file not found.`);
+  } else {
+    spinner.succeed(`Static directory found: ${success(path.relative(".", staticPath))}`);
+  }
+
   // Seek custom inputs path
   spinner.start("Seeking custom inputs directory...");
   const inputsPath = await getInputsPath(argv.inputsPath, config);
@@ -59,18 +81,6 @@ const command = async argv => {
   } else {
     spinner.succeed(
       `Custom app components directory not found. No custom app components being used!`
-    );
-  }
-
-  // Seek functions path
-  spinner.start("Seeking design function directory...");
-  const functionsPath = await getFunctionsPath(argv.functionsPath, config);
-  if (!functionsPath) {
-    spinner.fail(`Design functions directory file not found`);
-    return;
-  } else {
-    spinner.succeed(
-      `Design functions directory found: ${success(path.relative(".", functionsPath))}`
     );
   }
 
@@ -122,7 +132,7 @@ const command = async argv => {
   // Load webpack middleware to load mechanic app
   const webpackConfig = webpackConfigGenerator(
     "dev",
-    { designFunctions, inputsData, appCompsPath },
+    { designFunctions, inputsData, appCompsPath, staticPath },
     null,
     "/"
   );
