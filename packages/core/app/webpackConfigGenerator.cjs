@@ -10,7 +10,7 @@ const { resolve } = require;
 
 module.exports = function (
   modeParameter,
-  { designFunctions, inputsData, appCompsPath },
+  { designFunctions, inputsData, appCompsPath, staticPath },
   distDir,
   publicPath
 ) {
@@ -224,9 +224,6 @@ module.exports = function (
       template: path.resolve(__dirname, "./index.html"),
       chunks: ["app"]
     }),
-    new CopyPlugin({
-      patterns: [{ from: "./static/", to: "static" }]
-    }),
     ...Object.keys(designFunctions).map(
       name =>
         new HtmlWebpackPlugin({
@@ -246,6 +243,12 @@ module.exports = function (
         ]
       : [new webpack.HotModuleReplacementPlugin()]
   );
+
+  if (staticPath) {
+    new CopyPlugin({
+      patterns: [{ from: staticPath, to: staticPath }]
+    });
+  }
 
   return {
     mode,
