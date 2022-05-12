@@ -12,6 +12,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Add frameRate and videoQuality options to settings
 - Add drawLoop utility function that allows previewing an animation at a specified frameRate
 
+## 2.0.0-beta.6 - 2022-05-08
+
+### Added
+
+- Adds cli and config file options to define static folder (`staticPath`) and custom app components ( `appCompsPath`)
+
+### Fixed
+
+- App breaking when no custom app components are defined
+- Error log when no static folder is included in project
+
 ## 2.0.0-beta.5 - 2022-05-04
 
 ### Added

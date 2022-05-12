@@ -7,6 +7,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.0.0-beta.6] - 2022-05-08
+
+### Added
+
+- Adds cli and config file options to define static folder (`staticPath`) and custom app components ( `appCompsPath`)
+
+### Fixed
+
+- App breaking when no custom app components are defined
+- Error log when no static folder is included in project
+
 ## [2.0.0-beta.5] - 2022-05-04
 
 ### Added
@@ -255,7 +266,8 @@ Beta release
 
 First logged release
 
-[unreleased]: https://github.com/designsystemsinternational/mechanic/compare/v2.0.0-beta.5...main
+[unreleased]: https://github.com/designsystemsinternational/mechanic/compare/v2.0.0-beta.6...main
+[2.0.0-beta.6]: https://github.com/designsystemsinternational/mechanic/releases/tag/v2.0.0-beta.6
 [2.0.0-beta.5]: https://github.com/designsystemsinternational/mechanic/releases/tag/v2.0.0-beta.5
 [2.0.0-beta.4]: https://github.com/designsystemsinternational/mechanic/releases/tag/v2.0.0-beta.4
 [2.0.0-beta.3]: https://github.com/designsystemsinternational/mechanic/releases/tag/v2.0.0-beta.3

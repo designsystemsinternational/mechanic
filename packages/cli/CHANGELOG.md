@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## 2.0.0-beta.6 - 2022-05-08
+
+### Added
+
+- `dev` and `build` commands have new `appCompsPath` option, can be passed to define folder containing custom app components for project
+- `dev` and `build` commands have new `staticPath` option, can be passed to define folder containing static files to be served in app
+
 ## 2.0.0-beta.0 - 2022-03-24
 
 ### Added

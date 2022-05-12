@@ -4,6 +4,12 @@ const tmp = require("tmp");
 const { logo } = require("@mechanic-design/utils");
 const { mechanic, mechanicInverse } = logo;
 
+const checkFullPath = async relativePath => {
+  const fullPath = path.resolve(relativePath);
+  const exists = await fs.pathExists(fullPath);
+  return exists ? fullPath : null;
+};
+
 const getConfig = async argvConfigPath => {
   const configPath = path.resolve(argvConfigPath);
   const exists = await fs.pathExists(configPath);
@@ -16,23 +22,25 @@ const getConfig = async argvConfigPath => {
 
 const getFunctionsPath = async (functionsPath, config) => {
   const relativePath = functionsPath || config.functionsPath || "./functions";
-  const fullPath = path.resolve(relativePath);
-  const exists = await fs.pathExists(fullPath);
-  return exists ? fullPath : null;
+  return checkFullPath(relativePath);
 };
 
 const getInputsPath = async (inputsPath, config) => {
   const relativePath = inputsPath || config.inputsPath || "./inputs";
-  const fullPath = path.resolve(relativePath);
-  const exists = await fs.pathExists(fullPath);
-  return exists ? fullPath : null;
+  return checkFullPath(relativePath);
 };
 
 const getAppCompsPath = async (appCompsPath, config) => {
   const relativePath = appCompsPath || config.appCompsPath || "./app";
-  const fullPath = path.resolve(relativePath);
-  const exists = await fs.pathExists(fullPath);
-  return exists ? fullPath : null;
+  const fullPath = await checkFullPath(relativePath);
+  const indexPath = fullPath ? await checkFullPath(`${relativePath}/index.js`) : null;
+  console.log({ indexPath });
+  return indexPath ? fullPath : null;
+};
+
+const getStaticPath = async (staticPath, config) => {
+  const relativePath = staticPath || config.staticPath || "./static";
+  return checkFullPath(relativePath);
 };
 
 const searchExports = (dir, callback, depth = 0) => {
@@ -137,6 +145,7 @@ module.exports = {
   getFunctionsPath,
   getInputsPath,
   getAppCompsPath,
+  getStaticPath,
   generateInputScript,
   generateFuncTempScripts,
   setCustomInterrupt,
