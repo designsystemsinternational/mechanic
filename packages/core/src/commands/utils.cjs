@@ -34,7 +34,6 @@ const getAppCompsPath = async (appCompsPath, config) => {
   const relativePath = appCompsPath || config.appCompsPath || "./app";
   const fullPath = await checkFullPath(relativePath);
   const indexPath = fullPath ? await checkFullPath(`${relativePath}/index.js`) : null;
-  console.log({ indexPath });
   return indexPath ? fullPath : null;
 };
 

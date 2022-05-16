@@ -6,6 +6,7 @@ const {
   getInputsPath,
   generateInputScript,
   getAppCompsPath,
+  getStaticPath,
   generateFuncTempScripts,
   greet,
   goodbye

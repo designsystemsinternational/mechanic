@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## 2.0.0-beta.7 - 2022-05-16
+
+### Fixed
+
+- Build command had a import missing
+- Removed unused log left in development
+
 ## 2.0.0-beta.6 - 2022-05-08
 
 ### Added
