@@ -20,16 +20,6 @@ const options = [
     dir: "svg-video",
   },
   {
-    name: "D3 Image",
-    type: "SVG",
-    dir: "d3-image",
-  },
-  {
-    name: "SVG.js Image",
-    type: "SVG",
-    dir: "svgjs-image",
-  },
-  {
     name: "p5.js Image",
     type: "Canvas",
     dir: "p5-image",
