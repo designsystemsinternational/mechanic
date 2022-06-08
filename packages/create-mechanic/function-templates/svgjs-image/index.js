@@ -20,7 +20,8 @@ export const handler = ({ inputs, mechanic }) => {
 
   textBox.move(center[0], height - height/20)
   .font({ family: 'sans-serif', size: 36, anchor: 'middle'})
-  .fill({ color: '#000' }).font({ size: 36 })
+  .fill({ color: '#000' })
+  .font({ size: 36 })
 
   mechanic.done(draw.node.outerHTML);
 };

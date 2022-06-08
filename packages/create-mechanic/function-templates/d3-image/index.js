@@ -8,8 +8,7 @@ export const handler = ({ inputs, mechanic }) => {
   const angle = Math.random() * 360;
 
   let SVG = d3.create("svg")
-  .attr("width", width)
-  .attr("height", height)
+  .attr("width", width).attr("height", height)
 
   let arc1 = d3.arc().innerRadius(0).outerRadius(radius)
   .startAngle(0).endAngle(2*Math.PI/2);
