@@ -1,4 +1,4 @@
-import { SVG, extend as SVGextend, Element as SVGElement } from '@svgdotjs/svg.js'
+import { SVG, extend as SVGextend, Element as SVGElement } from 'svg.js'
 
 export const handler = ({ inputs, mechanic }) => {
   const { width, height, text, color1, color2, radiusPercentage } = inputs;
