@@ -7,16 +7,22 @@ export const handler = ({ inputs, mechanic }) => {
   const radius = Math.max(radiusPercentage / 100, 0.1);
   const angle = Math.random() * 360;
 
-  let draw = SVG().size(width, height)
-  , rawSVG = '<svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 90 90" ><defs></defs><path class="cls-1" d="M90,45A45,45,0,0,0,0,45Z"/></svg>'
-  , arcGroup = draw.group()
-  , arc1 = arcGroup.group().svg(rawSVG)
-  , arc2 = arcGroup.group().svg(rawSVG)
-  , textBox = draw.text(text)
+  const draw = SVG().size(width, height)
+  const rawSVG = '<svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 90 90" ><defs></defs><path class="cls-1" d="M90,45A45,45,0,0,0,0,45Z"/></svg>'
+  const arcGroup = draw.group()
+  const arc1 = arcGroup.group().svg(rawSVG)
+  const arc2 = arcGroup.group().svg(rawSVG)
+  const textBox = draw.text(text)
 
-  arc1.scale(radius).css({fill: color1})
-  arc2.scale(radius).rotate(180, center).css({fill: color2})
-  arcGroup.move(center[0] - center[0]*radius, center[1] - center[1]*radius).rotate(angle)
+  arc1.scale(radius)
+  .css({fill: color1})
+
+  arc2.scale(radius)
+  .rotate(180, center)
+  .css({fill: color2})
+
+  arcGroup.move(center[0] - center[0]*radius, center[1] - center[1]*radius)
+  .rotate(angle)
 
   textBox.move(center[0], height - height/20)
   .font({ family: 'sans-serif', size: 36, anchor: 'middle'})

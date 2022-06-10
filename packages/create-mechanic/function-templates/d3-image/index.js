@@ -7,29 +7,40 @@ export const handler = ({ inputs, mechanic }) => {
   const radius = ((height / 2) * radiusPercentage) / 100;
   const angle = Math.random() * 360;
 
-  let SVG = d3.create("svg")
-  .attr("width", width).attr("height", height)
+  const SVG = d3.create("svg")
+    .attr("width", width)
+    .attr("height", height)
+    .attr("viewBox", [0, 0, width, height])
+    .attr("style", "max-width: 100%; height: auto; height: intrinsic;");
 
-  let arc1 = d3.arc().innerRadius(0).outerRadius(radius)
-  .startAngle(0).endAngle(2*Math.PI/2);
+  const arc1 = d3.arc()
+    .innerRadius(0)
+    .outerRadius(radius)
+    .startAngle(0)
+    .endAngle(2*Math.PI/2);
 
-  let arc2 = d3.arc().innerRadius(0).outerRadius(radius)
-  .startAngle(2*Math.PI/2).endAngle(4*Math.PI/2);
+  const arc2 = d3.arc()
+    .innerRadius(0)
+    .outerRadius(radius)
+    .startAngle(2*Math.PI/2)
+    .endAngle(4*Math.PI/2);
 
   SVG.append("path")
-  .attr("transform", `translate(${center[0]},${center[1]}), rotate(${angle})`)
-  .attr("d", arc1).attr("fill", color1)
+    .attr("transform", `translate(${center[0]},${center[1]}), rotate(${angle})`)
+    .attr("d", arc1)
+    .attr("fill", color1)
 
   SVG.append("path")
-  .attr("transform", `translate(${center[0]},${center[1]}), rotate(${angle})`)
-  .attr("d", arc2).attr("fill", color2)
+    .attr("transform", `translate(${center[0]},${center[1]}), rotate(${angle})`)
+    .attr("d", arc2)
+    .attr("fill", color2)
 
   SVG.append("text")
-  .attr("transform", `translate(${center[0]},${height - height / 20})`)
-  .style("text-anchor", "middle")
-  .style("font-size", `${height/10}`)
-  .style("font-family", "sans-serif")
-  .text(text);
+    .attr("transform", `translate(${center[0]}, ${height - height / 20})`)
+    .style("text-anchor", "middle")
+    .style("font-size", height/10)
+    .style("font-family", "sans-serif")
+    .text(text);
 
   mechanic.done(SVG._groups[0][0].outerHTML);
 };
