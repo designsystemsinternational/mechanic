@@ -1,5 +1,9 @@
 import { SVG, extend as SVGextend, Element as SVGElement } from '@svgdotjs/svg.js'
 
+// This rawSVG was exported directly from Adobe illustrator, and can be replaced with any other SVG export!
+const rawSVG = '<svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 90 90" ><defs></defs><path class="cls-1" d="M90,45A45,45,0,0,0,0,45Z"/></svg>'
+
+
 export const handler = ({ inputs, mechanic }) => {
   const { width, height, text, color1, color2, radiusPercentage } = inputs;
 
@@ -8,7 +12,6 @@ export const handler = ({ inputs, mechanic }) => {
   const angle = Math.random() * 360;
 
   const draw = SVG().size(width, height)
-  const rawSVG = '<svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 90 90" ><defs></defs><path class="cls-1" d="M90,45A45,45,0,0,0,0,45Z"/></svg>'
   const arcGroup = draw.group()
   const arc1 = arcGroup.group().svg(rawSVG)
   const arc2 = arcGroup.group().svg(rawSVG)
