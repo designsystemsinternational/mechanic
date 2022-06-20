@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## 2.0.0-beta.8 - 2022-06-20
+
+### Added
+
+- New SVG.js image template
+- New D3 image template
+
 ## 2.0.0-beta.3 - 2022-03-24
 
 ### Fixed

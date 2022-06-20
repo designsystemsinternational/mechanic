@@ -7,6 +7,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.0.0-beta.8] - 2022-06-20
+
+### Added
+
+- New SVG.js image template
+- New D3 image template
+
+### Fixed
+
+- Design function iframe also takes basename to load resources, which fixes embedding Mechanic iframe into site.
+
 ## [2.0.0-beta.7] - 2022-05-16
 
 ### Fixed
@@ -272,7 +283,8 @@ Beta release
 
 First logged release
 
-[unreleased]: https://github.com/designsystemsinternational/mechanic/compare/v2.0.0-beta.7...main
+[unreleased]: https://github.com/designsystemsinternational/mechanic/compare/v2.0.0-beta.8...main
+[2.0.0-beta.8]: https://github.com/designsystemsinternational/mechanic/releases/tag/v2.0.0-beta.8
 [2.0.0-beta.7]: https://github.com/designsystemsinternational/mechanic/releases/tag/v2.0.0-beta.7
 [2.0.0-beta.6]: https://github.com/designsystemsinternational/mechanic/releases/tag/v2.0.0-beta.6
 [2.0.0-beta.5]: https://github.com/designsystemsinternational/mechanic/releases/tag/v2.0.0-beta.5

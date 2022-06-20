@@ -23,7 +23,7 @@ const Layout = ({ funcName, functions, mainRef, iframeRef }) => {
       <main className={css.main} ref={mainRef}>
         <iframe
           title={`Design function ${funcName} document.`}
-          src={`/${funcName}.html`}
+          src={`${BASENAME}${funcName}.html`}
           className={css.iframe}
           ref={iframeRef}
         />
