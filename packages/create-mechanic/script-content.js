@@ -94,19 +94,27 @@ ${bgBlue(
 
   confirmInstallQuestion:
     "Do you wish to install dependencies for your project right away?",
+  installationMethodQuestion:
+    "Do you wish to install dependencies using npm or yarn?",
   installTry: (method) => `Trying with ${method}.`,
   installSucceed: (method) => `Installed dependencies with ${method}.`,
-  installFailed: (method) => `Failed to install with ${method}.`,
-  installFail:
-    "Failed to install with npm. Try installing by yourself to check the issue.",
-
-  doneAndNextStepsMessage: (
-    projectName,
-    installed
-  ) => `\nDone! Mechanic project created at ${success(projectName)}
+  installFailed: (method) =>
+    `Failed to install with ${method}. Try installing by yourself to check the issue.`,
+  doneAndNextStepsMessage: (projectName, installation) => `
+Done! Mechanic project created at ${success(projectName)}
 To start you now can run:
-> \`cd ${projectName}\`${installed ? "" : "\n> `npm i`"}
-> \`npm run dev\`
+> \`cd ${projectName}\`${
+    !installation
+      ? "\n> `npm install` or `yarn install`"
+      : !installation.success
+      ? `\n> \`${installation.installingMethod} install\``
+      : ""
+  }
+> ${
+    !installation
+      ? "\n> `npm run dev` or `yarn run dev`"
+      : `\`${installation.installingMethod} run dev\``
+  }
 `,
   bye: mechanicInverse,
 
@@ -116,11 +124,19 @@ To start you now can run:
   notMechanicProjectError: `Not mechanic project: new function can only be run inside mechanic project.
   Either the current working directory does not contain a valid package.json or '${mechanicPackage}' is not specified as a dependency`,
 
-  newFunctionNextStepsMessage: (
-    functionDir,
-    installed
-  ) => `Done! Design function created at ${success(functionDir)}
-To start you now can run:${installed ? "" : "\n> `npm i`"}
-> \`npm run dev\`
+  newFunctionNextStepsMessage: (functionDir, installation) => `
+Done! Design function created at ${success(functionDir)}
+To start you now can run:${
+    !installation
+      ? "\n> `npm install` or `yarn install`"
+      : !installation.success
+      ? `\n> \`${installation.installingMethod} install\``
+      : ""
+  }
+> ${
+    !installation
+      ? "\n> `npm run dev` or `yarn run dev`"
+      : `\`${installation.installingMethod} run dev\``
+  }
   `,
 };

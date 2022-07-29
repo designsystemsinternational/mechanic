@@ -98,10 +98,10 @@ const newFunctionCommand = async (argv) => {
   );
 
   // Install new dependencies
-  const install = await askToInstall(".");
+  const installation = await askToInstall(".");
 
   // Done!
-  log(content.doneAndNextStepsMessage(functionDir, install));
+  log(content.doneAndNextStepsMessage(functionDir, installation));
   log(content.bye);
 };
 

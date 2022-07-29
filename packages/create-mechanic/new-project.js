@@ -44,6 +44,16 @@ const confirmInstallQuestion = [
   },
 ];
 
+const installationMethodQuestion = [
+  {
+    name: "installingMethod",
+    type: "list",
+    message: content.installationMethodQuestion,
+    default: "npm",
+    choices: ["npm", "yarn"],
+  },
+];
+
 const generateProjectTemplate = async (projectName, typeOfBaseUsed) => {
   spinner.start(content.generateProjectStart);
 
@@ -83,33 +93,38 @@ const generateProjectTemplate = async (projectName, typeOfBaseUsed) => {
   log(content.projectContents(path.dirname(directory)));
 };
 
-const installDependencies = async (projectName) => {
+const checkLockFile = async (projectName, installingMethod) => {
+  // Project directory
+  const cwd = path.resolve(projectName);
+
+  // Try with npm
+  const npmLockExists = await fs.pathExists(
+    path.join(cwd, "package-lock.json")
+  );
+  if (npmLockExists) return "npm";
+
+  // Try with yarn
+  const yarnLockExists = await fs.pathExists(path.join(cwd, "yarn.lock"));
+  if (yarnLockExists) return "yarn";
+};
+
+const installDependencies = async (projectName, installingMethod) => {
   // Project directory
   const cwd = path.resolve(projectName);
 
   try {
-    spinner.start(content.installTry("yarn"));
-    // Install with yarn
-    await execa("yarn", ["install"], { cwd });
+    spinner.start(content.installTry(installingMethod));
+    // Install
+    await execa(installingMethod, ["install"], { cwd });
     // End success UI spinner
-    spinner.succeed(content.installSucceed("yarn"));
-    return "yarn";
+    spinner.succeed(content.installSucceed(installingMethod));
+    return true;
   } catch (err) {
     if (err.failed) {
       // Notify failure
-      spinner.warn(content.installFailed("yarn"));
-      spinner.start(content.installTry("npm"));
-      try {
-        // Install with npm
-        await execa("npm", ["install"], { cwd });
-        // End success UI spinner
-        spinner.succeed(content.installSucceed("npm"));
-        return "npm";
-      } catch (npmErr) {
-        // Notify failure
-        spinner.fail(content.installFail);
-      }
+      spinner.fail(content.installFailed(installingMethod));
     }
+    return false;
   }
 };
 
@@ -117,6 +132,8 @@ module.exports = {
   getProjectQuestion,
   confirmDFQuestion,
   confirmInstallQuestion,
+  installationMethodQuestion,
   generateProjectTemplate,
+  checkLockFile,
   installDependencies,
 };
