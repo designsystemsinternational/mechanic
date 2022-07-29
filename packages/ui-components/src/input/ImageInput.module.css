@@ -39,8 +39,8 @@
 }
 
 .thumbnail {
-  max-height: var(--mechanic-input-height-half); /* new */
-  max-width: 150px;  /* new */
+  max-height: var(--mechanic-input-height-half);
+  max-width: 150px;
   border-radius: 3px;
 }
 
