@@ -5,7 +5,8 @@ export default {
   properties: {
     validation: validationProperty,
     editable: editableProperty,
-    label: getTypeValidationProperty("label", "string")
+    label: getTypeValidationProperty("label", "string"),
+    multiple: getTypeValidationProperty("multiple", "boolean")
   },
   requiredProperties: [],
   validation: () => null,
