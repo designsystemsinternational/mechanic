@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### Fixed
+
+- Static folder gets uploaded again
+- Corrects wrong name for "slider" property of number input in their definition
+- Adds missing "multiple" property of image input in their definition
+
 ## 2.0.0-beta.8 - 2022-06-20
 
 ### Fixed

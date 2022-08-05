@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### Fixed
+
+- Create CLI doesn't try on it's own to use yarn if possible, it asks if try to use npm or yarn
+
 ## 2.0.0-beta.8 - 2022-06-20
 
 ### Added
