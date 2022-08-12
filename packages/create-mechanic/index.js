@@ -9,8 +9,10 @@ const {
   getProjectQuestion,
   confirmDFQuestion,
   confirmInstallQuestion,
+  installationMethodQuestion,
   generateProjectTemplate,
   installDependencies,
+  checkLockFile,
 } = require("./new-project");
 const {
   baseExists,
@@ -29,8 +31,17 @@ const askToInstall = async (projectName) => {
   // Install dependencies in new project directory
   const { install } = await inquirer.prompt(confirmInstallQuestion);
   await sleep();
+
   if (install) {
-    await installDependencies(projectName);
+    let installingMethod = await checkLockFile(projectName);
+    if (!installingMethod) {
+      installingMethod = (await inquirer.prompt(installationMethodQuestion))
+        .installingMethod;
+      await sleep();
+    }
+
+    const success = await installDependencies(projectName, installingMethod);
+    return { success, installingMethod };
   }
   return install;
 };

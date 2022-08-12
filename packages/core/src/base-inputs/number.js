@@ -17,7 +17,7 @@ export default {
     min: getTypeValidationProperty("min", "number"),
     max: getTypeValidationProperty("max", "number"),
     step: getTypeValidationProperty("step", "number"),
-    range: getTypeValidationProperty("range", "boolean")
+    slider: getTypeValidationProperty("slider", "boolean")
   },
   requiredProperties: ["default"],
   validation: (inputValue, input) => {

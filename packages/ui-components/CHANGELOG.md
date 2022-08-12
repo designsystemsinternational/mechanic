@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## 2.0.0-beta.9 - 2022-08-12
+
+### Fixed
+
+- Tweaks size of thumbnails in image input
+- Resets cursor style on disabled image inputs
+
 ## 2.0.0-beta.4 - 2022-04-14
 
 ### Fixed

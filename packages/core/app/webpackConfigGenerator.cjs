@@ -245,9 +245,12 @@ module.exports = function (
   );
 
   if (staticPath) {
-    new CopyPlugin({
-      patterns: [{ from: staticPath, to: staticPath }]
-    });
+    const relativeStaticPath = path.relative(process.cwd(), staticPath);
+    plugins.push(
+      new CopyPlugin({
+        patterns: [{ from: staticPath, to: relativeStaticPath }]
+      })
+    );
   }
 
   return {

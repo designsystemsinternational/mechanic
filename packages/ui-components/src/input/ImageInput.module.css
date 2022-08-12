@@ -39,7 +39,8 @@
 }
 
 .thumbnail {
-  height: var(--mechanic-input-height-half);
+  max-height: var(--mechanic-input-height-half);
+  max-width: 150px;
   border-radius: 3px;
 }
 
@@ -101,6 +102,10 @@
 
 .disabled {
   opacity: 0.4;
+}
+
+.disabled .browseButton {
+  cursor: default;
 }
 
 .container:not([disabled]):hover {

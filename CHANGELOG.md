@@ -7,6 +7,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.0.0-beta.9] - 2022-08-12
+
+### Added
+
+- NPM package version shield on README
+- Docs version shield on README
+- PRs welcome shield on README
+- Added gif image header on README
+
+### Fixed
+
+- Create CLI doesn't try on it's own to use yarn if possible, it asks if try to use npm or yarn
+- Static folder gets uploaded again
+- Corrects wrong name for "slider" property of number input in their definition
+- Adds missing "multiple" property of image input in their definition
+- Tweaks size of thumbnails in image input
+- Resets cursor style on disabled image inputs
+
 ## [2.0.0-beta.8] - 2022-06-20
 
 ### Added
@@ -283,7 +301,8 @@ Beta release
 
 First logged release
 
-[unreleased]: https://github.com/designsystemsinternational/mechanic/compare/v2.0.0-beta.8...main
+[unreleased]: https://github.com/designsystemsinternational/mechanic/compare/v2.0.0-beta.9...main
+[2.0.0-beta.9]: https://github.com/designsystemsinternational/mechanic/releases/tag/v2.0.0-beta.9
 [2.0.0-beta.8]: https://github.com/designsystemsinternational/mechanic/releases/tag/v2.0.0-beta.8
 [2.0.0-beta.7]: https://github.com/designsystemsinternational/mechanic/releases/tag/v2.0.0-beta.7
 [2.0.0-beta.6]: https://github.com/designsystemsinternational/mechanic/releases/tag/v2.0.0-beta.6
