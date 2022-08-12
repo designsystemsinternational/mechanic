@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.0.0-beta.9] - 2022-08-12
+
 ### Added
 
 - NPM package version shield on README
@@ -299,7 +301,8 @@ Beta release
 
 First logged release
 
-[unreleased]: https://github.com/designsystemsinternational/mechanic/compare/v2.0.0-beta.8...main
+[unreleased]: https://github.com/designsystemsinternational/mechanic/compare/v2.0.0-beta.9...main
+[2.0.0-beta.9]: https://github.com/designsystemsinternational/mechanic/releases/tag/v2.0.0-beta.9
 [2.0.0-beta.8]: https://github.com/designsystemsinternational/mechanic/releases/tag/v2.0.0-beta.8
 [2.0.0-beta.7]: https://github.com/designsystemsinternational/mechanic/releases/tag/v2.0.0-beta.7
 [2.0.0-beta.6]: https://github.com/designsystemsinternational/mechanic/releases/tag/v2.0.0-beta.6
