@@ -1,0 +1,30 @@
+@font-face {
+  font-family: "FuturaLogo";
+  src: url("./assets/Futura_Extra_Bold.eot");
+  src: url("./assets/Futura_Extra_Bold.eot?#iefix")
+      format("embedded-opentype"),
+    url("./assets/Futura_Extra_Bold.woff2") format("woff2"),
+    url("./assets/Futura_Extra_Bold.woff") format("woff"),
+    url("./assets/Futura_Extra_Bold.ttf") format("truetype");
+  font-weight: 800;
+  font-style: normal;
+}
+
+.root {
+  font-weight: 800;
+  font-size: 60px;
+  letter-spacing: -0em;
+  max-width: 70vw;
+  font-family: "FuturaLogo", "Futura New", "Futura Next", "Futura Std", Arial,
+    sans-serif;
+}
+
+.textPath {
+  dominant-baseline: middle;
+}
+
+
+:root {
+  --red: #e94225;
+  --blue: #002ebb;
+}
