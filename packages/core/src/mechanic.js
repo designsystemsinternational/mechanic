@@ -29,7 +29,15 @@ export class Mechanic {
    */
   constructor(settings, baseValues, config) {
     const values = Object.assign({}, baseValues);
-    const { lastRun, boundingClient, scale, randomSeed, isPreview, exportType } = config;
+    const {
+      lastRun,
+      boundingClient,
+      scale,
+      randomSeed,
+      isPreview,
+      exportType,
+      exportDensity = 1
+    } = config;
 
     values._isPreview = isPreview;
 
@@ -71,6 +79,18 @@ export class Mechanic {
     this.values = values;
     this.functionState = lastRun?.functionState ?? {};
     this.exportType = exportType;
+    this.exportDensity = exportDensity;
+  }
+
+  /**
+   * Utility function to scale any number with the "magic" property ratio being
+   * set on the currently executing function.
+   *
+   * @param {number} number - The number to scale
+   * @returns {number} The scaled number
+   */
+  scaleWithRatio(number) {
+    return number * this.exportDensity;
   }
 
   /**
@@ -162,9 +182,9 @@ export class Mechanic {
         if (this.exportType === "png") {
           const cacheCanvas = document.createElement("canvas");
           const size = extractSvgSize(el);
-          cacheCanvas.width = size.width;
-          cacheCanvas.height = size.height;
-          await dataUrlToCanvas(data, cacheCanvas);
+          cacheCanvas.width = this.scaleWithRatio(size.width);
+          cacheCanvas.height = this.scaleWithRatio(size.height);
+          await dataUrlToCanvas(data, cacheCanvas, this.exportDensity);
           this.canvasData = cacheCanvas.toDataURL();
         } else {
           this.svgData = data;
@@ -197,10 +217,10 @@ export class Mechanic {
         // This is slow. We should figure out a way to draw into canvas on every frame
         // or at least do Promise.all
         const cacheCanvas = document.createElement("canvas");
-        cacheCanvas.width = this.svgSize.width;
-        cacheCanvas.height = this.svgSize.height;
+        cacheCanvas.width = this.scaleWithRatio(this.svgSize.width);
+        cacheCanvas.height = this.scaleWithRatio(this.svgSize.height);
         for (let i = 0; i < this.svgFrames.length; i++) {
-          await dataUrlToCanvas(this.svgFrames[i], cacheCanvas);
+          await dataUrlToCanvas(this.svgFrames[i], cacheCanvas, this.exportDensity);
           this.videoWriter.addFrame(cacheCanvas);
         }
       }

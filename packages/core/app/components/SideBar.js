@@ -20,6 +20,39 @@ const AsideComponent = appComponents.SideBar
 
 import * as css from "./SideBar.module.css";
 
+const exportDensities = [
+  {
+    label: "0.5x",
+    value: 0.5
+  },
+  {
+    label: "0.75x",
+    value: 0.75
+  },
+  {
+    label: "1x",
+    value: 1
+  },
+  {
+    label: "1.5x",
+    value: 1.5
+  },
+  {
+    label: "2x",
+    value: 2
+  },
+  {
+    label: "3x",
+    value: 3
+  },
+  {
+    label: "4x",
+    value: 4
+  }
+];
+
+const DEFAULT_DENSITY = 1;
+
 export const SideBar = ({ name, exports: functionExports, iframe, mainRef, children }) => {
   const {
     inputs,
@@ -45,6 +78,7 @@ export const SideBar = ({ name, exports: functionExports, iframe, mainRef, child
   const [autoRefreshOn, setAutoRefreshOn] = useState(initialAutoRefresh ?? true);
   const [lastRun, setLastRun] = useState(null);
   const [seedHistory, setSeedHistory] = useSeedHistory(name);
+  const [exportDensity, setExportDensity] = useState(DEFAULT_DENSITY);
 
   const iframeLoaded = useIframeLoaded(iframe, name);
 
@@ -57,7 +91,8 @@ export const SideBar = ({ name, exports: functionExports, iframe, mainRef, child
     boundingClient: mainRef.current.getBoundingClientRect(),
     scale: scale && canScale && scaleToFit,
     randomSeed: random,
-    exportType: exportType
+    exportType: exportType,
+    exportDensity
   });
 
   const preview = async () => {
@@ -68,6 +103,7 @@ export const SideBar = ({ name, exports: functionExports, iframe, mainRef, child
   };
 
   const handleExport = async type => {
+    console.log(exportDensity);
     const run = iframe.current.contentWindow?.run;
     setLastRun(lastRun =>
       run ? run(name, values, getRunConfig(lastRun, false, seedHistory.current, false, type)) : null
@@ -127,7 +163,8 @@ export const SideBar = ({ name, exports: functionExports, iframe, mainRef, child
             <Toggle
               status={canScale && scaleToFit}
               disabled={!canScale || lastRun === undefined}
-              onClick={() => setScaleToFit(scaleToFit => !scaleToFit)}>
+              onClick={() => setScaleToFit(scaleToFit => !scaleToFit)}
+            >
               Scale to Fit
             </Toggle>
             {!canScale && <span className={css.error}>Inputs missing for scaling</span>}
@@ -142,7 +179,8 @@ export const SideBar = ({ name, exports: functionExports, iframe, mainRef, child
                 className={css.grow}
                 status={autoRefreshOn}
                 onClick={() => setAutoRefreshOn(autoRefreshOn => !autoRefreshOn)}
-                disabled={!iframeLoaded || lastRun === undefined}>
+                disabled={!iframeLoaded || lastRun === undefined}
+              >
                 Auto-refresh
               </Toggle>
             </div>
@@ -157,21 +195,24 @@ export const SideBar = ({ name, exports: functionExports, iframe, mainRef, child
                 <Button
                   className={cn(css.grow, css.undo)}
                   onClick={() => setSeedHistory.undo()}
-                  disabled={!iframeLoaded || !setSeedHistory.canUndo || lastRun === undefined}>
+                  disabled={!iframeLoaded || !setSeedHistory.canUndo || lastRun === undefined}
+                >
                   {"<"}
                 </Button>
               )}
               <Button
                 className={cn(css.grow)}
                 onClick={() => setSeedHistory.set()}
-                disabled={!iframeLoaded || lastRun === undefined}>
+                disabled={!iframeLoaded || lastRun === undefined}
+              >
                 {iframeLoaded ? "Generate" : "Loading content"}
               </Button>
               {persistRandom && (
                 <Button
                   className={cn(css.grow, css.redo)}
                   onClick={() => setSeedHistory.redo()}
-                  disabled={!iframeLoaded || lastRun === undefined || !setSeedHistory.canRedo}>
+                  disabled={!iframeLoaded || lastRun === undefined || !setSeedHistory.canRedo}
+                >
                   {">"}
                 </Button>
               )}
@@ -186,7 +227,8 @@ export const SideBar = ({ name, exports: functionExports, iframe, mainRef, child
               className={css.grow}
               primary={iframeLoaded}
               onClick={() => handleExport()}
-              disabled={!iframeLoaded || lastRun === undefined}>
+              disabled={!iframeLoaded || lastRun === undefined}
+            >
               {lastRun === undefined ? "Error" : iframeLoaded ? "Export" : "Loading content"}
             </Button>
           </div>
@@ -196,15 +238,24 @@ export const SideBar = ({ name, exports: functionExports, iframe, mainRef, child
               className={css.grow}
               primary={iframeLoaded}
               onClick={() => handleExport("svg")}
-              disabled={!iframeLoaded || lastRun === undefined}>
+              disabled={!iframeLoaded || lastRun === undefined}
+            >
               {lastRun === undefined ? "Error" : iframeLoaded ? "Export SVG" : "Loading content"}
             </Button>
             <div className={css.sep} />
+            <select value={exportDensity} onChange={e => setExportDensity(e.target.value)}>
+              {exportDensities.map(density => (
+                <option key={density.value} value={density.value}>
+                  {density.label}
+                </option>
+              ))}
+            </select>
             <Button
               className={css.grow}
               primary={iframeLoaded}
               onClick={() => handleExport("png")}
-              disabled={!iframeLoaded || lastRun === undefined}>
+              disabled={!iframeLoaded || lastRun === undefined}
+            >
               {lastRun === undefined ? "Error" : iframeLoaded ? "Export PNG" : "Loading content"}
             </Button>
           </>

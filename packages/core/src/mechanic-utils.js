@@ -132,11 +132,12 @@ const extractSvgSize = el => {
  * @param {string} dataUrl - SVG string to draw
  * @param {HTMLCanvasElement} canvas - A canvas element to draw into
  */
-const dataUrlToCanvas = (dataUrl, canvas) =>
+const dataUrlToCanvas = (dataUrl, canvas, ratio = 1) =>
   new Promise((resolve, reject) => {
     const image = new Image();
     image.onload = () => {
       const ctx = canvas.getContext("2d");
+      ctx.scale(ratio, ratio);
       ctx.drawImage(image, 0, 0);
       resolve();
     };
