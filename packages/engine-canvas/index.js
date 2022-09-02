@@ -77,3 +77,5 @@ canvas.height = 1000;`);
   });
   return mechanic;
 };
+
+export const isRasterExport = true;
