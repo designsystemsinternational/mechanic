@@ -154,13 +154,13 @@ const generateHashFromInputsObject = inputs => {
   const inputsAsString = stringify(inputs);
 
   let hash = 0;
-  if (inputsAsString.length === 0) return hash;
+  if (inputsAsString.length === 0) return hash.toString();
   for (let i = 0; i < inputsAsString.length; i++) {
     const char = inputsAsString.charCodeAt(i);
     hash = (hash << 5) - hash + char;
     hash |= 0;
   }
-  return hash.toString();
+  return hash.toString().substring(0, 16);
 };
 
 const useValues = (functionName, functionInputs, presets) => {
