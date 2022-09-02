@@ -3,6 +3,7 @@ import { useImmer } from "use-immer";
 import { inputsDefs } from "../../INPUTS";
 import { NO_PRESET_VALUE, addPresetsAsSources } from "./presets.js";
 import { resetOtherInteractive } from "./useInteractiveInputs.js";
+import { DEFAULT_DENSITY, DENSITY_INPUT_NAME, addDensitiesAsSources } from "./densities.js";
 
 const isEmptyObject = obj =>
   obj && Object.keys(obj).length === 0 && Object.getPrototypeOf(obj) === Object.prototype;
@@ -135,7 +136,7 @@ function useLocalStorageState(key, initialState, clean) {
 
 const cleanValues = (object, reference) => {
   for (let property in object) {
-    if (!(property in reference) && property !== "preset") {
+    if (!(property in reference) && property !== "preset" && property !== DENSITY_INPUT_NAME) {
       delete object[property];
     }
   }
@@ -148,6 +149,7 @@ const useValues = (functionName, functionInputs, presets) => {
   const initialValue = useMemo(() => {
     return Object.fromEntries([
       ["preset", NO_PRESET_VALUE],
+      [DENSITY_INPUT_NAME, DEFAULT_DENSITY],
       ...Object.entries(functionInputs)
         .filter(([_, input]) => input.type in inputsDefs)
         .map(([name, input]) => [name, inputsDefs[input.type].initValue(input)])
@@ -158,7 +160,11 @@ const useValues = (functionName, functionInputs, presets) => {
 
   const setValues = (name, value) => {
     __setValues(draft => {
-      const sources = addPresetsAsSources(value, name, presets, functionInputs, draft);
+      const sources = [
+        addPresetsAsSources(value, name, presets, functionInputs, draft),
+        addDensitiesAsSources(value, name, draft)
+      ].flat();
+
       const sourcesAndInteractive = resetOtherInteractive(sources, functionInputs, name);
       for (let source of sourcesAndInteractive) {
         for (let prop in source) {

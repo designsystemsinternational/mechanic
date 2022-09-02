@@ -1,5 +1,7 @@
 import { MechanicError } from "./mechanic-error.js";
 
+import { DENSITY_INPUT_NAME } from "../app/components/utils/densities.js";
+
 const hasKey = (obj, key) => obj.hasOwnProperty(key);
 
 /**
@@ -92,7 +94,12 @@ export class MechanicValidator {
       }
     }
 
-    const otherInputs = { preset: true, scaleToFit: true, randomSeed: true };
+    const otherInputs = {
+      preset: true,
+      scaleToFit: true,
+      randomSeed: true,
+      [DENSITY_INPUT_NAME]: true
+    };
 
     // Check that there are not other values besides inputs and default inputs
     for (let inputName in values) {

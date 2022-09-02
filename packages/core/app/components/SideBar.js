@@ -7,6 +7,7 @@ import { useValues } from "./utils/useValues.js";
 import { getPossiblePresets, NO_PRESET_VALUE } from "./utils/presets.js";
 import { useShortcuts } from "./utils/useShortcuts.js";
 import { useSeedHistory } from "./utils/useSeedHistory.js";
+import { exportDensities, DEFAULT_DENSITY, densityInput } from "./utils/densities.js";
 
 import { Button, Toggle } from "@mechanic-design/ui-components";
 import { Input } from "./Input.js";
@@ -19,39 +20,6 @@ const AsideComponent = appComponents.SideBar
   : ({ children }) => <aside className={css.root}>{children}</aside>;
 
 import * as css from "./SideBar.module.css";
-
-const exportDensities = [
-  {
-    label: "0.5x",
-    value: 0.5
-  },
-  {
-    label: "0.75x",
-    value: 0.75
-  },
-  {
-    label: "1x",
-    value: 1
-  },
-  {
-    label: "1.5x",
-    value: 1.5
-  },
-  {
-    label: "2x",
-    value: 2
-  },
-  {
-    label: "3x",
-    value: 3
-  },
-  {
-    label: "4x",
-    value: 4
-  }
-];
-
-const DEFAULT_DENSITY = 1;
 
 export const SideBar = ({ name, exports: functionExports, iframe, mainRef, children }) => {
   const {
@@ -78,12 +46,14 @@ export const SideBar = ({ name, exports: functionExports, iframe, mainRef, child
   const [autoRefreshOn, setAutoRefreshOn] = useState(initialAutoRefresh ?? true);
   const [lastRun, setLastRun] = useState(null);
   const [seedHistory, setSeedHistory] = useSeedHistory(name);
-  const [exportDensity, setExportDensity] = useState(DEFAULT_DENSITY);
 
   const iframeLoaded = useIframeLoaded(iframe, name);
 
   const [values, setValues] = useValues(name, inputs, exportedPresets);
-  const handleOnChange = (e, name, value) => setValues(name, value);
+
+  const handleOnChange = (e, name, value) => {
+    setValues(name, value);
+  };
 
   const getRunConfig = (lastRun, isPreview, random, scale, exportType) => ({
     isPreview,
@@ -91,8 +61,7 @@ export const SideBar = ({ name, exports: functionExports, iframe, mainRef, child
     boundingClient: mainRef.current.getBoundingClientRect(),
     scale: scale && canScale && scaleToFit,
     randomSeed: random,
-    exportType: exportType,
-    exportDensity
+    exportType: exportType
   });
 
   const preview = async () => {
@@ -103,7 +72,6 @@ export const SideBar = ({ name, exports: functionExports, iframe, mainRef, child
   };
 
   const handleExport = async type => {
-    console.log(exportDensity);
     const run = iframe.current.contentWindow?.run;
     setLastRun(lastRun =>
       run ? run(name, values, getRunConfig(lastRun, false, seedHistory.current, false, type)) : null
@@ -243,13 +211,14 @@ export const SideBar = ({ name, exports: functionExports, iframe, mainRef, child
               {lastRun === undefined ? "Error" : iframeLoaded ? "Export SVG" : "Loading content"}
             </Button>
             <div className={css.sep} />
-            <select value={exportDensity} onChange={e => setExportDensity(e.target.value)}>
-              {exportDensities.map(density => (
-                <option key={density.value} value={density.value}>
-                  {density.label}
-                </option>
-              ))}
-            </select>
+            <Input
+              className={css.input}
+              key="input-exportDensity"
+              name="exportDensity"
+              values={values}
+              inputDef={densityInput}
+              onChange={handleOnChange}
+            />
             <Button
               className={css.grow}
               primary={iframeLoaded}

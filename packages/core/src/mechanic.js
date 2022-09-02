@@ -16,6 +16,9 @@ import {
   dataUrlToCanvas,
   getTimeStamp
 } from "./mechanic-utils.js";
+
+import { resolveDensity } from "../app/components/utils/densities.js";
+
 import { MechanicError } from "./mechanic-error.js";
 
 /**
@@ -79,7 +82,7 @@ export class Mechanic {
     this.values = values;
     this.functionState = lastRun?.functionState ?? {};
     this.exportType = exportType;
-    this.exportDensity = exportDensity;
+    this.exportDensity = resolveDensity(values.exportDensity);
   }
 
   /**
