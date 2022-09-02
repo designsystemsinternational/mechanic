@@ -133,6 +133,7 @@ const extractSvgSize = el => {
  * Draws a dataUrl to canvas
  * @param {string} dataUrl - SVG string to draw
  * @param {HTMLCanvasElement} canvas - A canvas element to draw into
+ * @param {number} ratio – the pixel density to render at
  */
 const dataUrlToCanvas = (dataUrl, canvas, ratio = 1) =>
   new Promise((resolve, reject) => {
