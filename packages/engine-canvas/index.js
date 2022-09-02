@@ -20,25 +20,11 @@ export const run = (functionName, func, values, config) => {
   const preparedCanvas = document.createElement('canvas');
   const preparedCanvasContext = preparedCanvas.getContext('2d');
 
-  if (mechanic.values.width && mechanic.values.height) {
-    const width = mechanic.values.width;
-    const height = mechanic.values.height;
+  if (values.width) preparedCanvas.width = values.width;
+  if (values.height) preparedCanvas.height = values.height;
 
-    preparedCanvas.width = width * canvasDensity;
-    preparedCanvas.height = height * canvasDensity;
-
-    preparedCanvas.style.width = `${width}px`;
-    preparedCanvas.style.height = `${height}px`;
-
-    preparedCanvasContext.scale(canvasDensity, canvasDensity);
-  } else {
-    console.warn(`No width and height inputs found for ${functionName}.
-
-This is no problem though. Just make sure to set width and height on the canvas element provided by the renderer yourself.
-
-canvas.width = 1000;
-canvas.height = 1000;`);
-  }
+  preparedCanvas.style.transform = `scale${1 / canvasDensity}`;
+  preparedCanvasContext.scale(canvasDensity, canvasDensity);
 
   let isElAdded = false;
   const onFrame = (el) => {
@@ -64,16 +50,77 @@ canvas.height = 1000;`);
     mechanic.setState(obj);
   };
 
+  let getCanvasCalled = false;
+
   func.handler({
     inputs: mechanic.values,
     mechanic: {
       frame: onFrame,
-      done: onDone,
+      done: (c) => {
+        if (!getCanvasCalled) {
+          console.warn(`Seems like you’re constructing your own canvas. @mechanic-design/engine-canvas actually provides you with a canvas that can automatically scale to the pixel density of your display.
+
+You can use it like this:
+export const handler = ({ inputs, mechanic, getCanvas }) => {
+  const { canvas, ctx } = getCanvas({ width: 1000, height: 1000 });
+  ...
+`);
+        }
+
+        onDone(c);
+      },
       state: mechanic.functionState,
       setState: onSetState,
     },
-    canvas: preparedCanvas,
-    ctx: preparedCanvasContext,
+    getCanvas: ({ width = null, height = null } = {}) => {
+      const dimensions = {
+        width: width || values.width || null,
+        height: height || values.height || null,
+      };
+
+      if (!dimensions.width && !dimensions.height) {
+        throw new Error(`No width and height values were provided to the canvas.
+
+You can set a widht and height values by passing them the getCanvas function:
+getCanvas({ width: 1000, height: 1000 });
+
+You can also set width and height by adding an input called width and height to your functions’ inputs.
+`);
+      }
+
+      if (!dimensions.width) {
+        throw new Error(`No width value was provided to the canvas.
+
+You can set a width value by passing it the getCanvas function:
+getCanvas({ width: 1000 });
+
+You can also set a width by adding an input called width to your functions’ inputs.
+`);
+      }
+
+      if (!dimensions.height) {
+        throw new Error(`No height value was provided to the canvas.
+
+You can set a height value by passing it the getCanvas function:
+getCanvas({ height: 1000 });
+
+You can also set a height by adding an input called height to your functions’ inputs.
+`);
+      }
+
+      const canvas = document.createElement('canvas');
+      canvas.width = dimensions.width * canvasDensity;
+      canvas.height = dimensions.height * canvasDensity;
+      canvas.style.width = `${dimensions.width}px`;
+      canvas.style.height = `${dimensions.height}px`;
+
+      const ctx = canvas.getContext('2d');
+      ctx.scale(canvasDensity, canvasDensity);
+
+      getCanvasCalled = true;
+
+      return { canvas, ctx };
+    },
   });
   return mechanic;
 };

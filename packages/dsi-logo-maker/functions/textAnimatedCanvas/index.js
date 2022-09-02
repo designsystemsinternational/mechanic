@@ -1,13 +1,13 @@
-import { getColors } from "../../utils/graphics";
+import { getColors } from '../../utils/graphics';
 import {
   computeBaseBricks,
   computeBlockGeometry,
   precomputeBlocks,
   getIndexModule,
-} from "../../utils/blocks";
-import { drawBlock } from "../../utils/blocks-canvas";
+} from '../../utils/blocks';
+import { drawBlock } from '../../utils/blocks-canvas';
 
-export const handler = ({ inputs, mechanic }) => {
+export const handler = ({ inputs, mechanic, getCanvas }) => {
   const {
     width,
     ratio,
@@ -20,20 +20,17 @@ export const handler = ({ inputs, mechanic }) => {
     loops,
   } = inputs;
 
-  const words = text.split(" ").map((s) => s.toUpperCase());
+  const words = text.split(' ').map((s) => s.toUpperCase());
   const height = Math.floor((width / ratio) * rows);
 
-  const colors = getColors("Custom Colors", null, colorsString.split(","));
+  const { canvas, ctx } = getCanvas({ height });
+
+  const colors = getColors('Custom Colors', null, colorsString.split(','));
   const blockGeometry = computeBlockGeometry(width, height, rows, cols);
   const baseBricks = computeBaseBricks(words, blockGeometry.fontSize);
 
   const blocksByIndex = precomputeBlocks(blockGeometry, baseBricks);
   const position = { x: 0, y: 0 };
-
-  const canvas = document.createElement("canvas");
-  canvas.width = width;
-  canvas.height = height;
-  const ctx = canvas.getContext("2d");
 
   const draw = () => {
     const brickOffset =
@@ -78,12 +75,12 @@ export const handler = ({ inputs, mechanic }) => {
 
 export const inputs = {
   width: {
-    type: "number",
+    type: 'number',
     default: 500,
     min: 100,
   },
   ratio: {
-    type: "number",
+    type: 'number',
     default: 9,
     max: 20,
     slider: true,
@@ -91,27 +88,27 @@ export const inputs = {
     step: 1,
   },
   text: {
-    type: "text",
-    default: "Whatever you want",
+    type: 'text',
+    default: 'Whatever you want',
   },
   columns: {
-    type: "number",
+    type: 'number',
     default: 13,
     min: 1,
     step: 1,
   },
   rows: {
-    type: "number",
+    type: 'number',
     default: 2,
     min: 1,
     step: 1,
   },
   colors: {
-    type: "text",
-    default: "#11457e,#d7141a,#f1f1f1",
+    type: 'text',
+    default: '#11457e,#d7141a,#f1f1f1',
   },
   offset: {
-    type: "number",
+    type: 'number',
     default: 0,
     min: 0,
     max: 1,
@@ -119,13 +116,13 @@ export const inputs = {
     slider: true,
   },
   duration: {
-    type: "number",
+    type: 'number',
     default: 10000,
     min: 1000,
     step: 500,
   },
   loops: {
-    type: "number",
+    type: 'number',
     default: 4,
     min: 1,
   },
@@ -143,6 +140,6 @@ export const presets = {
 };
 
 export const settings = {
-  engine: require("@mechanic-design/engine-canvas"),
+  engine: require('@mechanic-design/engine-canvas'),
   animated: true,
 };

@@ -7,8 +7,10 @@ import {
 } from '../../utils/blocks';
 import { drawBlock } from '../../utils/blocks-canvas';
 
-export const handler = ({ inputs, mechanic, canvas, ctx }) => {
+export const handler = ({ inputs, mechanic, getCanvas }) => {
   const { width, height, logoWidth, logoRatio } = inputs;
+
+  const { canvas, ctx } = getCanvas();
 
   const rows = 2;
   const cols = 13;

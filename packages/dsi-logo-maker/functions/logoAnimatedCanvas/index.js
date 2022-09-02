@@ -1,13 +1,13 @@
-import { getColors, flagNames } from "../../utils/graphics";
+import { getColors, flagNames } from '../../utils/graphics';
 import {
   computeBaseBricks,
   computeBlockGeometry,
   precomputeBlocks,
   getIndexModule,
-} from "../../utils/blocks";
-import { drawBlock } from "../../utils/blocks-canvas";
+} from '../../utils/blocks';
+import { drawBlock } from '../../utils/blocks-canvas';
 
-export const handler = ({ inputs, mechanic }) => {
+export const handler = ({ inputs, mechanic, getCanvas }) => {
   const {
     width,
     ratio,
@@ -23,9 +23,10 @@ export const handler = ({ inputs, mechanic }) => {
 
   const rows = 2;
   const cols = 13;
-  const words = ["DESIGN", "SYSTEMS", "INTERNATIONAL"];
+  const words = ['DESIGN', 'SYSTEMS', 'INTERNATIONAL'];
 
   const height = Math.floor((width / ratio) * rows);
+  const { canvas, ctx } = getCanvas({ height });
 
   const colors = getColors(colorMode, flag, [
     firstColor,
@@ -36,11 +37,6 @@ export const handler = ({ inputs, mechanic }) => {
   const baseBricks = computeBaseBricks(words, blockGeometry.fontSize);
   const blocksByIndex = precomputeBlocks(blockGeometry, baseBricks);
   const position = { x: 0, y: 0 };
-
-  const canvas = document.createElement("canvas");
-  canvas.width = width;
-  canvas.height = height;
-  const ctx = canvas.getContext("2d");
 
   const draw = () => {
     const brickOffset =
@@ -85,11 +81,11 @@ export const handler = ({ inputs, mechanic }) => {
 
 export const inputs = {
   width: {
-    type: "number",
+    type: 'number',
     default: 500,
   },
   ratio: {
-    type: "number",
+    type: 'number',
     default: 9,
     max: 20,
     slider: true,
@@ -97,36 +93,36 @@ export const inputs = {
     step: 1,
   },
   colorMode: {
-    type: "text",
-    options: ["Random Flag", "Pick Flag", "Custom Colors"],
-    default: "Random Flag",
+    type: 'text',
+    options: ['Random Flag', 'Pick Flag', 'Custom Colors'],
+    default: 'Random Flag',
   },
   flag: {
-    type: "text",
+    type: 'text',
     options: flagNames,
     default: flagNames[0],
-    editable: (inputs) => inputs.colorMode === "Pick Flag",
+    editable: (inputs) => inputs.colorMode === 'Pick Flag',
   },
   firstColor: {
-    type: "color",
-    model: "hex",
-    default: "#11457e",
-    editable: (inputs) => inputs.colorMode === "Custom Colors",
+    type: 'color',
+    model: 'hex',
+    default: '#11457e',
+    editable: (inputs) => inputs.colorMode === 'Custom Colors',
   },
   secondColor: {
-    type: "color",
-    model: "hex",
-    default: "#d7141a",
-    editable: (inputs) => inputs.colorMode === "Custom Colors",
+    type: 'color',
+    model: 'hex',
+    default: '#d7141a',
+    editable: (inputs) => inputs.colorMode === 'Custom Colors',
   },
   thirdColor: {
-    type: "color",
-    model: "hex",
-    default: "#f1f1f1",
-    editable: (inputs) => inputs.colorMode === "Custom Colors",
+    type: 'color',
+    model: 'hex',
+    default: '#f1f1f1',
+    editable: (inputs) => inputs.colorMode === 'Custom Colors',
   },
   offset: {
-    type: "number",
+    type: 'number',
     default: 0,
     min: 0,
     max: 1,
@@ -134,13 +130,13 @@ export const inputs = {
     slider: true,
   },
   duration: {
-    type: "number",
+    type: 'number',
     default: 5000,
     step: 500,
     min: 1000,
   },
   loops: {
-    type: "number",
+    type: 'number',
     default: 4,
     min: 1,
     step: 1,
@@ -159,6 +155,6 @@ export const presets = {
 };
 
 export const settings = {
-  engine: require("@mechanic-design/engine-canvas"),
+  engine: require('@mechanic-design/engine-canvas'),
   animated: true,
 };
