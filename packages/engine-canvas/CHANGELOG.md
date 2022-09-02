@@ -7,9 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
-### Breaking
+### Added
 
-- `canvas` and `ctx` are now passed to the user as parameters of the handler to allow mechanic core to bring the exportDensity functionality to the canvas engine
+- Added `getCanvas` function exposed to a function's handler. Using this will give users access to a canvas that scales to the current device's pixel ratio and allows to be exported at different resolutions.
 
 ## 2.0.0-beta.0 - 2022-03-16
 

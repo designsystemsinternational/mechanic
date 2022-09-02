@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### Changed
+
+- Refactored all canvas based functions to use the new `getCanvas` functionality
+
 ## 1.1.0 -2021-09-29
 
 ### Changed
