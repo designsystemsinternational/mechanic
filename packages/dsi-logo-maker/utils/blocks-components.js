@@ -1,9 +1,11 @@
 import React, { useState, useEffect, useRef } from "react";
 import { getIndexModule } from "./blocks";
+
 const Brick = ({ brick, block, colors, stroke }) => {
   const { x, w, char, charX, isWordFirst, isWordLast } = brick;
   const { background, blackOrWhite } = colors[brick.color % colors.length];
   const { fontYOffset: charY, rowHeight: h, fontSize } = block;
+  const d = brick.glyph.getPath(0, 0, fontSize).toPathData();
   return (
     <g transform={`translate(${x} 0)`}>
       <rect
@@ -16,18 +18,24 @@ const Brick = ({ brick, block, colors, stroke }) => {
       {isWordFirst && stroke && (
         <rect x={-2.5} width={5} height={h} fill={stroke}></rect>
       )}
-      <text
+      <path
+        d={d}
         fill={stroke || blackOrWhite}
-        fontSize={fontSize}
-        fontFamily={`F Grotesk Thin, Helvetica, Sans-Serif`}
-        x={charX}
-        y={charY}
-      >
-        {char}
-      </text>
+        transform={`translate(${charX},${charY})`}
+      />
     </g>
   );
 };
+
+// <text
+//   fill={stroke || blackOrWhite}
+//   fontSize={fontSize}
+//   fontFamily={`F Grotesk Thin, Helvetica, Sans-Serif`}
+//   x={charX}
+//   y={charY}
+// >
+//   {char}
+// </text>
 
 const Row = ({ row, block, colors, stroke }) => {
   const { rowIndex, bricks } = row;

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { getColors } from "../../utils/graphics";
 import {
   computeBaseBricks,
@@ -7,19 +7,15 @@ import {
   getIndexModule,
 } from "../../utils/blocks";
 import { Unit } from "../../utils/blocks-components";
-import { useDrawLoop } from "../../utils/drawLoopHook";
+import { useDrawLoop, useLoadedOpentypeFont } from "../../utils/hooks";
 
 export const handler = ({ inputs, mechanic }) => {
-  const { width, height, logoWidth, logoRatio, duration } = inputs;
+  const { width, height, logoWidth, logoRatio, duration, fontMode } = inputs;
   const { frame, done } = mechanic;
 
-  const [blockParams, setBlockParams] = useState({
-    blocksByIndex: [],
-    blockConfigs: [],
-  });
-
-  const isPlaying = useRef(false);
-  const runtime = useDrawLoop(isPlaying.current, duration);
+  const [state, setState] = useState("loading");
+  const font = useLoadedOpentypeFont(fontMode);
+  const runtime = useDrawLoop(state === "playing", duration);
 
   const rows = 2;
   const cols = 13;
@@ -27,6 +23,19 @@ export const handler = ({ inputs, mechanic }) => {
   const words = ["DESIGN", "SYSTEMS", "INTERNATIONAL"];
 
   useEffect(() => {
+    if (state === "loading" && font) {
+      setState("playing");
+    }
+  }, [font, state, setState]);
+
+  const blockParams = useMemo(() => {
+    if (!font) {
+      return {
+        blocksByIndex: [],
+        blockConfigs: [],
+      };
+    }
+
     let colors = getColors("Random Flag");
     const blockGeometry = computeBlockGeometry(
       logoWidth,
@@ -34,7 +43,7 @@ export const handler = ({ inputs, mechanic }) => {
       rows,
       cols
     );
-    const baseBricks = computeBaseBricks(words, blockGeometry.fontSize);
+    const baseBricks = computeBaseBricks(words, blockGeometry.fontSize, font);
     const blocksByIndex = precomputeBlocks(blockGeometry, baseBricks);
 
     const blockConfigs = [];
@@ -59,18 +68,19 @@ export const handler = ({ inputs, mechanic }) => {
         position.y += blockGeometry.height;
       }
     }
-    setBlockParams({ blocksByIndex, blockConfigs });
-    isPlaying.current = true;
-  }, []);
+    return { blocksByIndex, blockConfigs };
+  }, [font]);
 
   useEffect(() => {
-    if (runtime < duration) {
-      frame();
-    } else {
-      isPlaying.current = false;
-      done();
+    if (state === "playing") {
+      if (runtime < duration) {
+        frame();
+      } else {
+        setState("stopped");
+        done();
+      }
     }
-  }, [runtime]);
+  }, [runtime, state, setState]);
 
   const { blockConfigs } = blockParams;
   return (
@@ -94,17 +104,17 @@ export const handler = ({ inputs, mechanic }) => {
 export const inputs = {
   width: {
     type: "number",
-    default: 100,
+    default: 500,
     min: 100,
   },
   height: {
     type: "number",
-    default: 200,
+    default: 500,
     min: 100,
   },
   logoWidth: {
     type: "number",
-    default: 80,
+    default: 300,
     min: 10,
   },
   logoRatio: {
@@ -120,6 +130,14 @@ export const inputs = {
     default: 5000,
     step: 500,
     min: 1000,
+  },
+  fontMode: {
+    type: "text",
+    options: {
+      "F Grotesk Thin": "FGroteskThin-Regular.otf",
+      "F Grotesk": "FGrotesk-Regular.otf",
+    },
+    default: "F Grotesk Thin",
   },
 };
 
