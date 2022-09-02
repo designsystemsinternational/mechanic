@@ -32,15 +32,7 @@ export class Mechanic {
    */
   constructor(settings, baseValues, config) {
     const values = Object.assign({}, baseValues);
-    const {
-      lastRun,
-      boundingClient,
-      scale,
-      randomSeed,
-      isPreview,
-      exportType,
-      exportDensity = 1
-    } = config;
+    const { lastRun, boundingClient, scale, randomSeed, isPreview, exportType } = config;
 
     values._isPreview = isPreview;
 
@@ -158,7 +150,7 @@ export class Mechanic {
       this.videoWriter.addFrame(el);
     } else {
       // This is slow. We should find a more efficient way
-      const frame = await htmlToCanvas(el);
+      const frame = await htmlToCanvas(el, this.exportDensity);
       this.videoWriter.addFrame(frame);
     }
     this.frameCalled = true;
@@ -204,7 +196,7 @@ export class Mechanic {
             "Mechanic currently doesn't support HTML to SVG conversion. Try PNG."
           );
         } else {
-          this.htmlData = await htmlToDataUrl(el);
+          this.htmlData = await htmlToDataUrl(el, this.exportDensity);
         }
       }
     } else {

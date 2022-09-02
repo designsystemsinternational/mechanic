@@ -101,21 +101,23 @@ const svgToDataUrl = str => {
 
 /**
  * Converts a HTML node to a data url
- * @param {Node} node - SVG string to convert
+ * @param {Node} node - DOM Element to convert
+ * @param {number} ratio - the pixel density to use
  */
-const htmlToDataUrl = async node => {
+const htmlToDataUrl = async (node, ratio = 1) => {
   return new Promise((resolve, reject) => {
-    toPng(node).then(resolve).catch(reject);
+    toPng(node, { pixelRatio: ratio }).then(resolve).catch(reject);
   });
 };
 
 /**
  * Converts a HTML node to a canvas
- * @param {Node} node - SVG string to convert
+ * @param {Node} node - DOM Element to convert
+ * @param {number} ratio - the pixel density to use
  */
-const htmlToCanvas = async node => {
+const htmlToCanvas = async (node, ratio = 1) => {
   return new Promise((resolve, reject) => {
-    toCanvas(node).then(resolve).catch(reject);
+    toCanvas(node, { pixelRatio: ratio }).then(resolve).catch(reject);
   });
 };
 
