@@ -1,23 +1,14 @@
-export const exportDensities = {
-  "0.5x": 0.5,
-  "0.75x": 0.75,
-  "1x": 1,
-  "2x": 2,
-  "3x": 3,
-  "4x": 4
-};
-
-export const DEFAULT_DENSITY = "1x";
-export const DENSITY_INPUT_NAME = "exportDensity";
+import {
+  DEFAULT_DENSITY,
+  DENSITY_INPUT_NAME,
+  EXPORT_DENSITIES
+} from "../../../src/pixel-densities.js";
 
 export const densityInput = {
   type: "text",
-  options: exportDensities,
+  label: "PNG Export pixel density",
+  options: EXPORT_DENSITIES,
   default: DEFAULT_DENSITY
-};
-
-export const resolveDensity = density => {
-  return exportDensities[density] ?? DEFAULT_DENSITY;
 };
 
 export const addDensitiesAsSources = (inputValue, inputName, values) => {

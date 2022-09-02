@@ -70,14 +70,6 @@ export const inputs = {
     default: 300,
     min: 100,
   },
-  ratio: {
-    type: 'number',
-    default: 1,
-    min: 1,
-    max: 4,
-    slider: true,
-    step: 0.5,
-  },
   logoWidth: {
     type: 'number',
     default: 80,

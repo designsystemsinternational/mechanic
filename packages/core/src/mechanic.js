@@ -17,8 +17,7 @@ import {
   getTimeStamp
 } from "./mechanic-utils.js";
 
-import { resolveDensity } from "../app/components/utils/densities.js";
-
+import { resolveDensity } from "./pixel-densities.js";
 import { MechanicError } from "./mechanic-error.js";
 
 /**

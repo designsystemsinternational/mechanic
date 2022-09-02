@@ -3,7 +3,8 @@ import { useImmer } from "use-immer";
 import { inputsDefs } from "../../INPUTS";
 import { NO_PRESET_VALUE, addPresetsAsSources } from "./presets.js";
 import { resetOtherInteractive } from "./useInteractiveInputs.js";
-import { DEFAULT_DENSITY, DENSITY_INPUT_NAME, addDensitiesAsSources } from "./densities.js";
+import { DEFAULT_DENSITY, DENSITY_INPUT_NAME } from "../../../src/pixel-densities.js";
+import { addDensitiesAsSources } from "./densitySource.js";
 
 const isEmptyObject = obj =>
   obj && Object.keys(obj).length === 0 && Object.getPrototypeOf(obj) === Object.prototype;

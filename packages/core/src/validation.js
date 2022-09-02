@@ -1,6 +1,6 @@
 import { MechanicError } from "./mechanic-error.js";
 
-import { DENSITY_INPUT_NAME } from "../app/components/utils/densities.js";
+import { DENSITY_INPUT_NAME } from "./pixel-densities.js";
 
 const hasKey = (obj, key) => obj.hasOwnProperty(key);
 

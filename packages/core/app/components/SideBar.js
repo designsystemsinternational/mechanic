@@ -7,7 +7,7 @@ import { useValues } from "./utils/useValues.js";
 import { getPossiblePresets, NO_PRESET_VALUE } from "./utils/presets.js";
 import { useShortcuts } from "./utils/useShortcuts.js";
 import { useSeedHistory } from "./utils/useSeedHistory.js";
-import { exportDensities, DEFAULT_DENSITY, densityInput } from "./utils/densities.js";
+import { densityInput } from "./utils/densitySource.js";
 
 import { Button, Toggle } from "@mechanic-design/ui-components";
 import { Input } from "./Input.js";
