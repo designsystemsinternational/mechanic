@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### Added
+- Added `exportDensity` design function input. Its value is used to scale the output when converting from SVG or HTML renderer to a bitmap format.
+
 ## 2.0.0-beta.9 - 2022-08-12
 
 ### Fixed
