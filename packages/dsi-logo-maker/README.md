@@ -2,7 +2,7 @@
 
 ## Usage
 
-Run:
+Run the following commands:
 
 ```
 npm i
