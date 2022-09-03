@@ -143,6 +143,26 @@ const cleanValues = (object, reference) => {
   return object;
 };
 
+/**
+ * Turns the input object into a hash that can be used as
+ * a name for storing the latest values in localStorage.
+ *
+ * @param{object} inputs
+ * @returns{string}
+ */
+const generateHashFromInputsObject = inputs => {
+  const inputsAsString = stringify(inputs);
+
+  let hash = 0;
+  if (inputsAsString.length === 0) return hash.toString();
+  for (let i = 0; i < inputsAsString.length; i++) {
+    const char = inputsAsString.charCodeAt(i);
+    hash = (hash << 5) - hash + char;
+    hash |= 0;
+  }
+  return hash.toString().substring(0, 16);
+};
+
 const useValues = (functionName, functionInputs, presets) => {
   const clean = useCallback(object => cleanValues(object, functionInputs), [functionInputs]);
   const initialValue = useMemo(() => {
@@ -154,7 +174,10 @@ const useValues = (functionName, functionInputs, presets) => {
     ]);
   }, [functionInputs]);
 
-  const [values, __setValues] = useLocalStorageState(`df_${functionName}`, initialValue, clean);
+  const inputsHash = generateHashFromInputsObject(functionInputs);
+  const storageKey = `df_${functionName}_${inputsHash}`;
+
+  const [values, __setValues] = useLocalStorageState(`df_${storageKey}`, initialValue, clean);
 
   const setValues = (name, value) => {
     __setValues(draft => {
