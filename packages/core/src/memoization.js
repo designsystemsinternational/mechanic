@@ -18,7 +18,7 @@ const mechanicMemoizationPool = {};
  * mechanicPreload(() => a + b, [a, b]);
  */
 
-export const mechanicPreload = (fn, args) => {
+export const memo = (fn, args) => {
   const key = hashFromString(`${fn.toString()}${JSON.stringify(args)}`);
   if (mechanicMemoizationPool[key]) {
     return mechanicMemoizationPool[key];
