@@ -5,14 +5,12 @@ import {
   computeBlockGeometry,
   computeBlock,
 } from "../../utils/blocks";
-import { useLoadedOpentypeFont } from "../../utils/hooks";
 import { Block } from "../../utils/blocks-components";
 
 export const handler = ({ inputs, mechanic }) => {
   const {
     width,
     ratio,
-    fontMode,
     colorMode,
     flag,
     firstColor,
@@ -26,17 +24,6 @@ export const handler = ({ inputs, mechanic }) => {
   const cols = 13;
   const words = ["DESIGN", "SYSTEMS", "INTERNATIONAL"];
   const height = Math.floor((width / ratio) * rows);
-  const font = useLoadedOpentypeFont(fontMode);
-
-  useEffect(() => {
-    if (font) {
-      done(colorMode !== "Custom Colors" ? `${flag}-${offset}` : null);
-    }
-  }, [font]);
-
-  if (!font) {
-    return null;
-  }
 
   const colors = getColors(colorMode, flag, [
     firstColor,
@@ -45,13 +32,17 @@ export const handler = ({ inputs, mechanic }) => {
   ]);
   const position = { x: 0, y: 0 };
   const blockGeometry = computeBlockGeometry(width, height, rows, cols);
-  const baseBricks = computeBaseBricks(words, blockGeometry.fontSize, font);
+  const baseBricks = computeBaseBricks(words, blockGeometry.fontSize);
 
   const block = computeBlock(
     blockGeometry,
     baseBricks,
     Math.floor(offset * baseBricks.length)
   );
+
+  useEffect(() => {
+    done(colorMode !== "Custom Colors" ? `${flag}-${offset}` : null);
+  }, []);
 
   return (
     <svg width={width} height={height}>
@@ -72,14 +63,6 @@ export const inputs = {
     slider: true,
     min: 6,
     step: 1,
-  },
-  fontMode: {
-    type: "text",
-    options: {
-      "F Grotesk Thin": "FGroteskThin-Regular.otf",
-      "F Grotesk": "FGrotesk-Regular.otf",
-    },
-    default: "F Grotesk Thin",
   },
   colorMode: {
     type: "text",

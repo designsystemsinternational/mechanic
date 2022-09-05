@@ -5,16 +5,14 @@ import {
   precomputeBlocks,
   getIndexModule,
 } from "../../utils/blocks";
-import { loadOpentypeFont } from "../../utils/opentype";
 import { drawBlock } from "../../utils/blocks-canvas";
 
-export const handler = async ({ inputs, mechanic }) => {
-  const { width, height, allSameColors, fontMode } = inputs;
+export const handler = ({ inputs, mechanic }) => {
+  const { width, height, allSameColors } = inputs;
 
   const words = ["DESIGN", "SYSTEMS", "INTERNATIONAL"];
   const blockConfigs = [];
   let colors = getColors("Random Flag");
-  const font = await loadOpentypeFont(fontMode);
 
   const blockParams = [
     { rows: 6, cols: 5, logoRatio: 5, logoWidth: 150, x: 0, y: 0, offset: 0 },
@@ -84,7 +82,7 @@ export const handler = async ({ inputs, mechanic }) => {
     let logoHeight = Math.floor((logoWidth / logoRatio) * rows);
 
     let blockGeometry = computeBlockGeometry(logoWidth, logoHeight, rows, cols);
-    let baseBricks = computeBaseBricks(words, blockGeometry.fontSize, font);
+    let baseBricks = computeBaseBricks(words, blockGeometry.fontSize);
     let blocksByIndex = precomputeBlocks(blockGeometry, baseBricks);
 
     let position = { x, y };
@@ -121,14 +119,6 @@ export const inputs = {
   allSameColors: {
     type: "boolean",
     default: true,
-  },
-  fontMode: {
-    type: "text",
-    options: {
-      "F Grotesk Thin": "FGroteskThin-Regular.otf",
-      "F Grotesk": "FGrotesk-Regular.otf",
-    },
-    default: "F Grotesk Thin",
   },
 };
 

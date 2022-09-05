@@ -7,7 +7,7 @@ import {
   getIndexModule,
 } from "../../utils/blocks";
 import { Unit } from "../../utils/blocks-components";
-import { useDrawLoop } from "../../utils/hooks";
+import { useDrawLoop } from "../../utils/drawLoopHook";
 
 export const handler = ({ inputs, mechanic }) => {
   const {

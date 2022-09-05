@@ -6,27 +6,15 @@ import {
   precomputeBlocks,
   getIndexModule,
 } from "../../utils/blocks";
-import { useLoadedOpentypeFont } from "../../utils/hooks";
 import { Block } from "../../utils/blocks-components";
 
 export const handler = ({ inputs, mechanic }) => {
-  const { width, height, allSameColors, fontMode } = inputs;
+  const { width, height, allSameColors } = inputs;
   const { done } = mechanic;
 
   const words = ["DESIGN", "SYSTEMS", "INTERNATIONAL"];
   const blockConfigs = [];
   let colors = getColors("Random Flag");
-  const font = useLoadedOpentypeFont(fontMode);
-
-  useEffect(() => {
-    if (font) {
-      done();
-    }
-  }, [font]);
-
-  if (!font) {
-    return null;
-  }
 
   const blockParams = [
     { rows: 6, cols: 5, logoRatio: 5, logoWidth: 150, x: 0, y: 0, offset: 0 },
@@ -96,7 +84,7 @@ export const handler = ({ inputs, mechanic }) => {
     let logoHeight = Math.floor((logoWidth / logoRatio) * rows);
 
     let blockGeometry = computeBlockGeometry(logoWidth, logoHeight, rows, cols);
-    let baseBricks = computeBaseBricks(words, blockGeometry.fontSize, font);
+    let baseBricks = computeBaseBricks(words, blockGeometry.fontSize);
     let blocksByIndex = precomputeBlocks(blockGeometry, baseBricks);
 
     let position = { x, y };
@@ -106,6 +94,10 @@ export const handler = ({ inputs, mechanic }) => {
       blocksByIndex[getIndexModule(brickOffset, blocksByIndex.length)];
     blockConfigs.push({ position, block, colors });
   }
+
+  useEffect(() => {
+    done();
+  }, []);
 
   return (
     <svg width={width} height={height}>
@@ -135,14 +127,6 @@ export const inputs = {
   allSameColors: {
     type: "boolean",
     default: true,
-  },
-  fontMode: {
-    type: "text",
-    options: {
-      "F Grotesk Thin": "FGroteskThin-Regular.otf",
-      "F Grotesk": "FGrotesk-Regular.otf",
-    },
-    default: "F Grotesk Thin",
   },
 };
 

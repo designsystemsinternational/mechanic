@@ -1,9 +1,5 @@
-import { useState, useEffect, useRef, useMemo } from "react";
-import { loadOpentypeFont } from "./opentype";
+import { useState, useEffect, useRef } from "react";
 
-/**
-  Make a React-based draw loop for animation design functions
-**/
 export const useDrawLoop = (isPlaying, duration) => {
   const raf = useRef();
   const starttime = useRef();
@@ -15,7 +11,7 @@ export const useDrawLoop = (isPlaying, duration) => {
       return;
     }
 
-    const draw = (t) => {
+    const draw = t => {
       const timestamp = t || new Date().getTime();
       if (!starttime.current) {
         starttime.current = timestamp;
@@ -34,17 +30,4 @@ export const useDrawLoop = (isPlaying, duration) => {
   }, [isPlaying]);
 
   return runtime;
-};
-
-/**
-  A hook to load an opentype font
-**/
-export const useLoadedOpentypeFont = (name) => {
-  const [font, setFont] = useState(null);
-  useMemo(() => {
-    loadOpentypeFont(name, (f) => {
-      setFont(f);
-    });
-  }, [name]);
-  return font;
 };

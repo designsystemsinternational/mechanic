@@ -1,19 +1,15 @@
-import { memo } from '@mechanic-design/core';
-
-import { getColors, flagNames } from '../../utils/graphics';
+import { getColors, flagNames } from "../../utils/graphics";
 import {
   computeBaseBricks,
   computeBlockGeometry,
   computeBlock,
-} from '../../utils/blocks';
-import { loadOpentypeFont } from '../../utils/opentype';
-import { drawBlock } from '../../utils/blocks-canvas';
+} from "../../utils/blocks";
+import { drawBlock } from "../../utils/blocks-canvas";
 
-export const handler = async ({ inputs, mechanic }) => {
+export const handler = ({ inputs, mechanic }) => {
   const {
     width,
     ratio,
-    fontMode,
     colorMode,
     flag,
     firstColor,
@@ -24,13 +20,8 @@ export const handler = async ({ inputs, mechanic }) => {
 
   const rows = 2;
   const cols = 13;
-  const words = ['DESIGN', 'SYSTEMS', 'INTERNATIONAL'];
+  const words = ["DESIGN", "SYSTEMS", "INTERNATIONAL"];
   const height = Math.floor((width / ratio) * rows);
-
-  const font = await memo(
-    async () => await loadOpentypeFont(fontMode),
-    [fontMode]
-  );
 
   const colors = getColors(colorMode, flag, [
     firstColor,
@@ -38,7 +29,7 @@ export const handler = async ({ inputs, mechanic }) => {
     thirdColor,
   ]);
   const blockGeometry = computeBlockGeometry(width, height, rows, cols);
-  const baseBricks = computeBaseBricks(words, blockGeometry.fontSize, font);
+  const baseBricks = computeBaseBricks(words, blockGeometry.fontSize);
 
   const block = computeBlock(
     blockGeometry,
@@ -47,10 +38,10 @@ export const handler = async ({ inputs, mechanic }) => {
   );
   const position = { x: 0, y: 0 };
 
-  const canvas = document.createElement('canvas');
+  const canvas = document.createElement("canvas");
   canvas.width = width;
   canvas.height = height;
-  const ctx = canvas.getContext('2d');
+  const ctx = canvas.getContext("2d");
 
   ctx.save();
   ctx.clearRect(0, 0, blockGeometry.width, blockGeometry.height);
@@ -58,63 +49,55 @@ export const handler = async ({ inputs, mechanic }) => {
   ctx.restore();
   mechanic.done(
     canvas,
-    colorMode !== 'Custom Colors' ? `${flag}-${offset}` : null
+    colorMode !== "Custom Colors" ? `${flag}-${offset}` : null
   );
 };
 
 export const inputs = {
   width: {
-    type: 'number',
+    type: "number",
     default: 500,
     min: 100,
   },
   ratio: {
-    type: 'number',
+    type: "number",
     default: 9,
     max: 20,
     slider: true,
     min: 6,
     step: 1,
   },
-  fontMode: {
-    type: 'text',
-    options: {
-      'F Grotesk Thin': 'FGroteskThin-Regular.otf',
-      'F Grotesk': 'FGrotesk-Regular.otf',
-    },
-    default: 'F Grotesk Thin',
-  },
   colorMode: {
-    type: 'text',
-    options: ['Random Flag', 'Pick Flag', 'Custom Colors'],
-    default: 'Random Flag',
+    type: "text",
+    options: ["Random Flag", "Pick Flag", "Custom Colors"],
+    default: "Random Flag",
   },
   flag: {
-    type: 'text',
+    type: "text",
     options: flagNames,
     default: flagNames[0],
-    editable: (inputs) => inputs.colorMode === 'Pick Flag',
+    editable: (inputs) => inputs.colorMode === "Pick Flag",
   },
   firstColor: {
-    type: 'color',
-    model: 'hex',
-    default: '#11457e',
-    editable: (inputs) => inputs.colorMode === 'Custom Colors',
+    type: "color",
+    model: "hex",
+    default: "#11457e",
+    editable: (inputs) => inputs.colorMode === "Custom Colors",
   },
   secondColor: {
-    type: 'color',
-    model: 'hex',
-    default: '#d7141a',
-    editable: (inputs) => inputs.colorMode === 'Custom Colors',
+    type: "color",
+    model: "hex",
+    default: "#d7141a",
+    editable: (inputs) => inputs.colorMode === "Custom Colors",
   },
   thirdColor: {
-    type: 'color',
-    model: 'hex',
-    default: '#f1f1f1',
-    editable: (inputs) => inputs.colorMode === 'Custom Colors',
+    type: "color",
+    model: "hex",
+    default: "#f1f1f1",
+    editable: (inputs) => inputs.colorMode === "Custom Colors",
   },
   offset: {
-    type: 'number',
+    type: "number",
     default: 0,
     min: 0,
     max: 1,
@@ -135,5 +118,5 @@ export const presets = {
 };
 
 export const settings = {
-  engine: require('@mechanic-design/engine-canvas'),
+  engine: require("@mechanic-design/engine-canvas"),
 };

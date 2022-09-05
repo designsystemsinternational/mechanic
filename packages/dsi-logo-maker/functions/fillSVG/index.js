@@ -6,31 +6,19 @@ import {
   precomputeBlocks,
   getIndexModule,
 } from "../../utils/blocks";
-import { useLoadedOpentypeFont } from "../../utils/hooks";
 import { Block } from "../../utils/blocks-components";
 
 export const handler = ({ inputs, mechanic }) => {
-  const { width, height, logoWidth, logoRatio, fontMode } = inputs;
+  const { width, height, logoWidth, logoRatio } = inputs;
   const { done } = mechanic;
 
   const rows = 2;
   const cols = 13;
   const logoHeight = Math.floor((logoWidth / logoRatio) * rows);
   const words = ["DESIGN", "SYSTEMS", "INTERNATIONAL"];
-  const font = useLoadedOpentypeFont(fontMode);
-
-  useEffect(() => {
-    if (font) {
-      done();
-    }
-  }, [font]);
-
-  if (!font) {
-    return null;
-  }
 
   const blockGeometry = computeBlockGeometry(logoWidth, logoHeight, rows, cols);
-  const baseBricks = computeBaseBricks(words, blockGeometry.fontSize, font);
+  const baseBricks = computeBaseBricks(words, blockGeometry.fontSize);
   const blocksByIndex = precomputeBlocks(blockGeometry, baseBricks);
 
   const blockConfigs = [];
@@ -53,6 +41,10 @@ export const handler = ({ inputs, mechanic }) => {
     }
   }
 
+  useEffect(() => {
+    done();
+  }, []);
+
   return (
     <svg width={width} height={height}>
       {blockConfigs.map(({ position, block, colors }) => (
@@ -70,17 +62,17 @@ export const handler = ({ inputs, mechanic }) => {
 export const inputs = {
   width: {
     type: "number",
-    default: 500,
+    default: 300,
     min: 100,
   },
   height: {
     type: "number",
-    default: 500,
+    default: 300,
     min: 100,
   },
   logoWidth: {
     type: "number",
-    default: 300,
+    default: 80,
     min: 10,
   },
   logoRatio: {
@@ -90,14 +82,6 @@ export const inputs = {
     slider: true,
     min: 6,
     step: 1,
-  },
-  fontMode: {
-    type: "text",
-    options: {
-      "F Grotesk Thin": "FGroteskThin-Regular.otf",
-      "F Grotesk": "FGrotesk-Regular.otf",
-    },
-    default: "F Grotesk Thin",
   },
 };
 
