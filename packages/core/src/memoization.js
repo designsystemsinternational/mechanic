@@ -15,7 +15,7 @@ const mechanicMemoizationPool = {};
  * @return{any} - Result of the function
  *
  * @example
- * mechanicPreload(() => a + b, [a, b]);
+ * memo(() => a + b, [a, b]);
  */
 
 export const memo = (fn, args) => {

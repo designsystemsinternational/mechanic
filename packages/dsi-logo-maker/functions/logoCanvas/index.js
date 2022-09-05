@@ -1,4 +1,4 @@
-import { mechanicPreload } from '@mechanic-design/core';
+import { memo } from '@mechanic-design/core';
 
 import { getColors, flagNames } from '../../utils/graphics';
 import {
@@ -27,7 +27,7 @@ export const handler = async ({ inputs, mechanic }) => {
   const words = ['DESIGN', 'SYSTEMS', 'INTERNATIONAL'];
   const height = Math.floor((width / ratio) * rows);
 
-  const font = await mechanicPreload(
+  const font = await memo(
     async () => await loadOpentypeFont(fontMode),
     [fontMode]
   );

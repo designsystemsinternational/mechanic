@@ -3,6 +3,7 @@ import { useImmer } from "use-immer";
 import { inputsDefs } from "../../INPUTS";
 import { NO_PRESET_VALUE, addPresetsAsSources } from "./presets.js";
 import { resetOtherInteractive } from "./useInteractiveInputs.js";
+import { hashFromString } from "../../../src/mechanic-utils.js";
 
 const isEmptyObject = obj =>
   obj && Object.keys(obj).length === 0 && Object.getPrototypeOf(obj) === Object.prototype;
@@ -143,26 +144,6 @@ const cleanValues = (object, reference) => {
   return object;
 };
 
-/**
- * Turns the input object into a hash that can be used as
- * a name for storing the latest values in localStorage.
- *
- * @param{object} inputs
- * @returns{string}
- */
-const generateHashFromInputsObject = inputs => {
-  const inputsAsString = stringify(inputs);
-
-  let hash = 0;
-  if (inputsAsString.length === 0) return hash.toString();
-  for (let i = 0; i < inputsAsString.length; i++) {
-    const char = inputsAsString.charCodeAt(i);
-    hash = (hash << 5) - hash + char;
-    hash |= 0;
-  }
-  return hash.toString().substring(0, 16);
-};
-
 const useValues = (functionName, functionInputs, presets) => {
   const clean = useCallback(object => cleanValues(object, functionInputs), [functionInputs]);
   const initialValue = useMemo(() => {
@@ -174,7 +155,7 @@ const useValues = (functionName, functionInputs, presets) => {
     ]);
   }, [functionInputs]);
 
-  const inputsHash = generateHashFromInputsObject(functionInputs);
+  const inputsHash = hashFromString(stringify(functionInputs), 16);
   const storageKey = `df_${functionName}_${inputsHash}`;
 
   const [values, __setValues] = useLocalStorageState(`df_${storageKey}`, initialValue, clean);
