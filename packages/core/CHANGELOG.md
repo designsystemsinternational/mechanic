@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### Changed
+
+- Adds a debounce to the inputs made in Mechanic's UI. The preview will only be updated if there hasn't been an update to the inputs in the last 250ms.
+
 ### Fixed
 
 - Hash the localStorage key storing a function's params based on the input's config of the function. This makes sure a fresh localStorage key is used if a function's input configuration changes to prevent bugs like #139 from happening.
