@@ -135,6 +135,18 @@ function useLocalStorageState(key, initialState, clean) {
   return [value, setValue, remove];
 }
 
+function clearLocalStorage() {
+  if (typeof localStorage === "undefined") {
+    return null;
+  }
+  for (let i = 0; i < localStorage.length; i++) {
+    const key = localStorage.key(i);
+    if (key.startsWith("mechanic_")) {
+      localStorage.removeItem(key);
+    }
+  }
+}
+
 const cleanValues = (object, reference) => {
   for (let property in object) {
     if (!(property in reference) && property !== "preset") {
@@ -177,9 +189,9 @@ const useValues = (functionName, functionInputs, presets) => {
   }, [functionInputs]);
 
   const inputsHash = generateHashFromInputsObject(functionInputs);
-  const storageKey = `df_${functionName}_${inputsHash}`;
+  const storageKey = `mechanic_df_${functionName}_${inputsHash}`;
 
-  const [values, __setValues] = useLocalStorageState(`df_${storageKey}`, initialValue, clean);
+  const [values, __setValues] = useLocalStorageState(storageKey, initialValue, clean);
 
   const setValues = (name, value) => {
     __setValues(draft => {
@@ -195,4 +207,4 @@ const useValues = (functionName, functionInputs, presets) => {
   return [values, setValues];
 };
 
-export { useValues };
+export { useValues, clearLocalStorage };
