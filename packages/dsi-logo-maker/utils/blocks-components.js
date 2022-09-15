@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useRef } from "react";
-import { getIndexModule } from "./blocks";
+import React, { useState, useEffect, useRef } from 'react';
+import { getIndexModule } from './blocks';
 
 const Brick = ({ brick, block, colors, stroke }) => {
   const { x, w, char, charX, isWordFirst, isWordLast } = brick;
@@ -78,7 +78,7 @@ export const Unit = ({
   animation,
   runtime,
   position,
-  colors,
+  colors
 }) => {
   const [index, setIndex] = useState(blockIndex);
   const progress = useRef(animation.progress);
