@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
-- Adds a debounce to the inputs made in Mechanic's UI. The preview will only be updated if there hasn't been an update to the inputs in the last 250ms.
+- Adds the setting to debounce re-rendering after changing the input values. By default inputs are not debounced. If a user sets `debounceInputs` in their functions settings to true the function will only be re-rendered if there hasn't been a new input value for a threshhold period of time. The period can be passed in the settings as `debounceDelay` and defaults to 250ms.
 
 ### Fixed
 

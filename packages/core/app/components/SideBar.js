@@ -21,7 +21,7 @@ const AsideComponent = appComponents.SideBar
 
 import * as css from "./SideBar.module.css";
 
-const PREVIEW_DEBOUNCE_TIMEOUT = 250;
+const DEFAULT_PREVIEW_DEBOUNCE_TIMEOUT = 250;
 
 export const SideBar = ({ name, exports: functionExports, iframe, mainRef, children }) => {
   const {
@@ -37,7 +37,9 @@ export const SideBar = ({ name, exports: functionExports, iframe, mainRef, child
       hideAutoRefresh,
       initialAutoRefresh,
       hideGenerate,
-      showMultipleExports
+      showMultipleExports,
+      debounceInputs,
+      debounceDelay
     }
   } = functionExports;
   const presets = getPossiblePresets(exportedPresets ?? {});
@@ -63,12 +65,16 @@ export const SideBar = ({ name, exports: functionExports, iframe, mainRef, child
     exportType: exportType
   });
 
-  const preview = useDebouncedCallback(async () => {
+  const previewHandler = async () => {
     const run = iframe.current.contentWindow?.run;
     setLastRun(lastRun =>
       run ? run(name, values, getRunConfig(lastRun, true, seedHistory.current, true)) : null
     );
-  }, PREVIEW_DEBOUNCE_TIMEOUT);
+  };
+
+  const preview = debounceInputs
+    ? useDebouncedCallback(previewHandler, debounceDelay || DEFAULT_PREVIEW_DEBOUNCE_TIMEOUT)
+    : previewHandler;
 
   const handleExport = async type => {
     const run = iframe.current.contentWindow?.run;
