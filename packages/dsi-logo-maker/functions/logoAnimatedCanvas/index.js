@@ -26,7 +26,7 @@ export const handler = ({ inputs, mechanic, getCanvas }) => {
   const words = ['DESIGN', 'SYSTEMS', 'INTERNATIONAL'];
 
   const height = Math.floor((width / ratio) * rows);
-  const { canvas, ctx } = getCanvas({ height });
+  const { ctx } = getCanvas({ height });
 
   const colors = getColors(colorMode, flag, [
     firstColor,
@@ -69,10 +69,10 @@ export const handler = ({ inputs, mechanic, getCanvas }) => {
       draw();
     }
     if (runtime < duration) {
-      mechanic.frame(canvas);
+      mechanic.frame();
       requestAnimationFrame(animationHandler);
     } else {
-      mechanic.done(canvas);
+      mechanic.done();
     }
   };
 

@@ -17,7 +17,7 @@ export const handler = ({ inputs, mechanic, getCanvas }) => {
     seedForOffset,
   } = inputs;
 
-  const { canvas, ctx } = getCanvas();
+  const { ctx } = getCanvas();
 
   const colors = getColors(colorMode, flag, [
     firstColor,
@@ -43,7 +43,7 @@ export const handler = ({ inputs, mechanic, getCanvas }) => {
     ctx.fillRect(block.x, block.y, block.w, block.h);
   });
 
-  mechanic.done(canvas);
+  mechanic.done();
 };
 
 export const inputs = {

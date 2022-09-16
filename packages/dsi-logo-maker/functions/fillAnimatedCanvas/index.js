@@ -10,7 +10,7 @@ import { drawBlock } from '../../utils/blocks-canvas';
 export const handler = ({ inputs, mechanic, getCanvas }) => {
   const { width, height, logoWidth, logoRatio, duration } = inputs;
 
-  const { canvas, ctx } = getCanvas();
+  const { ctx } = getCanvas();
 
   const rows = 2;
   const cols = 13;
@@ -81,10 +81,10 @@ export const handler = ({ inputs, mechanic, getCanvas }) => {
       draw();
     }
     if (runtime < duration) {
-      mechanic.frame(canvas);
+      mechanic.frame();
       requestAnimationFrame(animationHandler);
     } else {
-      mechanic.done(canvas);
+      mechanic.done();
     }
   };
 

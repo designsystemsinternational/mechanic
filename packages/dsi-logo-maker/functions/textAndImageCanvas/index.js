@@ -22,7 +22,7 @@ export const handler = ({ inputs, mechanic, getCanvas }) => {
   const colors = getColors('Custom Colors', null, colorsString.split(','));
   const height = Math.floor((width / ratio) * rows);
 
-  const { canvas, ctx } = getCanvas({ height });
+  const { ctx } = getCanvas({ height });
 
   const blockGeometry = computeBlockGeometry(width, height, rows, cols);
   const baseBricks = computeBaseBricks(words, blockGeometry.fontSize);
@@ -42,11 +42,11 @@ export const handler = ({ inputs, mechanic, getCanvas }) => {
   const img = new Image();
   img.onload = function () {
     ctx.drawImage(img, 0, 0, height, height);
-    mechanic.done(canvas);
+    mechanic.done();
   };
   img.src = image ? URL.createObjectURL(image) : '';
   if (!image) {
-    mechanic.done(canvas);
+    mechanic.done();
   }
 };
 

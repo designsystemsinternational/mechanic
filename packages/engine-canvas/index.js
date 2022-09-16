@@ -17,16 +17,13 @@ export const run = (functionName, func, values, config) => {
     ? window.devicePixelRatio || 1
     : mechanic.exportDensity;
 
-  const preparedCanvas = document.createElement('canvas');
-  const preparedCanvasContext = preparedCanvas.getContext('2d');
-
-  if (values.width) preparedCanvas.width = values.width;
-  if (values.height) preparedCanvas.height = values.height;
-
-  preparedCanvas.style.transform = `scale${1 / canvasDensity}`;
-  preparedCanvasContext.scale(canvasDensity, canvasDensity);
-
   let isElAdded = false;
+
+  // Mutable variable in global engine scope to keep track of the prepared
+  // canvas we hand to the user
+  let preparedCanvas = null;
+  let getCanvasCalled = false;
+
   const onFrame = (el) => {
     if (!isElAdded) {
       isElAdded = true;
@@ -50,13 +47,19 @@ export const run = (functionName, func, values, config) => {
     mechanic.setState(obj);
   };
 
-  let getCanvasCalled = false;
-
   func.handler({
     inputs: mechanic.values,
     mechanic: {
-      frame: onFrame,
-      done: (c) => {
+      frame: (canvas) => {
+        if (!canvas && !preparedCanvas) {
+          throw new Error(
+            `You need to call getCanvas() before calling frame() or pass your own canvas element as an argument to frame().`
+          );
+        }
+
+        onFrame(preparedCanvas ?? canvas);
+      },
+      done: ({ canvas, name = null } = {}) => {
         if (!getCanvasCalled) {
           console.warn(`Seems like you’re constructing your own canvas. @mechanic-design/engine-canvas actually provides you with a canvas that can automatically scale to the pixel density of your display.
 
@@ -67,7 +70,13 @@ export const handler = ({ inputs, mechanic, getCanvas }) => {
 `);
         }
 
-        onDone(c);
+        if (!canvas && !preparedCanvas) {
+          throw new Error(
+            `You need to call getCanvas() before calling done() or pass your own canvas element as an argument to done().`
+          );
+        }
+
+        onDone(preparedCanvas ?? canvas, name);
       },
       state: mechanic.functionState,
       setState: onSetState,
@@ -108,18 +117,18 @@ You can also set a height by adding an input called height to your functions’ 
 `);
       }
 
-      const canvas = document.createElement('canvas');
-      canvas.width = dimensions.width * canvasDensity;
-      canvas.height = dimensions.height * canvasDensity;
-      canvas.style.width = `${dimensions.width}px`;
-      canvas.style.height = `${dimensions.height}px`;
+      preparedCanvas = document.createElement('canvas');
+      preparedCanvas.width = dimensions.width * canvasDensity;
+      preparedCanvas.height = dimensions.height * canvasDensity;
+      preparedCanvas.style.width = `${dimensions.width}px`;
+      preparedCanvas.style.height = `${dimensions.height}px`;
 
-      const ctx = canvas.getContext('2d');
+      const ctx = preparedCanvas.getContext('2d');
       ctx.scale(canvasDensity, canvasDensity);
 
       getCanvasCalled = true;
 
-      return { canvas, ctx };
+      return { canvas: preparedCanvas, ctx };
     },
   });
   return mechanic;

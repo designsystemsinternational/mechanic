@@ -10,7 +10,7 @@ import { drawBlock } from '../../utils/blocks-canvas';
 export const handler = ({ inputs, mechanic, getCanvas }) => {
   const { width, height, allSameColors } = inputs;
 
-  const { canvas, ctx } = getCanvas();
+  const { ctx } = getCanvas();
 
   const words = ['DESIGN', 'SYSTEMS', 'INTERNATIONAL'];
   const blockConfigs = [];
@@ -99,7 +99,7 @@ export const handler = ({ inputs, mechanic, getCanvas }) => {
   ctx.clearRect(0, 0, width, height);
   blockConfigs.forEach((blockConfig) => drawBlock(ctx, blockConfig));
   ctx.restore();
-  mechanic.done(canvas);
+  mechanic.done();
 };
 
 export const inputs = {

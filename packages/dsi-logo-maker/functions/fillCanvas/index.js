@@ -10,7 +10,7 @@ import { drawBlock } from '../../utils/blocks-canvas';
 export const handler = ({ inputs, mechanic, getCanvas }) => {
   const { width, height, logoWidth, logoRatio } = inputs;
 
-  const { canvas, ctx } = getCanvas();
+  const { ctx } = getCanvas();
 
   const rows = 2;
   const cols = 13;
@@ -45,7 +45,7 @@ export const handler = ({ inputs, mechanic, getCanvas }) => {
   ctx.clearRect(0, 0, width, height);
   blockConfigs.forEach((blockConfig) => drawBlock(ctx, blockConfig));
   ctx.restore();
-  mechanic.done(canvas);
+  mechanic.done();
 };
 
 export const inputs = {

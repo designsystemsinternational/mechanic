@@ -23,7 +23,7 @@ export const handler = ({ inputs, mechanic, getCanvas }) => {
   const words = ['DESIGN', 'SYSTEMS', 'INTERNATIONAL'];
   const height = Math.floor((width / ratio) * rows);
 
-  const { canvas, ctx } = getCanvas({ height });
+  const { ctx } = getCanvas({ height });
 
   const colors = getColors(colorMode, flag, [
     firstColor,
@@ -44,10 +44,9 @@ export const handler = ({ inputs, mechanic, getCanvas }) => {
   ctx.clearRect(0, 0, blockGeometry.width, blockGeometry.height);
   drawBlock(ctx, { position, block, colors });
   ctx.restore();
-  mechanic.done(
-    canvas,
-    colorMode !== 'Custom Colors' ? `${flag}-${offset}` : null
-  );
+  mechanic.done({
+    name: colorMode !== 'Custom Colors' ? `${flag}-${offset}` : null,
+  });
 };
 
 export const inputs = {
