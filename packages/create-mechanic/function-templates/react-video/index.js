@@ -106,5 +106,7 @@ export const presets = {
 
 export const settings = {
   engine: require('@mechanic-design/engine-react'),
-  animated: true
+  animated: true,
+  // We default to 60 fps, but you can override it here
+  fps: 12
 };
