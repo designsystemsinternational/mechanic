@@ -74,14 +74,14 @@ export const handler = ({ inputs, mechanic, getCanvas }) => {
     },
     getCanvas: ({ width = null, height = null } = {}) => {
       const dimensions = {
-        width: width || values.width || null,
-        height: height || values.height || null,
+        width: width ?? values.width ?? null,
+        height: height ?? values.height ?? null,
       };
 
       if (!dimensions.width && !dimensions.height) {
         throw new Error(`No width and height values were provided to the canvas.
 
-You can set a widht and height values by passing them the getCanvas function:
+You can set a width and height values by passing them the getCanvas function:
 getCanvas({ width: 1000, height: 1000 });
 
 You can also set width and height by adding an input called width and height to your functions’ inputs.
