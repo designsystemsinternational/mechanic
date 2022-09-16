@@ -83,8 +83,8 @@ export const handler = ({ inputs, mechanic, getCanvas }) => {
     },
     getCanvas: ({ width = null, height = null } = {}) => {
       const dimensions = {
-        width: width ?? values.width ?? null,
-        height: height ?? values.height ?? null,
+        width: width ?? mechanic.values.width ?? null,
+        height: height ?? mechanic.values.height ?? null,
       };
 
       if (!dimensions.width && !dimensions.height) {
@@ -124,6 +124,7 @@ You can also set a height by adding an input called height to your functions’ 
       preparedCanvas.style.height = `${dimensions.height}px`;
 
       const ctx = preparedCanvas.getContext('2d');
+
       ctx.scale(canvasDensity, canvasDensity);
 
       getCanvasCalled = true;
