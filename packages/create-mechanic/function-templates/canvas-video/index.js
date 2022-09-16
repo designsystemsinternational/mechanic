@@ -1,19 +1,15 @@
-export const handler = async ({ inputs, mechanic }) => {
+export const handler = async ({ inputs, mechanic, getCanvas }) => {
   const { width, height, text, color1, color2, radiusPercentage, turns } =
     inputs;
+
+  const { canvas, ctx } = getCanvas();
 
   const center = [width / 2, height / 2];
   const radius = ((height / 2) * radiusPercentage) / 100;
   let angle = 0;
 
-  const canvas = document.createElement("canvas");
-  canvas.width = width;
-  canvas.height = height;
-
-  const ctx = canvas.getContext("2d");
-
   const drawFrame = () => {
-    ctx.fillStyle = "#F4F4F4";
+    ctx.fillStyle = '#F4F4F4';
     ctx.fillRect(0, 0, width, height);
 
     ctx.fillStyle = color1;
@@ -33,9 +29,9 @@ export const handler = async ({ inputs, mechanic }) => {
     ctx.arc(center[0], center[1], radius, 0 + angle, Math.PI + angle, false);
     ctx.fill();
 
-    ctx.fillStyle = "#000000";
+    ctx.fillStyle = '#000000';
     ctx.font = `${height / 10}px sans-serif`;
-    ctx.textAlign = "center";
+    ctx.textAlign = 'center';
     ctx.strokeText(text, width / 2, height - height / 20);
     ctx.fillText(text, width / 2, height - height / 20);
 
@@ -53,36 +49,36 @@ export const handler = async ({ inputs, mechanic }) => {
 
 export const inputs = {
   width: {
-    type: "number",
+    type: 'number',
     default: 400,
   },
   height: {
-    type: "number",
+    type: 'number',
     default: 300,
   },
   text: {
-    type: "text",
-    default: "mechanic",
+    type: 'text',
+    default: 'mechanic',
   },
   color1: {
-    type: "color",
-    model: "hex",
-    default: "#E94225",
+    type: 'color',
+    model: 'hex',
+    default: '#E94225',
   },
   color2: {
-    type: "color",
-    model: "hex",
-    default: "#002EBB",
+    type: 'color',
+    model: 'hex',
+    default: '#002EBB',
   },
   radiusPercentage: {
-    type: "number",
+    type: 'number',
     default: 40,
     min: 0,
     max: 100,
     slider: true,
   },
   turns: {
-    type: "number",
+    type: 'number',
     default: 3,
   },
 };
@@ -99,6 +95,6 @@ export const presets = {
 };
 
 export const settings = {
-  engine: require("@mechanic-design/engine-canvas"),
+  engine: require('@mechanic-design/engine-canvas'),
   animated: true,
 };

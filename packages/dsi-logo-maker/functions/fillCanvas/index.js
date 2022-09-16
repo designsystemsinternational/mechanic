@@ -1,21 +1,23 @@
-import { getColors } from "../../utils/graphics";
+import { getColors } from '../../utils/graphics';
 import {
   computeBaseBricks,
   computeBlockGeometry,
   precomputeBlocks,
   getIndexModule,
-} from "../../utils/blocks";
-import { drawBlock } from "../../utils/blocks-canvas";
+} from '../../utils/blocks';
+import { drawBlock } from '../../utils/blocks-canvas';
 
-export const handler = ({ inputs, mechanic }) => {
+export const handler = ({ inputs, mechanic, getCanvas }) => {
   const { width, height, logoWidth, logoRatio } = inputs;
+
+  const { ctx } = getCanvas();
 
   const rows = 2;
   const cols = 13;
   const logoHeight = Math.floor((logoWidth / logoRatio) * rows);
-  const words = ["DESIGN", "SYSTEMS", "INTERNATIONAL"];
+  const words = ['DESIGN', 'SYSTEMS', 'INTERNATIONAL'];
 
-  let colors = getColors("Random Flag");
+  let colors = getColors('Random Flag');
   const blockGeometry = computeBlockGeometry(logoWidth, logoHeight, rows, cols);
   const baseBricks = computeBaseBricks(words, blockGeometry.fontSize);
   const blocksByIndex = precomputeBlocks(blockGeometry, baseBricks);
@@ -32,43 +34,38 @@ export const handler = ({ inputs, mechanic }) => {
     if (position.x + block.width < width) {
       position.x += block.width;
       brickOffset++;
-      colors = getColors("Random Flag");
+      colors = getColors('Random Flag');
     } else {
       position.x = position.x - width;
       position.y += block.height;
     }
   }
 
-  const canvas = document.createElement("canvas");
-  canvas.width = width;
-  canvas.height = height;
-  const ctx = canvas.getContext("2d");
-
   ctx.save();
   ctx.clearRect(0, 0, width, height);
   blockConfigs.forEach((blockConfig) => drawBlock(ctx, blockConfig));
   ctx.restore();
-  mechanic.done(canvas);
+  mechanic.done();
 };
 
 export const inputs = {
   width: {
-    type: "number",
+    type: 'number',
     default: 300,
     min: 100,
   },
   height: {
-    type: "number",
+    type: 'number',
     default: 300,
     min: 100,
   },
   logoWidth: {
-    type: "number",
+    type: 'number',
     default: 80,
     min: 10,
   },
   logoRatio: {
-    type: "number",
+    type: 'number',
     default: 9,
     max: 20,
     slider: true,
@@ -93,5 +90,5 @@ export const presets = {
 };
 
 export const settings = {
-  engine: require("@mechanic-design/engine-canvas"),
+  engine: require('@mechanic-design/engine-canvas'),
 };

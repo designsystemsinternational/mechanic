@@ -1,18 +1,20 @@
-import { getColors } from "../../utils/graphics";
+import { getColors } from '../../utils/graphics';
 import {
   computeBaseBricks,
   computeBlockGeometry,
   precomputeBlocks,
   getIndexModule,
-} from "../../utils/blocks";
-import { drawBlock } from "../../utils/blocks-canvas";
+} from '../../utils/blocks';
+import { drawBlock } from '../../utils/blocks-canvas';
 
-export const handler = ({ inputs, mechanic }) => {
+export const handler = ({ inputs, mechanic, getCanvas }) => {
   const { width, height, allSameColors } = inputs;
 
-  const words = ["DESIGN", "SYSTEMS", "INTERNATIONAL"];
+  const { ctx } = getCanvas();
+
+  const words = ['DESIGN', 'SYSTEMS', 'INTERNATIONAL'];
   const blockConfigs = [];
-  let colors = getColors("Random Flag");
+  let colors = getColors('Random Flag');
 
   const blockParams = [
     { rows: 6, cols: 5, logoRatio: 5, logoWidth: 150, x: 0, y: 0, offset: 0 },
@@ -75,7 +77,7 @@ export const handler = ({ inputs, mechanic }) => {
 
   for (const param of blockParams) {
     if (!allSameColors) {
-      colors = getColors("Random Flag");
+      colors = getColors('Random Flag');
     }
     const { rows, cols, logoRatio, logoWidth, x, y, offset } = param;
 
@@ -93,31 +95,26 @@ export const handler = ({ inputs, mechanic }) => {
     blockConfigs.push({ position, block, colors });
   }
 
-  const canvas = document.createElement("canvas");
-  canvas.width = width;
-  canvas.height = height;
-  const ctx = canvas.getContext("2d");
-
   ctx.save();
   ctx.clearRect(0, 0, width, height);
   blockConfigs.forEach((blockConfig) => drawBlock(ctx, blockConfig));
   ctx.restore();
-  mechanic.done(canvas);
+  mechanic.done();
 };
 
 export const inputs = {
   width: {
-    type: "number",
+    type: 'number',
     default: 300,
     min: 100,
   },
   height: {
-    type: "number",
+    type: 'number',
     default: 300,
     min: 100,
   },
   allSameColors: {
-    type: "boolean",
+    type: 'boolean',
     default: true,
   },
 };
@@ -130,5 +127,5 @@ export const presets = {
 };
 
 export const settings = {
-  engine: require("@mechanic-design/engine-canvas"),
+  engine: require('@mechanic-design/engine-canvas'),
 };

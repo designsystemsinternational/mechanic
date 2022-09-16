@@ -29,6 +29,7 @@ export const SideBar = ({ name, exports: functionExports, iframe, mainRef, child
     settings: {
       persistRandomOnExport,
       showStateExport,
+      engine,
       hidePresets,
       hideScaleToFit,
       initialScaleToFit,
@@ -50,6 +51,8 @@ export const SideBar = ({ name, exports: functionExports, iframe, mainRef, child
   const iframeLoaded = useIframeLoaded(iframe, name);
 
   const [values, setValues] = useValues(name, inputs, exportedPresets);
+
+  const showDensitySelector = engine.isRasterExport ?? false;
 
   const handleOnChange = (e, name, value) => {
     setValues(name, value);
@@ -92,6 +95,17 @@ export const SideBar = ({ name, exports: functionExports, iframe, mainRef, child
 
   useInteractiveInputs(inputs, iframe, handleOnChange);
   useShortcuts(handleExport);
+
+  const DensityPicker = () => (
+    <Input
+      className={css.input}
+      key="input-exportDensity"
+      name="exportDensity"
+      values={values}
+      inputDef={densityInput}
+      onChange={handleOnChange}
+    />
+  );
 
   return (
     <AsideComponent>
@@ -190,16 +204,19 @@ export const SideBar = ({ name, exports: functionExports, iframe, mainRef, child
 
         <div className={css.sep} />
         {!showMultipleExports ? (
-          <div className={cn(css.row, css.noWrapRow)}>
-            <Button
-              className={css.grow}
-              primary={iframeLoaded}
-              onClick={() => handleExport()}
-              disabled={!iframeLoaded || lastRun === undefined}
-            >
-              {lastRun === undefined ? "Error" : iframeLoaded ? "Export" : "Loading content"}
-            </Button>
-          </div>
+          <>
+            {showDensitySelector && <DensityPicker />}
+            <div className={cn(css.row, css.noWrapRow)}>
+              <Button
+                className={css.grow}
+                primary={iframeLoaded}
+                onClick={() => handleExport()}
+                disabled={!iframeLoaded || lastRun === undefined}
+              >
+                {lastRun === undefined ? "Error" : iframeLoaded ? "Export" : "Loading content"}
+              </Button>
+            </div>
+          </>
         ) : (
           <>
             <Button
@@ -211,14 +228,7 @@ export const SideBar = ({ name, exports: functionExports, iframe, mainRef, child
               {lastRun === undefined ? "Error" : iframeLoaded ? "Export SVG" : "Loading content"}
             </Button>
             <div className={css.sep} />
-            <Input
-              className={css.input}
-              key="input-exportDensity"
-              name="exportDensity"
-              values={values}
-              inputDef={densityInput}
-              onChange={handleOnChange}
-            />
+            <DensityPicker />
             <Button
               className={css.grow}
               primary={iframeLoaded}
