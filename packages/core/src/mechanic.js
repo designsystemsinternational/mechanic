@@ -1,6 +1,7 @@
 import seedrandom from "seedrandom";
 import { download } from "./download.js";
 import { WebMWriter } from "./webm-writer.js";
+import { mergeWithDefaultSettings } from "./default-settings.js";
 import {
   isSVG,
   isCanvas,
@@ -67,7 +68,7 @@ export class Mechanic {
       }
     }
 
-    this.settings = settings;
+    this.settings = mergeWithDefaultSettings(settings);
     this.values = values;
     this.functionState = lastRun?.functionState ?? {};
     this.exportType = exportType;
@@ -113,7 +114,7 @@ export class Mechanic {
       this.serializer = new XMLSerializer();
       this.videoWriter = new WebMWriter({
         quality: 0.95,
-        frameRate: 60
+        frameRate: this.settings.frameRate
       });
     }
 
