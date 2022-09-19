@@ -1,5 +1,5 @@
 export const handler = ({ inputs, mechanic, sketch }) => {
-  const { width, height, color1, color2, radiusPercentage, turns } = inputs;
+  const { width, height, color1, color2, radiusPercentage } = inputs;
 
   const center = [width / 2, height / 2];
   const radius = ((height / 2) * radiusPercentage) / 100;
