@@ -159,6 +159,63 @@ const getTimeStamp = () => {
   return `${year}-${month}-${day}-${hour}-${minute}`;
 };
 
+/**
+ * A throttled version of requestAnimationFrame to support preview
+ * at a certain framerate.
+ *
+ * Greatly inspired by how p5 handles its throttled drawloop.
+ *
+ * @param drawingFunction
+ * @param frameRate
+ */
+const makeDrawLoop = ({ frameRate = 60 }) => {
+  const fpsInterval = 1000 / frameRate;
+  const epsilon = 5;
+
+  let lastFrameTime = 0;
+  let frameCount = 0;
+  let raf;
+  let isPlaying = true;
+
+  const stop = () => {
+    isPlaying = false;
+    window.cancelAnimationFrame(raf);
+  };
+
+  const drawLoop = drawingFunction => {
+    const draw = () => {
+      const now = window.performance.now();
+      const timeSinceLast = now - lastFrameTime;
+
+      // The Epsilon is taken from p5's solution. Also copying their
+      // comment on why they do it here.
+      //
+      // From p5 source:
+      // only draw if we really need to; don't overextend the browser.
+      // draw if we're within 5ms of when our next frame should paint
+      // (this will prevent us from giving up opportunities to draw
+      // again when it's really about time for us to do so). fixes an
+      // issue where the frameRate is too low if our refresh loop isn't
+      // in sync with the browser. note that we have to draw once even
+      // if looping is off, so we bypass the time delay if that
+      // is the case.
+      if (isPlaying && timeSinceLast >= fpsInterval - epsilon) {
+        drawingFunction.call(null, { frameCount });
+        frameCount++;
+        lastFrameTime = now;
+      }
+
+      if (isPlaying) {
+        raf = window.requestAnimationFrame(draw);
+      }
+    };
+
+    draw();
+  };
+
+  return { drawLoop, stop };
+};
+
 export {
   isSVG,
   isCanvas,
@@ -172,5 +229,6 @@ export {
   htmlToCanvas,
   extractSvgSize,
   dataUrlToCanvas,
-  getTimeStamp
+  getTimeStamp,
+  makeDrawLoop
 };

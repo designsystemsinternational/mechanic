@@ -1,9 +1,9 @@
-import React from "react";
-import { render, unmountComponentAtNode } from "react-dom";
-import { Mechanic } from "@mechanic-design/core";
+import React from 'react';
+import { render, unmountComponentAtNode } from 'react-dom';
+import { Mechanic } from '@mechanic-design/core';
 
-const root = document.getElementById("root");
-const head = document.querySelector("head");
+const root = document.getElementById('root');
+const head = document.querySelector('head');
 
 export const run = (functionName, func, values, config) => {
   const { isPreview } = config;
@@ -16,6 +16,7 @@ export const run = (functionName, func, values, config) => {
     }
   };
   const onDone = async (name) => {
+    mechanic.drawLoop.stop();
     if (!isPreview) {
       await mechanic.done(root.childNodes[0], { head });
       mechanic.download(name || functionName);
@@ -24,17 +25,35 @@ export const run = (functionName, func, values, config) => {
   const onSetState = async (obj) => {
     mechanic.setState(obj);
   };
-  render(
-    <Handler
-      inputs={mechanic.values}
-      mechanic={{
-        frame: onFrame,
-        done: onDone,
-        state: mechanic.functionState,
-        setState: onSetState,
-      }}
-    />,
-    root
-  );
+
+  func.settings.animated
+    ? mechanic.drawLoop.drawLoop(({ frameCount }) => {
+        render(
+          <Handler
+            inputs={mechanic.values}
+            frameCount={frameCount}
+            mechanic={{
+              frame: onFrame,
+              done: onDone,
+              state: mechanic.functionState,
+              setState: onSetState,
+            }}
+          />,
+          root
+        );
+      })
+    : render(
+        <Handler
+          inputs={mechanic.values}
+          mechanic={{
+            frame: onFrame,
+            done: onDone,
+            state: mechanic.functionState,
+            setState: onSetState,
+          }}
+        />,
+        root
+      );
+
   return mechanic;
 };

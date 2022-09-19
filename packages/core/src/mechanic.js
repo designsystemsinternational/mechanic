@@ -15,7 +15,8 @@ import {
   htmlToCanvas,
   extractSvgSize,
   dataUrlToCanvas,
-  getTimeStamp
+  getTimeStamp,
+  makeDrawLoop
 } from "./mechanic-utils.js";
 import { MechanicError } from "./mechanic-error.js";
 
@@ -72,6 +73,7 @@ export class Mechanic {
     this.values = values;
     this.functionState = lastRun?.functionState ?? {};
     this.exportType = exportType;
+    this.drawLoop = makeDrawLoop({ frameRate: this.settings.frameRate });
   }
 
   /**

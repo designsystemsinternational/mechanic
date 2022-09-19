@@ -1,11 +1,11 @@
-import { Mechanic } from "@mechanic-design/core";
+import { Mechanic } from '@mechanic-design/core';
 
-const root = document.getElementById("root");
+const root = document.getElementById('root');
 
 export const run = (functionName, func, values, config) => {
   const { isPreview } = config;
 
-  root.innerHTML = "";
+  root.innerHTML = '';
 
   const mechanic = new Mechanic(func.settings, values, config);
 
@@ -20,6 +20,7 @@ export const run = (functionName, func, values, config) => {
     }
   };
   const onDone = async (el, name) => {
+    mechanic.drawLoop.stop();
     if (!isElAdded) {
       isElAdded = true;
       root.appendChild(el);
@@ -38,6 +39,7 @@ export const run = (functionName, func, values, config) => {
     mechanic: {
       frame: onFrame,
       done: onDone,
+      drawLoop: mechanic.drawLoop.drawLoop,
       state: mechanic.functionState,
       setState: onSetState,
     },

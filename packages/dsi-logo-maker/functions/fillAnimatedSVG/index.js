@@ -1,15 +1,15 @@
-import React, { useState, useEffect, useRef } from "react";
-import { getColors } from "../../utils/graphics";
+import React, { useState, useEffect, useRef } from 'react';
+import { getColors } from '../../utils/graphics';
 import {
   computeBaseBricks,
   computeBlockGeometry,
   precomputeBlocks,
   getIndexModule,
-} from "../../utils/blocks";
-import { Unit } from "../../utils/blocks-components";
-import { useDrawLoop } from "../../utils/drawLoopHook";
+} from '../../utils/blocks';
+import { Unit } from '../../utils/blocks-components';
+import { useDrawLoop } from '../../utils/drawLoopHook';
 
-export const handler = ({ inputs, mechanic }) => {
+export const handler = ({ inputs, mechanic, frameCount }) => {
   const { width, height, logoWidth, logoRatio, duration } = inputs;
   const { frame, done } = mechanic;
 
@@ -19,15 +19,14 @@ export const handler = ({ inputs, mechanic }) => {
   });
 
   const isPlaying = useRef(false);
-  const runtime = useDrawLoop(isPlaying.current, duration);
 
   const rows = 2;
   const cols = 13;
   const logoHeight = Math.floor((logoWidth / logoRatio) * rows);
-  const words = ["DESIGN", "SYSTEMS", "INTERNATIONAL"];
+  const words = ['DESIGN', 'SYSTEMS', 'INTERNATIONAL'];
 
   useEffect(() => {
-    let colors = getColors("Random Flag");
+    let colors = getColors('Random Flag');
     const blockGeometry = computeBlockGeometry(
       logoWidth,
       logoHeight,
@@ -52,7 +51,7 @@ export const handler = ({ inputs, mechanic }) => {
       position = { ...position };
       if (position.x + blockGeometry.width < width) {
         position.x += blockGeometry.width;
-        colors = getColors("Random Flag");
+        colors = getColors('Random Flag');
         brickOffset++;
       } else {
         position.x = position.x - width;
@@ -64,13 +63,12 @@ export const handler = ({ inputs, mechanic }) => {
   }, []);
 
   useEffect(() => {
-    if (runtime < duration) {
+    if (frameCount < duration) {
       frame();
     } else {
-      isPlaying.current = false;
       done();
     }
-  }, [runtime]);
+  }, [frameCount]);
 
   const { blockConfigs } = blockParams;
   return (
@@ -84,7 +82,7 @@ export const handler = ({ inputs, mechanic }) => {
             blockIndex={blockIndex}
             colors={colors}
             animation={animation}
-            runtime={runtime}
+            runtime={frameCount * 100}
           ></Unit>
         ))}
     </svg>
@@ -93,22 +91,22 @@ export const handler = ({ inputs, mechanic }) => {
 
 export const inputs = {
   width: {
-    type: "number",
+    type: 'number',
     default: 100,
     min: 100,
   },
   height: {
-    type: "number",
+    type: 'number',
     default: 200,
     min: 100,
   },
   logoWidth: {
-    type: "number",
+    type: 'number',
     default: 80,
     min: 10,
   },
   logoRatio: {
-    type: "number",
+    type: 'number',
     default: 9,
     max: 20,
     slider: true,
@@ -116,14 +114,15 @@ export const inputs = {
     step: 1,
   },
   duration: {
-    type: "number",
-    default: 5000,
-    step: 500,
-    min: 1000,
+    type: 'number',
+    default: 100,
+    step: 5,
+    min: 100,
   },
 };
 
 export const settings = {
-  engine: require("@mechanic-design/engine-react"),
+  engine: require('@mechanic-design/engine-react'),
   animated: true,
+  frameRate: 10,
 };
