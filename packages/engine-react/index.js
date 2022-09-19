@@ -26,34 +26,21 @@ export const run = (functionName, func, values, config) => {
     mechanic.setState(obj);
   };
 
-  func.settings.animated
-    ? mechanic.drawLoop.drawLoop(({ frameCount }) => {
-        render(
-          <Handler
-            inputs={mechanic.values}
-            frameCount={frameCount}
-            mechanic={{
-              frame: onFrame,
-              done: onDone,
-              state: mechanic.functionState,
-              setState: onSetState,
-            }}
-          />,
-          root
-        );
-      })
-    : render(
-        <Handler
-          inputs={mechanic.values}
-          mechanic={{
-            frame: onFrame,
-            done: onDone,
-            state: mechanic.functionState,
-            setState: onSetState,
-          }}
-        />,
-        root
-      );
+  mechanic.drawLoop.dispatch(({ frameCount }) => {
+    render(
+      <Handler
+        inputs={mechanic.values}
+        frameCount={frameCount}
+        mechanic={{
+          frame: onFrame,
+          done: onDone,
+          state: mechanic.functionState,
+          setState: onSetState,
+        }}
+      />,
+      root
+    );
+  }, func.settings.animated);
 
   return mechanic;
 };

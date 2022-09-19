@@ -1,12 +1,12 @@
-import { Mechanic } from "@mechanic-design/core";
+import { Mechanic } from '@mechanic-design/core';
 
-const root = document.getElementById("root");
-const head = document.querySelector("head");
+const root = document.getElementById('root');
+const head = document.querySelector('head');
 
 export const run = (functionName, func, values, config) => {
   const { isPreview } = config;
 
-  root.innerHTML = "";
+  root.innerHTML = '';
 
   const mechanic = new Mechanic(func.settings, values, config);
   const onFrame = (el) => {
@@ -17,6 +17,7 @@ export const run = (functionName, func, values, config) => {
     }
   };
   const onDone = async (el, name) => {
+    mechanic.drawLoop.stop();
     root.innerHTML = el.trim();
     if (!isPreview) {
       await mechanic.done(root.childNodes[0], { head });
@@ -27,14 +28,18 @@ export const run = (functionName, func, values, config) => {
     mechanic.setState(obj);
   };
 
-  func.handler({
-    inputs: mechanic.values,
-    mechanic: {
-      frame: onFrame,
-      done: onDone,
-      state: mechanic.functionState,
-      setState: onSetState,
-    },
-  });
+  mechanic.drawLoop.dispatch(({ frameCount }) => {
+    func.handler({
+      inputs: mechanic.values,
+      frameCount,
+      mechanic: {
+        frame: onFrame,
+        done: onDone,
+        state: mechanic.functionState,
+        setState: onSetState,
+      },
+    });
+  }, func.settings.animated);
+
   return mechanic;
 };

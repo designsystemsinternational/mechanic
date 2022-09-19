@@ -1,7 +1,7 @@
-import { Mechanic } from "@mechanic-design/core";
-import p5 from "p5";
+import { Mechanic } from '@mechanic-design/core';
+import p5 from 'p5';
 
-const root = document.getElementById("root");
+const root = document.getElementById('root');
 
 let p5Sketch;
 
@@ -27,19 +27,19 @@ export const run = (functionName, func, values, config) => {
     mechanic.setState(obj);
   };
 
-  p5Sketch = new p5(
-    (sketch) =>
-      func.handler({
-        inputs: mechanic.values,
-        mechanic: {
-          frame: onFrame,
-          done: onDone,
-          state: mechanic.functionState,
-          setState: onSetState,
-        },
-        sketch,
-      }),
-    root
-  );
+  p5Sketch = new p5((sketch) => {
+    sketch.frameRate(func.settings.frameRate);
+
+    return func.handler({
+      inputs: mechanic.values,
+      mechanic: {
+        frame: onFrame,
+        done: onDone,
+        state: mechanic.functionState,
+        setState: onSetState,
+      },
+      sketch,
+    });
+  }, root);
   return mechanic;
 };

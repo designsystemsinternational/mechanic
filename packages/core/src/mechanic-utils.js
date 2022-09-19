@@ -175,14 +175,14 @@ const makeDrawLoop = ({ frameRate = 60 }) => {
   let lastFrameTime = 0;
   let frameCount = 0;
   let raf;
-  let isPlaying = true;
+  let isPlaying = false;
 
   const stop = () => {
     isPlaying = false;
-    window.cancelAnimationFrame(raf);
+    if (raf) window.cancelAnimationFrame(raf);
   };
 
-  const drawLoop = drawingFunction => {
+  const startDrawLoop = drawingFunction => {
     const draw = () => {
       const now = window.performance.now();
       const timeSinceLast = now - lastFrameTime;
@@ -213,7 +213,16 @@ const makeDrawLoop = ({ frameRate = 60 }) => {
     draw();
   };
 
-  return { drawLoop, stop };
+  const dispatch = (drawingFunction, isAnimated) => {
+    if (isAnimated) {
+      isPlaying = true;
+      startDrawLoop(drawingFunction);
+    } else {
+      drawingFunction.call(null, { frameCount: null });
+    }
+  };
+
+  return { dispatch, stop };
 };
 
 export {
