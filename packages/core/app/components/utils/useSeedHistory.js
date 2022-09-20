@@ -96,7 +96,7 @@ function undoReducer(state, action) {
 const getNewSeed = () => seedrandom(null, { pass: (_, seed) => ({ seed }) }).seed;
 
 export function useSeedHistory(functionName) {
-  const key = `mechanic_seed_${functionName}`;
+  const key = `--${functionName}-seed`;
   const [state, dispatch] = useReducer(
     undoReducer,
     initialize(key, {

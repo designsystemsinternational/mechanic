@@ -23,9 +23,7 @@ const copySerializable = obj => {
     }
   } else {
     copy = {};
-    const keys = Object.keys(obj);
-    keys.sort();
-    for (const key of keys) {
+    for (const key in obj) {
       if (isSerializable(obj[key])) {
         copy[key] = copySerializable(obj[key]);
       } else console.warn("Unserializable object ignored for local storage persistance.");
