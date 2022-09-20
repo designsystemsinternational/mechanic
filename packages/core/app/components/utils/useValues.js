@@ -16,7 +16,9 @@ const copySerializable = obj => {
   let copy;
   if (Array.isArray(obj)) {
     copy = [];
-    for (const o of obj) {
+    const keys = Object.keys(obj);
+    keys.sort();
+    for (const key of keys) {
       if (isSerializable(o)) {
         copy.push(copySerializable(o));
       } else console.warn("Unserializable object ignored for local storage persistance.");
@@ -187,9 +189,9 @@ const useValues = (functionName, functionInputs, presets) => {
   }, [functionInputs]);
 
   const inputsHash = generateHashFromInputsObject(functionInputs);
-  const storageKey = `df_${functionName}_${inputsHash}`;
+  const storageKey = `mechanic_df_${functionName}_${inputsHash}`;
 
-  const [values, __setValues] = useLocalStorageState(`df_${storageKey}`, initialValue, clean);
+  const [values, __setValues] = useLocalStorageState(storageKey, initialValue, clean);
 
   const setValues = (name, value) => {
     __setValues(draft => {
