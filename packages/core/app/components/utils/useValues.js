@@ -135,18 +135,6 @@ function useLocalStorageState(key, initialState, clean) {
   return [value, setValue, remove];
 }
 
-function clearLocalStorage() {
-  if (typeof localStorage === "undefined") {
-    return null;
-  }
-  for (let i = 0; i < localStorage.length; i++) {
-    const key = localStorage.key(i);
-    if (key.startsWith("mechanic_")) {
-      localStorage.removeItem(key);
-    }
-  }
-}
-
 const cleanValues = (object, reference) => {
   for (let property in object) {
     if (!(property in reference) && property !== "preset") {

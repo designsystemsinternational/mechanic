@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import cn from "classnames";
 
 import { useIframeLoaded } from "./utils/useIframeLoaded.js";
-import { useValues, clearLocalStorage } from "./utils/useValues.js";
+import { useValues } from "./utils/useValues.js";
 import { getPossiblePresets, NO_PRESET_VALUE } from "./utils/presets.js";
 import { useShortcuts } from "./utils/useShortcuts.js";
 import { useSeedHistory } from "./utils/useSeedHistory.js";
