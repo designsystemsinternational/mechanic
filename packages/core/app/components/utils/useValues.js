@@ -195,4 +195,4 @@ const useValues = (functionName, functionInputs, presets) => {
   return [values, setValues];
 };
 
-export { useValues, clearLocalStorage };
+export { useValues };
