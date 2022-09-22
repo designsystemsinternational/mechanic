@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### Added
+
+- Updated all design functions to use `opentype.js` for rendering text to `<path />` elements or canvas.
+- Updated all design functions with a string input with options for `thin` and `regular` versions of F Grotesk
+
 ## 1.1.0 -2021-09-29
 
 ### Changed

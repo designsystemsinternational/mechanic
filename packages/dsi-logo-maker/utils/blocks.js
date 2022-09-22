@@ -1,16 +1,16 @@
-import { glyphAdvanceWidth } from "./graphics";
-
-export const computeBaseBricks = (words, fontSize) => {
+export const computeBaseBricks = (words, fontSize, font) => {
   const bricks = [];
   let colori = 0;
-  words.forEach(word => {
+  words.forEach((word) => {
     for (let i = 0; i < word.length; i++) {
+      const glyph = font.charToGlyph(word[i]);
       bricks.push({
         char: word[i],
-        width: glyphAdvanceWidth(fontSize, word[i]),
+        glyph: glyph,
+        width: (glyph.advanceWidth / font.unitsPerEm) * fontSize,
         isWordFirst: i === 0,
         isWordLast: i === word.length - 1,
-        color: colori
+        color: colori,
       });
       if (i === word.length - 1) {
         colori++;
@@ -47,7 +47,7 @@ export const computeBlock = (blockGeometry, baseBricks, brickOffset) => {
   const block = {
     ...blockGeometry,
     brickIndex: getIndexModule(brickOffset, baseBricks.length),
-    rows: []
+    rows: [],
   };
 
   for (let rowIndex = 0; rowIndex < block.numberRows; rowIndex++) {
@@ -73,10 +73,11 @@ const computeRowGeometry = (bricks, rowIndex, blockGeometry) => {
   const wordBreaks = bricks.filter((b, i) => b.isWordFirst && i !== 0).length;
   const charsWidth = bricks.reduce((a, b) => a + b.width, 0);
   const { width, startGap, endGap, wordGap } = blockGeometry;
-  const remain = width - startGap - endGap - charsWidth - wordBreaks * wordGap * 2;
+  const remain =
+    width - startGap - endGap - charsWidth - wordBreaks * wordGap * 2;
   return {
     rowIndex,
-    padding: remain / (bricks.length - 1) / 2
+    padding: remain / (bricks.length - 1) / 2,
   };
 };
 
@@ -84,7 +85,12 @@ const computeRow = (rowBricks, rowGeometry, blockGeometry) => {
   const row = { ...rowGeometry, bricks: [] };
   let currentX = 0;
   rowBricks.forEach((baseBrick, col) => {
-    const { w, charX } = computeBrickGeometry(baseBrick, col, row, blockGeometry);
+    const { w, charX } = computeBrickGeometry(
+      baseBrick,
+      col,
+      row,
+      blockGeometry
+    );
     const brick = { ...baseBrick, x: currentX, w, charX };
     currentX += w;
     row.bricks.push(brick);
