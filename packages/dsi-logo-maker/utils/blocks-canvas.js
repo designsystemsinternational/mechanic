@@ -16,9 +16,10 @@ export const drawBlock = (context, blockConfig, customStroke) => {
       context.strokeStyle = background;
       context.fillRect(x, y, w, h);
       context.strokeRect(x, y, w, h);
-      context.fillStyle = customStroke || blackOrWhite;
-      context.font = `${block.fontSize}px F Grotesk Thin, Helvetica, Sans-Serif`;
-      context.fillText(char, charX, charY);
+
+      const path = brick.glyph.getPath(charX, charY, block.fontSize);
+      path.fill = customStroke || blackOrWhite;
+      path.draw(context);
     })
   );
 };

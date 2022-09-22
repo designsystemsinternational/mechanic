@@ -4,12 +4,14 @@ import {
   computeBlockGeometry,
   computeBlock,
 } from "../../utils/blocks";
+import { loadOpentypeFont } from "../../utils/opentype";
 import { drawBlock } from "../../utils/blocks-canvas";
 
-export const handler = ({ inputs, mechanic }) => {
+export const handler = async ({ inputs, mechanic }) => {
   const {
     width,
     ratio,
+    fontMode,
     text,
     columns: cols,
     rows,
@@ -20,9 +22,10 @@ export const handler = ({ inputs, mechanic }) => {
   const words = text.split(" ").map((s) => s.toUpperCase());
   const colors = getColors("Custom Colors", null, colorsString.split(","));
   const height = Math.floor((width / ratio) * rows);
+  const font = await loadOpentypeFont(fontMode);
 
   const blockGeometry = computeBlockGeometry(width, height, rows, cols);
-  const baseBricks = computeBaseBricks(words, blockGeometry.fontSize);
+  const baseBricks = computeBaseBricks(words, blockGeometry.fontSize, font);
 
   const block = computeBlock(
     blockGeometry,
@@ -56,6 +59,14 @@ export const inputs = {
     slider: true,
     min: 6,
     step: 1,
+  },
+  fontMode: {
+    type: "text",
+    options: {
+      "F Grotesk Thin": "FGroteskThin-Regular.otf",
+      "F Grotesk": "FGrotesk-Regular.otf",
+    },
+    default: "F Grotesk Thin",
   },
   text: {
     type: "text",

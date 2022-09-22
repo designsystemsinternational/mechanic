@@ -42,7 +42,8 @@
     "@mechanic-design/engine-canvas": "^2.0.0-beta.9",
     "@mechanic-design/engine-react": "^2.0.0-beta.9",
     "@mechanic-design/engine-svg": "^2.0.0-beta.9",
-    "@mechanic-design/engine-p5": "^2.0.0-beta.9"
+    "@mechanic-design/engine-p5": "^2.0.0-beta.9",
+    "opentype.js": "^1.3.4"
   },
   "private": true,
   "gitHead": "72540367e35f7c65bc111779ceb4c59ea0e1a5fb"

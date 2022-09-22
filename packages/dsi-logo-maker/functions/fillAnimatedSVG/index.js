@@ -1,24 +1,21 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { getColors } from '../../utils/graphics';
 import {
   computeBaseBricks,
   computeBlockGeometry,
   precomputeBlocks,
-  getIndexModule,
+  getIndexModule
 } from '../../utils/blocks';
 import { Unit } from '../../utils/blocks-components';
-import { useDrawLoop } from '../../utils/drawLoopHook';
+import { useDrawLoop, useLoadedOpentypeFont } from '../../utils/hooks';
 
-export const handler = ({ inputs, mechanic, frameCount }) => {
-  const { width, height, logoWidth, logoRatio, duration } = inputs;
+export const handler = ({ inputs, mechanic }) => {
+  const { width, height, logoWidth, logoRatio, duration, fontMode } = inputs;
   const { frame, done } = mechanic;
 
-  const [blockParams, setBlockParams] = useState({
-    blocksByIndex: [],
-    blockConfigs: [],
-  });
-
-  const isPlaying = useRef(false);
+  const [state, setState] = useState('loading');
+  const font = useLoadedOpentypeFont(fontMode);
+  const runtime = useDrawLoop(state === 'playing', duration);
 
   const rows = 2;
   const cols = 13;
@@ -26,6 +23,19 @@ export const handler = ({ inputs, mechanic, frameCount }) => {
   const words = ['DESIGN', 'SYSTEMS', 'INTERNATIONAL'];
 
   useEffect(() => {
+    if (state === 'loading' && font) {
+      setState('playing');
+    }
+  }, [font, state, setState]);
+
+  const blockParams = useMemo(() => {
+    if (!font) {
+      return {
+        blocksByIndex: [],
+        blockConfigs: []
+      };
+    }
+
     let colors = getColors('Random Flag');
     const blockGeometry = computeBlockGeometry(
       logoWidth,
@@ -33,7 +43,7 @@ export const handler = ({ inputs, mechanic, frameCount }) => {
       rows,
       cols
     );
-    const baseBricks = computeBaseBricks(words, blockGeometry.fontSize);
+    const baseBricks = computeBaseBricks(words, blockGeometry.fontSize, font);
     const blocksByIndex = precomputeBlocks(blockGeometry, baseBricks);
 
     const blockConfigs = [];
@@ -45,7 +55,7 @@ export const handler = ({ inputs, mechanic, frameCount }) => {
       const animation = {
         stepRate: (rows * cols * Math.floor(Math.random() * 4 + 1)) / duration,
         progress: 0,
-        duration,
+        duration
       };
       blockConfigs.push({ position, blockIndex, colors, animation });
       position = { ...position };
@@ -58,17 +68,19 @@ export const handler = ({ inputs, mechanic, frameCount }) => {
         position.y += blockGeometry.height;
       }
     }
-    setBlockParams({ blocksByIndex, blockConfigs });
-    isPlaying.current = true;
-  }, []);
+    return { blocksByIndex, blockConfigs };
+  }, [font]);
 
   useEffect(() => {
-    if (frameCount < duration) {
-      frame();
-    } else {
-      done();
+    if (state === 'playing') {
+      if (runtime < duration) {
+        frame();
+      } else {
+        setState('stopped');
+        done();
+      }
     }
-  }, [frameCount]);
+  }, [runtime, state, setState]);
 
   const { blockConfigs } = blockParams;
   return (
@@ -82,7 +94,7 @@ export const handler = ({ inputs, mechanic, frameCount }) => {
             blockIndex={blockIndex}
             colors={colors}
             animation={animation}
-            runtime={frameCount * 100}
+            runtime={runtime}
           ></Unit>
         ))}
     </svg>
@@ -92,18 +104,18 @@ export const handler = ({ inputs, mechanic, frameCount }) => {
 export const inputs = {
   width: {
     type: 'number',
-    default: 100,
-    min: 100,
+    default: 500,
+    min: 100
   },
   height: {
     type: 'number',
-    default: 200,
-    min: 100,
+    default: 500,
+    min: 100
   },
   logoWidth: {
     type: 'number',
-    default: 80,
-    min: 10,
+    default: 300,
+    min: 10
   },
   logoRatio: {
     type: 'number',
@@ -111,18 +123,25 @@ export const inputs = {
     max: 20,
     slider: true,
     min: 6,
-    step: 1,
+    step: 1
   },
   duration: {
     type: 'number',
-    default: 100,
-    step: 5,
-    min: 100,
+    default: 5000,
+    step: 500,
+    min: 1000
   },
+  fontMode: {
+    type: 'text',
+    options: {
+      'F Grotesk Thin': 'FGroteskThin-Regular.otf',
+      'F Grotesk': 'FGrotesk-Regular.otf'
+    },
+    default: 'F Grotesk Thin'
+  }
 };
 
 export const settings = {
   engine: require('@mechanic-design/engine-react'),
-  animated: true,
-  frameRate: 10,
+  animated: true
 };
