@@ -28,7 +28,7 @@ export const run = (functionName, func, values, config) => {
   };
 
   p5Sketch = new p5((sketch) => {
-    sketch.frameRate(func.settings.frameRate);
+    sketch.frameRate(mechanic.settings.frameRate);
 
     return func.handler({
       inputs: mechanic.values,

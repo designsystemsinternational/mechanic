@@ -43,14 +43,13 @@ export const run = (functionName, func, values, config) => {
     mechanic.setState(obj);
   };
 
-  mechanic.drawLoop.dispatch(({ frameCount }) => {
+  mechanic.drawLoop.maybeDisptach(({ frameCount }) => {
     func.handler({
       inputs: mechanic.values,
       frameCount,
       mechanic: {
         frame: onFrame,
         done: onDone,
-        drawLoop: mechanic.drawLoop.drawLoop,
         state: mechanic.functionState,
         setState: onSetState,
       },

@@ -26,7 +26,7 @@ export const run = (functionName, func, values, config) => {
     mechanic.setState(obj);
   };
 
-  mechanic.drawLoop.dispatch(({ frameCount }) => {
+  mechanic.drawLoop.maybeDisptach(({ frameCount }) => {
     render(
       <Handler
         inputs={mechanic.values}
