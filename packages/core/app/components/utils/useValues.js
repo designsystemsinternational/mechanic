@@ -4,6 +4,8 @@ import { inputsDefs } from "../../INPUTS";
 import { NO_PRESET_VALUE, addPresetsAsSources } from "./presets.js";
 import { resetOtherInteractive } from "./useInteractiveInputs.js";
 
+export const LOCAL_STORAGE_PREFIX = "mechanic_";
+
 const isEmptyObject = obj =>
   obj && Object.keys(obj).length === 0 && Object.getPrototypeOf(obj) === Object.prototype;
 
@@ -141,7 +143,7 @@ function clearLocalStorage() {
   }
   for (let i = 0; i < localStorage.length; i++) {
     const key = localStorage.key(i);
-    if (key.startsWith("mechanic_")) {
+    if (key.startsWith(LOCAL_STORAGE_PREFIX)) {
       localStorage.removeItem(key);
     }
   }
@@ -189,7 +191,7 @@ const useValues = (functionName, functionInputs, presets) => {
   }, [functionInputs]);
 
   const inputsHash = generateHashFromInputsObject(functionInputs);
-  const storageKey = `mechanic_df_${functionName}_${inputsHash}`;
+  const storageKey = `${LOCAL_STORAGE_PREFIX}_df_${functionName}_${inputsHash}`;
 
   const [values, __setValues] = useLocalStorageState(storageKey, initialValue, clean);
 

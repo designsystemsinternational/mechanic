@@ -1,6 +1,8 @@
 import { useReducer, useCallback, useRef, useEffect } from "react";
 import seedrandom from "seedrandom";
 
+import { LOCAL_STORAGE_PREFIX } from "./useValues.js";
+
 // Adapted from
 // https://github.com/imbhargav5/rooks/blob/master/packages/shared/useLocalstorageState.ts
 
@@ -96,7 +98,7 @@ function undoReducer(state, action) {
 const getNewSeed = () => seedrandom(null, { pass: (_, seed) => ({ seed }) }).seed;
 
 export function useSeedHistory(functionName) {
-  const key = `mechanic_seed_${functionName}`;
+  const key = `${LOCAL_STORAGE_PREFIX}_seed_${functionName}`;
   const [state, dispatch] = useReducer(
     undoReducer,
     initialize(key, {
