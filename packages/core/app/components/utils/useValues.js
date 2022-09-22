@@ -137,9 +137,23 @@ function useLocalStorageState(key, initialState, clean) {
   return [value, setValue, remove];
 }
 
-function clearLocalStorage() {
+/**
+ * clearLocalStorage function
+ * Removes a specific mechanic entry in localStorage object
+ * or clears all mechanic entries if entryKey is not set.
+ * @param {string} entryKey - Key of entry in localStorage object
+ */
+function clearLocalStorage(entryKey) {
   if (typeof localStorage === "undefined") {
-    return null;
+    return;
+  }
+  if (
+    entryKey != null &&
+    localStorage.getItem(entryKey) != null &&
+    entryKey.startsWith(LOCAL_STORAGE_PREFIX)
+  ) {
+    localStorage.removeItem(entryKey);
+    return entryKey;
   }
   for (let i = 0; i < localStorage.length; i++) {
     const key = localStorage.key(i);
@@ -147,6 +161,7 @@ function clearLocalStorage() {
       localStorage.removeItem(key);
     }
   }
+  return null;
 }
 
 const cleanValues = (object, reference) => {
