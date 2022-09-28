@@ -14,7 +14,7 @@ For the `2.0` release, we want to improve this setup to create a standardized an
 - **React** does not ship with any animation API, so users can either just re-render their component once per frame (which is a bit slow) or use something like `react-spring` to perform animations in a more event-driven fashion (which is faster because of the `react-spring` `animated` components that bypass the react rendering tree). Furthermore, React components are most of the time pure functions, which is a benefit for the timeline functionality mentioned below.
 - `engine-svg` and `engine-canvas` have no best practices since these are just slim wrappers around the HTML5 elements.
 
-One important aspect of this new animation API is that we want the ability to show a timeline scrubber in the Mechanic UI to give users ofan easy way to preview a specific frame of their design function output. This is much easier for frameworks that encourage functional design functions such as React and harder for frameworks such as p5.js. This timeline functionality is not described in this decision, but will build upon any decisions made in this proposal.
+One important aspect of this new animation API is that we want the ability to show a timeline scrubber in the Mechanic UI to give users an easy way to preview a specific frame of their design function output. This is much easier for frameworks that encourage functional design functions such as React and harder for frameworks such as p5.js. This timeline functionality is not described in this decision, but will build upon any decisions made in this proposal.
 
 ## Decision
 
