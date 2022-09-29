@@ -1,3 +1,5 @@
+import { RENDER_MODES } from "./constants.js";
+
 import seedrandom from "seedrandom";
 import { download } from "./download.js";
 import { WebMWriter } from "./webm-writer.js";
@@ -76,6 +78,8 @@ export class Mechanic {
     this.exportType = exportType;
     this.drawLoop = mechanicDrawLoop;
     this.drawLoop.prepare({ frameRate: this.settings.frameRate });
+
+    this.animated = this.isAnimated();
   }
 
   /**
@@ -92,12 +96,54 @@ export class Mechanic {
   }
 
   /**
+   * @return {boolean} - Returns true if the design function is animated
+   */
+  isAnimated() {
+    if (!Object.values(RENDER_MODES).includes(this.settings.mode)) {
+      throw new MechanicError(
+        `The mode "${
+          this.settings.mode
+        }" is not a valid mode. Please use one of the following: ${Object.values(RENDER_MODES).join(
+          ", "
+        )}`
+      );
+    }
+
+    return (
+      this.settings.mode === RENDER_MODES.ANIMATION ||
+      this.settings.mode === RENDER_MODES.ANIMATION_CUSTOM
+    );
+  }
+
+  /**
+   * @return {boolean} - Returns true if the design function should use the controlled drawloop
+   */
+  shouldUseControlledDrawloop() {
+    return this.settings.mode === RENDER_MODES.ANIMATION;
+  }
+
+  /**
+   * @return {function} – Returns a preloaded function that can be injected into the design function to build a custom draw loop.
+   */
+  getDrawLoopHelper() {
+    return cb => {
+      if (!this.animated || this.shouldUseControlledDrawloop()) {
+        throw new MechanicError(
+          `The drawLoop can only be used in design functions of "${RENDER_MODES.ANIMATION_CUSTOM}" mode.`
+        );
+      }
+
+      this.drawLoop.dispatch(cb);
+    };
+  }
+
+  /**
    * Register a frame for an animated design function
    * @param {SVGElement|HTMLCanvasElement} el - Element with the current drawing state of the design function
    * @param {Object} extras  - object containing extra elements needed by some engines
    */
   async frame(el, extras = {}) {
-    if (!this.settings.animated) {
+    if (!this.animated) {
       throw new MechanicError("The frame() function can only be used for animations");
     }
     if (!supportsFormatWebP()) {
@@ -152,7 +198,7 @@ export class Mechanic {
    * @param {Object} extras  - object containing extra elements needed by some engines
    */
   async done(el, extras = {}) {
-    if (!this.settings.animated) {
+    if (!this.isAnimated()) {
       if (isSVG(el)) {
         if (this.settings.ignoreStyles !== true) el = svgAppendStyles(el, extras.head);
 

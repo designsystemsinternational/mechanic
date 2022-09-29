@@ -61,13 +61,22 @@ class MechanicDrawloop {
     draw();
   }
 
+  // This function can be handed to design functions using the
+  // `animation-custom` rendering mode
+  dispatch(cb) {
+    this.stop();
+    isPlaying = true;
+    callback = cb;
+    this.start();
+  }
+
+  // This function can be used by the engine and will be used to maybe start the
+  // drawloop when the user chose to use the default controlled animation mode
   maybeDisptach(cb, isAnimated = false) {
     this.stop();
 
     if (isAnimated) {
-      isPlaying = true;
-      callback = cb;
-      this.start();
+      this.dispatch(cb);
     } else {
       cb.call(null, { frameCount: null });
     }

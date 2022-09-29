@@ -1,4 +1,4 @@
-export const handler = async ({ inputs, mechanic, frameCount }) => {
+export const handler = ({ inputs, mechanic, frameCount }) => {
   const { width, height, color1, color2, radiusPercentage } = inputs;
 
   const center = [width / 2, height / 2];
@@ -36,11 +36,11 @@ export const handler = async ({ inputs, mechanic, frameCount }) => {
   ctx.textAlign = 'center';
   ctx.fillText(frameCount, width / 2, height - height / 20);
 
-  if (frameCount < 100) {
-    mechanic.frame(canvas);
-  } else {
-    mechanic.done(canvas);
+  if (frameCount >= 100) {
+    mechanic.done();
   }
+
+  return canvas;
 };
 
 export const inputs = {
@@ -88,6 +88,6 @@ export const presets = {
 
 export const settings = {
   engine: require('@mechanic-design/engine-canvas'),
-  animated: true,
+  mode: 'animation',
   frameRate: 24,
 };

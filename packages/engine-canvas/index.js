@@ -12,20 +12,28 @@ export const run = (functionName, func, values, config) => {
   // TODO: If the canvas is provided by the handle we don't need to remove the
   // existing canvas on every frame.
   let isElAdded = false;
+  let shouldStopOnNextFrame = false;
 
   const onFrame = (el) => {
-    if (isElAdded) {
-      root.removeChild(root.childNodes[0]);
-    }
+    if (shouldStopOnNextFrame) {
+      finalizeFunction(el);
+    } else {
+      if (isElAdded) {
+        root.removeChild(root.childNodes[0]);
+      }
 
-    root.appendChild(el);
-    isElAdded = true;
+      root.appendChild(el);
+      isElAdded = true;
 
-    if (!isPreview) {
-      mechanic.frame(el);
+      if (!isPreview) {
+        mechanic.frame(el);
+      }
     }
   };
-  const onDone = async (el, name) => {
+
+  const onDone = () => (shouldStopOnNextFrame = true);
+
+  const finalizeFunction = async (el, name) => {
     mechanic.drawLoop.stop();
     if (isElAdded) {
       root.removeChild(root.childNodes[0]);
@@ -43,18 +51,23 @@ export const run = (functionName, func, values, config) => {
     mechanic.setState(obj);
   };
 
-  mechanic.drawLoop.maybeDisptach(({ frameCount }) => {
-    func.handler({
+  mechanic.drawLoop.maybeDisptach(async ({ frameCount }) => {
+    const canvas = await func.handler({
       inputs: mechanic.values,
       frameCount,
       mechanic: {
         frame: onFrame,
         done: onDone,
+        draw: mechanic.getDrawLoopHelper(),
         state: mechanic.functionState,
         setState: onSetState,
       },
     });
-  }, func.settings.animated);
+
+    if (mechanic.shouldUseControlledDrawloop()) {
+      onFrame(canvas);
+    }
+  }, mechanic.shouldUseControlledDrawloop());
 
   return mechanic;
 };

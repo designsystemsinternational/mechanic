@@ -1,24 +1,29 @@
-import React, { useMemo } from 'react';
+import React, { useEffect, useRef } from 'react';
 
-export const handler = ({ inputs, mechanic, frameCount }) => {
-  const { width, height, color1, color2, radiusPercentage } = inputs;
+export const handler = ({ inputs, mechanic }) => {
+  const { width, height, color1, color2, radiusPercentage, turns } = inputs;
 
-  const center = useMemo(() => [width / 2, height / 2], [width, height]);
-  const radius = useMemo(
-    () => ((height / 2) * radiusPercentage) / 100,
-    [height, radiusPercentage]
-  );
-  const angle = frameCount * 2;
+  const center = [width / 2, height / 2];
+  const radius = ((height / 2) * radiusPercentage) / 100;
+  const angle = useRef(0);
 
-  if (frameCount >= 100) {
-    mechanic.done();
-  }
+  // Achieving an event based (n turns of the circle) animation logic by using
+  // the provided drawLoop hook.
+  const frameCount = mechanic.useDrawLoop();
+
+  useEffect(() => {
+    if (angle.current >= 360 * turns) {
+      mechanic.done();
+    }
+    angle.current += 360 / 20;
+    mechanic.frame();
+  }, [frameCount]);
 
   return (
     <svg width={width} height={height}>
       <rect fill="#F4F4F4" width={width} height={height} />
       <g transform={`translate(${center[0]}, ${center[1]})`}>
-        <g transform={`rotate(${angle})`}>
+        <g transform={`rotate(${angle.current})`}>
           <path
             d={`M ${radius} 0
           A ${radius} ${radius}, 0, 0, 0, ${-radius} 0 Z`}
@@ -38,7 +43,7 @@ export const handler = ({ inputs, mechanic, frameCount }) => {
           fontFamily="sans-serif"
           fontSize={height / 10}
         >
-          {frameCount}
+          {angle.current}
         </text>
       </g>
     </svg>
@@ -71,6 +76,10 @@ export const inputs = {
     max: 100,
     slider: true,
   },
+  turns: {
+    type: 'number',
+    default: 3,
+  },
 };
 
 export const presets = {
@@ -86,6 +95,6 @@ export const presets = {
 
 export const settings = {
   engine: require('@mechanic-design/engine-react'),
-  mode: 'animation',
-  frameRate: 60,
+  mode: 'animation-custom',
+  frameRate: 30,
 };

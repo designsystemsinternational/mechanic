@@ -1,5 +1,8 @@
+import { RENDER_MODES } from "./constants.js";
+
 export const DEFAULT_SETTINGS = {
   animated: false,
+  mode: RENDER_MODES.STATIC,
   persistRandomOnExport: true,
   optimize: true,
   hideFeedback: false,
