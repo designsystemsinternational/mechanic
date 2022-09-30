@@ -29,12 +29,12 @@ export const handler = ({ inputs, mechanic, sketch }) => {
     sketch.textSize(height / 10);
     sketch.text(sketch.frameCount, 0, height / 2 - height / 20);
 
-    if (sketch.frameCount < 100) {
-      mechanic.frame();
-      angle += (2 * Math.PI) / 100;
-    } else {
+    if (sketch.frameCount >= 100) {
       mechanic.done();
     }
+
+    angle += (2 * Math.PI) / 100;
+    mechanic.frame();
   };
 };
 
@@ -87,6 +87,6 @@ export const presets = {
 
 export const settings = {
   engine: require('@mechanic-design/engine-p5'),
-  animated: true,
-  frameRate: 24,
+  mode: 'animation',
+  frameRate: 60,
 };
