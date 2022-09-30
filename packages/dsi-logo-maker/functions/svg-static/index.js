@@ -1,14 +1,10 @@
-export const handler = ({ inputs, mechanic, frameCount }) => {
+export const handler = ({ inputs }) => {
   const { width, height, color1, color2, radiusPercentage } = inputs;
 
   const center = [width / 2, height / 2];
   const radius = ((height / 2) * radiusPercentage) / 100;
 
-  const angle = frameCount * 2;
-
-  if (frameCount >= 100) {
-    mechanic.done();
-  }
+  const angle = 120;
 
   return `<svg width="${width}" height="${height}">
       <rect fill="#F4F4F4" width="${width}" height="${height}" />
@@ -33,7 +29,7 @@ export const handler = ({ inputs, mechanic, frameCount }) => {
           font-family="sans-serif"
           font-size="${height / 10}"
         >
-          ${frameCount}
+          ${angle}
         </text>
       </g>
     </svg>`;
@@ -88,6 +84,5 @@ export const presets = {
 
 export const settings = {
   engine: require('@mechanic-design/engine-svg'),
-  mode: 'animation',
-  frameRate: 60,
+  frameRate: 10,
 };

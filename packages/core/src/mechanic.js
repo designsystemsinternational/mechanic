@@ -80,6 +80,7 @@ export class Mechanic {
     this.drawLoop.prepare({ frameRate: this.settings.frameRate });
 
     this.animated = this.isAnimated();
+    this.shouldStopOnNextFrame = !this.animated;
   }
 
   /**
@@ -134,6 +135,57 @@ export class Mechanic {
       }
 
       this.drawLoop.dispatch(cb);
+    };
+  }
+
+  /**
+   * Main entry point for an engine. This registers the engine specific frame
+   * and done listeners and dispatches the design function to the drawloop.
+   */
+  dispatch({ frameHandler, renderFrame, ignoreBuiltInDrawLoop = false }) {
+    this.addFrame = frameHandler;
+    this.drawLoop.maybeDisptach(
+      renderFrame,
+      ignoreBuiltInDrawLoop ? false : this.shouldUseControlledDrawloop()
+    );
+  }
+
+  /**
+   * A branching function that checks if a functions should be stopped on the
+   * next frame and dispatches the data to frame or done accordingly.
+   */
+  frameOrDone({ frame, done }) {
+    if (this.shouldStopOnNextFrame) return done.call(this);
+    return frame.call(this);
+  }
+
+  /**
+   * A helper function used to wrap the rendering part of a function. If a
+   * function is in a mode where its return value should automatically be added
+   * as a new frame maybeAddFrame will dispatch the data to the correct method.
+   *
+   * If function is in a mode where frames need to be captured by the user, this
+   * function will do nothing.
+   */
+  maybeAddFrame(frame) {
+    if (typeof this.addFrame !== "function") throw new MechanicError("addFrame is not a function");
+
+    if (this.shouldUseControlledDrawloop() || !this.animated) {
+      this.addFrame(frame);
+    }
+  }
+
+  /**
+   * Convenience method to return all parameters that should be passed to a
+   * functions handler.
+   */
+  getCallbacksForHandler() {
+    return {
+      frame: this.addFrame.bind(this),
+      done: () => (this.shouldStopOnNextFrame = true),
+      draw: this.getDrawLoopHelper(),
+      setState: this.setState.bind(this),
+      state: this.functionState
     };
   }
 

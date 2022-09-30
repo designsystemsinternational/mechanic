@@ -89,5 +89,5 @@ export const presets = {
 export const settings = {
   engine: require('@mechanic-design/engine-canvas'),
   mode: 'animation',
-  frameRate: 24,
+  frameRate: 60,
 };
