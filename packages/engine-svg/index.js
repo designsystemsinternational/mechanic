@@ -8,15 +8,24 @@ export const run = (functionName, func, values, config) => {
 
   root.innerHTML = '';
 
+  let shouldStopOnNextFrame = false;
+
   const mechanic = new Mechanic(func.settings, values, config);
   const onFrame = (el) => {
-    // Pending virtual-dom approach
-    root.innerHTML = el.trim();
-    if (!isPreview) {
-      mechanic.frame(root.childNodes[0], { head });
+    if (shouldStopOnNextFrame) {
+      finalize(el);
+    } else {
+      // Pending virtual-dom approach
+      root.innerHTML = el.trim();
+      if (!isPreview) {
+        mechanic.frame(root.childNodes[0], { head });
+      }
     }
   };
-  const onDone = async (el, name) => {
+
+  const onDone = () => (shouldStopOnNextFrame = true);
+
+  const finalize = async (el, name) => {
     mechanic.drawLoop.stop();
     root.innerHTML = el.trim();
     if (!isPreview) {
@@ -29,17 +38,22 @@ export const run = (functionName, func, values, config) => {
   };
 
   mechanic.drawLoop.maybeDisptach(({ frameCount }) => {
-    func.handler({
+    const svg = func.handler({
       inputs: mechanic.values,
       frameCount,
       mechanic: {
         frame: onFrame,
         done: onDone,
+        draw: mechanic.getDrawLoopHelper(),
         state: mechanic.functionState,
         setState: onSetState,
       },
     });
-  }, func.settings.animated);
+
+    if (mechanic.shouldUseControlledDrawloop()) {
+      onFrame(svg);
+    }
+  }, mechanic.shouldUseControlledDrawloop());
 
   return mechanic;
 };

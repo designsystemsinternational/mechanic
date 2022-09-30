@@ -1,16 +1,21 @@
 export const handler = ({ inputs, mechanic, frameCount }) => {
-  const { width, height, color1, color2, radiusPercentage } = inputs;
+  const { width, height, color1, color2, radiusPercentage, turns } = inputs;
 
   const center = [width / 2, height / 2];
   const radius = ((height / 2) * radiusPercentage) / 100;
 
-  const angle = frameCount * 2;
+  let angle = 0;
 
-  if (frameCount >= 100) {
-    mechanic.done();
-  }
+  // Achieving an event based (n turns of the circle) animation logic by using
+  // the provided drawloop helper.
+  mechanic.draw(() => {
+    angle += 8;
 
-  return `<svg width="${width}" height="${height}">
+    if (angle >= turns * 360) {
+      mechanic.done();
+    }
+
+    mechanic.frame(`<svg width="${width}" height="${height}">
       <rect fill="#F4F4F4" width="${width}" height="${height}" />
       <g transform="translate(${center[0]}, ${center[1]})">
         <g transform="rotate(${angle})">
@@ -33,10 +38,11 @@ export const handler = ({ inputs, mechanic, frameCount }) => {
           font-family="sans-serif"
           font-size="${height / 10}"
         >
-          ${frameCount}
+          ${angle}
         </text>
       </g>
-    </svg>`;
+    </svg>`);
+  });
 };
 
 export const inputs = {
@@ -88,6 +94,6 @@ export const presets = {
 
 export const settings = {
   engine: require('@mechanic-design/engine-svg'),
-  mode: 'animation',
-  frameRate: 10,
+  mode: 'animation-custom',
+  frameRate: 30,
 };
