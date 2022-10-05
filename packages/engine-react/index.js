@@ -21,40 +21,36 @@ export const run = (functionName, func, values, config) => {
   const mechanic = new Mechanic(func.settings, values, config);
   const Handler = func.handler;
 
-  mechanic.dispatch({
-    frameHandler: () => {
-      mechanic.frameOrDone({
-        frame: () => {
-          if (!isPreview) {
-            mechanic.frame(root.childNodes[0], { head });
-          }
-        },
-        done: async () => {
-          mechanic.drawLoop.stop();
-          if (!isPreview) {
-            await mechanic.done(root.childNodes[0], { head });
-            mechanic.download(name || functionName);
-          }
-        },
-      });
-    },
-    renderFrame: async ({ frameCount }) => {
-      const mechanicParams = mechanic.getCallbacksForHandler();
+  mechanic.registerFrameCallback(() => {
+    if (!isPreview) {
+      mechanic.frame(root.childNodes[0], { head });
+    }
+  });
 
-      mechanic.maybeAddFrame(
-        render(
-          <Handler
-            inputs={mechanic.values}
-            frameCount={frameCount}
-            mechanic={{
-              ...mechanicParams,
-              useDrawLoop: makeDrawLoop(mechanicParams.draw),
-            }}
-          />,
-          root
-        )
-      );
-    },
+  mechanic.registerFinalizeCallback(async () => {
+    mechanic.drawLoop.stop();
+    if (!isPreview) {
+      await mechanic.done(root.childNodes[0], { head });
+      mechanic.download(name || functionName);
+    }
+  });
+
+  mechanic.dispatch(async ({ frameCount }) => {
+    const mechanicParams = mechanic.getCallbacksForHandler();
+
+    mechanic.maybeAddFrame(
+      render(
+        <Handler
+          inputs={mechanic.values}
+          frameCount={frameCount}
+          mechanic={{
+            ...mechanicParams,
+            useDrawLoop: makeDrawLoop(mechanicParams.draw),
+          }}
+        />,
+        root
+      )
+    );
   });
 
   return mechanic;

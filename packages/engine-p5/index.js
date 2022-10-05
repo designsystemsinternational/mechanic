@@ -19,24 +19,22 @@ export const run = (functionName, func, values, config) => {
     );
   }
 
-  mechanic.dispatch({
-    frameHandler: () => {
-      mechanic.frameOrDone({
-        frame: () => {
-          if (!isPreview) {
-            mechanic.frame(root.childNodes[0]);
-          }
-        },
-        done: async () => {
-          p5Sketch.noLoop();
-          if (!isPreview) {
-            await mechanic.done(root.childNodes[0]);
-            mechanic.download(name || functionName);
-          }
-        },
-      });
-    },
-    renderFrame: async () => {
+  mechanic.registerFrameCallback(() => {
+    if (!isPreview) {
+      mechanic.frame(root.childNodes[0]);
+    }
+  });
+
+  mechanic.registerFinalizeCallback(async () => {
+    p5Sketch.noLoop();
+    if (!isPreview) {
+      await mechanic.done(root.childNodes[0]);
+      mechanic.download(name || functionName);
+    }
+  });
+
+  mechanic.dispatch(
+    async () => {
       p5Sketch = new p5((sketch) => {
         sketch.frameRate(mechanic.settings.frameRate);
 
@@ -49,8 +47,10 @@ export const run = (functionName, func, values, config) => {
         });
       }, root);
     },
-    ignoreBuiltInDrawLoop: true,
-  });
+    {
+      ignoreBuiltInDrawLoop: true,
+    }
+  );
 
   return mechanic;
 };

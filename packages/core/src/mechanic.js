@@ -81,6 +81,9 @@ export class Mechanic {
 
     this.animated = this.isAnimated();
     this.shouldStopOnNextFrame = !this.animated;
+
+    this.engineFrameCallback = undefined;
+    this.engineFinalizeCallback = undefined;
   }
 
   /**
@@ -139,11 +142,56 @@ export class Mechanic {
   }
 
   /**
+   * Helper function that sets the engineFrameCallback to an instance variable.
+   * Done as a function so validation and other setter logic can be added later.
+   */
+  registerFrameCallback(frameCallback) {
+    this.engineFrameCallback = frameCallback;
+  }
+
+  /**
+   * Helper function that sets the engineFinalizeCallback to an instance variable.
+   * Done as a function so validation and other setter logic can be added later.
+   */
+  registerFinalizeCallback(finalizeCallback) {
+    this.engineFinalizeCallback = finalizeCallback;
+  }
+
+  /**
+   * A helper function that validates that both engineFrameCallback and
+   * engineFinalizeCallback are set and of type function.
+   */
+  validateEngineCallbacks() {
+    if (typeof this.engineFrameCallback !== "function") {
+      throw new MechanicError(
+        "The engine must register a frame callback using mechanic.registerFrameCallback()"
+      );
+    }
+
+    if (typeof this.engineFinalizeCallback !== "function") {
+      throw new MechanicError(
+        "The engine must register a finalize callback using mechanic.registerFinalizeCallback()"
+      );
+    }
+  }
+
+  /**
    * Main entry point for an engine. This registers the engine specific frame
    * and done listeners and dispatches the design function to the drawloop.
+   *
+   * @param{function} renderFrame - Function that starts the rendering
+   * @param{object} options - Optional options
    */
-  dispatch({ frameHandler, renderFrame, ignoreBuiltInDrawLoop = false }) {
-    this.addFrame = frameHandler;
+  dispatch(renderFrame, { ignoreBuiltInDrawLoop = false } = {}) {
+    this.validateEngineCallbacks();
+
+    this.addFrame = (...args) => {
+      return this.frameOrDone({
+        frame: () => this.engineFrameCallback.call(null, ...args),
+        done: () => this.engineFinalizeCallback.call(null, ...args)
+      });
+    };
+
     this.drawLoop.maybeDisptach(
       renderFrame,
       ignoreBuiltInDrawLoop ? false : this.shouldUseControlledDrawloop()
@@ -168,8 +216,6 @@ export class Mechanic {
    * function will do nothing.
    */
   maybeAddFrame(frame) {
-    if (typeof this.addFrame !== "function") throw new MechanicError("addFrame is not a function");
-
     if (this.shouldUseControlledDrawloop() || !this.animated) {
       this.addFrame(frame);
     }
