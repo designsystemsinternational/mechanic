@@ -231,6 +231,7 @@ export class Mechanic {
       done: () => (this.shouldStopOnNextFrame = true),
       draw: this.getDrawLoopHelper(),
       setState: this.setState.bind(this),
+      fps: this.settings.frameRate,
       state: this.functionState
     };
   }

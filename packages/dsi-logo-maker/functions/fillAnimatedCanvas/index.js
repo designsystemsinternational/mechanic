@@ -1,23 +1,26 @@
-import { getColors } from "../../utils/graphics";
+import { getColors } from '../../utils/graphics';
 import {
   computeBaseBricks,
   computeBlockGeometry,
   precomputeBlocks,
   getIndexModule,
-} from "../../utils/blocks";
-import { loadOpentypeFont } from "../../utils/opentype";
-import { drawBlock } from "../../utils/blocks-canvas";
+} from '../../utils/blocks';
+import { loadOpentypeFont } from '../../utils/opentype';
+import { drawBlock } from '../../utils/blocks-canvas';
 
 export const handler = async ({ inputs, mechanic }) => {
-  const { width, height, logoWidth, logoRatio, duration, fontMode } = inputs;
+  const { width, height, logoWidth, logoRatio, durationInMs, fontMode } =
+    inputs;
+
+  const duration = (durationInMs / 1000) * mechanic.fps;
 
   const rows = 2;
   const cols = 13;
   const logoHeight = Math.floor((logoWidth / logoRatio) * rows);
-  const words = ["DESIGN", "SYSTEMS", "INTERNATIONAL"];
+  const words = ['DESIGN', 'SYSTEMS', 'INTERNATIONAL'];
   const font = await loadOpentypeFont(fontMode);
 
-  let colors = getColors("Random Flag");
+  let colors = getColors('Random Flag');
   const blockGeometry = computeBlockGeometry(logoWidth, logoHeight, rows, cols);
   const baseBricks = computeBaseBricks(words, blockGeometry.fontSize, font);
   const blocksByIndex = precomputeBlocks(blockGeometry, baseBricks);
@@ -37,7 +40,7 @@ export const handler = async ({ inputs, mechanic }) => {
     position = { ...position };
     if (position.x + block.width < width) {
       position.x += block.width;
-      colors = getColors("Random Flag");
+      colors = getColors('Random Flag');
       brickOffset++;
     } else {
       position.x = position.x - width;
@@ -45,10 +48,10 @@ export const handler = async ({ inputs, mechanic }) => {
     }
   }
 
-  const canvas = document.createElement("canvas");
+  const canvas = document.createElement('canvas');
   canvas.width = width;
   canvas.height = height;
-  const ctx = canvas.getContext("2d");
+  const ctx = canvas.getContext('2d');
 
   const draw = () => {
     ctx.save();
@@ -57,19 +60,12 @@ export const handler = async ({ inputs, mechanic }) => {
     ctx.restore();
   };
 
-  let starttime;
-
-  const animationHandler = (t) => {
-    const timestamp = t || new Date().getTime();
-    if (!starttime) {
-      starttime = timestamp;
-    }
-    const runtime = timestamp - starttime;
+  mechanic.draw(({ frameCount }) => {
     let changed = false;
     blockConfigs.forEach((blockConfigs) => {
       const { block, animation } = blockConfigs;
       const currentProgress = Math.floor(
-        2 * animation.loops * block.cols * (runtime / duration)
+        2 * animation.loops * block.cols * (frameCount / duration)
       );
       if (currentProgress > animation.progress) {
         animation.progress = currentProgress;
@@ -85,54 +81,52 @@ export const handler = async ({ inputs, mechanic }) => {
     if (changed) {
       draw();
     }
-    if (runtime < duration) {
-      mechanic.frame(canvas);
-      requestAnimationFrame(animationHandler);
-    } else {
-      mechanic.done(canvas);
-    }
-  };
 
-  requestAnimationFrame(animationHandler);
+    if (frameCount >= duration) {
+      mechanic.done();
+    }
+
+    mechanic.frame(canvas);
+  });
 };
 
 export const inputs = {
   width: {
-    type: "number",
+    type: 'number',
     default: 500,
     min: 100,
   },
   height: {
-    type: "number",
+    type: 'number',
     default: 500,
     min: 100,
   },
   logoWidth: {
-    type: "number",
+    type: 'number',
     default: 300,
     min: 10,
   },
   logoRatio: {
-    type: "number",
+    type: 'number',
     default: 9,
     max: 20,
     slider: true,
     min: 6,
     step: 1,
   },
-  duration: {
-    type: "number",
+  durationInMs: {
+    type: 'number',
     default: 5000,
     step: 500,
     min: 1000,
   },
   fontMode: {
-    type: "text",
+    type: 'text',
     options: {
-      "F Grotesk Thin": "FGroteskThin-Regular.otf",
-      "F Grotesk": "FGrotesk-Regular.otf",
+      'F Grotesk Thin': 'FGroteskThin-Regular.otf',
+      'F Grotesk': 'FGrotesk-Regular.otf',
     },
-    default: "F Grotesk Thin",
+    default: 'F Grotesk Thin',
   },
 };
 
@@ -152,6 +146,7 @@ export const presets = {
 };
 
 export const settings = {
-  engine: require("@mechanic-design/engine-canvas"),
-  animated: true,
+  engine: require('@mechanic-design/engine-canvas'),
+  mode: 'animation-custom',
+  fps: 60,
 };
