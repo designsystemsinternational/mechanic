@@ -24,7 +24,9 @@ const copySerializable = obj => {
     }
   } else {
     copy = {};
-    for (const key in obj) {
+    const keys = Object.keys(obj);
+    keys.sort();
+    for (const key of keys) {
       if (isSerializable(obj[key])) {
         copy[key] = copySerializable(obj[key]);
       } else console.warn("Unserializable object ignored for local storage persistance.");
@@ -144,6 +146,19 @@ const cleanValues = (object, reference) => {
   return object;
 };
 
+/**
+ * Turns the input object into a hash that can be used as
+ * a name for storing the latest values in localStorage.
+ *
+ * @param{object} inputs
+ * @returns{string}
+ */
+const generateHashFromInputsObject = inputs => {
+  const inputsAsString = stringify(inputs);
+
+  return hashFromString(inputsAsString);
+};
+
 const useValues = (functionName, functionInputs, presets) => {
   const clean = useCallback(object => cleanValues(object, functionInputs), [functionInputs]);
   const initialValue = useMemo(() => {
@@ -155,10 +170,10 @@ const useValues = (functionName, functionInputs, presets) => {
     ]);
   }, [functionInputs]);
 
-  const inputsHash = hashFromString(stringify(functionInputs), 16);
-  const storageKey = `df_${functionName}_${inputsHash}`;
+  const inputsHash = generateHashFromInputsObject(functionInputs);
+  const storageKey = `mechanic_df_${functionName}_${inputsHash}`;
 
-  const [values, __setValues] = useLocalStorageState(`df_${storageKey}`, initialValue, clean);
+  const [values, __setValues] = useLocalStorageState(storageKey, initialValue, clean);
 
   const setValues = (name, value) => {
     __setValues(draft => {

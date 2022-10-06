@@ -1,16 +1,18 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useMemo } from "react";
 import { getColors } from "../../utils/graphics";
 import {
   computeBaseBricks,
   computeBlockGeometry,
   computeBlock,
 } from "../../utils/blocks";
+import { useLoadedOpentypeFont } from "../../utils/hooks";
 import { Block } from "../../utils/blocks-components";
 
 export const handler = ({ inputs, mechanic }) => {
   const {
     width,
     ratio,
+    fontMode,
     text,
     columns: cols,
     rows,
@@ -25,38 +27,40 @@ export const handler = ({ inputs, mechanic }) => {
   const words = text.split(" ").map((s) => s.toUpperCase());
   const colors = getColors("Custom Colors", null, colorsString.split(","));
   const height = Math.floor((width / ratio) * rows);
+  const font = useLoadedOpentypeFont(fontMode);
 
-  const position = { x: image ? height : 0, y: 0 };
-  const blockGeometry = computeBlockGeometry(width, height, rows, cols);
-  const baseBricks = computeBaseBricks(words, blockGeometry.fontSize);
-
-  const block = computeBlock(
-    blockGeometry,
-    baseBricks,
-    Math.floor(offset * baseBricks.length)
-  );
-
-  useEffect(() => {
-    if (image) {
+  useMemo(() => {
+    if (image && font) {
       const reader = new FileReader();
-
       reader.readAsDataURL(image);
-
       reader.onload = function () {
         setHref(reader.result);
       };
-
       reader.onerror = function () {
         console.error(reader.error);
       };
     }
-  }, []);
+  }, [font, image]);
 
   useEffect(() => {
     if (!image || href !== "") {
       done();
     }
   }, [image, href]);
+
+  if (!font) {
+    return null;
+  }
+
+  const position = { x: image ? height : 0, y: 0 };
+  const blockGeometry = computeBlockGeometry(width, height, rows, cols);
+  const baseBricks = computeBaseBricks(words, blockGeometry.fontSize, font);
+
+  const block = computeBlock(
+    blockGeometry,
+    baseBricks,
+    Math.floor(offset * baseBricks.length)
+  );
 
   return (
     <svg width={width + (image ? height : 0)} height={height}>
@@ -79,6 +83,14 @@ export const inputs = {
     slider: true,
     min: 6,
     step: 1,
+  },
+  fontMode: {
+    type: "text",
+    options: {
+      "F Grotesk Thin": "FGroteskThin-Regular.otf",
+      "F Grotesk": "FGrotesk-Regular.otf",
+    },
+    default: "F Grotesk Thin",
   },
   text: {
     type: "text",
