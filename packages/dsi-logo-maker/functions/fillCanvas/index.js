@@ -1,12 +1,12 @@
-import { getColors } from "../../utils/graphics";
+import { getColors } from '../../utils/graphics';
 import {
   computeBaseBricks,
   computeBlockGeometry,
   precomputeBlocks,
   getIndexModule,
-} from "../../utils/blocks";
-import { loadOpentypeFont } from "../../utils/opentype";
-import { drawBlock } from "../../utils/blocks-canvas";
+} from '../../utils/blocks';
+import { loadOpentypeFont } from '../../utils/opentype';
+import { drawBlock } from '../../utils/blocks-canvas';
 
 export const handler = async ({ inputs, mechanic }) => {
   const { width, height, logoWidth, logoRatio, fontMode } = inputs;
@@ -14,10 +14,10 @@ export const handler = async ({ inputs, mechanic }) => {
   const rows = 2;
   const cols = 13;
   const logoHeight = Math.floor((logoWidth / logoRatio) * rows);
-  const words = ["DESIGN", "SYSTEMS", "INTERNATIONAL"];
+  const words = ['DESIGN', 'SYSTEMS', 'INTERNATIONAL'];
   const font = await loadOpentypeFont(fontMode);
 
-  let colors = getColors("Random Flag");
+  let colors = getColors('Random Flag');
   const blockGeometry = computeBlockGeometry(logoWidth, logoHeight, rows, cols);
   const baseBricks = computeBaseBricks(words, blockGeometry.fontSize, font);
   const blocksByIndex = precomputeBlocks(blockGeometry, baseBricks);
@@ -34,43 +34,44 @@ export const handler = async ({ inputs, mechanic }) => {
     if (position.x + block.width < width) {
       position.x += block.width;
       brickOffset++;
-      colors = getColors("Random Flag");
+      colors = getColors('Random Flag');
     } else {
       position.x = position.x - width;
       position.y += block.height;
     }
   }
 
-  const canvas = document.createElement("canvas");
+  const canvas = document.createElement('canvas');
   canvas.width = width;
   canvas.height = height;
-  const ctx = canvas.getContext("2d");
+  const ctx = canvas.getContext('2d');
 
   ctx.save();
   ctx.clearRect(0, 0, width, height);
   blockConfigs.forEach((blockConfig) => drawBlock(ctx, blockConfig));
   ctx.restore();
-  mechanic.done(canvas);
+
+  return canvas;
 };
 
 export const inputs = {
   width: {
-    type: "number",
+    type: 'number',
     default: 500,
     min: 100,
   },
   height: {
-    type: "number",
+    type: 'number',
     default: 500,
     min: 100,
   },
   logoWidth: {
-    type: "number",
+    type: 'number',
     default: 300,
     min: 10,
   },
   logoRatio: {
-    type: "number",
+    type: 'number',
     default: 9,
     max: 20,
     slider: true,
@@ -78,12 +79,12 @@ export const inputs = {
     step: 1,
   },
   fontMode: {
-    type: "text",
+    type: 'text',
     options: {
-      "F Grotesk Thin": "FGroteskThin-Regular.otf",
-      "F Grotesk": "FGrotesk-Regular.otf",
+      'F Grotesk Thin': 'FGroteskThin-Regular.otf',
+      'F Grotesk': 'FGrotesk-Regular.otf',
     },
-    default: "F Grotesk Thin",
+    default: 'F Grotesk Thin',
   },
 };
 
@@ -103,5 +104,6 @@ export const presets = {
 };
 
 export const settings = {
-  engine: require("@mechanic-design/engine-canvas"),
+  engine: require('@mechanic-design/engine-canvas'),
+  mode: 'static',
 };
