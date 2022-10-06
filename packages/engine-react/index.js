@@ -1,19 +1,24 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { render, unmountComponentAtNode } from 'react-dom';
 import { Mechanic } from '@mechanic-design/core';
 
 const root = document.getElementById('root');
 const head = document.querySelector('head');
 
-const makeDrawLoop = (dispatcher) => () => {
-  const [frameCount, setFrameCount] = useState(0);
+const makeDrawLoop =
+  (dispatcher) =>
+  (isPlaying = true) => {
+    const [frameCount, setFrameCount] = useState(0);
 
-  dispatcher(({ frameCount }) => {
-    setFrameCount(frameCount);
-  });
+    useEffect(() => {
+      if (!isPlaying) return;
+      dispatcher(({ frameCount }) => {
+        setFrameCount(frameCount);
+      });
+    }, [isPlaying, dispatcher]);
 
-  return frameCount;
-};
+    return frameCount;
+  };
 
 export const run = (functionName, func, values, config) => {
   const { isPreview } = config;

@@ -4,23 +4,26 @@ import {
   computeBaseBricks,
   computeBlockGeometry,
   precomputeBlocks,
-  getIndexModule
+  getIndexModule,
 } from '../../utils/blocks';
 import { Unit } from '../../utils/blocks-components';
-import { useDrawLoop, useLoadedOpentypeFont } from '../../utils/hooks';
+import { useLoadedOpentypeFont } from '../../utils/hooks';
 
 export const handler = ({ inputs, mechanic }) => {
-  const { width, height, logoWidth, logoRatio, duration, fontMode } = inputs;
+  const { width, height, logoWidth, logoRatio, durationInMs, fontMode } =
+    inputs;
   const { frame, done } = mechanic;
+  const duration = (durationInMs / 1000) * mechanic.fps;
 
   const [state, setState] = useState('loading');
   const font = useLoadedOpentypeFont(fontMode);
-  const runtime = useDrawLoop(state === 'playing', duration);
 
   const rows = 2;
   const cols = 13;
   const logoHeight = Math.floor((logoWidth / logoRatio) * rows);
   const words = ['DESIGN', 'SYSTEMS', 'INTERNATIONAL'];
+
+  const frameCount = mechanic.useDrawLoop(state === 'playing');
 
   useEffect(() => {
     if (state === 'loading' && font) {
@@ -32,7 +35,7 @@ export const handler = ({ inputs, mechanic }) => {
     if (!font) {
       return {
         blocksByIndex: [],
-        blockConfigs: []
+        blockConfigs: [],
       };
     }
 
@@ -55,7 +58,7 @@ export const handler = ({ inputs, mechanic }) => {
       const animation = {
         stepRate: (rows * cols * Math.floor(Math.random() * 4 + 1)) / duration,
         progress: 0,
-        duration
+        duration,
       };
       blockConfigs.push({ position, blockIndex, colors, animation });
       position = { ...position };
@@ -73,14 +76,12 @@ export const handler = ({ inputs, mechanic }) => {
 
   useEffect(() => {
     if (state === 'playing') {
-      if (runtime < duration) {
-        frame();
-      } else {
-        setState('stopped');
+      if (frameCount >= duration) {
         done();
       }
+      frame();
     }
-  }, [runtime, state, setState]);
+  }, [frameCount, state, setState]);
 
   const { blockConfigs } = blockParams;
   return (
@@ -94,7 +95,7 @@ export const handler = ({ inputs, mechanic }) => {
             blockIndex={blockIndex}
             colors={colors}
             animation={animation}
-            runtime={runtime}
+            runtime={frameCount}
           ></Unit>
         ))}
     </svg>
@@ -105,17 +106,17 @@ export const inputs = {
   width: {
     type: 'number',
     default: 500,
-    min: 100
+    min: 100,
   },
   height: {
     type: 'number',
     default: 500,
-    min: 100
+    min: 100,
   },
   logoWidth: {
     type: 'number',
     default: 300,
-    min: 10
+    min: 10,
   },
   logoRatio: {
     type: 'number',
@@ -123,25 +124,26 @@ export const inputs = {
     max: 20,
     slider: true,
     min: 6,
-    step: 1
+    step: 1,
   },
-  duration: {
+  durationInMs: {
     type: 'number',
     default: 5000,
     step: 500,
-    min: 1000
+    min: 1000,
   },
   fontMode: {
     type: 'text',
     options: {
       'F Grotesk Thin': 'FGroteskThin-Regular.otf',
-      'F Grotesk': 'FGrotesk-Regular.otf'
+      'F Grotesk': 'FGrotesk-Regular.otf',
     },
-    default: 'F Grotesk Thin'
-  }
+    default: 'F Grotesk Thin',
+  },
 };
 
 export const settings = {
   engine: require('@mechanic-design/engine-react'),
-  animated: true
+  mode: 'animation-custom',
+  frameRate: 30,
 };
