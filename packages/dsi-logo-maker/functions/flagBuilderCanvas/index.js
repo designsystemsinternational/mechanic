@@ -36,11 +36,7 @@ export const handler = ({ inputs, mechanic }) => {
     colors,
   });
 
-  const canvas = document.createElement('canvas');
-  canvas.width = width;
-  canvas.height = height;
-
-  const ctx = canvas.getContext('2d');
+  const { canvas, ctx } = mechanic.getCanvas();
 
   blocks.forEach((block) => {
     ctx.fillStyle = block.color;

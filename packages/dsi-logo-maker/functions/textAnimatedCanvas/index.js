@@ -34,10 +34,7 @@ export const handler = async ({ inputs, mechanic }) => {
   const blocksByIndex = precomputeBlocks(blockGeometry, baseBricks);
   const position = { x: 0, y: 0 };
 
-  const canvas = document.createElement('canvas');
-  canvas.width = width;
-  canvas.height = height;
-  const ctx = canvas.getContext('2d');
+  const { canvas, ctx } = mechanic.getCanvas({ height });
 
   mechanic.draw(({ frameCount }) => {
     const currentProgress = Math.floor(

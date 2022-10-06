@@ -48,10 +48,7 @@ export const handler = async ({ inputs, mechanic }) => {
     }
   }
 
-  const canvas = document.createElement('canvas');
-  canvas.width = width;
-  canvas.height = height;
-  const ctx = canvas.getContext('2d');
+  const { canvas, ctx } = mechanic.getCanvas();
 
   mechanic.draw(({ frameCount }) => {
     let changed = false;

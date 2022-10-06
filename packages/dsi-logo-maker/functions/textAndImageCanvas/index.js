@@ -35,10 +35,7 @@ export const handler = async ({ inputs, mechanic }) => {
   );
   const position = { x: image ? height : 0, y: 0 };
 
-  const canvas = document.createElement('canvas');
-  canvas.width = width + height;
-  canvas.height = height;
-  const ctx = canvas.getContext('2d');
+  const { canvas, ctx } = mechanic.getCanvas({ height });
 
   ctx.save();
   ctx.clearRect(0, 0, blockGeometry.width, blockGeometry.height);
