@@ -1,14 +1,14 @@
-import { getColors, flagNames } from "../../utils/graphics";
+import { getColors, flagNames } from '../../utils/graphics';
 import {
   computeBaseBricks,
   computeBlockGeometry,
   precomputeBlocks,
   getIndexModule,
-} from "../../utils/blocks";
-import { loadOpentypeFont } from "../../utils/opentype";
-import { drawBlock } from "../../utils/blocks-canvas";
+} from '../../utils/blocks';
+import { loadOpentypeFont } from '../../utils/opentype';
+import { drawBlock } from '../../utils/blocks-canvas';
 
-export const handler = async ({ inputs, mechanic }) => {
+export const handler = async ({ inputs, mechanic, frameCount }) => {
   const {
     width,
     ratio,
@@ -19,13 +19,14 @@ export const handler = async ({ inputs, mechanic }) => {
     secondColor,
     thirdColor,
     offset,
-    duration,
+    durationInMs,
     loops,
   } = inputs;
 
+  const duration = (durationInMs / 1000) * mechanic.fps;
   const rows = 2;
   const cols = 13;
-  const words = ["DESIGN", "SYSTEMS", "INTERNATIONAL"];
+  const words = ['DESIGN', 'SYSTEMS', 'INTERNATIONAL'];
   const height = Math.floor((width / ratio) * rows);
   const font = await loadOpentypeFont(fontMode);
 
@@ -39,12 +40,20 @@ export const handler = async ({ inputs, mechanic }) => {
   const blocksByIndex = precomputeBlocks(blockGeometry, baseBricks);
   const position = { x: 0, y: 0 };
 
-  const canvas = document.createElement("canvas");
+  const canvas = document.createElement('canvas');
   canvas.width = width;
   canvas.height = height;
-  const ctx = canvas.getContext("2d");
+  const ctx = canvas.getContext('2d');
 
-  const draw = () => {
+  mechanic.draw(({ frameCount }) => {
+    const currentProgress = Math.floor(
+      2 * loops * cols * (frameCount / duration)
+    );
+    const progress = currentProgress;
+    const internalOffset = Math.floor(
+      2 * loops * cols * (frameCount / duration)
+    );
+
     const brickOffset =
       Math.floor(offset * blocksByIndex.length) + internalOffset;
     const block =
@@ -56,42 +65,22 @@ export const handler = async ({ inputs, mechanic }) => {
     drawBlock(ctx, { position, block, colors });
 
     ctx.restore();
-  };
 
-  let starttime;
-  let internalOffset = 0;
-  let progress = 0;
+    if (frameCount >= duration) {
+      mechanic.done();
+    }
 
-  const animationHandler = (t) => {
-    const timestamp = t || new Date().getTime();
-    if (!starttime) {
-      starttime = timestamp;
-    }
-    const runtime = timestamp - starttime;
-    let currentProgress = Math.floor(2 * loops * cols * (runtime / duration));
-    if (currentProgress > progress) {
-      progress = currentProgress;
-      internalOffset = internalOffset + 1;
-      draw();
-    }
-    if (runtime < duration) {
-      mechanic.frame(canvas);
-      requestAnimationFrame(animationHandler);
-    } else {
-      mechanic.done(canvas);
-    }
-  };
-
-  requestAnimationFrame(animationHandler);
+    mechanic.frame(canvas);
+  });
 };
 
 export const inputs = {
   width: {
-    type: "number",
+    type: 'number',
     default: 500,
   },
   ratio: {
-    type: "number",
+    type: 'number',
     default: 9,
     max: 20,
     slider: true,
@@ -99,58 +88,58 @@ export const inputs = {
     step: 1,
   },
   fontMode: {
-    type: "text",
+    type: 'text',
     options: {
-      "F Grotesk Thin": "FGroteskThin-Regular.otf",
-      "F Grotesk": "FGrotesk-Regular.otf",
+      'F Grotesk Thin': 'FGroteskThin-Regular.otf',
+      'F Grotesk': 'FGrotesk-Regular.otf',
     },
-    default: "F Grotesk Thin",
+    default: 'F Grotesk Thin',
   },
   colorMode: {
-    type: "text",
-    options: ["Random Flag", "Pick Flag", "Custom Colors"],
-    default: "Random Flag",
+    type: 'text',
+    options: ['Random Flag', 'Pick Flag', 'Custom Colors'],
+    default: 'Random Flag',
   },
   flag: {
-    type: "text",
+    type: 'text',
     options: flagNames,
     default: flagNames[0],
-    editable: (inputs) => inputs.colorMode === "Pick Flag",
+    editable: (inputs) => inputs.colorMode === 'Pick Flag',
   },
   firstColor: {
-    type: "color",
-    model: "hex",
-    default: "#11457e",
-    editable: (inputs) => inputs.colorMode === "Custom Colors",
+    type: 'color',
+    model: 'hex',
+    default: '#11457e',
+    editable: (inputs) => inputs.colorMode === 'Custom Colors',
   },
   secondColor: {
-    type: "color",
-    model: "hex",
-    default: "#d7141a",
-    editable: (inputs) => inputs.colorMode === "Custom Colors",
+    type: 'color',
+    model: 'hex',
+    default: '#d7141a',
+    editable: (inputs) => inputs.colorMode === 'Custom Colors',
   },
   thirdColor: {
-    type: "color",
-    model: "hex",
-    default: "#f1f1f1",
-    editable: (inputs) => inputs.colorMode === "Custom Colors",
+    type: 'color',
+    model: 'hex',
+    default: '#f1f1f1',
+    editable: (inputs) => inputs.colorMode === 'Custom Colors',
   },
   offset: {
-    type: "number",
+    type: 'number',
     default: 0,
     min: 0,
     max: 1,
     step: 0.05,
     slider: true,
   },
-  duration: {
-    type: "number",
+  durationInMs: {
+    type: 'number',
     default: 5000,
     step: 500,
     min: 1000,
   },
   loops: {
-    type: "number",
+    type: 'number',
     default: 4,
     min: 1,
     step: 1,
@@ -169,6 +158,6 @@ export const presets = {
 };
 
 export const settings = {
-  engine: require("@mechanic-design/engine-canvas"),
-  animated: true,
+  engine: require('@mechanic-design/engine-canvas'),
+  mode: 'animation-custom',
 };
