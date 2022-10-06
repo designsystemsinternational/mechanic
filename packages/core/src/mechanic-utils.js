@@ -159,6 +159,23 @@ const getTimeStamp = () => {
   return `${year}-${month}-${day}-${hour}-${minute}`;
 };
 
+/**
+ * Turns an input string into a hash to be used as a cache key.
+ * @param {string} str - String to hash
+ * @param {number} length - Length of the hash
+ * @return {string} - Hashed string
+ */
+const hashFromString = (str, len = Infinity) => {
+  let hash = 0;
+  if (str.length == 0) return hash.toString();
+  for (let i = 0; i < str.length; i++) {
+    const char = str.charCodeAt(i);
+    hash = (hash << 5) - hash + char;
+    hash = hash & hash; // Convert to 32bit integer
+  }
+  return hash.toString().substring(0, len);
+};
+
 export {
   isSVG,
   isCanvas,
@@ -172,5 +189,6 @@ export {
   htmlToCanvas,
   extractSvgSize,
   dataUrlToCanvas,
-  getTimeStamp
+  getTimeStamp,
+  hashFromString
 };

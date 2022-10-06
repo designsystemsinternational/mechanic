@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - Added frameRate setting to function’s settings. This controls the export frameRate
+- Adds public `memo` function to mechanic core to provide an opt-in performance optimization. `memo` can be imported directly from mechanic-core into a design function where it can be used to cache the results of slow computations (like loading static assets).
 
 ### Fixed
 
