@@ -53,11 +53,11 @@ export const handler = async ({ inputs, mechanic }) => {
     //
     // If we want to do this in a clean way we'd need to provide additional
     // utilities for loading assets and memoizing them between function calls
-    mechanic.frame(canvas);
+    mechanic.done(canvas);
   };
   img.src = image ? URL.createObjectURL(image) : '';
   if (!image) {
-    return canvas;
+    mechanic.done(canvas);
   }
 };
 

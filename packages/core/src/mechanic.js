@@ -214,10 +214,21 @@ export class Mechanic {
    *
    * If function is in a mode where frames need to be captured by the user, this
    * function will do nothing.
+   *
+   * If a function returns a nullish value (null or undefined) the function will
+   * also do nothing and warn the use to manually call mechanic.frame() or
+   * mechanic.done().
    */
   maybeAddFrame(frame) {
+    const frameIsEmpty = frame === undefined || frame === null;
     if (this.shouldUseControlledDrawloop() || !this.animated) {
-      this.addFrame(frame);
+      if (!frameIsEmpty) {
+        this.addFrame(frame);
+      } else {
+        console.warn(
+          "Your design function returned an empty frame. Make sure to call mechanic.frame() or mechanic.done() manually to add a frames."
+        );
+      }
     }
   }
 
@@ -228,7 +239,12 @@ export class Mechanic {
   getCallbacksForHandler() {
     return {
       frame: this.addFrame.bind(this),
-      done: () => (this.shouldStopOnNextFrame = true),
+      done: (...args) => {
+        this.shouldStopOnNextFrame = true;
+        if (!this.animated) {
+          this.addFrame(...args);
+        }
+      },
       draw: this.getDrawLoopHelper(),
       setState: this.setState.bind(this),
       fps: this.settings.frameRate,

@@ -1,13 +1,13 @@
-import React, { useState, useEffect, useRef } from "react";
-import { getColors } from "../../utils/graphics";
+import React, { useState, useEffect, useRef } from 'react';
+import { getColors } from '../../utils/graphics';
 import {
   computeBaseBricks,
   computeBlockGeometry,
   precomputeBlocks,
   getIndexModule,
-} from "../../utils/blocks";
-import { useLoadedOpentypeFont } from "../../utils/hooks";
-import { Block } from "../../utils/blocks-components";
+} from '../../utils/blocks';
+import { useLoadedOpentypeFont } from '../../utils/hooks';
+import { Block } from '../../utils/blocks-components';
 
 export const handler = ({ inputs, mechanic }) => {
   const { width, height, logoWidth, logoRatio, fontMode } = inputs;
@@ -16,7 +16,7 @@ export const handler = ({ inputs, mechanic }) => {
   const rows = 2;
   const cols = 13;
   const logoHeight = Math.floor((logoWidth / logoRatio) * rows);
-  const words = ["DESIGN", "SYSTEMS", "INTERNATIONAL"];
+  const words = ['DESIGN', 'SYSTEMS', 'INTERNATIONAL'];
   const font = useLoadedOpentypeFont(fontMode);
 
   useEffect(() => {
@@ -35,7 +35,7 @@ export const handler = ({ inputs, mechanic }) => {
 
   const blockConfigs = [];
   let position = { x: 0, y: 0 };
-  let colors = getColors("Random Flag");
+  let colors = getColors('Random Flag');
   let brickOffset = 0;
 
   while (position.y < height) {
@@ -46,7 +46,7 @@ export const handler = ({ inputs, mechanic }) => {
     if (position.x + block.width < width) {
       position.x += block.width;
       brickOffset++;
-      colors = getColors("Random Flag");
+      colors = getColors('Random Flag');
     } else {
       position.x = position.x - width;
       position.y += block.height;
@@ -69,22 +69,22 @@ export const handler = ({ inputs, mechanic }) => {
 
 export const inputs = {
   width: {
-    type: "number",
+    type: 'number',
     default: 500,
     min: 100,
   },
   height: {
-    type: "number",
+    type: 'number',
     default: 500,
     min: 100,
   },
   logoWidth: {
-    type: "number",
+    type: 'number',
     default: 300,
     min: 10,
   },
   logoRatio: {
-    type: "number",
+    type: 'number',
     default: 9,
     max: 20,
     slider: true,
@@ -92,12 +92,12 @@ export const inputs = {
     step: 1,
   },
   fontMode: {
-    type: "text",
+    type: 'text',
     options: {
-      "F Grotesk Thin": "FGroteskThin-Regular.otf",
-      "F Grotesk": "FGrotesk-Regular.otf",
+      'F Grotesk Thin': 'FGroteskThin-Regular.otf',
+      'F Grotesk': 'FGrotesk-Regular.otf',
     },
-    default: "F Grotesk Thin",
+    default: 'F Grotesk Thin',
   },
 };
 
@@ -117,5 +117,5 @@ export const presets = {
 };
 
 export const settings = {
-  engine: require("@mechanic-design/engine-react"),
+  engine: require('@mechanic-design/engine-react'),
 };

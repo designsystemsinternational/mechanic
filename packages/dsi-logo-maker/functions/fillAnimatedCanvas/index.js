@@ -53,13 +53,6 @@ export const handler = async ({ inputs, mechanic }) => {
   canvas.height = height;
   const ctx = canvas.getContext('2d');
 
-  const draw = () => {
-    ctx.save();
-    ctx.clearRect(0, 0, width, height);
-    blockConfigs.forEach((blockConfig) => drawBlock(ctx, blockConfig));
-    ctx.restore();
-  };
-
   mechanic.draw(({ frameCount }) => {
     let changed = false;
     blockConfigs.forEach((blockConfigs) => {
@@ -79,7 +72,10 @@ export const handler = async ({ inputs, mechanic }) => {
       }
     });
     if (changed) {
-      draw();
+      ctx.save();
+      ctx.clearRect(0, 0, width, height);
+      blockConfigs.forEach((blockConfig) => drawBlock(ctx, blockConfig));
+      ctx.restore();
     }
 
     if (frameCount >= duration) {
