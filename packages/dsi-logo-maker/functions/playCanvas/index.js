@@ -1,19 +1,19 @@
-import { getColors } from "../../utils/graphics";
+import { getColors } from '../../utils/graphics';
 import {
   computeBaseBricks,
   computeBlockGeometry,
   precomputeBlocks,
   getIndexModule,
-} from "../../utils/blocks";
-import { loadOpentypeFont } from "../../utils/opentype";
-import { drawBlock } from "../../utils/blocks-canvas";
+} from '../../utils/blocks';
+import { loadOpentypeFont } from '../../utils/opentype';
+import { drawBlock } from '../../utils/blocks-canvas';
 
 export const handler = async ({ inputs, mechanic }) => {
   const { width, height, allSameColors, fontMode } = inputs;
 
-  const words = ["DESIGN", "SYSTEMS", "INTERNATIONAL"];
+  const words = ['DESIGN', 'SYSTEMS', 'INTERNATIONAL'];
   const blockConfigs = [];
-  let colors = getColors("Random Flag");
+  let colors = getColors('Random Flag');
   const font = await loadOpentypeFont(fontMode);
 
   const blockParams = [
@@ -77,7 +77,7 @@ export const handler = async ({ inputs, mechanic }) => {
 
   for (const param of blockParams) {
     if (!allSameColors) {
-      colors = getColors("Random Flag");
+      colors = getColors('Random Flag');
     }
     const { rows, cols, logoRatio, logoWidth, x, y, offset } = param;
 
@@ -95,40 +95,41 @@ export const handler = async ({ inputs, mechanic }) => {
     blockConfigs.push({ position, block, colors });
   }
 
-  const canvas = document.createElement("canvas");
+  const canvas = document.createElement('canvas');
   canvas.width = width;
   canvas.height = height;
-  const ctx = canvas.getContext("2d");
+  const ctx = canvas.getContext('2d');
 
   ctx.save();
   ctx.clearRect(0, 0, width, height);
   blockConfigs.forEach((blockConfig) => drawBlock(ctx, blockConfig));
   ctx.restore();
-  mechanic.done(canvas);
+
+  return canvas;
 };
 
 export const inputs = {
   width: {
-    type: "number",
+    type: 'number',
     default: 300,
     min: 100,
   },
   height: {
-    type: "number",
+    type: 'number',
     default: 300,
     min: 100,
   },
   allSameColors: {
-    type: "boolean",
+    type: 'boolean',
     default: true,
   },
   fontMode: {
-    type: "text",
+    type: 'text',
     options: {
-      "F Grotesk Thin": "FGroteskThin-Regular.otf",
-      "F Grotesk": "FGrotesk-Regular.otf",
+      'F Grotesk Thin': 'FGroteskThin-Regular.otf',
+      'F Grotesk': 'FGrotesk-Regular.otf',
     },
-    default: "F Grotesk Thin",
+    default: 'F Grotesk Thin',
   },
 };
 
@@ -140,5 +141,5 @@ export const presets = {
 };
 
 export const settings = {
-  engine: require("@mechanic-design/engine-canvas"),
+  engine: require('@mechanic-design/engine-canvas'),
 };
