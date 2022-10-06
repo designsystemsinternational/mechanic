@@ -8,7 +8,7 @@ import {
 import { loadOpentypeFont } from '../../utils/opentype';
 import { drawBlock } from '../../utils/blocks-canvas';
 
-export const handler = async ({ inputs, mechanic, frameCount }) => {
+export const handler = async ({ inputs, mechanic }) => {
   const {
     width,
     ratio,
@@ -46,10 +46,6 @@ export const handler = async ({ inputs, mechanic, frameCount }) => {
   const ctx = canvas.getContext('2d');
 
   mechanic.draw(({ frameCount }) => {
-    const currentProgress = Math.floor(
-      2 * loops * cols * (frameCount / duration)
-    );
-    const progress = currentProgress;
     const internalOffset = Math.floor(
       2 * loops * cols * (frameCount / duration)
     );

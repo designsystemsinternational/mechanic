@@ -1,12 +1,12 @@
-import { getColors } from "../../utils/graphics";
+import { getColors } from '../../utils/graphics';
 import {
   computeBaseBricks,
   computeBlockGeometry,
   precomputeBlocks,
   getIndexModule,
-} from "../../utils/blocks";
-import { loadOpentypeFont } from "../../utils/opentype";
-import { drawBlock } from "../../utils/blocks-canvas";
+} from '../../utils/blocks';
+import { loadOpentypeFont } from '../../utils/opentype';
+import { drawBlock } from '../../utils/blocks-canvas';
 
 export const handler = async ({ inputs, mechanic }) => {
   const {
@@ -18,27 +18,36 @@ export const handler = async ({ inputs, mechanic }) => {
     rows,
     colors: colorsString,
     offset,
-    duration,
+    durationInMs,
     loops,
   } = inputs;
 
-  const words = text.split(" ").map((s) => s.toUpperCase());
+  const duration = (durationInMs / 1000) * mechanic.fps;
+  const words = text.split(' ').map((s) => s.toUpperCase());
   const height = Math.floor((width / ratio) * rows);
   const font = await loadOpentypeFont(fontMode);
 
-  const colors = getColors("Custom Colors", null, colorsString.split(","));
+  const colors = getColors('Custom Colors', null, colorsString.split(','));
   const blockGeometry = computeBlockGeometry(width, height, rows, cols);
   const baseBricks = computeBaseBricks(words, blockGeometry.fontSize, font);
 
   const blocksByIndex = precomputeBlocks(blockGeometry, baseBricks);
   const position = { x: 0, y: 0 };
 
-  const canvas = document.createElement("canvas");
+  const canvas = document.createElement('canvas');
   canvas.width = width;
   canvas.height = height;
-  const ctx = canvas.getContext("2d");
+  const ctx = canvas.getContext('2d');
 
-  const draw = () => {
+  mechanic.draw(({ frameCount }) => {
+    const currentProgress = Math.floor(
+      2 * loops * cols * (frameCount / duration)
+    );
+    const progress = currentProgress;
+    const internalOffset = Math.floor(
+      2 * loops * cols * (frameCount / duration)
+    );
+
     const brickOffset =
       Math.floor(offset * blocksByIndex.length) + internalOffset;
     const block =
@@ -50,43 +59,23 @@ export const handler = async ({ inputs, mechanic }) => {
     drawBlock(ctx, { position, block, colors });
 
     ctx.restore();
-  };
 
-  let starttime;
-  let internalOffset = 0;
-  let progress = 0;
+    if (frameCount >= duration) {
+      mechanic.done();
+    }
 
-  const animationHandler = (t) => {
-    const timestamp = t || new Date().getTime();
-    if (!starttime) {
-      starttime = timestamp;
-    }
-    const runtime = timestamp - starttime;
-    let currentProgress = Math.floor(2 * loops * cols * (runtime / duration));
-    if (currentProgress > progress) {
-      progress = currentProgress;
-      internalOffset = internalOffset + 1;
-      draw();
-    }
-    if (runtime < duration) {
-      mechanic.frame(canvas);
-      requestAnimationFrame(animationHandler);
-    } else {
-      mechanic.done(canvas);
-    }
-  };
-
-  requestAnimationFrame(animationHandler);
+    mechanic.frame(canvas);
+  });
 };
 
 export const inputs = {
   width: {
-    type: "number",
+    type: 'number',
     default: 500,
     min: 100,
   },
   ratio: {
-    type: "number",
+    type: 'number',
     default: 9,
     max: 20,
     slider: true,
@@ -94,49 +83,49 @@ export const inputs = {
     step: 1,
   },
   fontMode: {
-    type: "text",
+    type: 'text',
     options: {
-      "F Grotesk Thin": "FGroteskThin-Regular.otf",
-      "F Grotesk": "FGrotesk-Regular.otf",
+      'F Grotesk Thin': 'FGroteskThin-Regular.otf',
+      'F Grotesk': 'FGrotesk-Regular.otf',
     },
-    default: "F Grotesk Thin",
+    default: 'F Grotesk Thin',
   },
   text: {
-    type: "text",
-    default: "Whatever you want",
+    type: 'text',
+    default: 'Whatever you want',
   },
   columns: {
-    type: "number",
+    type: 'number',
     default: 13,
     min: 1,
     step: 1,
   },
   rows: {
-    type: "number",
+    type: 'number',
     default: 2,
     min: 1,
     step: 1,
   },
   colors: {
-    type: "text",
-    default: "#11457e,#d7141a,#f1f1f1",
+    type: 'text',
+    default: '#11457e,#d7141a,#f1f1f1',
   },
   offset: {
-    type: "number",
+    type: 'number',
     default: 0,
     min: 0,
     max: 1,
     step: 0.05,
     slider: true,
   },
-  duration: {
-    type: "number",
+  durationInMs: {
+    type: 'number',
     default: 10000,
     min: 1000,
     step: 500,
   },
   loops: {
-    type: "number",
+    type: 'number',
     default: 4,
     min: 1,
   },
@@ -154,6 +143,6 @@ export const presets = {
 };
 
 export const settings = {
-  engine: require("@mechanic-design/engine-canvas"),
-  animated: true,
+  engine: require('@mechanic-design/engine-canvas'),
+  mode: 'animation-custom',
 };
