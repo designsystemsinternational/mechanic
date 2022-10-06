@@ -8,7 +8,7 @@ import {
 import { loadOpentypeFont } from '../../utils/opentype';
 import { drawBlock } from '../../utils/blocks-canvas';
 
-export const handler = async ({ inputs, mechanic }) => {
+export const handler = async ({ inputs, mechanic, frameCount }) => {
   const {
     width,
     ratio,
@@ -28,13 +28,19 @@ export const handler = async ({ inputs, mechanic }) => {
   const cols = 13;
   const words = ['DESIGN', 'SYSTEMS', 'INTERNATIONAL'];
   const height = Math.floor((width / ratio) * rows);
-  const font = await loadOpentypeFont(fontMode);
+  const font = await mechanic.memo(
+    async () => await loadOpentypeFont(fontMode),
+    [fontMode]
+  );
 
-  const colors = getColors(colorMode, flag, [
-    firstColor,
-    secondColor,
-    thirdColor,
-  ]);
+  // It's a bit annoying you need to memoize all random values when using the
+  // controlled animation loop. Starting to feel like the custom animation loop
+  // is the better option.
+  const colors = mechanic.memo(
+    () => getColors(colorMode, flag, [firstColor, secondColor, thirdColor]),
+    [colorMode, flag, firstColor, secondColor, thirdColor]
+  );
+
   const blockGeometry = computeBlockGeometry(width, height, rows, cols);
   const baseBricks = computeBaseBricks(words, blockGeometry.fontSize, font);
   const blocksByIndex = precomputeBlocks(blockGeometry, baseBricks);
@@ -42,29 +48,25 @@ export const handler = async ({ inputs, mechanic }) => {
 
   const { canvas, ctx } = mechanic.getCanvas({ height });
 
-  mechanic.draw(({ frameCount }) => {
-    const internalOffset = Math.floor(
-      2 * loops * cols * (frameCount / duration)
-    );
+  const internalOffset = Math.floor(2 * loops * cols * (frameCount / duration));
 
-    const brickOffset =
-      Math.floor(offset * blocksByIndex.length) + internalOffset;
-    const block =
-      blocksByIndex[getIndexModule(brickOffset, blocksByIndex.length)];
+  const brickOffset =
+    Math.floor(offset * blocksByIndex.length) + internalOffset;
+  const block =
+    blocksByIndex[getIndexModule(brickOffset, blocksByIndex.length)];
 
-    ctx.save();
-    ctx.clearRect(0, 0, blockGeometry.width, blockGeometry.height);
+  ctx.save();
+  ctx.clearRect(0, 0, blockGeometry.width, blockGeometry.height);
 
-    drawBlock(ctx, { position, block, colors });
+  drawBlock(ctx, { position, block, colors });
 
-    ctx.restore();
+  ctx.restore();
 
-    if (frameCount >= duration) {
-      mechanic.done();
-    }
+  if (frameCount >= duration) {
+    mechanic.done();
+  }
 
-    mechanic.frame(canvas);
-  });
+  return canvas;
 };
 
 export const inputs = {
@@ -152,5 +154,6 @@ export const presets = {
 
 export const settings = {
   engine: require('@mechanic-design/engine-canvas'),
-  mode: 'animation-custom',
+  mode: 'animation',
+  frameRate: 30,
 };

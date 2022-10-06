@@ -24,7 +24,10 @@ export const handler = async ({ inputs, mechanic }) => {
   const cols = 13;
   const words = ['DESIGN', 'SYSTEMS', 'INTERNATIONAL'];
   const height = Math.floor((width / ratio) * rows);
-  const font = await loadOpentypeFont(fontMode);
+  const font = await mechanic.memo(
+    async () => await loadOpentypeFont(fontMode),
+    [fontMode]
+  );
 
   const colors = getColors(colorMode, flag, [
     firstColor,

@@ -20,6 +20,7 @@ import {
   getTimeStamp
 } from "./mechanic-utils.js";
 
+import { memo } from "./memoization.js";
 import { MechanicError } from "./mechanic-error.js";
 import { mechanicDrawLoop } from "./mechanic-drawloop.js";
 
@@ -248,7 +249,8 @@ export class Mechanic {
       draw: this.getDrawLoopHelper(),
       setState: this.setState.bind(this),
       fps: this.settings.frameRate,
-      state: this.functionState
+      state: this.functionState,
+      memo
     };
   }
 

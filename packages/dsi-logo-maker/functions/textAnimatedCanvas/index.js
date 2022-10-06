@@ -25,7 +25,10 @@ export const handler = async ({ inputs, mechanic }) => {
   const duration = (durationInMs / 1000) * mechanic.fps;
   const words = text.split(' ').map((s) => s.toUpperCase());
   const height = Math.floor((width / ratio) * rows);
-  const font = await loadOpentypeFont(fontMode);
+  const font = await mechanic.memo(
+    async () => await loadOpentypeFont(fontMode),
+    [fontMode]
+  );
 
   const colors = getColors('Custom Colors', null, colorsString.split(','));
   const blockGeometry = computeBlockGeometry(width, height, rows, cols);

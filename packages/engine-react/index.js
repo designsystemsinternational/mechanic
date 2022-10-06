@@ -26,6 +26,12 @@ export const run = (functionName, func, values, config) => {
   const mechanic = new Mechanic(func.settings, values, config);
   const Handler = func.handler;
 
+  const memoMock = () => {
+    throw new Error(
+      `mechanic.memo is not allowed in engine-react. Use React’s built-in useMemo hook instead`
+    );
+  };
+
   mechanic.registerFrameCallback(() => {
     if (!isPreview) {
       mechanic.frame(root.childNodes[0], { head });
@@ -51,6 +57,7 @@ export const run = (functionName, func, values, config) => {
           mechanic={{
             ...mechanicParams,
             useDrawLoop: makeDrawLoop(mechanicParams.draw),
+            memo: () => memoMock.call(null),
           }}
         />,
         root

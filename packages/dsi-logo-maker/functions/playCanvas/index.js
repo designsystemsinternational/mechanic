@@ -14,7 +14,10 @@ export const handler = async ({ inputs, mechanic }) => {
   const words = ['DESIGN', 'SYSTEMS', 'INTERNATIONAL'];
   const blockConfigs = [];
   let colors = getColors('Random Flag');
-  const font = await loadOpentypeFont(fontMode);
+  const font = await mechanic.memo(
+    async () => await loadOpentypeFont(fontMode),
+    [fontMode]
+  );
 
   const blockParams = [
     { rows: 6, cols: 5, logoRatio: 5, logoWidth: 150, x: 0, y: 0, offset: 0 },

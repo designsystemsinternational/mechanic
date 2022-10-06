@@ -18,7 +18,11 @@ export const handler = async ({ inputs, mechanic }) => {
   const cols = 13;
   const logoHeight = Math.floor((logoWidth / logoRatio) * rows);
   const words = ['DESIGN', 'SYSTEMS', 'INTERNATIONAL'];
-  const font = await loadOpentypeFont(fontMode);
+
+  const font = await mechanic.memo(
+    async () => await loadOpentypeFont(fontMode),
+    [fontMode]
+  );
 
   let colors = getColors('Random Flag');
   const blockGeometry = computeBlockGeometry(logoWidth, logoHeight, rows, cols);

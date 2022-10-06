@@ -22,7 +22,7 @@ export const run = (functionName, func, values, config) => {
   let isElAdded = false;
   let preparedCanvas = null;
 
-  const getCanvas = function ({ width = null, height = null } = {}) {
+  const getCanvas = ({ width = null, height = null } = {}) => {
     const dimensions = {
       width: width ?? mechanic.values.width ?? null,
       height: height ?? mechanic.values.height ?? null,
@@ -67,7 +67,7 @@ You can also set a height by adding an input called height to your functions’ 
 
   const checkIfCanvasHasBeenCalled = () => {
     if (preparedCanvas === null) {
-      console.warn(`Seems like you�re constructing your own canvas. @mechanic-design/engine-canvas actually provides you with a canvas that can automatically scale to the pixel density of your display.
+      console.warn(`Seems like you’re constructing your own canvas. @mechanic-design/engine-canvas actually provides you with a canvas that can automatically scale to the pixel density of your display.
 You can use it like this:
 export const handler = ({ inputs, mechanic, getCanvas }) => {
   const { canvas, ctx } = getCanvas({ width: 1000, height: 1000 });

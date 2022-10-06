@@ -22,7 +22,10 @@ export const handler = async ({ inputs, mechanic }) => {
   const words = text.split(' ').map((s) => s.toUpperCase());
   const colors = getColors('Custom Colors', null, colorsString.split(','));
   const height = Math.floor((width / ratio) * rows);
-  const font = await loadOpentypeFont(fontMode);
+  const font = await mechanic.memo(
+    async () => await loadOpentypeFont(fontMode),
+    [fontMode]
+  );
 
   const blockGeometry = computeBlockGeometry(width, height, rows, cols);
   const baseBricks = computeBaseBricks(words, blockGeometry.fontSize, font);
@@ -34,10 +37,7 @@ export const handler = async ({ inputs, mechanic }) => {
   );
   const position = { x: 0, y: 0 };
 
-  const canvas = document.createElement('canvas');
-  canvas.width = width;
-  canvas.height = height;
-  const ctx = canvas.getContext('2d');
+  const { canvas, ctx } = mechanic.getCanvas({ width, height });
 
   ctx.save();
   ctx.clearRect(0, 0, blockGeometry.width, blockGeometry.height);

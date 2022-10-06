@@ -1,4 +1,4 @@
-import { load } from "opentype.js";
+import { load } from 'opentype.js';
 
 export const loadOpentypeFont = (name, callback) => {
   const fontUrl = `/static/${name}`;
