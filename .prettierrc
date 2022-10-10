@@ -6,6 +6,7 @@
   "arrowParens": "avoid",
   "jsxBracketSameLine": true,
   "trailingComma": "none",
+  "proveWrap": "always",
   "overrides": [
     {
       "files": ["*.css", "*.scss"],
