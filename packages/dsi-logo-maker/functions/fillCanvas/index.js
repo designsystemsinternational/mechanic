@@ -3,12 +3,12 @@ import {
   computeBaseBricks,
   computeBlockGeometry,
   precomputeBlocks,
-  getIndexModule,
+  getIndexModule
 } from "../../utils/blocks";
 import { loadOpentypeFont } from "../../utils/opentype";
 import { drawBlock } from "../../utils/blocks-canvas";
 
-export const handler = async ({ inputs, mechanic }) => {
+export const handler = async ({ inputs, done, getCanvas }) => {
   const { width, height, logoWidth, logoRatio, fontMode } = inputs;
 
   const rows = 2;
@@ -41,33 +41,31 @@ export const handler = async ({ inputs, mechanic }) => {
     }
   }
 
-  const canvas = document.createElement("canvas");
-  canvas.width = width;
-  canvas.height = height;
-  const ctx = canvas.getContext("2d");
+  const { ctx } = getCanvas(width, height);
 
   ctx.save();
   ctx.clearRect(0, 0, width, height);
-  blockConfigs.forEach((blockConfig) => drawBlock(ctx, blockConfig));
+  blockConfigs.forEach(blockConfig => drawBlock(ctx, blockConfig));
   ctx.restore();
-  mechanic.done(canvas);
+
+  done();
 };
 
 export const inputs = {
   width: {
     type: "number",
     default: 500,
-    min: 100,
+    min: 100
   },
   height: {
     type: "number",
     default: 500,
-    min: 100,
+    min: 100
   },
   logoWidth: {
     type: "number",
     default: 300,
-    min: 10,
+    min: 10
   },
   logoRatio: {
     type: "number",
@@ -75,33 +73,33 @@ export const inputs = {
     max: 20,
     slider: true,
     min: 6,
-    step: 1,
+    step: 1
   },
   fontMode: {
     type: "text",
     options: {
       "F Grotesk Thin": "FGroteskThin-Regular.otf",
-      "F Grotesk": "FGrotesk-Regular.otf",
+      "F Grotesk": "FGrotesk-Regular.otf"
     },
-    default: "F Grotesk Thin",
-  },
+    default: "F Grotesk Thin"
+  }
 };
 
 export const presets = {
   bigger: {
     width: 1000,
-    height: 1000,
+    height: 1000
   },
   panoramic: {
     width: 1000,
-    height: 250,
+    height: 250
   },
   long: {
     width: 500,
-    height: 1000,
-  },
+    height: 1000
+  }
 };
 
 export const settings = {
-  engine: require("@mechanic-design/engine-canvas"),
+  engine: require("@mechanic-design/engine-canvas")
 };

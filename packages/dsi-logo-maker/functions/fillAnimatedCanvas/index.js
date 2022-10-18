@@ -8,7 +8,7 @@ import {
 import { loadOpentypeFont } from "../../utils/opentype";
 import { drawBlock } from "../../utils/blocks-canvas";
 
-export const handler = async ({ inputs, mechanic }) => {
+export const handler = async ({ inputs, frame, done, drawLoop, getCanvas }) => {
   const { width, height, logoWidth, logoRatio, duration, fontMode } = inputs;
 
   const rows = 2;
@@ -45,10 +45,7 @@ export const handler = async ({ inputs, mechanic }) => {
     }
   }
 
-  const canvas = document.createElement("canvas");
-  canvas.width = width;
-  canvas.height = height;
-  const ctx = canvas.getContext("2d");
+  const { ctx } = getCanvas(width, height);
 
   const draw = () => {
     ctx.save();
@@ -57,12 +54,12 @@ export const handler = async ({ inputs, mechanic }) => {
     ctx.restore();
   };
 
-  mechanic.drawLoop(runtime => {
+  drawLoop(frameCount => {
     let changed = false;
     blockConfigs.forEach(blockConfigs => {
       const { block, animation } = blockConfigs;
       const currentProgress = Math.floor(
-        2 * animation.loops * block.cols * (runtime / duration)
+        2 * animation.loops * block.cols * (frameCount / duration)
       );
       if (currentProgress > animation.progress) {
         animation.progress = currentProgress;
@@ -79,10 +76,10 @@ export const handler = async ({ inputs, mechanic }) => {
       draw();
     }
 
-    if (runtime < duration) {
-      mechanic.frame(canvas);
+    if (frameCount < duration) {
+      frame();
     } else {
-      mechanic.done(canvas);
+      done();
     }
   });
 };
@@ -113,9 +110,10 @@ export const inputs = {
   },
   duration: {
     type: "number",
-    default: 5000,
-    step: 500,
-    min: 100
+    default: 300,
+    step: 10,
+    min: 10,
+    label: "Duration in frames"
   },
   fontMode: {
     type: "text",
