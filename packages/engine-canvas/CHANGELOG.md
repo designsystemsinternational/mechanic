@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### Added
+
+- Expose `getCanvas` util to design function. This will create a preview canvas that is adjusted to render crisp on the current display’s pixelDensity.
+
 ### Changed
 
 - Updated engine to new `registerFrameCallback` and `registerDoneCallback` setup
