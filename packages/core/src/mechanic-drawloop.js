@@ -70,7 +70,7 @@ class MechanicDrawloop {
    * @param {number} frame - The number of the frame to render
    */
   renderFrame(frame) {
-    callback.call(null, frame);
+    if (callback) callback.call(null, frame);
   }
 
   /**

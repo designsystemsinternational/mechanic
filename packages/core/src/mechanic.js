@@ -84,6 +84,9 @@ export class Mechanic {
     this.exportType = exportType;
 
     this.drawLoop = mechanicDrawLoop.prepare(this.settings.frameRate);
+
+    this.engineFrameCallback = () => {};
+    this.engineDoneCallback = () => {};
   }
 
   /**
@@ -101,18 +104,59 @@ export class Mechanic {
 
   /**
    * Convenience function to collect all callbacks that an engine can pass to a
-   * design function.
+   * design function. An engine can pass overwrites to inject custom behavior
+   * into the callbacks. This is currently used by engine-p5 to disable using
+   * mechanic.drawLoop within engine-p5.
+   *
+   * @param {object} overwrites - An object with overwrites for the callbacks
    *
    * @TODO: Could this be merged with the function above?
    */
-  callbacksForEngine() {
-    return {
-      frame: () => console.log("frame"),
-      done: () => console.log("done"),
-      drawLoop: cb => this.drawLoop.start(cb),
-      setState: this.setState.bind(this),
-      state: this.functionState
-    };
+  callbacksForEngine(overwrites = {}) {
+    return Object.assign(
+      {},
+      {
+        frame: (...args) => this.engineFrameCallback(...args),
+        done: (...args) => {
+          // Always make sure to stop the drawloop when we're done rendering
+          this.drawLoop.stop();
+          this.engineDoneCallback(...args);
+        },
+
+        // This is where the timeline feature could intercept to render a
+        // single frame. A single frame number can be passed as the second
+        // arguments to drawLoop's start method.
+        drawLoop: cb => this.drawLoop.start(cb),
+
+        // Keeping setState and state in their own namespace to avoid namespace
+        // collisions with React
+        mechanic: {
+          setState: this.setState.bind(this),
+          state: this.functionState
+        }
+      },
+      overwrites
+    );
+  }
+
+  /**
+   * Helper function that sets the engineFrameCallback to an instance variable.
+   * Done as a function so validation and other setter logic can be added later.
+   *
+   * @param {function} frameCallback - The frame callback function
+   */
+  registerFrameCallback(frameCallback) {
+    this.engineFrameCallback = frameCallback;
+  }
+
+  /**
+   * Helper function that sets the engineFinalizeCallback to an instance variable.
+   * Done as a function so validation and other setter logic can be added later.
+   *
+   * @param {function} doneCallback - The done callback function
+   */
+  registerDoneCallback(doneCallback) {
+    this.engineDoneCallback = doneCallback;
   }
 
   /**
