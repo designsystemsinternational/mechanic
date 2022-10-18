@@ -11,35 +11,28 @@ export const run = (functionName, func, values, config) => {
     p5Sketch.remove();
   }
   const mechanic = new Mechanic(func.settings, values, config);
-  const onFrame = () => {
+
+  mechanic.registerFrameCallback(() => {
     if (!isPreview) {
       mechanic.frame(root.childNodes[0]);
     }
-  };
-  const onDone = async (name) => {
+  });
+
+  mechanic.registerDoneCallback(async name => {
     p5Sketch.noLoop();
     if (!isPreview) {
       await mechanic.done(root.childNodes[0]);
       mechanic.download(name || functionName);
     }
-  };
-  const onSetState = async (obj) => {
-    mechanic.setState(obj);
-  };
+  });
 
-  p5Sketch = new p5(
-    (sketch) =>
-      func.handler({
-        inputs: mechanic.values,
-        mechanic: {
-          frame: onFrame,
-          done: onDone,
-          state: mechanic.functionState,
-          setState: onSetState,
-        },
-        sketch,
-      }),
-    root
-  );
+  p5Sketch = new p5(sketch => {
+    sketch.frameRate(mechanic.settings.frameRate);
+    return func.handler({
+      inputs: mechanic.values,
+      ...mechanic.callbacksForEngine(),
+      sketch
+    });
+  }, root);
   return mechanic;
 };
