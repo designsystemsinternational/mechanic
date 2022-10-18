@@ -9,32 +9,27 @@ export const run = (functionName, func, values, config) => {
   root.innerHTML = "";
 
   const mechanic = new Mechanic(func.settings, values, config);
-  const onFrame = (el) => {
+
+  mechanic.registerFrameCallback(el => {
     // Pending virtual-dom approach
     root.innerHTML = el.trim();
     if (!isPreview) {
       mechanic.frame(root.childNodes[0], { head });
     }
-  };
-  const onDone = async (el, name) => {
+  });
+
+  mechanic.registerDoneCallback(async (el, name) => {
     root.innerHTML = el.trim();
     if (!isPreview) {
       await mechanic.done(root.childNodes[0], { head });
       mechanic.download(name || functionName);
     }
-  };
-  const onSetState = async (obj) => {
-    mechanic.setState(obj);
-  };
+  });
 
   func.handler({
     inputs: mechanic.values,
-    mechanic: {
-      frame: onFrame,
-      done: onDone,
-      state: mechanic.functionState,
-      setState: onSetState,
-    },
+    ...mechanic.callbacksForEngine()
   });
+
   return mechanic;
 };
