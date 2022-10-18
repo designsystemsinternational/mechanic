@@ -17,6 +17,8 @@ import {
   getTimeStamp,
   mergeWithDefaultSettings
 } from "./mechanic-utils.js";
+
+import { mechanicDrawLoop } from "./mechanic-drawloop.js";
 import { MechanicError } from "./mechanic-error.js";
 
 /**
@@ -80,6 +82,8 @@ export class Mechanic {
     this.values = values;
     this.functionState = lastRun?.functionState ?? {};
     this.exportType = exportType;
+
+    this.drawLoop = mechanicDrawLoop.prepare(this.settings.frameRate);
   }
 
   /**
@@ -92,6 +96,22 @@ export class Mechanic {
       frame,
       done
       //requestAnimationFrame:
+    };
+  }
+
+  /**
+   * Convenience function to collect all callbacks that an engine can pass to a
+   * design function.
+   *
+   * @TODO: Could this be merged with the function above?
+   */
+  callbacksForEngine() {
+    return {
+      frame: () => console.log("frame"),
+      done: () => console.log("done"),
+      drawLoop: cb => this.drawLoop.start(cb),
+      setState: this.setState.bind(this),
+      state: this.functionState
     };
   }
 

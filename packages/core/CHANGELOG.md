@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - Added `frameRate` setting to mechanic design function
+- Added `mechanicDrawLoop` singleton that provides a unified and coordinated way to dispatch a drawLoop determined by the pace of `frameRate`
 
 ### Fixed
 
