@@ -4,14 +4,13 @@ import {
   computeBaseBricks,
   computeBlockGeometry,
   precomputeBlocks,
-  getIndexModule,
+  getIndexModule
 } from "../../utils/blocks";
 import { useLoadedOpentypeFont } from "../../utils/hooks";
 import { Block } from "../../utils/blocks-components";
 
-export const handler = ({ inputs, mechanic }) => {
+export const handler = ({ inputs, done }) => {
   const { width, height, allSameColors, fontMode } = inputs;
-  const { done } = mechanic;
 
   const words = ["DESIGN", "SYSTEMS", "INTERNATIONAL"];
   const blockConfigs = [];
@@ -37,7 +36,7 @@ export const handler = ({ inputs, mechanic }) => {
       logoWidth: 150,
       x: 150,
       y: 0,
-      offset: 5,
+      offset: 5
     },
     {
       rows: 6,
@@ -46,7 +45,7 @@ export const handler = ({ inputs, mechanic }) => {
       logoWidth: 100,
       x: 150,
       y: 34,
-      offset: 10,
+      offset: 10
     },
     {
       rows: 21,
@@ -55,7 +54,7 @@ export const handler = ({ inputs, mechanic }) => {
       logoWidth: 50,
       x: 250,
       y: 34,
-      offset: 5,
+      offset: 5
     },
     {
       rows: 27,
@@ -64,7 +63,7 @@ export const handler = ({ inputs, mechanic }) => {
       logoWidth: 50,
       x: 250,
       y: 150,
-      offset: 0,
+      offset: 0
     },
     {
       rows: 2,
@@ -73,7 +72,7 @@ export const handler = ({ inputs, mechanic }) => {
       logoWidth: 250,
       x: 0,
       y: 175,
-      offset: 4,
+      offset: 4
     },
     {
       rows: 4,
@@ -82,9 +81,9 @@ export const handler = ({ inputs, mechanic }) => {
       logoWidth: 175,
       x: 75,
       y: 230,
-      offset: 5,
+      offset: 5
     },
-    { rows: 3, cols: 5, logoRatio: 3, logoWidth: 75, x: 0, y: 230, offset: 0 },
+    { rows: 3, cols: 5, logoRatio: 3, logoWidth: 75, x: 0, y: 230, offset: 0 }
   ];
 
   for (const param of blockParams) {
@@ -125,34 +124,34 @@ export const inputs = {
   width: {
     type: "number",
     default: 300,
-    min: 100,
+    min: 100
   },
   height: {
     type: "number",
     default: 300,
-    min: 100,
+    min: 100
   },
   allSameColors: {
     type: "boolean",
-    default: true,
+    default: true
   },
   fontMode: {
     type: "text",
     options: {
       "F Grotesk Thin": "FGroteskThin-Regular.otf",
-      "F Grotesk": "FGrotesk-Regular.otf",
+      "F Grotesk": "FGrotesk-Regular.otf"
     },
-    default: "F Grotesk Thin",
-  },
+    default: "F Grotesk Thin"
+  }
 };
 
 export const presets = {
   bigger: {
     width: 500,
-    height: 500,
-  },
+    height: 500
+  }
 };
 
 export const settings = {
-  engine: require("@mechanic-design/engine-react"),
+  engine: require("@mechanic-design/engine-react")
 };

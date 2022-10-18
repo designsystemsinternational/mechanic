@@ -1,15 +1,14 @@
-import React, { useState, useEffect, useRef, useMemo } from 'react';
-import { getColors, flagNames } from '../../utils/graphics';
+import React, { useState, useEffect, useRef, useMemo } from "react";
+import { getColors, flagNames } from "../../utils/graphics";
 import {
   computeBaseBricks,
   computeBlockGeometry,
-  precomputeBlocks,
-  getIndexModule
-} from '../../utils/blocks';
-import { Unit } from '../../utils/blocks-components';
-import { useDrawLoop, useLoadedOpentypeFont } from '../../utils/hooks';
+  precomputeBlocks
+} from "../../utils/blocks";
+import { Unit } from "../../utils/blocks-components";
+import { useLoadedOpentypeFont } from "../../utils/hooks";
 
-export const handler = ({ inputs, mechanic }) => {
+export const handler = ({ inputs, frame, done, useDrawLoop }) => {
   const {
     width,
     ratio,
@@ -23,21 +22,20 @@ export const handler = ({ inputs, mechanic }) => {
     loops,
     fontMode
   } = inputs;
-  const { frame, done } = mechanic;
   const [internalOffset, setInternalOffset] = useState(0);
   const progress = useRef(0);
-  const [state, setState] = useState('loading');
+  const [state, setState] = useState("loading");
   const font = useLoadedOpentypeFont(fontMode);
-  const runtime = useDrawLoop(state === 'playing', duration);
+  const frameCount = useDrawLoop(state === "playing");
 
   const rows = 2;
   const cols = 13;
-  const words = ['DESIGN', 'SYSTEMS', 'INTERNATIONAL'];
+  const words = ["DESIGN", "SYSTEMS", "INTERNATIONAL"];
   const height = Math.floor((width / ratio) * rows);
 
   useEffect(() => {
-    if (state === 'loading' && font) {
-      setState('playing');
+    if (state === "loading" && font) {
+      setState("playing");
     }
   }, [font, state, setState]);
 
@@ -75,22 +73,22 @@ export const handler = ({ inputs, mechanic }) => {
   };
 
   useEffect(() => {
-    if (state === 'playing') {
-      if (runtime < duration) {
+    if (state === "playing") {
+      if (frameCount < duration) {
         frame();
         let currentProgress = Math.floor(
-          2 * loops * cols * (runtime / duration)
+          2 * loops * cols * (frameCount / duration)
         );
         if (currentProgress > progress.current) {
           progress.current = currentProgress;
-          setInternalOffset((internalOffset) => internalOffset + 1);
+          setInternalOffset(internalOffset => internalOffset + 1);
         }
       } else {
-        setState('stopped');
+        setState("stopped");
         done();
       }
     }
-  }, [runtime]);
+  }, [frameCount]);
 
   return (
     <svg width={width} height={height}>
@@ -102,7 +100,7 @@ export const handler = ({ inputs, mechanic }) => {
           blockIndex={brickIndex}
           colors={colors}
           animation={animation}
-          runtime={runtime}
+          runtime={frameCount}
         ></Unit>
       )}
     </svg>
@@ -111,12 +109,12 @@ export const handler = ({ inputs, mechanic }) => {
 
 export const inputs = {
   width: {
-    type: 'number',
+    type: "number",
     default: 500,
     min: 100
   },
   ratio: {
-    type: 'number',
+    type: "number",
     default: 9,
     max: 20,
     slider: true,
@@ -124,36 +122,36 @@ export const inputs = {
     step: 1
   },
   colorMode: {
-    type: 'text',
-    options: ['Random Flag', 'Pick Flag', 'Custom Colors'],
-    default: 'Random Flag'
+    type: "text",
+    options: ["Random Flag", "Pick Flag", "Custom Colors"],
+    default: "Random Flag"
   },
   flag: {
-    type: 'text',
+    type: "text",
     options: flagNames,
     default: flagNames[0],
-    editable: (inputs) => inputs.colorMode === 'Pick Flag'
+    editable: inputs => inputs.colorMode === "Pick Flag"
   },
   firstColor: {
-    type: 'color',
-    model: 'hex',
-    default: '#11457e',
-    editable: (inputs) => inputs.colorMode === 'Custom Colors'
+    type: "color",
+    model: "hex",
+    default: "#11457e",
+    editable: inputs => inputs.colorMode === "Custom Colors"
   },
   secondColor: {
-    type: 'color',
-    model: 'hex',
-    default: '#d7141a',
-    editable: (inputs) => inputs.colorMode === 'Custom Colors'
+    type: "color",
+    model: "hex",
+    default: "#d7141a",
+    editable: inputs => inputs.colorMode === "Custom Colors"
   },
   thirdColor: {
-    type: 'color',
-    model: 'hex',
-    default: '#f1f1f1',
-    editable: (inputs) => inputs.colorMode === 'Custom Colors'
+    type: "color",
+    model: "hex",
+    default: "#f1f1f1",
+    editable: inputs => inputs.colorMode === "Custom Colors"
   },
   offset: {
-    type: 'number',
+    type: "number",
     default: 0,
     min: 0,
     max: 1,
@@ -161,24 +159,25 @@ export const inputs = {
     slider: true
   },
   duration: {
-    type: 'number',
-    default: 5000,
-    step: 500,
-    min: 1000
+    type: "number",
+    default: 300,
+    step: 10,
+    min: 10,
+    label: "Duration in frames"
   },
   loops: {
-    type: 'number',
+    type: "number",
     default: 4,
     min: 1,
     step: 1
   },
   fontMode: {
-    type: 'text',
+    type: "text",
     options: {
-      'F Grotesk Thin': 'FGroteskThin-Regular.otf',
-      'F Grotesk': 'FGrotesk-Regular.otf'
+      "F Grotesk Thin": "FGroteskThin-Regular.otf",
+      "F Grotesk": "FGrotesk-Regular.otf"
     },
-    default: 'F Grotesk Thin'
+    default: "F Grotesk Thin"
   }
 };
 
@@ -194,6 +193,6 @@ export const presets = {
 };
 
 export const settings = {
-  engine: require('@mechanic-design/engine-react'),
+  engine: require("@mechanic-design/engine-react"),
   animated: true
 };

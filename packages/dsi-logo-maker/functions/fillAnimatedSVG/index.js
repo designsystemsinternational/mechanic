@@ -1,30 +1,29 @@
-import React, { useState, useEffect, useMemo } from 'react';
-import { getColors } from '../../utils/graphics';
+import React, { useState, useEffect, useMemo } from "react";
+import { getColors } from "../../utils/graphics";
 import {
   computeBaseBricks,
   computeBlockGeometry,
   precomputeBlocks,
   getIndexModule
-} from '../../utils/blocks';
-import { Unit } from '../../utils/blocks-components';
-import { useDrawLoop, useLoadedOpentypeFont } from '../../utils/hooks';
+} from "../../utils/blocks";
+import { Unit } from "../../utils/blocks-components";
+import { useLoadedOpentypeFont } from "../../utils/hooks";
 
-export const handler = ({ inputs, mechanic }) => {
+export const handler = ({ inputs, frame, done, useDrawLoop }) => {
   const { width, height, logoWidth, logoRatio, duration, fontMode } = inputs;
-  const { frame, done } = mechanic;
 
-  const [state, setState] = useState('loading');
+  const [state, setState] = useState("loading");
   const font = useLoadedOpentypeFont(fontMode);
-  const runtime = useDrawLoop(state === 'playing', duration);
+  const frameCount = useDrawLoop(state === "playing");
 
   const rows = 2;
   const cols = 13;
   const logoHeight = Math.floor((logoWidth / logoRatio) * rows);
-  const words = ['DESIGN', 'SYSTEMS', 'INTERNATIONAL'];
+  const words = ["DESIGN", "SYSTEMS", "INTERNATIONAL"];
 
   useEffect(() => {
-    if (state === 'loading' && font) {
-      setState('playing');
+    if (state === "loading" && font) {
+      setState("playing");
     }
   }, [font, state, setState]);
 
@@ -36,7 +35,7 @@ export const handler = ({ inputs, mechanic }) => {
       };
     }
 
-    let colors = getColors('Random Flag');
+    let colors = getColors("Random Flag");
     const blockGeometry = computeBlockGeometry(
       logoWidth,
       logoHeight,
@@ -61,7 +60,7 @@ export const handler = ({ inputs, mechanic }) => {
       position = { ...position };
       if (position.x + blockGeometry.width < width) {
         position.x += blockGeometry.width;
-        colors = getColors('Random Flag');
+        colors = getColors("Random Flag");
         brickOffset++;
       } else {
         position.x = position.x - width;
@@ -72,15 +71,15 @@ export const handler = ({ inputs, mechanic }) => {
   }, [font]);
 
   useEffect(() => {
-    if (state === 'playing') {
-      if (runtime < duration) {
+    if (state === "playing") {
+      if (frameCount < duration) {
         frame();
       } else {
-        setState('stopped');
+        setState("stopped");
         done();
       }
     }
-  }, [runtime, state, setState]);
+  }, [frameCount, state, setState]);
 
   const { blockConfigs } = blockParams;
   return (
@@ -94,7 +93,7 @@ export const handler = ({ inputs, mechanic }) => {
             blockIndex={blockIndex}
             colors={colors}
             animation={animation}
-            runtime={runtime}
+            runtime={frameCount}
           ></Unit>
         ))}
     </svg>
@@ -103,22 +102,22 @@ export const handler = ({ inputs, mechanic }) => {
 
 export const inputs = {
   width: {
-    type: 'number',
+    type: "number",
     default: 500,
     min: 100
   },
   height: {
-    type: 'number',
+    type: "number",
     default: 500,
     min: 100
   },
   logoWidth: {
-    type: 'number',
+    type: "number",
     default: 300,
     min: 10
   },
   logoRatio: {
-    type: 'number',
+    type: "number",
     default: 9,
     max: 20,
     slider: true,
@@ -126,22 +125,23 @@ export const inputs = {
     step: 1
   },
   duration: {
-    type: 'number',
-    default: 5000,
-    step: 500,
-    min: 1000
+    type: "number",
+    default: 300,
+    step: 20,
+    min: 10,
+    label: "Duration in frames"
   },
   fontMode: {
-    type: 'text',
+    type: "text",
     options: {
-      'F Grotesk Thin': 'FGroteskThin-Regular.otf',
-      'F Grotesk': 'FGrotesk-Regular.otf'
+      "F Grotesk Thin": "FGroteskThin-Regular.otf",
+      "F Grotesk": "FGrotesk-Regular.otf"
     },
-    default: 'F Grotesk Thin'
+    default: "F Grotesk Thin"
   }
 };
 
 export const settings = {
-  engine: require('@mechanic-design/engine-react'),
+  engine: require("@mechanic-design/engine-react"),
   animated: true
 };
