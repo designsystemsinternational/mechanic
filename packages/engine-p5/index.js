@@ -30,7 +30,13 @@ export const run = (functionName, func, values, config) => {
     sketch.frameRate(mechanic.settings.frameRate);
     return func.handler({
       inputs: mechanic.values,
-      ...mechanic.callbacksForEngine(),
+      ...mechanic.callbacksForEngine({
+        drawLoop: () => {
+          throw new Error(
+            "drawLoop is not supported in engine p5, as p5 provides its own draw loop. Use sketch.setup and sketch.draw instead."
+          );
+        }
+      }),
       sketch
     });
   }, root);
