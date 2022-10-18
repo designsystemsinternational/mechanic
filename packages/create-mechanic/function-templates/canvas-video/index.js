@@ -1,4 +1,4 @@
-export const handler = async ({ inputs, mechanic }) => {
+export const handler = async ({ inputs, frame, done, drawLoop, getCanvas }) => {
   const { width, height, text, color1, color2, radiusPercentage, turns } =
     inputs;
 
@@ -6,13 +6,9 @@ export const handler = async ({ inputs, mechanic }) => {
   const radius = ((height / 2) * radiusPercentage) / 100;
   let angle = 0;
 
-  const canvas = document.createElement("canvas");
-  canvas.width = width;
-  canvas.height = height;
+  const { ctx } = getCanvas(width, height);
 
-  const ctx = canvas.getContext("2d");
-
-  const drawFrame = () => {
+  drawLoop(() => {
     ctx.fillStyle = "#F4F4F4";
     ctx.fillRect(0, 0, width, height);
 
@@ -40,65 +36,62 @@ export const handler = async ({ inputs, mechanic }) => {
     ctx.fillText(text, width / 2, height - height / 20);
 
     if (angle < turns * 2 * Math.PI) {
-      mechanic.frame(canvas);
+      frame();
       angle += (2 * Math.PI) / 100;
-      window.requestAnimationFrame(drawFrame);
     } else {
-      mechanic.done(canvas);
+      done();
     }
-  };
-
-  drawFrame();
+  });
 };
 
 export const inputs = {
   width: {
     type: "number",
-    default: 400,
+    default: 400
   },
   height: {
     type: "number",
-    default: 300,
+    default: 300
   },
   text: {
     type: "text",
-    default: "mechanic",
+    default: "mechanic"
   },
   color1: {
     type: "color",
     model: "hex",
-    default: "#E94225",
+    default: "#E94225"
   },
   color2: {
     type: "color",
     model: "hex",
-    default: "#002EBB",
+    default: "#002EBB"
   },
   radiusPercentage: {
     type: "number",
     default: 40,
     min: 0,
     max: 100,
-    slider: true,
+    slider: true
   },
   turns: {
     type: "number",
-    default: 3,
-  },
+    default: 3
+  }
 };
 
 export const presets = {
   medium: {
     width: 800,
-    height: 600,
+    height: 600
   },
   large: {
     width: 1600,
-    height: 1200,
-  },
+    height: 1200
+  }
 };
 
 export const settings = {
   engine: require("@mechanic-design/engine-canvas"),
-  animated: true,
+  animated: true
 };

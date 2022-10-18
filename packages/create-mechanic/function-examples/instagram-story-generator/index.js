@@ -1,10 +1,9 @@
 import React, { useEffect, useRef } from "react";
 
 import { Circle } from "./Circle";
-import { useDrawLoop } from "./utils";
 import "./styles.css";
 
-export const handler = ({ inputs, mechanic }) => {
+export const handler = ({ inputs, done, frame, useDrawLoop }) => {
   const {
     width,
     height,
@@ -15,22 +14,22 @@ export const handler = ({ inputs, mechanic }) => {
     text,
     minRadius,
     maxRadius,
-    duration,
+    duration
   } = inputs;
 
   // stuff needed for the looping
-  const startTime = useRef(Date.now());
   const isPlaying = useRef(true);
   const frameCount = useDrawLoop(isPlaying.current);
   const lines = text.split(" ");
+  const durationInFrames = duration * 60;
 
   // function to determine when to end the animation
   useEffect(() => {
-    if (Date.now() - startTime.current < duration * 1000) {
-      mechanic.frame();
+    if (durationInFrames > frameCount) {
+      frame();
     } else if (isPlaying.current) {
       isPlaying.current = false;
-      mechanic.done();
+      done();
     }
   }, [frameCount]);
 
@@ -88,27 +87,27 @@ export const handler = ({ inputs, mechanic }) => {
 export const inputs = {
   width: {
     type: "number",
-    default: 1080,
+    default: 1080
   },
   height: {
     type: "number",
-    default: 1920,
+    default: 1920
   },
   backgroundColor: {
     type: "color",
     model: "hex",
-    default: "#FDD7D1",
+    default: "#FDD7D1"
   },
 
   colorOne: {
     type: "color",
     model: "hex",
-    default: "#E94225",
+    default: "#E94225"
   },
   colorTwo: {
     type: "color",
     model: "hex",
-    default: "#002EBB",
+    default: "#002EBB"
   },
   fontScale: {
     label: "Font Scale (%)",
@@ -116,11 +115,11 @@ export const inputs = {
     default: 100,
     slider: true,
     min: 5,
-    max: 200,
+    max: 200
   },
   text: {
     type: "text",
-    default: "TURN YOUR DESIGN RULES INTO DESIGN TOOLS",
+    default: "TURN YOUR DESIGN RULES INTO DESIGN TOOLS"
   },
 
   minRadius: {
@@ -129,7 +128,7 @@ export const inputs = {
     default: 5,
     min: 0,
     max: 200,
-    slider: true,
+    slider: true
   },
   maxRadius: {
     label: "Max Radius (% of width)",
@@ -137,16 +136,16 @@ export const inputs = {
     default: 10,
     min: 0,
     max: 200,
-    slider: true,
+    slider: true
   },
   duration: {
     label: "Duration (seconds)",
     type: "number",
-    default: 20,
-  },
+    default: 20
+  }
 };
 
 export const settings = {
   engine: require("@mechanic-design/engine-react"),
-  animated: true,
+  animated: true
 };

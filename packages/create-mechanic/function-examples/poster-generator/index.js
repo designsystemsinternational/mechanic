@@ -7,14 +7,14 @@ import {
   getRandomSubsetSections,
   choice,
   flipCoin,
-  randInt,
+  randInt
 } from "./utils.js";
 
 import fontRegular from "./assets/PPObjectSans-Regular.otf";
 import fontHeavy from "./assets/PPObjectSans-Heavy.otf";
 import fontHeavySlanted from "./assets/PPObjectSans-HeavySlanted.otf";
 
-export const handler = ({ inputs, mechanic, sketch }) => {
+export const handler = ({ inputs, done, sketch }) => {
   const { width, height, dates, location, artist, title, image, color } =
     inputs;
   const artistText = artist.toUpperCase();
@@ -70,7 +70,7 @@ export const handler = ({ inputs, mechanic, sketch }) => {
     const words = artistText.split(" ");
     sketch.textSize(element.baseSize * 0.8);
     sketch.textFont(objSansHeavySlanted);
-    const lengths = words.map((t) => sketch.textWidth(t));
+    const lengths = words.map(t => sketch.textWidth(t));
     element.length = Math.max(width / 3, ...lengths) + width / 20;
 
     element.startRow = choice(
@@ -265,7 +265,7 @@ export const handler = ({ inputs, mechanic, sketch }) => {
           ? randInt(freeSections.length - 2, freeSections.length)
           : freeSections.length
       ),
-      ...getRandomSubsetSections(usedSections, randInt(0, usedSections.length)),
+      ...getRandomSubsetSections(usedSections, randInt(0, usedSections.length))
     ];
 
     for (const section of sections) {
@@ -275,7 +275,7 @@ export const handler = ({ inputs, mechanic, sketch }) => {
       const offset = getIntersectionOffset(
         {
           startRow: row,
-          endRow: row + rowLength - 1,
+          endRow: row + rowLength - 1
         },
         [titleElement, datesElement]
       );
@@ -287,20 +287,20 @@ export const handler = ({ inputs, mechanic, sketch }) => {
           rx: offset,
           ry: rectY,
           rw: leftWidth - (columnLength + width / 20),
-          rh: rectHeight,
+          rh: rectHeight
         });
         drawRectangle({
           rx: width - columnLength,
           ry: rectY,
           rw: columnLength,
-          rh: rectHeight,
+          rh: rectHeight
         });
       } else {
         drawRectangle({
           rx: offset,
           ry: rectY,
           rw: leftWidth,
-          rh: rectHeight,
+          rh: rectHeight
         });
       }
     }
@@ -310,7 +310,7 @@ export const handler = ({ inputs, mechanic, sketch }) => {
         rx: width - columnLength,
         ry: 0,
         rw: width - columnLength,
-        rh: height,
+        rh: height
       });
     }
   };
@@ -349,58 +349,58 @@ export const handler = ({ inputs, mechanic, sketch }) => {
 
     drawRectangles();
 
-    mechanic.done();
+    done();
   };
 };
 
 export const inputs = {
   dates: {
     type: "text",
-    default: "Sept 9 – Oct 30, 2021",
+    default: "Sept 9 – Oct 30, 2021"
   },
   location: {
     type: "text",
-    default: "Jack Shainman Gallery",
+    default: "Jack Shainman Gallery"
   },
   artist: {
     type: "text",
-    default: "Tyler Mitchell",
+    default: "Tyler Mitchell"
   },
   title: {
     type: "text",
-    default: "Dreaming in Real Time",
+    default: "Dreaming in Real Time"
   },
   image: {
-    type: "image",
+    type: "image"
   },
   color: {
     type: "color",
     default: "#E94225",
-    model: "hex",
+    model: "hex"
   },
   width: {
     type: "number",
     default: 500,
-    editable: false,
+    editable: false
   },
   height: {
     type: "number",
     default: 600,
-    editable: false,
-  },
+    editable: false
+  }
 };
 
 export const presets = {
   x2: {
     width: 1000,
-    height: 1200,
+    height: 1200
   },
   x4: {
     width: 1500,
-    height: 1800,
-  },
+    height: 1800
+  }
 };
 
 export const settings = {
-  engine: require("@mechanic-design/engine-p5"),
+  engine: require("@mechanic-design/engine-p5")
 };

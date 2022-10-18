@@ -1,4 +1,4 @@
-export const handler = ({ inputs, mechanic, sketch }) => {
+export const handler = ({ inputs, frame, done, sketch }) => {
   const { width, height, text, color1, color2, radiusPercentage, turns } =
     inputs;
 
@@ -31,10 +31,10 @@ export const handler = ({ inputs, mechanic, sketch }) => {
     sketch.text(text, 0, height / 2 - height / 20);
 
     if (angle < turns * 2 * Math.PI) {
-      mechanic.frame();
+      frame();
       angle += (2 * Math.PI) / 100;
     } else {
-      mechanic.done();
+      done();
     }
   };
 };
@@ -42,51 +42,51 @@ export const handler = ({ inputs, mechanic, sketch }) => {
 export const inputs = {
   width: {
     type: "number",
-    default: 400,
+    default: 400
   },
   height: {
     type: "number",
-    default: 300,
+    default: 300
   },
   text: {
     type: "text",
-    default: "mechanic",
+    default: "mechanic"
   },
   color1: {
     type: "color",
     model: "hex",
-    default: "#E94225",
+    default: "#E94225"
   },
   color2: {
     type: "color",
     model: "hex",
-    default: "#002EBB",
+    default: "#002EBB"
   },
   radiusPercentage: {
     type: "number",
     default: 40,
     min: 0,
     max: 100,
-    slider: true,
+    slider: true
   },
   turns: {
     type: "number",
-    default: 3,
-  },
+    default: 3
+  }
 };
 
 export const presets = {
   medium: {
     width: 800,
-    height: 600,
+    height: 600
   },
   large: {
     width: 1600,
-    height: 1200,
-  },
+    height: 1200
+  }
 };
 
 export const settings = {
   engine: require("@mechanic-design/engine-p5"),
-  animated: true,
+  animated: true
 };

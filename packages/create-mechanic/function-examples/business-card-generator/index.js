@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import "./styles.css";
 
-export const handler = ({ inputs, mechanic }) => {
+export const handler = ({ inputs, done }) => {
   const {
     width,
     height,
@@ -12,7 +12,7 @@ export const handler = ({ inputs, mechanic }) => {
     company,
     name,
     email,
-    phone,
+    phone
   } = inputs;
 
   const margin = width / 18;
@@ -32,7 +32,7 @@ export const handler = ({ inputs, mechanic }) => {
     Math.random() * (height - margin * 2 - circleRadius * 2);
 
   useEffect(() => {
-    mechanic.done();
+    done();
   }, []);
 
   return (
@@ -113,26 +113,26 @@ export const handler = ({ inputs, mechanic }) => {
 export const inputs = {
   width: {
     type: "number",
-    default: 850,
+    default: 850
   },
   height: {
     type: "number",
-    default: 550,
+    default: 550
   },
   backgroundColor: {
     type: "color",
     model: "hex",
-    default: "#FDD7D1",
+    default: "#FDD7D1"
   },
   colorOne: {
     type: "color",
     model: "hex",
-    default: "#E94225",
+    default: "#E94225"
   },
   colorTwo: {
     type: "color",
     model: "hex",
-    default: "#002EBB",
+    default: "#002EBB"
   },
   fontScale: {
     type: "number",
@@ -140,26 +140,26 @@ export const inputs = {
     slider: true,
     min: 0.1,
     max: 3,
-    step: 0.01,
+    step: 0.01
   },
   company: {
     type: "text",
-    default: "MECHANIC",
+    default: "MECHANIC"
   },
   name: {
     type: "text",
-    default: "Martin Bravo",
+    default: "Martin Bravo"
   },
   email: {
     type: "text",
-    default: "martin@mechanic.design",
+    default: "martin@mechanic.design"
   },
   phone: {
     type: "text",
-    default: "+1 999 999 9999",
-  },
+    default: "+1 999 999 9999"
+  }
 };
 
 export const settings = {
-  engine: require("@mechanic-design/engine-react"),
+  engine: require("@mechanic-design/engine-react")
 };

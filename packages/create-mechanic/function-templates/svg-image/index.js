@@ -1,4 +1,4 @@
-export const handler = ({ inputs, mechanic }) => {
+export const handler = ({ inputs, done }) => {
   const { width, height, text, color1, color2, radiusPercentage } = inputs;
 
   const center = [width / 2, height / 2];
@@ -32,52 +32,53 @@ export const handler = ({ inputs, mechanic }) => {
         </text>
       </g>
     </svg>`;
-  mechanic.done(svg);
+
+  done(svg);
 };
 
 export const inputs = {
   width: {
     type: "number",
-    default: 400,
+    default: 400
   },
   height: {
     type: "number",
-    default: 300,
+    default: 300
   },
   text: {
     type: "text",
-    default: "mechanic",
+    default: "mechanic"
   },
   color1: {
     type: "color",
     model: "hex",
-    default: "#E94225",
+    default: "#E94225"
   },
   color2: {
     type: "color",
     model: "hex",
-    default: "#002EBB",
+    default: "#002EBB"
   },
   radiusPercentage: {
     type: "number",
     default: 40,
     min: 0,
     max: 100,
-    slider: true,
-  },
+    slider: true
+  }
 };
 
 export const presets = {
   medium: {
     width: 800,
-    height: 600,
+    height: 600
   },
   large: {
     width: 1600,
-    height: 1200,
-  },
+    height: 1200
+  }
 };
 
 export const settings = {
-  engine: require("@mechanic-design/engine-svg"),
+  engine: require("@mechanic-design/engine-svg")
 };

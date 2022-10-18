@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### Changed
+
+- Changed all examples and templates to new animation API
+
 ## 2.0.0-beta.9 - 2022-08-12
 
 ### Fixed

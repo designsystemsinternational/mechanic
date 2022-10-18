@@ -1,6 +1,6 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useEffect, useRef } from "react";
 
-export const handler = ({ inputs, mechanic }) => {
+export const handler = ({ inputs, frame, done, useDrawLoop }) => {
   const { width, height, text, color1, color2, radiusPercentage, turns } =
     inputs;
 
@@ -13,11 +13,11 @@ export const handler = ({ inputs, mechanic }) => {
 
   useEffect(() => {
     if (angle.current < turns * 360) {
-      mechanic.frame();
+      frame();
       angle.current += 360 / 100;
     } else if (isPlaying.current) {
       isPlaying.current = false;
-      mechanic.done();
+      done();
     }
   }, [frameCount]);
 
@@ -55,77 +55,51 @@ export const handler = ({ inputs, mechanic }) => {
 export const inputs = {
   width: {
     type: "number",
-    default: 400,
+    default: 400
   },
   height: {
     type: "number",
-    default: 300,
+    default: 300
   },
   text: {
     type: "text",
-    default: "mechanic",
+    default: "mechanic"
   },
   color1: {
     type: "color",
     model: "hex",
-    default: "#E94225",
+    default: "#E94225"
   },
   color2: {
     type: "color",
     model: "hex",
-    default: "#002EBB",
+    default: "#002EBB"
   },
   radiusPercentage: {
     type: "number",
     default: 40,
     min: 0,
     max: 100,
-    slider: true,
+    slider: true
   },
   turns: {
     type: "number",
-    default: 3,
-  },
+    default: 3
+  }
 };
 
 export const presets = {
   medium: {
     width: 800,
-    height: 600,
+    height: 600
   },
   large: {
     width: 1600,
-    height: 1200,
-  },
+    height: 1200
+  }
 };
 
 export const settings = {
   engine: require("@mechanic-design/engine-react"),
-  animated: true,
-};
-
-const useDrawLoop = (isPlaying) => {
-  const raf = useRef();
-  const [frameCount, setFrameCount] = useState(0);
-
-  useEffect(() => {
-    cancelAnimationFrame(raf.current);
-
-    if (!isPlaying) {
-      return;
-    }
-
-    const draw = () => {
-      setFrameCount((cur) => cur + 1);
-      raf.current = requestAnimationFrame(draw);
-    };
-
-    draw();
-
-    return () => {
-      cancelAnimationFrame(raf.current);
-    };
-  }, [isPlaying]);
-
-  return frameCount;
+  animated: true
 };

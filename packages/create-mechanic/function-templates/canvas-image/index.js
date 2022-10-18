@@ -1,15 +1,11 @@
-export const handler = ({ inputs, mechanic }) => {
+export const handler = ({ inputs, done, getCanvas }) => {
   const { width, height, text, color1, color2, radiusPercentage } = inputs;
 
   const center = [width / 2, height / 2];
   const radius = ((height / 2) * radiusPercentage) / 100;
   const angle = Math.random() * Math.PI * 2;
 
-  const canvas = document.createElement("canvas");
-  canvas.width = width;
-  canvas.height = height;
-
-  const ctx = canvas.getContext("2d");
+  const { ctx } = getCanvas(width, height);
 
   ctx.fillStyle = "#F4F4F4";
   ctx.fillRect(0, 0, width, height);
@@ -37,52 +33,52 @@ export const handler = ({ inputs, mechanic }) => {
   ctx.strokeText(text, width / 2, height - height / 20);
   ctx.fillText(text, width / 2, height - height / 20);
 
-  mechanic.done(canvas);
+  done();
 };
 
 export const inputs = {
   width: {
     type: "number",
-    default: 400,
+    default: 400
   },
   height: {
     type: "number",
-    default: 300,
+    default: 300
   },
   text: {
     type: "text",
-    default: "mechanic",
+    default: "mechanic"
   },
   color1: {
     type: "color",
     model: "hex",
-    default: "#E94225",
+    default: "#E94225"
   },
   color2: {
     type: "color",
     model: "hex",
-    default: "#002EBB",
+    default: "#002EBB"
   },
   radiusPercentage: {
     type: "number",
     default: 40,
     min: 0,
     max: 100,
-    slider: true,
-  },
+    slider: true
+  }
 };
 
 export const presets = {
   medium: {
     width: 800,
-    height: 600,
+    height: 600
   },
   large: {
     width: 1600,
-    height: 1200,
-  },
+    height: 1200
+  }
 };
 
 export const settings = {
-  engine: require("@mechanic-design/engine-canvas"),
+  engine: require("@mechanic-design/engine-canvas")
 };
