@@ -1,6 +1,8 @@
 import { optimize, extendDefaultPlugins } from "svgo/dist/svgo.browser.js";
 import { toPng, toCanvas } from "html-to-image";
 
+import { DEFAULT_SETTINGS } from "./default-settings.js";
+
 /**
  * Checks whether a DOM element is instance of SVGElement
  * @param {object} el - A DOM element to check
@@ -71,7 +73,10 @@ const svgPrepare = (el, serializer) => {
   }
 
   if (!str.match(/^<svg[^>]+"http\:\/\/www\.w3\.org\/1999\/xlink"/)) {
-    str = str.replace(/^<svg/, '<svg xmlns:xlink="http://www.w3.org/1999/xlink"');
+    str = str.replace(
+      /^<svg/,
+      '<svg xmlns:xlink="http://www.w3.org/1999/xlink"'
+    );
   }
   str = '<?xml version="1.0" standalone="no"?>\r\n' + str;
   return str;
@@ -159,6 +164,19 @@ const getTimeStamp = () => {
   return `${year}-${month}-${day}-${hour}-${minute}`;
 };
 
+/**
+ * Creates a standardized settings object from user-provided settings.
+ *
+ * @param {object} settings - User-provided settings
+ * @returns {object} - Standardized settings object
+ */
+const mergeWithDefaultSettings = (
+  settings,
+  defaultSettings = DEFAULT_SETTINGS
+) => {
+  return Object.assign({}, defaultSettings, settings);
+};
+
 export {
   isSVG,
   isCanvas,
@@ -172,5 +190,6 @@ export {
   htmlToCanvas,
   extractSvgSize,
   dataUrlToCanvas,
-  getTimeStamp
+  getTimeStamp,
+  mergeWithDefaultSettings
 };
