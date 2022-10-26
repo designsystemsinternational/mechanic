@@ -1,13 +1,8 @@
-let instance,
-  isPlaying = false,
-  frameRate,
-  fpsInterval,
-  frameCount,
-  lastFrameTime,
-  raf,
-  callback;
+import { MechanicError } from "./mechanic-error.js";
 
-const epsilon = 5;
+// Keeps a global reference to the draw loop so we don't accidentally create
+// multiple loops.
+let instance = null;
 
 class MechanicDrawloop {
   /**
@@ -18,8 +13,8 @@ class MechanicDrawloop {
    */
   constructor() {
     if (instance)
-      throw new Error(
-        "There should only be one instance of the draw loop at any given time"
+      throw new MechanicError(
+        "Tried to create a second instance of the drawlop. There should only ever be one drawloop. Make sure to access the drawloop via the `drawLoop` property on the Mechanic instance."
       );
     instance = this;
   }
@@ -29,11 +24,11 @@ class MechanicDrawloop {
    * @param {number} frameRate - The frameRate to use for the drawloop
    */
   prepare(frameRate) {
-    frameRate = frameRate;
-    fpsInterval = 1000 / frameRate;
-    lastFrameTime = 0;
-    frameCount = 0;
-    callback = null;
+    this.frameRate = frameRate;
+    this.fpsInterval = 1000 / frameRate;
+    this.lastFrameTime = 0;
+    this.frameCount = 0;
+    this.callback = null;
 
     return this;
   }
@@ -48,7 +43,7 @@ class MechanicDrawloop {
    */
   start(cb, frame = null) {
     this.stop();
-    callback = cb;
+    this.callback = cb;
 
     if (frame !== null) {
       this.renderFrame(frame);
@@ -61,8 +56,9 @@ class MechanicDrawloop {
    * Stops any running drawloop and clears all requested animation frames.
    */
   stop() {
-    isPlaying = false;
-    if (raf) window.cancelAnimationFrame(this.raf);
+    console.log("stopping drawloop");
+    this.isPlaying = false;
+    if (this.raf) window.cancelAnimationFrame(this.raf);
   }
 
   /**
@@ -70,18 +66,23 @@ class MechanicDrawloop {
    * @param {number} frame - The number of the frame to render
    */
   renderFrame(frame) {
-    if (callback) callback.call(null, frame);
+    if (this.callback) this.callback(frame);
   }
 
   /**
    * Calls a callback function determined by the pace of frameRate
    */
   loop() {
-    isPlaying = true;
+    this.isPlaying = true;
+
+    // Allow the drawloop's callback invocation to vary by 5ms around the
+    // mathematically correct time to draw new frame. This is done so we do not
+    // unnecessarily draw frames overextend the browser. See comment below.
+    const EPSILON = 5;
 
     const draw = () => {
       const now = window.performance.now();
-      const elapsed = now - lastFrameTime;
+      const elapsed = now - this.lastFrameTime;
 
       // The Epsilon is taken from p5's solution. Also copying their
       // comment on why they do it here.
@@ -95,14 +96,14 @@ class MechanicDrawloop {
       // in sync with the browser. note that we have to draw once even
       // if looping is off, so we bypass the time delay if that
       // is the case.
-      if (isPlaying && elapsed >= fpsInterval - epsilon) {
-        this.renderFrame(frameCount);
-        frameCount++;
-        lastFrameTime = now;
+      if (this.isPlaying && elapsed >= this.fpsInterval - EPSILON) {
+        this.renderFrame(this.frameCount);
+        this.frameCount++;
+        this.lastFrameTime = now;
       }
 
-      if (isPlaying) {
-        raf = window.requestAnimationFrame(draw);
+      if (this.isPlaying) {
+        this.raf = window.requestAnimationFrame(draw);
       }
     };
 
@@ -110,4 +111,4 @@ class MechanicDrawloop {
   }
 }
 
-export const mechanicDrawLoop = Object.freeze(new MechanicDrawloop());
+export const mechanicDrawLoop = new MechanicDrawloop();

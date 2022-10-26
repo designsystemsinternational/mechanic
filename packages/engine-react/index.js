@@ -48,7 +48,7 @@ export const run = (functionName, func, values, config) => {
     }
   });
 
-  const callbacks = mechanic.callbacksForEngine({
+  const callbacks = mechanic.callbacksForDesignFunction({
     drawLoop: () => {
       throw new Error(
         `drawLoop is not supported in engine react. Use the provided useDrawLoop hook instead.`

@@ -14,14 +14,12 @@ export const run = (functionName, func, values, config) => {
   const mechanic = new Mechanic(func.settings, values, config);
 
   // This ensures backwards compatibility for function's building their own
-  // canvas
-  //
-  // TODO: Do we want to keep it backwards or compatible or do we just remove
-  // the old style, given that the new animation API is breaking anyways?
+  // canvas. This keeps the engine backwards compatible and allows users to
+  // opt-out of the assumptions the prepared canvas makes if they need to.
   const checkForCanvas = el => {
     if (!el && !preparedCanvas) {
       throw new Error(
-        `You need to call getCanvas() before calling frame() or pass your own canvas element as an argument to frame().`
+        `You need to call getCanvas() before calling either frame() or done(), or pass your own canvas element as an argument to either function.`
       );
     }
   };
@@ -53,7 +51,7 @@ export const run = (functionName, func, values, config) => {
 
   func.handler({
     inputs: mechanic.values,
-    ...mechanic.callbacksForEngine({
+    ...mechanic.callbacksForDesignFunction({
       getCanvas: (width = null, height = null) => {
         if (preparedCanvas !== null) return preparedCanvas;
 

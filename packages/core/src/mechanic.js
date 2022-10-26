@@ -90,29 +90,14 @@ export class Mechanic {
   }
 
   /**
-   * Returns an object with common functions to be used in the design function
-   * @param {function} frame - The frame function
-   * @param {function} done - The done function
-   */
-  callbacks(frame, done) {
-    return {
-      frame,
-      done
-      //requestAnimationFrame:
-    };
-  }
-
-  /**
    * Convenience function to collect all callbacks that an engine can pass to a
    * design function. An engine can pass overwrites to inject custom behavior
    * into the callbacks. This is currently used by engine-p5 to disable using
    * mechanic.drawLoop within engine-p5.
    *
    * @param {object} overwrites - An object with overwrites for the callbacks
-   *
-   * @TODO: Could this be merged with the function above?
    */
-  callbacksForEngine(overwrites = {}) {
+  callbacksForDesignFunction(overwrites = {}) {
     return Object.assign(
       {},
       {

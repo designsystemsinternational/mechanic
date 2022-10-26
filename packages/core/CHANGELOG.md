@@ -13,11 +13,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added `mechanicDrawLoop` singleton that provides a unified and coordinated way to dispatch a drawLoop determined by the pace of `frameRate`
 
 ### Changed
+
 - Provide engine callbacks from mechanic core. This requires engines to register their frame and done callbacks with mechanic core using `registerFrameCallback` and `registerDoneCallback`
 
 ### Fixed
 
 - Hash the localStorage key storing a function's params based on the input's config of the function. This makes sure a fresh localStorage key is used if a function's input configuration changes to prevent bugs like #139 from happening.
+- Removed unused `callbacks` method from Mechanic class.
 
 ## 2.0.0-beta.9 - 2022-08-12
 
