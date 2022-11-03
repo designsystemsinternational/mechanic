@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### Changed
+
+- Updated `fillAnimatedCanvas` to show the new `debounceInputs` and `debounceDelay` setting
+
 ### Added
 
 - Updated all design functions to use `opentype.js` for rendering text to `<path />` elements or canvas.
