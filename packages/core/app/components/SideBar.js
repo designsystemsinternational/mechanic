@@ -65,8 +65,6 @@ export const SideBar = ({
   const [values, setValues] = useValues(name, inputs, exportedPresets);
   const handleOnChange = (e, name, value) => setValues(name, value);
 
-  console.log(debounceInputs);
-
   const getRunConfig = (lastRun, isPreview, random, scale, exportType) => ({
     isPreview,
     lastRun,
