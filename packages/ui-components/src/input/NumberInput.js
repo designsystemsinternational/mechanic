@@ -30,13 +30,39 @@ export const NumberInput = props => {
     onFocus,
     onBlur
   } = props;
+  const [internalValue, setInternalValue] = useState(value);
+  const rangeError = useRef(null);
   const [focus, setFocus] = useState(false);
+
+  const isInRange = v => {
+    if (min !== undefined && v < min) {
+      rangeError.current = `Must be at least ${min}`;
+      return false;
+    }
+    if (max !== undefined && v > max) {
+      rangeError.current = `Must be at most ${max}`;
+      return false;
+    }
+    rangeError.current = null;
+    return true;
+  };
+
+  const computedInvalid = useMemo(() => {
+    return invalid || rangeError.current !== null;
+  }, [invalid, rangeError.current]);
+
+  const computedError = useMemo(() => {
+    return error || rangeError.current;
+  }, [error, rangeError.current]);
 
   const handleOnChange = event => {
     const { name, value } = event.target;
     const parsedValue = value === "" ? 0 : parseFloat(value);
-    const constrainedValue = Math.min(max || Infinity, Math.max(min || -Infinity, value));
-    onChange && onChange(event, name, constrainedValue);
+    setInternalValue(parsedValue);
+
+    if (isInRange(parsedValue)) {
+      onChange && onChange(event, name, parsedValue);
+    }
   };
 
   const handleOnFocus = event => {
@@ -92,14 +118,14 @@ export const NumberInput = props => {
               max={max ? "" + max : max}
               step={step ? "" + step : step}
               name={name}
-              value={value.toFixed(decimalDigits)}
+              value={internalValue.toFixed(decimalDigits)}
             />
           )}
           <input
             type={"range"}
             tabIndex="-1"
             name={name}
-            value={value ? "" + value : value}
+            value={internalValue ? "" + internalValue : internalValue}
             id={id}
             className={css.rangeInput}
             disabled={disabled}
@@ -116,14 +142,16 @@ export const NumberInput = props => {
             aria-describedby={`error-${id}`}
             aria-invalid={invalid}
           />
-          {invalid && <div className={classnames(css.background, commonCss.background)} />}
+          {invalid && (
+            <div className={classnames(css.background, commonCss.background)} />
+          )}
         </div>
       ) : (
         <div className={commonCss.inputWrapper}>
           <input
             type={"number"}
             name={name}
-            value={value ? "" + value : value}
+            value={internalValue ? "" + internalValue : internalValue}
             id={id}
             className={classnames(commonCss.input, css.numberInput)}
             disabled={disabled}
@@ -144,9 +172,9 @@ export const NumberInput = props => {
           <div className={commonCss.background} />
         </div>
       )}
-      {invalid && error && (
+      {computedInvalid && computedError && (
         <div className={commonCss.error} id={`error-${id}`} aria-live="polite">
-          {error}
+          {computedError}
         </div>
       )}
     </div>
