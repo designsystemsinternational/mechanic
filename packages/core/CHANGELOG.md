@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Added `frameRate` setting to mechanic design function
 - Added `mechanicDrawLoop` singleton that provides a unified and coordinated way to dispatch a drawLoop determined by the pace of `frameRate`
+- Adds the setting to debounce re-rendering after changing the input values. By default inputs are debounced by 100ms. If a user sets `debounceInputs` in their functions settings to false they can opt-out of the debouncing. The period can be passed in the settings as `debounceDelay` and defaults to 100ms.
 
 ### Changed
 
