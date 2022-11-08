@@ -1,8 +1,10 @@
-import React, { useRef, useState, useMemo } from "react";
+import React, { useRef, useState, useMemo, useEffect } from "react";
 import PropTypes from "prop-types";
 import classnames from "classnames";
 import { uid } from "../uid.js";
 import { Invalid } from "../icons/index.js";
+
+import { useShiftKey } from "../util/useShiftKey.js";
 
 import * as commonCss from "../common.module.css";
 import * as css from "./NumberInput.module.css";
@@ -32,8 +34,12 @@ export const NumberInput = props => {
   } = props;
   const [internalValue, setInternalValue] = useState(value);
   const rangeError = useRef(null);
+  const isShiftPressed = useShiftKey();
   const [focus, setFocus] = useState(false);
 
+  // TODO: This validation needs to be moved outside the component up to the
+  // parent. We just need to make sure to stop event propagation on error at the
+  // parent level, so we do not cause a Mechanic Error to be thrown.
   const isInRange = v => {
     if (min !== undefined && v < min) {
       rangeError.current = `Must be at least ${min}`;
@@ -47,6 +53,7 @@ export const NumberInput = props => {
     return true;
   };
 
+  // TODO: Refactor, so this lives inside the parent
   const computedInvalid = useMemo(() => {
     return invalid || rangeError.current !== null;
   }, [invalid, rangeError.current]);
@@ -54,6 +61,14 @@ export const NumberInput = props => {
   const computedError = useMemo(() => {
     return error || rangeError.current;
   }, [error, rangeError.current]);
+
+  // When shift is pressed, we want to increment/decrement by 10x the step
+  const computedStep = useMemo(() => {
+    if (step !== undefined) {
+      return step * (isShiftPressed ? 10 : 1);
+    }
+    return isShiftPressed ? 10 : 1;
+  }, [step, isShiftPressed]);
 
   const handleOnChange = event => {
     const { name, value } = event.target;
@@ -116,7 +131,7 @@ export const NumberInput = props => {
               onChange={handleOnChange}
               min={min ? "" + min : min}
               max={max ? "" + max : max}
-              step={step ? "" + step : step}
+              step={computedStep ? "" + computedStep : computedStep}
               name={name}
               value={internalValue.toFixed(decimalDigits)}
             />
@@ -159,7 +174,7 @@ export const NumberInput = props => {
             autoComplete={autocomplete}
             min={min ? "" + min : min}
             max={max ? "" + max : max}
-            step={step ? "" + step : step}
+            step={computedStep ? "" + computedStep : computedStep}
             onChange={handleOnChange}
             onFocus={handleOnFocus}
             onBlur={handleOnBlur}
