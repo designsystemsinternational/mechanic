@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### Changed
+
+- Keeping Shift pressed will cause the arrow steps to be 10x the size of step on number inputs.
+- Number input allows you to type a value that is out of min/max range. It will not emit this value, so an invalid value won't cause a re-render.
+
 ## 2.0.0-beta.9 - 2022-08-12
 
 ### Fixed
