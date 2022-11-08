@@ -8,8 +8,12 @@ class MechanicDrawloop {
   /**
    * Drawloop constructor. The drawloop is realized as a singleton. Making sure
    * there is only one instance of the drawloop is needed so we can easily clear
-   * any pending animation frames when it's time to update a design function due
-   * to code changes or new input values.
+   * any pending animation frames. This can be assured as in the current set up
+   * a rerender of a design function will create a new instance of the global
+   * Mechanic object. Within this class we can then access the drawloop's
+   * singleton and perliminarily call stop on it, clearing any pending requested
+   * aniamtion frames that are still scheduled in the browser from a previous
+   * run.
    */
   constructor() {
     if (instance)
@@ -24,7 +28,6 @@ class MechanicDrawloop {
    * @param {number} frameRate - The frameRate to use for the drawloop
    */
   prepare(frameRate) {
-    this.frameRate = frameRate;
     this.fpsInterval = 1000 / frameRate;
     this.lastFrameTime = 0;
     this.frameCount = 0;
