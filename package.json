@@ -10,6 +10,8 @@
     "bootstrap": "lerna bootstrap --hoist",
     "test": "lerna run test --stream",
     "nuke": "rm -r node_modules; for d in packages/*/node_modules; do echo $d; rm -r $d; done",
+    "prettier": "prettier . --check",
+    "prettier:format": "prettier . --write",
     "publish": "lerna publish",
     "publish:local": "lerna exec -- yalc push",
     "build:dsiLogoMaker": "cd packages/dsi-logo-maker && npm run build"
