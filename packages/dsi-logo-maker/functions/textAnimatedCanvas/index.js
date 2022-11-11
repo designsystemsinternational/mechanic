@@ -3,7 +3,7 @@ import {
   computeBaseBricks,
   computeBlockGeometry,
   precomputeBlocks,
-  getIndexModule,
+  getIndexModule
 } from "../../utils/blocks";
 import { loadOpentypeFont } from "../../utils/opentype";
 import { drawBlock } from "../../utils/blocks-canvas";
@@ -19,10 +19,10 @@ export const handler = async ({ inputs, mechanic }) => {
     colors: colorsString,
     offset,
     duration,
-    loops,
+    loops
   } = inputs;
 
-  const words = text.split(" ").map((s) => s.toUpperCase());
+  const words = text.split(" ").map(s => s.toUpperCase());
   const height = Math.floor((width / ratio) * rows);
   const font = await loadOpentypeFont(fontMode);
 
@@ -56,7 +56,7 @@ export const handler = async ({ inputs, mechanic }) => {
   let internalOffset = 0;
   let progress = 0;
 
-  const animationHandler = (t) => {
+  const animationHandler = t => {
     const timestamp = t || new Date().getTime();
     if (!starttime) {
       starttime = timestamp;
@@ -83,7 +83,7 @@ export const inputs = {
   width: {
     type: "number",
     default: 500,
-    min: 100,
+    min: 100
   },
   ratio: {
     type: "number",
@@ -91,35 +91,35 @@ export const inputs = {
     max: 20,
     slider: true,
     min: 6,
-    step: 1,
+    step: 1
   },
   fontMode: {
     type: "text",
     options: {
       "F Grotesk Thin": "FGroteskThin-Regular.otf",
-      "F Grotesk": "FGrotesk-Regular.otf",
+      "F Grotesk": "FGrotesk-Regular.otf"
     },
-    default: "F Grotesk Thin",
+    default: "F Grotesk Thin"
   },
   text: {
     type: "text",
-    default: "Whatever you want",
+    default: "Whatever you want"
   },
   columns: {
     type: "number",
     default: 13,
     min: 1,
-    step: 1,
+    step: 1
   },
   rows: {
     type: "number",
     default: 2,
     min: 1,
-    step: 1,
+    step: 1
   },
   colors: {
     type: "text",
-    default: "#11457e,#d7141a,#f1f1f1",
+    default: "#11457e,#d7141a,#f1f1f1"
   },
   offset: {
     type: "number",
@@ -127,33 +127,33 @@ export const inputs = {
     min: 0,
     max: 1,
     step: 0.05,
-    slider: true,
+    slider: true
   },
   duration: {
     type: "number",
     default: 10000,
     min: 1000,
-    step: 500,
+    step: 500
   },
   loops: {
     type: "number",
     default: 4,
-    min: 1,
-  },
+    min: 1
+  }
 };
 
 export const presets = {
   bigger: {
     width: 500,
-    ratio: 9,
+    ratio: 9
   },
   evenBigger: {
     width: 500,
-    ratio: 9,
-  },
+    ratio: 9
+  }
 };
 
 export const settings = {
   engine: require("@mechanic-design/engine-canvas"),
-  animated: true,
+  animated: true
 };

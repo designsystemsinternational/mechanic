@@ -15,7 +15,7 @@ export const handler = ({ inputs, mechanic }) => {
     text,
     minRadius,
     maxRadius,
-    duration,
+    duration
   } = inputs;
 
   // stuff needed for the looping
@@ -88,27 +88,27 @@ export const handler = ({ inputs, mechanic }) => {
 export const inputs = {
   width: {
     type: "number",
-    default: 1080,
+    default: 1080
   },
   height: {
     type: "number",
-    default: 1920,
+    default: 1920
   },
   backgroundColor: {
     type: "color",
     model: "hex",
-    default: "#FDD7D1",
+    default: "#FDD7D1"
   },
 
   colorOne: {
     type: "color",
     model: "hex",
-    default: "#E94225",
+    default: "#E94225"
   },
   colorTwo: {
     type: "color",
     model: "hex",
-    default: "#002EBB",
+    default: "#002EBB"
   },
   fontScale: {
     label: "Font Scale (%)",
@@ -116,11 +116,11 @@ export const inputs = {
     default: 100,
     slider: true,
     min: 5,
-    max: 200,
+    max: 200
   },
   text: {
     type: "text",
-    default: "TURN YOUR DESIGN RULES INTO DESIGN TOOLS",
+    default: "TURN YOUR DESIGN RULES INTO DESIGN TOOLS"
   },
 
   minRadius: {
@@ -129,7 +129,7 @@ export const inputs = {
     default: 5,
     min: 0,
     max: 200,
-    slider: true,
+    slider: true
   },
   maxRadius: {
     label: "Max Radius (% of width)",
@@ -137,16 +137,16 @@ export const inputs = {
     default: 10,
     min: 0,
     max: 200,
-    slider: true,
+    slider: true
   },
   duration: {
     label: "Duration (seconds)",
     type: "number",
-    default: 20,
-  },
+    default: 20
+  }
 };
 
 export const settings = {
   engine: require("@mechanic-design/engine-react"),
-  animated: true,
+  animated: true
 };

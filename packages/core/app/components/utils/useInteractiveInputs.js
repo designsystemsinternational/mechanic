@@ -32,7 +32,8 @@ const useInteractiveInputs = (inputs, iframe, onChange) => {
 
   useEffect(() => {
     const onLoad = () => {
-      iframeRoot.current = iframe.current.contentDocument.getElementById("root");
+      iframeRoot.current =
+        iframe.current.contentDocument.getElementById("root");
       for (const [eventType, handler] of handlers) {
         iframeRoot.current.addEventListener(eventType, handler);
       }

@@ -3,7 +3,7 @@ import { getColors, flagNames } from "../../utils/graphics";
 import {
   computeBaseBricks,
   computeBlockGeometry,
-  computeBlock,
+  computeBlock
 } from "../../utils/blocks";
 import { useLoadedOpentypeFont } from "../../utils/hooks";
 import { Block } from "../../utils/blocks-components";
@@ -18,7 +18,7 @@ export const handler = ({ inputs, mechanic }) => {
     firstColor,
     secondColor,
     thirdColor,
-    offset,
+    offset
   } = inputs;
   const { done } = mechanic;
 
@@ -41,7 +41,7 @@ export const handler = ({ inputs, mechanic }) => {
   const colors = getColors(colorMode, flag, [
     firstColor,
     secondColor,
-    thirdColor,
+    thirdColor
   ]);
   const position = { x: 0, y: 0 };
   const blockGeometry = computeBlockGeometry(width, height, rows, cols);
@@ -92,7 +92,7 @@ export const inputs = {
   width: {
     type: "number",
     default: 500,
-    min: 100,
+    min: 100
   },
   ratio: {
     type: "number",
@@ -100,44 +100,44 @@ export const inputs = {
     max: 20,
     slider: true,
     min: 6,
-    step: 1,
+    step: 1
   },
   fontMode: {
     type: "text",
     options: {
       "F Grotesk Thin": "FGroteskThin-Regular.otf",
-      "F Grotesk": "FGrotesk-Regular.otf",
+      "F Grotesk": "FGrotesk-Regular.otf"
     },
-    default: "F Grotesk",
+    default: "F Grotesk"
   },
   colorMode: {
     type: "text",
     options: ["Random Flag", "Pick Flag", "Custom Colors"],
-    default: "Random Flag",
+    default: "Random Flag"
   },
   flag: {
     type: "text",
     options: flagNames,
     default: flagNames[0],
-    editable: (inputs) => inputs.colorMode === "Pick Flag",
+    editable: inputs => inputs.colorMode === "Pick Flag"
   },
   firstColor: {
     type: "color",
     model: "hex",
     default: "#11457e",
-    editable: (inputs) => inputs.colorMode === "Custom Colors",
+    editable: inputs => inputs.colorMode === "Custom Colors"
   },
   secondColor: {
     type: "color",
     model: "hex",
     default: "#d7141a",
-    editable: (inputs) => inputs.colorMode === "Custom Colors",
+    editable: inputs => inputs.colorMode === "Custom Colors"
   },
   thirdColor: {
     type: "color",
     model: "hex",
     default: "#f1f1f1",
-    editable: (inputs) => inputs.colorMode === "Custom Colors",
+    editable: inputs => inputs.colorMode === "Custom Colors"
   },
   offset: {
     type: "number",
@@ -145,21 +145,21 @@ export const inputs = {
     min: 0,
     max: 1,
     step: 0.02,
-    slider: true,
-  },
+    slider: true
+  }
 };
 
 export const presets = {
   big: {
     width: 1000,
-    ratio: 9,
+    ratio: 9
   },
   bigger: {
     width: 1500,
-    ratio: 9,
-  },
+    ratio: 9
+  }
 };
 
 export const settings = {
-  engine: require("@mechanic-design/engine-react"),
+  engine: require("@mechanic-design/engine-react")
 };

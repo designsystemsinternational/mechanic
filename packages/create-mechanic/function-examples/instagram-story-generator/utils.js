@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 
-export const useDrawLoop = (isPlaying) => {
+export const useDrawLoop = isPlaying => {
   const raf = useRef();
   const [frameCount, setFrameCount] = useState(0);
 
@@ -12,7 +12,7 @@ export const useDrawLoop = (isPlaying) => {
     }
 
     const draw = () => {
-      setFrameCount((cur) => cur + 1);
+      setFrameCount(cur => cur + 1);
       raf.current = requestAnimationFrame(draw);
     };
 

@@ -9,7 +9,7 @@ const colorDistributions = [
   [0.75, 0.25, 1],
   [0.5, 1, 0.5],
   [0.375, 0.875, 0.75],
-  [0.75, 0.375, 0.875],
+  [0.75, 0.375, 0.875]
 ];
 
 const offsets = [-0.5, -0.375, -0.25, 0, 0.25, 0.375, 0.5];
@@ -20,12 +20,12 @@ export const buildBlocks = ({
   height = 370,
   seedDistribution = 0,
   seedOffset = 0,
-  colors,
+  colors
 }) => {
   const colorDistribution = pickItemBySeed(
     colorDistributions,
     seedDistribution
-  ).map((d) => d * width);
+  ).map(d => d * width);
 
   const offset = pickItemBySeed(offsets, seedOffset) * width;
 
@@ -50,7 +50,7 @@ export const buildBlocks = ({
       } else {
         return {
           x: x + w,
-          y,
+          y
         };
       }
     };

@@ -8,7 +8,7 @@ export const Circle = ({
   minRadius,
   maxRadius,
   colorOne,
-  colorTwo,
+  colorTwo
 }) => {
   const x = useRef(minX + Math.random() * maxX - minX);
   const y = useRef(minY + Math.random() * (maxY - minY));

@@ -38,7 +38,9 @@ const command = async argv => {
     spinner.fail(`Mechanic config file (${configPath}) not found`);
     return;
   } else {
-    spinner.succeed(`Mechanic config file loaded: ${success(path.relative(".", configPath))}`);
+    spinner.succeed(
+      `Mechanic config file loaded: ${success(path.relative(".", configPath))}`
+    );
   }
 
   // Seek functions path
@@ -49,7 +51,9 @@ const command = async argv => {
     return;
   } else {
     spinner.succeed(
-      `Design functions directory found: ${success(path.relative(".", functionsPath))}`
+      `Design functions directory found: ${success(
+        path.relative(".", functionsPath)
+      )}`
     );
   }
 
@@ -59,16 +63,24 @@ const command = async argv => {
   if (!staticPath) {
     spinner.succeed(`Static directory file not found.`);
   } else {
-    spinner.succeed(`Static directory found: ${success(path.relative(".", staticPath))}`);
+    spinner.succeed(
+      `Static directory found: ${success(path.relative(".", staticPath))}`
+    );
   }
 
   // Seek custom inputs path
   spinner.start("Seeking custom inputs directory...");
   const inputsPath = await getInputsPath(argv.inputsPath, config);
   if (inputsPath) {
-    spinner.succeed(`Custom inputs directory found: ${success(path.relative(".", inputsPath))}`);
+    spinner.succeed(
+      `Custom inputs directory found: ${success(
+        path.relative(".", inputsPath)
+      )}`
+    );
   } else {
-    spinner.succeed(`Custom inputs directory not found. No custom inputs being used!`);
+    spinner.succeed(
+      `Custom inputs directory not found. No custom inputs being used!`
+    );
   }
 
   // Seek custom app components path
@@ -76,7 +88,9 @@ const command = async argv => {
   const appCompsPath = await getAppCompsPath(argv.appCompsPath, config);
   if (appCompsPath) {
     spinner.succeed(
-      `Custom app components directory found: ${success(path.relative(".", appCompsPath))}`
+      `Custom app components directory found: ${success(
+        path.relative(".", appCompsPath)
+      )}`
     );
   } else {
     spinner.succeed(
@@ -99,14 +113,19 @@ const command = async argv => {
         res.format({
           "font/otf": () =>
             res.sendFile(
-              require.resolve("@mechanic-design/fonts/PP-Object-Sans/PPObjectSans-Regular.otf")
+              require.resolve(
+                "@mechanic-design/fonts/PP-Object-Sans/PPObjectSans-Regular.otf"
+              )
             )
         });
       else
         res.format({
-          default: () => res.sendFile(path.resolve(__dirname, "./html/loading.html")),
-          "image/svg+xml": () => res.sendFile(path.resolve(__dirname, "../../app/favicon.svg")),
-          "text/html": () => res.sendFile(path.resolve(__dirname, "./html/loading.html")),
+          default: () =>
+            res.sendFile(path.resolve(__dirname, "./html/loading.html")),
+          "image/svg+xml": () =>
+            res.sendFile(path.resolve(__dirname, "../../app/favicon.svg")),
+          "text/html": () =>
+            res.sendFile(path.resolve(__dirname, "./html/loading.html")),
           "application/json": () => res.json({ loading: true, status })
         });
     }
@@ -125,7 +144,8 @@ const command = async argv => {
   spinner.start("Generating temp files to serve...");
   const [customInputs, inputScriptContent] = generateInputScript(inputsPath);
   const inputsData = { inputsPath, inputScriptContent, customInputs };
-  const [designFunctions, funcsTempDirObj] = generateFuncTempScripts(functionsPath);
+  const [designFunctions, funcsTempDirObj] =
+    generateFuncTempScripts(functionsPath);
   spinner.succeed("Temp files created!");
   spinner.start("Loading webpack compilation...");
 

@@ -35,7 +35,10 @@ export const NumberInput = props => {
   const handleOnChange = event => {
     const { name, value } = event.target;
     const parsedValue = value === "" ? 0 : parseFloat(value);
-    const constrainedValue = Math.min(max || Infinity, Math.max(min || -Infinity, value));
+    const constrainedValue = Math.min(
+      max || Infinity,
+      Math.max(min || -Infinity, value)
+    );
     onChange && onChange(event, name, constrainedValue);
   };
 
@@ -116,7 +119,9 @@ export const NumberInput = props => {
             aria-describedby={`error-${id}`}
             aria-invalid={invalid}
           />
-          {invalid && <div className={classnames(css.background, commonCss.background)} />}
+          {invalid && (
+            <div className={classnames(css.background, commonCss.background)} />
+          )}
         </div>
       ) : (
         <div className={commonCss.inputWrapper}>

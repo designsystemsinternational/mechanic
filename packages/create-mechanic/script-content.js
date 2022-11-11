@@ -1,6 +1,6 @@
 const {
   logo: { mechanic, mechanicInverse },
-  colors: { success, bgRed, bgBlue },
+  colors: { success, bgRed, bgBlue }
 } = require("@mechanic-design/utils");
 
 const mechanicPackage = "@mechanic-design/core";
@@ -22,7 +22,7 @@ Welcome to Mechanic!`,
     `Mechanic ${typeOfBaseUsed ? typeOfBaseUsed : "project"} ${success(
       projectName
     )} directory created!`,
-  projectContents: (dirPath) =>
+  projectContents: dirPath =>
     `It was created in the current working directory: ${dirPath}
 It contains the following files:
 > ${success("package.json")} (has all dependencies to use Mechanic)
@@ -79,9 +79,9 @@ ${bgBlue(
   functionNameExistsError:
     "Directory already exists. Enter name that doesn't exists.",
   generateFunctionStart: "Adding design function to project...",
-  generateFunctionSuccess: (functionName) =>
+  generateFunctionSuccess: functionName =>
     `Design function "${functionName}" added to project!`,
-  functionCreationDetails: (functionName) =>
+  functionCreationDetails: functionName =>
     `This just:
 > Created a folder inside functions/, called ${success(
       functionName
@@ -96,9 +96,9 @@ ${bgBlue(
     "Do you wish to install dependencies for your project right away?",
   installationMethodQuestion:
     "Do you wish to install dependencies using npm or yarn?",
-  installTry: (method) => `Trying with ${method}.`,
-  installSucceed: (method) => `Installed dependencies with ${method}.`,
-  installFailed: (method) =>
+  installTry: method => `Trying with ${method}.`,
+  installSucceed: method => `Installed dependencies with ${method}.`,
+  installFailed: method =>
     `Failed to install with ${method}. Try installing by yourself to check the issue.`,
   doneAndNextStepsMessage: (projectName, installation) => `
 Done! Mechanic project created at ${success(projectName)}
@@ -138,5 +138,5 @@ To start you now can run:${
       ? "\n> `npm run dev` or `yarn run dev`"
       : `\`${installation.installingMethod} run dev\``
   }
-  `,
+  `
 };

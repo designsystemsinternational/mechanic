@@ -29,11 +29,14 @@ const showError = (mainMessage, error) => {
   code.style = "font-size: 15px; color: red;";
   code.appendChild(document.createTextNode(error));
   p.appendChild(code);
-  p.appendChild(document.createTextNode(" - You may find more context in console."));
+  p.appendChild(
+    document.createTextNode(" - You may find more context in console.")
+  );
   div.appendChild(p);
 
   const stackDiv = document.createElement("div");
-  stackDiv.style = "color: white; background: black; border-radius: 10px;padding: 10px;";
+  stackDiv.style =
+    "color: white; background: black; border-radius: 10px;padding: 10px;";
 
   for (let m of [...error.stack.split("\n")]) {
     const p = document.createElement("p");
@@ -73,10 +76,18 @@ const setUp = (inputsDefs, designFunction, inputErrors) => {
         validator.validateValues(values);
         const preparedValues = validator.prepareValues(values);
         const engine = designFunction.settings.engine.run;
-        const mechanic = engine(functionName, designFunction, preparedValues, config);
+        const mechanic = engine(
+          functionName,
+          designFunction,
+          preparedValues,
+          config
+        );
         return mechanic ? mechanic : null;
       } catch (error) {
-        showError(`There was an error running ${functionName} function and/or engine.`, error);
+        showError(
+          `There was an error running ${functionName} function and/or engine.`,
+          error
+        );
         setTimeout(() => {
           throw error;
         }, 0);
@@ -88,7 +99,11 @@ const setUp = (inputsDefs, designFunction, inputErrors) => {
     window.run = functionName => {
       if (error instanceof MechanicInputError) {
         showError(`There was an error loading custom inputs.`, error);
-      } else showError(`There was an error loading ${functionName} function and/or engine.`, error);
+      } else
+        showError(
+          `There was an error loading ${functionName} function and/or engine.`,
+          error
+        );
       return null;
     };
     throw error;

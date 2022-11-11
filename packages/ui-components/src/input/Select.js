@@ -69,7 +69,8 @@ export const Select = props => {
           onBlur={handleOnBlur}
           aria-required={required}
           aria-describedby={`error-${id}`}
-          aria-invalid={invalid}>
+          aria-invalid={invalid}
+        >
           <option disabled>{placeholder}</option>
           {children}
         </select>

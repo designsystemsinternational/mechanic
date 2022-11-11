@@ -1,4 +1,8 @@
-import { getTypeValidationProperty, validationProperty, editableProperty } from "./utils.js";
+import {
+  getTypeValidationProperty,
+  validationProperty,
+  editableProperty
+} from "./utils.js";
 
 export default {
   typeName: "image",

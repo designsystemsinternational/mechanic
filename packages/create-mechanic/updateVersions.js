@@ -23,7 +23,7 @@ const path = require("path");
   for (const directory of ["function-templates", "function-examples"]) {
     const bases = fs
       .readdirSync(path.join(__dirname, directory))
-      .filter((d) => d !== "index.js");
+      .filter(d => d !== "index.js");
 
     for (const base of bases) {
       const dependenciesPath = path.join(
