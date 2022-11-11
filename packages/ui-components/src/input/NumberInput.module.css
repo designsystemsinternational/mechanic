@@ -16,7 +16,8 @@
   box-sizing: border-box;
   align-items: center;
   height: var(--mechanic-input-height);
-  padding: 0 var(--mechanic-input-height-eighth) 0 var(--mechanic-input-height-quart);
+  padding: 0 var(--mechanic-input-height-eighth) 0
+    var(--mechanic-input-height-quart);
   background-color: var(--mechanic-background);
   border: 2px solid transparent;
   color: currentColor;
