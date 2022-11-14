@@ -43,10 +43,10 @@ export const handler = ({ inputs, mechanic }) => {
   }, [font, image]);
 
   useEffect(() => {
-    if (!image || href !== "") {
+    if (font && (!image || href !== "")) {
       done();
     }
-  }, [image, href]);
+  }, [font, image, href]);
 
   if (!font) {
     return null;

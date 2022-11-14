@@ -109,8 +109,7 @@ To start you now can run:
       : !installation.success
       ? `\n> \`${installation.installingMethod} install\``
       : ""
-  }
-> ${
+  }${
     !installation
       ? "\n> `npm run dev` or `yarn run dev`"
       : `\`${installation.installingMethod} run dev\``
@@ -132,8 +131,7 @@ To start you now can run:${
       : !installation.success
       ? `\n> \`${installation.installingMethod} install\``
       : ""
-  }
-> ${
+  }${
     !installation
       ? "\n> `npm run dev` or `yarn run dev`"
       : `\`${installation.installingMethod} run dev\``
