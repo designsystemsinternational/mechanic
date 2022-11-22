@@ -9,7 +9,7 @@ export const run = (functionName, func, values, config) => {
   root.innerHTML = "";
 
   const mechanic = new Mechanic(func.settings, values, config);
-  const onFrame = (el) => {
+  const onFrame = el => {
     // Pending virtual-dom approach
     root.innerHTML = el.trim();
     if (!isPreview) {
@@ -23,7 +23,7 @@ export const run = (functionName, func, values, config) => {
       mechanic.download(name || functionName);
     }
   };
-  const onSetState = async (obj) => {
+  const onSetState = async obj => {
     mechanic.setState(obj);
   };
 
@@ -33,8 +33,8 @@ export const run = (functionName, func, values, config) => {
       frame: onFrame,
       done: onDone,
       state: mechanic.functionState,
-      setState: onSetState,
-    },
+      setState: onSetState
+    }
   });
   return mechanic;
 };

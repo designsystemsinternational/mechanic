@@ -59,7 +59,10 @@ module.exports = function (
             }
           ]
         ],
-        plugins: [resolve("react-hot-loader/babel"), resolve("@babel/plugin-transform-runtime")],
+        plugins: [
+          resolve("react-hot-loader/babel"),
+          resolve("@babel/plugin-transform-runtime")
+        ],
         env: {
           test: {
             presets: [resolve("@babel/preset-env")]
@@ -72,28 +75,39 @@ module.exports = function (
   const functions = {
     test: /FUNCTIONS/,
     use: [
-      { loader: path.resolve(__dirname, "./function-loader.cjs"), options: { designFunctions } }
+      {
+        loader: path.resolve(__dirname, "./function-loader.cjs"),
+        options: { designFunctions }
+      }
     ]
   };
 
   const inputs = {
     test: /INPUTS/,
     use: [
-      { loader: path.resolve(__dirname, "./input-loader.cjs"), options: { inputs: inputsData } }
+      {
+        loader: path.resolve(__dirname, "./input-loader.cjs"),
+        options: { inputs: inputsData }
+      }
     ]
   };
 
   const appComponents = {
     test: /APP/,
     use: [
-      { loader: path.resolve(__dirname, "./app-components-loader.cjs"), options: { appCompsPath } }
+      {
+        loader: path.resolve(__dirname, "./app-components-loader.cjs"),
+        options: { appCompsPath }
+      }
     ]
   };
 
   const mechanicCss = {
     test: /\.(css)$/,
     issuer: isMechanicCondition,
-    use: [isProduction ? MiniCssExtractPlugin.loader : resolve("style-loader")].concat([
+    use: [
+      isProduction ? MiniCssExtractPlugin.loader : resolve("style-loader")
+    ].concat([
       {
         loader: resolve("css-loader"),
         options: {
@@ -194,7 +208,10 @@ module.exports = function (
     {
       app: isProduction
         ? path.resolve(__dirname, "./index.js")
-        : [resolve("webpack-hot-middleware/client"), path.resolve(__dirname, "./index.js")]
+        : [
+            resolve("webpack-hot-middleware/client"),
+            path.resolve(__dirname, "./index.js")
+          ]
     }
   );
 

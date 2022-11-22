@@ -2,7 +2,7 @@ const fs = require("fs-extra");
 const execa = require("execa");
 const path = require("path");
 const {
-  spinners: { mechanicSpinner: spinner },
+  spinners: { mechanicSpinner: spinner }
 } = require("@mechanic-design/utils");
 
 const content = require("./script-content");
@@ -10,7 +10,7 @@ const content = require("./script-content");
 const log = console.log;
 const projectTemplateDir = path.join(__dirname, "project-template");
 
-const getProjectQuestion = (initialAnswers) => [
+const getProjectQuestion = initialAnswers => [
   {
     name: "project",
     type: "input",
@@ -21,27 +21,27 @@ const getProjectQuestion = (initialAnswers) => [
     when:
       initialAnswers.noSkip ||
       (!initialAnswers.usesBase && !initialAnswers.project),
-    validate: async (project) => {
+    validate: async project => {
       const exists = await fs.pathExists(path.resolve(project));
       return !exists ? true : content.projectNameExistsError;
-    },
-  },
+    }
+  }
 ];
 const confirmDFQuestion = [
   {
     name: "confirmContinue",
     type: "confirm",
     message: content.confirmContinueQuestion,
-    default: true,
-  },
+    default: true
+  }
 ];
 const confirmInstallQuestion = [
   {
     name: "install",
     type: "confirm",
     message: content.confirmInstallQuestion,
-    default: true,
-  },
+    default: true
+  }
 ];
 
 const installationMethodQuestion = [
@@ -50,8 +50,8 @@ const installationMethodQuestion = [
     type: "list",
     message: content.installationMethodQuestion,
     default: "npm",
-    choices: ["npm", "yarn"],
-  },
+    choices: ["npm", "yarn"]
+  }
 ];
 
 const generateProjectTemplate = async (projectName, typeOfBaseUsed) => {
@@ -65,7 +65,7 @@ const generateProjectTemplate = async (projectName, typeOfBaseUsed) => {
   // Copying content promises
   await Promise.all([
     // Copy array of files that get duplicated without change
-    ...["mechanic.config.js", "README.md"].map((filename) =>
+    ...["mechanic.config.js", "README.md"].map(filename =>
       fs.copyFile(
         path.join(projectTemplateDir, filename),
         path.join(directory, filename.replace(/^_/, "."))
@@ -79,14 +79,14 @@ const generateProjectTemplate = async (projectName, typeOfBaseUsed) => {
       );
       const packageObj = {
         name: projectName, // Adds name of project
-        ...packageJson,
+        ...packageJson
       };
       // Write the resulting package
       await fs.writeFile(
         path.join(directory, "package.json"),
         JSON.stringify(packageObj, null, 2)
       );
-    })(),
+    })()
   ]);
 
   spinner.succeed(content.generateProjectSuccess(typeOfBaseUsed, projectName));
@@ -135,5 +135,5 @@ module.exports = {
   installationMethodQuestion,
   generateProjectTemplate,
   checkLockFile,
-  installDependencies,
+  installDependencies
 };

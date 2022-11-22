@@ -2,7 +2,7 @@ const cli = require("yargs");
 const path = require("path");
 const resolveCwd = require("resolve-cwd");
 const {
-  colors: { fail },
+  colors: { fail }
 } = require("@mechanic-design/utils");
 
 const { mechanic, getIsMechanicProject } = require("./utils");
@@ -72,7 +72,7 @@ const buildLocalCommands = (cli, isMechanicProject) => {
   }
 
   const getCommandHandler = (commandName, handler) => {
-    return (argv) => {
+    return argv => {
       const localCmd = resolveLocalCommand(commandName) || (() => {});
       const args = { ...argv, directory };
       return handler ? handler(args, localCmd) : localCmd(args);

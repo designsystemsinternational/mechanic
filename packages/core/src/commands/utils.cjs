@@ -33,7 +33,9 @@ const getInputsPath = async (inputsPath, config) => {
 const getAppCompsPath = async (appCompsPath, config) => {
   const relativePath = appCompsPath || config.appCompsPath || "./app";
   const fullPath = await checkFullPath(relativePath);
-  const indexPath = fullPath ? await checkFullPath(`${relativePath}/index.js`) : null;
+  const indexPath = fullPath
+    ? await checkFullPath(`${relativePath}/index.js`)
+    : null;
   return indexPath ? fullPath : null;
 };
 
@@ -55,11 +57,17 @@ const searchExports = (dir, callback, depth = 0) => {
   });
 };
 
-const setUpFunctionPath = path.resolve(path.join(__dirname, "..", "function-set-up.js"));
-const inputsPath = path.resolve(path.join(__dirname, "..", "..", "app", "INPUTS"));
+const setUpFunctionPath = path.resolve(
+  path.join(__dirname, "..", "function-set-up.js")
+);
+const inputsPath = path.resolve(
+  path.join(__dirname, "..", "..", "app", "INPUTS")
+);
 const getFuncScriptContent = designFunctionPath => `
 import { inputsDefs, inputErrors } from "${inputsPath}";
-import * as designFunction from "${designFunctionPath.split(path.sep).join("/")}";
+import * as designFunction from "${designFunctionPath
+  .split(path.sep)
+  .join("/")}";
 import { setUp } from "${setUpFunctionPath.split(path.sep).join("/")}";
 setUp(inputsDefs, designFunction, inputErrors)
 if (module.hot) {
@@ -82,13 +90,18 @@ const generateFuncTempScripts = functionsPath => {
   });
   Object.entries(designFunctions).map(([name, designFuncObj]) => {
     const tempScriptName = path.join(tempDirObj.name, `${name}.js`);
-    fs.writeFileSync(tempScriptName, getFuncScriptContent(designFuncObj.original));
+    fs.writeFileSync(
+      tempScriptName,
+      getFuncScriptContent(designFuncObj.original)
+    );
     designFunctions[name]["temp"] = tempScriptName;
   });
   return [designFunctions, tempDirObj];
 };
 
-const setUpInputsPath = path.resolve(path.join(__dirname, "..", "input-set-up.js"));
+const setUpInputsPath = path.resolve(
+  path.join(__dirname, "..", "input-set-up.js")
+);
 const inputScriptContent = `
 import { setUp } from "${setUpInputsPath.split(path.sep).join("/")}";
 const [inputsDefs, customComponents, interactiveInputs, inputErrors] = setUp(customInputs);
@@ -121,7 +134,8 @@ const generateInputScript = inputsPath => {
 
 const setCustomInterrupt = (callback, tempDirObjs = []) => {
   process.on("SIGINT", function () {
-    if (tempDirObjs.length > 0) tempDirObjs.forEach(obj => obj.removeCallback());
+    if (tempDirObjs.length > 0)
+      tempDirObjs.forEach(obj => obj.removeCallback());
     callback();
     process.exit();
   });

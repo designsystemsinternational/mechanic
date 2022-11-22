@@ -17,19 +17,19 @@ export const handler = ({ inputs, mechanic }) => {
 export const inputs = {
   width: {
     type: "number",
-    default: 400,
+    default: 400
   },
   height: {
     type: "number",
-    default: 300,
+    default: 300
   },
   color: {
     type: "color",
     model: "hex",
-    default: "#E94225",
-  },
+    default: "#E94225"
+  }
 };
 
 export const settings = {
-  engine: require("@mechanic-design/engine-react"),
+  engine: require("@mechanic-design/engine-react")
 };

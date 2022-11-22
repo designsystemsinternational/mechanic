@@ -23,10 +23,14 @@ export default {
   validation: (inputValue, input) => {
     if (typeof inputValue !== "number" && typeof inputValue !== "string") {
       return `Supplied input value ${inputValue} is expected to be of type "number", not ${typeof inputValue}.`;
-    } else if (typeof inputValue === "string" && Number.isNaN(parseFloat(inputValue))) {
+    } else if (
+      typeof inputValue === "string" &&
+      Number.isNaN(parseFloat(inputValue))
+    ) {
       return `Supplied input value ${inputValue} is unparsable string.`;
     }
-    const value = typeof inputValue === "string" ? parseFloat(inputValue) : inputValue;
+    const value =
+      typeof inputValue === "string" ? parseFloat(inputValue) : inputValue;
     if (hasKey(input, "options")) {
       const { options } = input;
       if (Array.isArray(options) && !options.includes(value)) {

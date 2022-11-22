@@ -31,7 +31,8 @@ ArrayBufferDataStream.prototype.writeByte = function (b) {
 };
 
 //Synonym:
-ArrayBufferDataStream.prototype.writeU8 = ArrayBufferDataStream.prototype.writeByte;
+ArrayBufferDataStream.prototype.writeU8 =
+  ArrayBufferDataStream.prototype.writeByte;
 
 ArrayBufferDataStream.prototype.writeU16BE = function (u) {
   this.data[this.pos++] = u >> 8;
@@ -338,7 +339,14 @@ const BlobBufferClass = function (fs) {
                   }
                 };
 
-              fs.write(fd, buffer, 0, buffer.length, newEntry.offset, handleWriteComplete);
+              fs.write(
+                fd,
+                buffer,
+                0,
+                buffer.length,
+                newEntry.offset,
+                handleWriteComplete
+              );
             });
           });
         } else if (fileWriter) {
@@ -369,7 +377,10 @@ const BlobBufferClass = function (fs) {
                 throw new Error("Overwrite crosses blob boundaries");
               }
 
-              if (newEntry.offset == entry.offset && newEntry.length == entry.length) {
+              if (
+                newEntry.offset == entry.offset &&
+                newEntry.length == entry.length
+              ) {
                 // We overwrote the entire block
                 entry.data = newEntry.data;
 
@@ -385,7 +396,10 @@ const BlobBufferClass = function (fs) {
                   .then(function (newEntryArray) {
                     newEntry.data = newEntryArray;
 
-                    entry.data.set(newEntry.data, newEntry.offset - entry.offset);
+                    entry.data.set(
+                      newEntry.data,
+                      newEntry.offset - entry.offset
+                    );
                   });
               }
             }
@@ -765,11 +779,19 @@ const WebMWriterClass = function (ArrayBufferDataStream, BlobBuffer) {
         alphaBuffer.height = source.height;
 
         alphaBufferContext = alphaBuffer.getContext("2d");
-        alphaBufferData = alphaBufferContext.createImageData(alphaBuffer.width, alphaBuffer.height);
+        alphaBufferData = alphaBufferContext.createImageData(
+          alphaBuffer.width,
+          alphaBuffer.height
+        );
       }
 
       let sourceContext = source.getContext("2d"),
-        sourceData = sourceContext.getImageData(0, 0, source.width, source.height).data,
+        sourceData = sourceContext.getImageData(
+          0,
+          0,
+          source.width,
+          source.height
+        ).data,
         destData = alphaBufferData.data,
         dstCursor = 0,
         srcEnd = source.width * source.height * 4;
@@ -960,8 +982,12 @@ const WebMWriterClass = function (ArrayBufferDataStream, BlobBuffer) {
       blobBuffer.write(bufferStream.getAsDataArray());
 
       // Now we know where these top-level elements lie in the file:
-      seekPoints.SegmentInfo.positionEBML.data = fileOffsetToSegmentRelative(segmentInfo.offset);
-      seekPoints.Tracks.positionEBML.data = fileOffsetToSegmentRelative(tracks.offset);
+      seekPoints.SegmentInfo.positionEBML.data = fileOffsetToSegmentRelative(
+        segmentInfo.offset
+      );
+      seekPoints.Tracks.positionEBML.data = fileOffsetToSegmentRelative(
+        tracks.offset
+      );
 
       writtenHeader = true;
     }
@@ -1118,7 +1144,9 @@ const WebMWriterClass = function (ArrayBufferDataStream, BlobBuffer) {
       blobBuffer.write(cuesBuffer.getAsDataArray());
 
       // Now we know where the Cues element has ended up, we can update the SeekHead
-      seekPoints.Cues.positionEBML.data = fileOffsetToSegmentRelative(ebml.offset);
+      seekPoints.Cues.positionEBML.data = fileOffsetToSegmentRelative(
+        ebml.offset
+      );
     }
 
     /**
@@ -1135,10 +1163,14 @@ const WebMWriterClass = function (ArrayBufferDataStream, BlobBuffer) {
       for (let i = 0; i < clusterFrameBuffer.length; i++) {
         rawImageSize +=
           clusterFrameBuffer[i].frame.length +
-          (clusterFrameBuffer[i].alpha ? clusterFrameBuffer[i].alpha.length : 0);
+          (clusterFrameBuffer[i].alpha
+            ? clusterFrameBuffer[i].alpha.length
+            : 0);
       }
 
-      let buffer = new ArrayBufferDataStream(rawImageSize + clusterFrameBuffer.length * 64), // Estimate 64 bytes per block header
+      let buffer = new ArrayBufferDataStream(
+          rawImageSize + clusterFrameBuffer.length * 64
+        ), // Estimate 64 bytes per block header
         cluster = createCluster({
           timecode: Math.round(clusterStartTime)
         });
@@ -1150,7 +1182,11 @@ const WebMWriterClass = function (ArrayBufferDataStream, BlobBuffer) {
       writeEBML(buffer, blobBuffer.pos, cluster);
       blobBuffer.write(buffer.getAsDataArray());
 
-      addCuePoint(DEFAULT_TRACK_NUMBER, Math.round(clusterStartTime), cluster.offset);
+      addCuePoint(
+        DEFAULT_TRACK_NUMBER,
+        Math.round(clusterStartTime),
+        cluster.offset
+      );
 
       clusterFrameBuffer = [];
       clusterStartTime += clusterDuration;
@@ -1163,7 +1199,9 @@ const WebMWriterClass = function (ArrayBufferDataStream, BlobBuffer) {
         if (options.frameRate) {
           options.frameDuration = 1000 / options.frameRate;
         } else {
-          throw new Error("Missing required frameDuration or frameRate setting");
+          throw new Error(
+            "Missing required frameDuration or frameRate setting"
+          );
         }
       }
 
@@ -1173,7 +1211,10 @@ const WebMWriterClass = function (ArrayBufferDataStream, BlobBuffer) {
       if (options.alphaQuality === undefined) {
         options.alphaQuality = options.quality;
       } else {
-        options.alphaQuality = Math.max(Math.min(options.alphaQuality, 0.99999), 0);
+        options.alphaQuality = Math.max(
+          Math.min(options.alphaQuality, 0.99999),
+          0
+        );
       }
     }
 
@@ -1261,7 +1302,9 @@ const WebMWriterClass = function (ArrayBufferDataStream, BlobBuffer) {
         writeHeader();
       }
 
-      let keyframe = extractKeyframeFromWebP(renderAsWebP(frame, options.quality)),
+      let keyframe = extractKeyframeFromWebP(
+          renderAsWebP(frame, options.quality)
+        ),
         frameDuration,
         frameAlpha = null;
 
@@ -1285,7 +1328,9 @@ const WebMWriterClass = function (ArrayBufferDataStream, BlobBuffer) {
         frame: keyframe.frame,
         duration: frameDuration,
         alpha: frameAlpha
-          ? extractKeyframeFromWebP(renderAsWebP(frameAlpha, options.alphaQuality)).frame
+          ? extractKeyframeFromWebP(
+              renderAsWebP(frameAlpha, options.alphaQuality)
+            ).frame
           : null
       });
     };

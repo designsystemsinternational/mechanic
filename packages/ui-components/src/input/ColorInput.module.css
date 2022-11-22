@@ -18,7 +18,8 @@
 }
 
 .picking .button {
-  border-radius: var(--mechanic-input-height-half) var(--mechanic-input-height-half) 0 0;
+  border-radius: var(--mechanic-input-height-half)
+    var(--mechanic-input-height-half) 0 0;
 }
 
 .popover {
@@ -38,7 +39,8 @@
     border-bottom: 1px solid currentColor !important;
 
     /* border-top: none !important; */
-    border-radius: 0 0 var(--mechanic-input-height-half) var(--mechanic-input-height-half) !important;
+    border-radius: 0 0 var(--mechanic-input-height-half)
+      var(--mechanic-input-height-half) !important;
     padding: 0.5em;
     overflow: hidden;
     box-sizing: border-box !important;

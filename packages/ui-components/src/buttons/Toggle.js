@@ -42,7 +42,8 @@ export const Toggle = props => {
       onClick={onClick}
       onFocus={handleOnFocus}
       onBlur={handleOnBlur}
-      disabled={disabled}>
+      disabled={disabled}
+    >
       <div className={classnames(css.status, { [css.on]: status })} />
       <span className={css.label}>{children}</span>
     </button>

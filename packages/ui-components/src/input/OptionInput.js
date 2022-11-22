@@ -26,10 +26,13 @@ export const OptionInput = props => {
     onBlur
   } = props;
 
-  const arrayOfOptions = Array.isArray(options) ? options : Object.keys(options);
+  const arrayOfOptions = Array.isArray(options)
+    ? options
+    : Object.keys(options);
 
   const handleOnChange = event => {
-    const value = type === "number" ? parseFloat(event.target.value) : event.target.value;
+    const value =
+      type === "number" ? parseFloat(event.target.value) : event.target.value;
     onChange(event, name, value);
   };
 
@@ -51,7 +54,8 @@ export const OptionInput = props => {
       placeholder={placeholder}
       onChange={handleOnChange}
       onFocus={onFocus}
-      onBlur={onBlur}>
+      onBlur={onBlur}
+    >
       {arrayOfOptions.map(value => (
         <option key={`option-${name}-${value}`} value={value}>
           {value}
