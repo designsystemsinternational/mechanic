@@ -28,6 +28,15 @@ We propose a timeline input that developers can opt into for animated design
 functions. To do so they'd have to set the `showTimeline` property of their
 function's settings to `true`.
 
+When enabled in the setting a design functions renders with a timeline input.
+This can be toggled on/off using a switch. By default it is turned off. If
+turned off the design function animates from the beginning whenever an input
+value is updated. If the timeline is toggled on a slider is enabled, allowing
+the user to jump to a specific frame of the animation. Updated input values will
+now only update this frame. If the export action is triggered the timeline is
+automatically toggled off, so that an export will always yield the entire
+animation.
+
 By default the timeline renders with two additional number inputs for the min
 frame number and the max frame number. The timeline scrubber interpolates
 between these two values. This makes sure a developer can zoom in and zoom out
@@ -38,8 +47,9 @@ timeline by passing the `timelineMaxFrames` setting. If this is set, the timline
 input will just show the scrubber and interpolate between `0 ` and the value of
 `timelineMaxFrames`.
 
-The timeline is a development feature only. When building your design tool for
-deployment it is not exported.
+The timeline is a development and production feature. When enabled in the
+settings it will be included in both environments. However the timeline does not
+affect the export behavior, it is a preview and tweaking feature.
 
 ## Implementation Details (optional)
 
