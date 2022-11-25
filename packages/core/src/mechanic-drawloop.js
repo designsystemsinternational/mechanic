@@ -59,7 +59,6 @@ class MechanicDrawloop {
    * Stops any running drawloop and clears all requested animation frames.
    */
   stop() {
-    console.log("stopping drawloop");
     this.isPlaying = false;
     if (this.raf) window.cancelAnimationFrame(this.raf);
   }
