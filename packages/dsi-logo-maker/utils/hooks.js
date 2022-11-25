@@ -15,7 +15,7 @@ export const useDrawLoop = (isPlaying, duration) => {
       return;
     }
 
-    const draw = (t) => {
+    const draw = t => {
       const timestamp = t || new Date().getTime();
       if (!starttime.current) {
         starttime.current = timestamp;
@@ -39,10 +39,10 @@ export const useDrawLoop = (isPlaying, duration) => {
 /**
   A hook to load an opentype font
 **/
-export const useLoadedOpentypeFont = (name) => {
+export const useLoadedOpentypeFont = name => {
   const [font, setFont] = useState(null);
   useMemo(() => {
-    loadOpentypeFont(name, (f) => {
+    loadOpentypeFont(name, f => {
       setFont(f);
     });
   }, [name]);

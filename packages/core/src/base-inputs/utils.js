@@ -31,9 +31,9 @@ export const getOptionsProperty = type => ({
     else if (!Array.isArray(value)) {
       // It should be consistent with 'default' property
       if (!Object.keys(value).includes(input.default)) {
-        return `Default value ${input.default} is not present in given options: ${Object.keys(
-          value
-        )}. `;
+        return `Default value ${
+          input.default
+        } is not present in given options: ${Object.keys(value)}. `;
       }
       // All values should be consistent with the input type
       for (let option in value) {

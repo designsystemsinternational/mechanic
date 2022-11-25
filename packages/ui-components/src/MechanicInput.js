@@ -6,12 +6,20 @@ import * as css from "./MechanicInput.module.css";
 import { TextInput } from "./input/TextInput.js";
 import { NumberInput } from "./input/NumberInput.js";
 import { BooleanInput } from "./input/BooleanInput.js";
+
 import { OptionInput } from "./input/OptionInput.js";
 import { ColorInput } from "./input/ColorInput.js";
 import { ImageInput } from "./input/ImageInput.js";
 import { uid } from "./uid.js";
 
-export const MechanicInput = ({ name, className, values, attributes, onChange, children }) => {
+export const MechanicInput = ({
+  name,
+  className,
+  values,
+  attributes,
+  onChange,
+  children
+}) => {
   const id = useRef(uid("mechanic-input"));
   const { type, label: _label, options, validation, editable } = attributes;
   const _default = attributes["default"];
@@ -19,7 +27,11 @@ export const MechanicInput = ({ name, className, values, attributes, onChange, c
 
   const value = values[name];
   const isEditable =
-    editable === undefined ? true : typeof editable === "function" ? !!editable(values) : editable;
+    editable === undefined
+      ? true
+      : typeof editable === "function"
+      ? !!editable(values)
+      : editable;
   const actualValue = value === undefined ? _default : value;
   const error = validation ? validation(actualValue) : null;
 
@@ -40,7 +52,8 @@ export const MechanicInput = ({ name, className, values, attributes, onChange, c
         invalid={error ? true : false}
         error={error}
         disabled={!isEditable}
-        onChange={onChange}>
+        onChange={onChange}
+      >
         {children}
       </OptionInput>
     );
@@ -59,7 +72,8 @@ export const MechanicInput = ({ name, className, values, attributes, onChange, c
         error={error}
         multiple={multiple}
         disabled={!isEditable}
-        onChange={onChange}>
+        onChange={onChange}
+      >
         {children}
       </ImageInput>
     );
@@ -76,7 +90,8 @@ export const MechanicInput = ({ name, className, values, attributes, onChange, c
         invalid={error ? true : false}
         error={error}
         disabled={!isEditable}
-        onChange={onChange}>
+        onChange={onChange}
+      >
         {children}
       </BooleanInput>
     );
@@ -95,7 +110,8 @@ export const MechanicInput = ({ name, className, values, attributes, onChange, c
         invalid={error ? true : false}
         error={error}
         disabled={!isEditable}
-        onChange={onChange}>
+        onChange={onChange}
+      >
         {children}
       </ColorInput>
     );
@@ -117,7 +133,8 @@ export const MechanicInput = ({ name, className, values, attributes, onChange, c
         min={min}
         max={max}
         step={step}
-        onChange={onChange}>
+        onChange={onChange}
+      >
         {children}
       </NumberInput>
     );
@@ -133,7 +150,8 @@ export const MechanicInput = ({ name, className, values, attributes, onChange, c
       invalid={error ? true : false}
       error={error}
       disabled={!isEditable}
-      onChange={onChange}>
+      onChange={onChange}
+    >
       {children}
     </TextInput>
   );

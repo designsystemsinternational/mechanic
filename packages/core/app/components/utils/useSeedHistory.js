@@ -93,7 +93,8 @@ function undoReducer(state, action) {
   }
 }
 
-const getNewSeed = () => seedrandom(null, { pass: (_, seed) => ({ seed }) }).seed;
+const getNewSeed = () =>
+  seedrandom(null, { pass: (_, seed) => ({ seed }) }).seed;
 
 export function useSeedHistory(functionName) {
   const key = `--${functionName}-seed`;

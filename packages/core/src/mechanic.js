@@ -29,12 +29,20 @@ export class Mechanic {
    */
   constructor(settings, baseValues, config) {
     const values = Object.assign({}, baseValues);
-    const { lastRun, boundingClient, scale, randomSeed, isPreview, exportType } = config;
+    const {
+      lastRun,
+      boundingClient,
+      scale,
+      randomSeed,
+      isPreview,
+      exportType
+    } = config;
 
     values._isPreview = isPreview;
 
     const persistRandomOnExport =
-      !settings.hasOwnProperty("persistRandomOnExport") || settings.persistRandomOnExport;
+      !settings.hasOwnProperty("persistRandomOnExport") ||
+      settings.persistRandomOnExport;
     // Sets random seed
     values._randomSeed = randomSeed;
     if (persistRandomOnExport) {
@@ -93,7 +101,9 @@ export class Mechanic {
    */
   async frame(el, extras = {}) {
     if (!this.settings.animated) {
-      throw new MechanicError("The frame() function can only be used for animations");
+      throw new MechanicError(
+        "The frame() function can only be used for animations"
+      );
     }
     if (!supportsFormatWebP()) {
       throw new MechanicError(
@@ -125,7 +135,8 @@ export class Mechanic {
         this.svgFrames = [];
       }
 
-      if (this.settings.ignoreStyles !== true) el = svgAppendStyles(el, extras.head);
+      if (this.settings.ignoreStyles !== true)
+        el = svgAppendStyles(el, extras.head);
 
       this.svgFrames.push(svgToDataUrl(svgPrepare(el, this.serializer)));
       if (!this.svgSize) {
@@ -149,7 +160,8 @@ export class Mechanic {
   async done(el, extras = {}) {
     if (!this.settings.animated) {
       if (isSVG(el)) {
-        if (this.settings.ignoreStyles !== true) el = svgAppendStyles(el, extras.head);
+        if (this.settings.ignoreStyles !== true)
+          el = svgAppendStyles(el, extras.head);
 
         this.serializer = new XMLSerializer();
 
@@ -171,7 +183,9 @@ export class Mechanic {
         }
       } else if (isCanvas(el)) {
         if (this.exportType === "svg") {
-          throw new MechanicError("Cannot export SVG of Canvas element. Try PNG.");
+          throw new MechanicError(
+            "Cannot export SVG of Canvas element. Try PNG."
+          );
         } else {
           this.canvasData = el.toDataURL();
         }
@@ -191,7 +205,9 @@ export class Mechanic {
         );
       }
       if (!this.frameCalled) {
-        throw new MechanicError("Animated export only called done, frame() hasn't been called.");
+        throw new MechanicError(
+          "Animated export only called done, frame() hasn't been called."
+        );
       }
       if (isSVG(el)) {
         // This is slow. We should figure out a way to draw into canvas on every frame
@@ -245,6 +261,10 @@ export class Mechanic {
     if (!this.functionState) {
       throw "The downloadState if a state has been set.";
     }
-    download(JSON.stringify(this.functionState), `${name}.json`, "application/json");
+    download(
+      JSON.stringify(this.functionState),
+      `${name}.json`,
+      "application/json"
+    );
   }
 }

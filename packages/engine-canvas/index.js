@@ -10,7 +10,7 @@ export const run = (functionName, func, values, config) => {
   const mechanic = new Mechanic(func.settings, values, config);
 
   let isElAdded = false;
-  const onFrame = (el) => {
+  const onFrame = el => {
     if (!isElAdded) {
       isElAdded = true;
       root.appendChild(el);
@@ -29,7 +29,7 @@ export const run = (functionName, func, values, config) => {
       mechanic.download(name || functionName);
     }
   };
-  const onSetState = async (obj) => {
+  const onSetState = async obj => {
     mechanic.setState(obj);
   };
 
@@ -39,8 +39,8 @@ export const run = (functionName, func, values, config) => {
       frame: onFrame,
       done: onDone,
       state: mechanic.functionState,
-      setState: onSetState,
-    },
+      setState: onSetState
+    }
   });
   return mechanic;
 };

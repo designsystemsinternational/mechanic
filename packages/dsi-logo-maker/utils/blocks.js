@@ -1,7 +1,7 @@
 export const computeBaseBricks = (words, fontSize, font) => {
   const bricks = [];
   let colori = 0;
-  words.forEach((word) => {
+  words.forEach(word => {
     for (let i = 0; i < word.length; i++) {
       const glyph = font.charToGlyph(word[i]);
       bricks.push({
@@ -10,7 +10,7 @@ export const computeBaseBricks = (words, fontSize, font) => {
         width: (glyph.advanceWidth / font.unitsPerEm) * fontSize,
         isWordFirst: i === 0,
         isWordLast: i === word.length - 1,
-        color: colori,
+        color: colori
       });
       if (i === word.length - 1) {
         colori++;
@@ -47,7 +47,7 @@ export const computeBlock = (blockGeometry, baseBricks, brickOffset) => {
   const block = {
     ...blockGeometry,
     brickIndex: getIndexModule(brickOffset, baseBricks.length),
-    rows: [],
+    rows: []
   };
 
   for (let rowIndex = 0; rowIndex < block.numberRows; rowIndex++) {
@@ -77,7 +77,7 @@ const computeRowGeometry = (bricks, rowIndex, blockGeometry) => {
     width - startGap - endGap - charsWidth - wordBreaks * wordGap * 2;
   return {
     rowIndex,
-    padding: remain / (bricks.length - 1) / 2,
+    padding: remain / (bricks.length - 1) / 2
   };
 };
 

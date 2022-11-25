@@ -1,7 +1,7 @@
 const fs = require("fs-extra");
 const path = require("path");
 const {
-  spinners: { mechanicSpinner: spinner },
+  spinners: { mechanicSpinner: spinner }
 } = require("@mechanic-design/utils");
 
 const functionExampleOptions = require("./function-examples");
@@ -13,7 +13,7 @@ const log = console.log;
 // https://gist.github.com/lovasoa/8691344#gistcomment-3299018
 const walk = (dir, fileCallback, directoryCallback) => {
   const files = fs.readdirSync(dir);
-  files.forEach((file) => {
+  files.forEach(file => {
     const filepath = path.join(dir, file);
     const stats = fs.statSync(filepath);
     if (stats.isDirectory()) {
@@ -46,7 +46,7 @@ const baseExists = (typeOfBaseUsed, base) => {
   return false;
 };
 
-const directoryExists = async (dirPath) => await fs.pathExists(dirPath);
+const directoryExists = async dirPath => await fs.pathExists(dirPath);
 
 const getFunctionQuestions = (initialAnswers, config = {}) => [
   {
@@ -60,7 +60,7 @@ const getFunctionQuestions = (initialAnswers, config = {}) => [
         ? "Template"
         : null,
     choices: ["Template", "Example", "Neither"],
-    when: initialAnswers.noSkip || !initialAnswers.usesBase,
+    when: initialAnswers.noSkip || !initialAnswers.usesBase
   },
   {
     name: "template",
@@ -68,24 +68,22 @@ const getFunctionQuestions = (initialAnswers, config = {}) => [
     message: content.functionTemplateQuestion(config.isFirst),
     default:
       initialAnswers.usesBase === "template" ? initialAnswers.base : null,
-    choices: Object.values(functionTemplateOptions).map((option) => ({
+    choices: Object.values(functionTemplateOptions).map(option => ({
       name: `${option.name} (${option.type})`,
-      value: option.dir,
+      value: option.dir
     })),
-    when: (answers) =>
-      !initialAnswers.usesBase && answers.usesBase === "Template",
+    when: answers => !initialAnswers.usesBase && answers.usesBase === "Template"
   },
   {
     name: "example",
     type: "list",
     message: content.functionExampleQuestion(config.isFirst),
     default: initialAnswers.usesBase === "example" ? initialAnswers.base : null,
-    choices: Object.values(functionExampleOptions).map((option) => ({
+    choices: Object.values(functionExampleOptions).map(option => ({
       name: `${option.name} (${option.type})`,
-      value: option.dir,
+      value: option.dir
     })),
-    when: (answers) =>
-      !initialAnswers.usesBase && answers.usesBase === "Example",
+    when: answers => !initialAnswers.usesBase && answers.usesBase === "Example"
   },
   {
     name: "functionName",
@@ -94,14 +92,14 @@ const getFunctionQuestions = (initialAnswers, config = {}) => [
     default: initialAnswers.usesBase
       ? initialAnswers.base
       : initialAnswers.functionName || "my-function",
-    validate: async (functionName) => {
+    validate: async functionName => {
       const exists = await fs.pathExists(
         path.resolve(config.functionsPath || "functions", functionName)
       );
       return !exists ? true : content.functionNameExistsError;
     },
-    when: initialAnswers.noSkip || !initialAnswers.usesBase,
-  },
+    when: initialAnswers.noSkip || !initialAnswers.usesBase
+  }
 ];
 
 const generateFunctionTemplate = async (
@@ -161,7 +159,7 @@ const generateFunctionTemplate = async (
         path.join(directory, "package.json"),
         JSON.stringify(packageObj, null, 2)
       );
-    })(),
+    })()
   ]);
   // Copy all files in base dir
   copyDirAndContents(baseFunctionDir, newFunctionDir);
@@ -185,6 +183,6 @@ module.exports = {
     baseDoesNotExist: content.baseDoesNotExist,
     directoryAlreadyExist: content.directoryAlreadyExist,
     doneAndNextStepsMessage: content.newFunctionNextStepsMessage,
-    bye: content.bye,
-  },
+    bye: content.bye
+  }
 };

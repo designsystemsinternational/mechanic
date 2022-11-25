@@ -2,53 +2,53 @@ const options = [
   {
     name: "Vanilla JS Image",
     type: "Canvas",
-    dir: "canvas-image",
+    dir: "canvas-image"
   },
   {
     name: "Vanilla JS Video",
     type: "Canvas",
-    dir: "canvas-video",
+    dir: "canvas-video"
   },
   {
     name: "Vanilla JS Image",
     type: "SVG",
-    dir: "svg-image",
+    dir: "svg-image"
   },
   {
     name: "Vanilla JS Video",
     type: "SVG",
-    dir: "svg-video",
+    dir: "svg-video"
   },
   {
     name: "SVG.js Image",
     type: "SVG",
-    dir: "svgjs-image",
+    dir: "svgjs-image"
   },
   {
     name: "D3 Image",
     type: "SVG",
-    dir: "d3-image",
+    dir: "d3-image"
   },
   {
     name: "p5.js Image",
     type: "Canvas",
-    dir: "p5-image",
+    dir: "p5-image"
   },
   {
     name: "p5.js Video",
     type: "Canvas",
-    dir: "p5-video",
+    dir: "p5-video"
   },
   {
     name: "React Image",
     type: "SVG",
-    dir: "react-image",
+    dir: "react-image"
   },
   {
     name: "React Video",
     type: "SVG",
-    dir: "react-video",
-  },
+    dir: "react-video"
+  }
 ];
 
 module.exports = options.reduce((acc, cur) => {

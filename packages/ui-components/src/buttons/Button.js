@@ -48,7 +48,8 @@ export const Button = props => {
       onFocus={handleOnFocus}
       onBlur={handleOnBlur}
       disabled={disabled}
-      tabIndex={disabled ? "-1" : undefined}>
+      tabIndex={disabled ? "-1" : undefined}
+    >
       <span>{children}</span>
     </button>
   );

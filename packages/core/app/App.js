@@ -15,10 +15,19 @@ const Layout = ({ funcName, functions, mainRef, iframeRef }) => {
   return (
     <div className={css.root}>
       {!settings.hideFeedback && (
-        <Feedback href="https://forms.gle/uBTn8oVThZHVghV89">Got feedback?</Feedback>
+        <Feedback href="https://forms.gle/uBTn8oVThZHVghV89">
+          Got feedback?
+        </Feedback>
       )}
-      <SideBar name={funcName} exports={functions[funcName]} iframe={iframeRef} mainRef={mainRef}>
-        {!settings.hideNavigation && <Nav name={funcName} functions={functions} />}
+      <SideBar
+        name={funcName}
+        exports={functions[funcName]}
+        iframe={iframeRef}
+        mainRef={mainRef}
+      >
+        {!settings.hideNavigation && (
+          <Nav name={funcName} functions={functions} />
+        )}
       </SideBar>
       <main className={css.main} ref={mainRef}>
         <iframe
@@ -44,7 +53,12 @@ const AppComponent = () => {
             key={`route-${name}`}
             path={[`/${name}`]}
             render={() => (
-              <Layout funcName={name} functions={functions} iframeRef={iframe} mainRef={mainRef} />
+              <Layout
+                funcName={name}
+                functions={functions}
+                iframeRef={iframe}
+                mainRef={mainRef}
+              />
             )}
           />
         ))}

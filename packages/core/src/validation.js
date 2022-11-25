@@ -20,7 +20,9 @@ export class MechanicValidator {
     const expectedProperties = ["handler", "inputs", "settings"];
     for (const property of expectedProperties) {
       if (!(property in this.designFunction)) {
-        throw new MechanicError(`Missing export definition "${property}" in design function`);
+        throw new MechanicError(
+          `Missing export definition "${property}" in design function`
+        );
       }
     }
   }
@@ -28,7 +30,9 @@ export class MechanicValidator {
   validateSettings() {
     const engine = this.designFunction.settings?.engine?.run;
     if (engine === undefined) {
-      throw new MechanicError(`Proper engine not found in design function's setting`);
+      throw new MechanicError(
+        `Proper engine not found in design function's setting`
+      );
     }
   }
 
@@ -96,8 +100,13 @@ export class MechanicValidator {
 
     // Check that there are not other values besides inputs and default inputs
     for (let inputName in values) {
-      if (!hasKey(this.designFunction.inputs, inputName) && !hasKey(otherInputs, inputName)) {
-        throw new MechanicError(`Unexpected ${inputName} value received not defined on template.`);
+      if (
+        !hasKey(this.designFunction.inputs, inputName) &&
+        !hasKey(otherInputs, inputName)
+      ) {
+        throw new MechanicError(
+          `Unexpected ${inputName} value received not defined on template.`
+        );
       }
     }
   }
