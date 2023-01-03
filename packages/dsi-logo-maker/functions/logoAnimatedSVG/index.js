@@ -3,7 +3,8 @@ import { getColors, flagNames } from "../../utils/graphics";
 import {
   computeBaseBricks,
   computeBlockGeometry,
-  precomputeBlocks
+  precomputeBlocks,
+  getIndexModule
 } from "../../utils/blocks";
 import { Unit } from "../../utils/blocks-components";
 import { useLoadedOpentypeFont } from "../../utils/hooks";

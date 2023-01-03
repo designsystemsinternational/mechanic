@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- Updated all design functions to use the new animation API
 - Updated `fillAnimatedCanvas` to show the new `debounceInputs` and `debounceDelay` setting
 
 ### Added
@@ -16,9 +17,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Updated all design functions to use `opentype.js` for rendering text to `<path />` elements or canvas.
 - Updated all design functions with a string input with options for `thin` and `regular` versions of F Grotesk
 
-## Changed
+### Fixed
 
-- Updated all design functions to use the new animation API
+- Fixed exporting issue for `textAndImageSVG` function.
 
 ## 1.1.0 -2021-09-29
 

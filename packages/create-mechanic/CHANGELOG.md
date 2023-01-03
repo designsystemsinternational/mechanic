@@ -11,6 +11,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Changed all examples and templates to new animation API
 
+### Fixed
+
+- Extra instruction line got logged when finalizing creating a DF. I was removed.
+
 ## 2.0.0-beta.9 - 2022-08-12
 
 ### Fixed

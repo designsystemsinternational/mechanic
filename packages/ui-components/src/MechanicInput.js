@@ -6,6 +6,7 @@ import * as css from "./MechanicInput.module.css";
 import { TextInput } from "./input/TextInput.js";
 import { NumberInput } from "./input/NumberInput.js";
 import { BooleanInput } from "./input/BooleanInput.js";
+
 import { OptionInput } from "./input/OptionInput.js";
 import { ColorInput } from "./input/ColorInput.js";
 import { ImageInput } from "./input/ImageInput.js";

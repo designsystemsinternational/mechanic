@@ -1,7 +1,8 @@
-import React, { useRef, useState, useMemo } from "react";
+import React, { useRef, useState, useMemo, useEffect } from "react";
 import PropTypes from "prop-types";
 import classnames from "classnames";
 import { uid } from "../uid.js";
+import { useShiftKey } from "../util/useShiftKey.js";
 import { Invalid } from "../icons/index.js";
 
 import * as commonCss from "../common.module.css";
@@ -31,6 +32,7 @@ export const NumberInput = props => {
     onBlur
   } = props;
   const [focus, setFocus] = useState(false);
+  const isShiftPressed = useShiftKey();
 
   const handleOnChange = event => {
     const { name, value } = event.target;
@@ -51,6 +53,14 @@ export const NumberInput = props => {
     onBlur && onBlur(event);
     setFocus(false);
   };
+
+  // When shift is pressed, we want to increment/decrement by 10x the step
+  const computedStep = useMemo(() => {
+    if (step !== undefined) {
+      return step * (isShiftPressed ? 10 : 1);
+    }
+    return isShiftPressed ? 10 : 1;
+  }, [step, isShiftPressed]);
 
   const rootClasses = classnames(commonCss.root, {
     [className]: className,
@@ -93,7 +103,7 @@ export const NumberInput = props => {
               onChange={handleOnChange}
               min={min ? "" + min : min}
               max={max ? "" + max : max}
-              step={step ? "" + step : step}
+              step={computedStep ? "" + computedStep : computedStep}
               name={name}
               value={value.toFixed(decimalDigits)}
             />
@@ -136,7 +146,7 @@ export const NumberInput = props => {
             autoComplete={autocomplete}
             min={min ? "" + min : min}
             max={max ? "" + max : max}
-            step={step ? "" + step : step}
+            step={computedStep ? "" + computedStep : computedStep}
             onChange={handleOnChange}
             onFocus={handleOnFocus}
             onBlur={handleOnBlur}
