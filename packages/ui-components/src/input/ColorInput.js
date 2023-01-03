@@ -107,17 +107,23 @@ export const ColorInput = props => {
         aria-describedby={`error-${id}`}
         aria-invalid={invalid}
         onFocus={handleOnFocus}
-        onBlur={handleOnBlur}>
+        onBlur={handleOnBlur}
+      >
         <Button
           className={classnames(commonCss.button, css.button)}
           onClick={handleOnClick}
-          disabled={disabled}>
+          disabled={disabled}
+        >
           <span className={css.swatch} style={{ backgroundColor: value }} />
           <span className={css.value}>{value}</span>
         </Button>
         {picking && (
           <div className={css.popover}>
-            <ChromePicker className={css.chromePicker} color={value} onChange={handleOnChange} />
+            <ChromePicker
+              className={css.chromePicker}
+              color={value}
+              onChange={handleOnChange}
+            />
           </div>
         )}
         <div className={commonCss.suffix}>{invalid && <Invalid />}</div>

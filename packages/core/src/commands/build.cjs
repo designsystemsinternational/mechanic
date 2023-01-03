@@ -32,7 +32,9 @@ const command = async argv => {
     spinner.fail(`Mechanic config file (${configPath}) not found`);
     return;
   } else {
-    spinner.succeed(`Mechanic config file loaded: ${success(path.relative(".", configPath))}`);
+    spinner.succeed(
+      `Mechanic config file loaded: ${success(path.relative(".", configPath))}`
+    );
   }
 
   // Seek functions path
@@ -43,7 +45,9 @@ const command = async argv => {
     return;
   } else {
     spinner.succeed(
-      `Design functions directory found: ${success(path.relative(".", functionsPath))}`
+      `Design functions directory found: ${success(
+        path.relative(".", functionsPath)
+      )}`
     );
   }
 
@@ -53,16 +57,24 @@ const command = async argv => {
   if (!staticPath) {
     spinner.succeed(`Static directory file not found.`);
   } else {
-    spinner.succeed(`Static directory found: ${success(path.relative(".", staticPath))}`);
+    spinner.succeed(
+      `Static directory found: ${success(path.relative(".", staticPath))}`
+    );
   }
 
   // Seek custom inputs path
   spinner.start("Seeking custom inputs directory...");
   const inputsPath = await getInputsPath(argv.inputsPath, config);
   if (inputsPath) {
-    spinner.succeed(`Custom inputs directory found: ${success(path.relative(".", inputsPath))}`);
+    spinner.succeed(
+      `Custom inputs directory found: ${success(
+        path.relative(".", inputsPath)
+      )}`
+    );
   } else {
-    spinner.succeed(`Custom inputs directory not found. No custom inputs being used!`);
+    spinner.succeed(
+      `Custom inputs directory not found. No custom inputs being used!`
+    );
   }
 
   // Seek custom app components path
@@ -70,7 +82,9 @@ const command = async argv => {
   const appCompsPath = await getAppCompsPath(argv.appCompsPath, config);
   if (appCompsPath) {
     spinner.succeed(
-      `Custom app components directory found: ${success(path.relative(".", appCompsPath))}`
+      `Custom app components directory found: ${success(
+        path.relative(".", appCompsPath)
+      )}`
     );
   } else {
     spinner.succeed(
@@ -85,7 +99,11 @@ const command = async argv => {
   spinner.succeed("Temp files created!");
 
   const distDir = path.normalize(
-    config.distDir != null ? config.distDir : argv.distDir != null ? argv.distDir : "./dist"
+    config.distDir != null
+      ? config.distDir
+      : argv.distDir != null
+      ? argv.distDir
+      : "./dist"
   );
   const publicPath = config.publicPath ?? "/";
 
@@ -111,7 +129,9 @@ const command = async argv => {
           })
         );
     } else {
-      spinner.succeed(success(`Mechanic app built at directory ${distDir}/!\n`));
+      spinner.succeed(
+        success(`Mechanic app built at directory ${distDir}/!\n`)
+      );
       console.log(
         "You can serve locally and use the builded app using the `npm run serve` command!"
       );

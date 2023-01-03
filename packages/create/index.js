@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 const {
-  colors: { success },
+  colors: { success }
 } = require("@mechanic-design/utils");
 
 console.warn(

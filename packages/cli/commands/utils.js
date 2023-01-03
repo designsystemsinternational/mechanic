@@ -22,5 +22,5 @@ const getIsMechanicProject = () => {
 
 module.exports = {
   mechanic,
-  getIsMechanicProject,
+  getIsMechanicProject
 };

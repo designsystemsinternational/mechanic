@@ -50,16 +50,17 @@ const mechanicSpinner = ora({ spinner: mechanicSpinnerSettings });
 
 mechanicSpinner.succeed = text =>
   mechanicSpinner.stopAndPersist({ text, symbol: chalk.bgGreen(" ✔ ") });
-mechanicSpinner.fail = text => mechanicSpinner.stopAndPersist({ text, symbol: chalk.bgRed(" ✖ ") });
+mechanicSpinner.fail = text =>
+  mechanicSpinner.stopAndPersist({ text, symbol: chalk.bgRed(" ✖ ") });
 mechanicSpinner.warn = text =>
   mechanicSpinner.stopAndPersist({ text, symbol: chalk.bgYellow(" ⚠ ") });
 
 const mechanicLogo = `${red("MECHANIC")}\n${blue("MECHANIC")}`;
 const mechanicLogoInverse = `${blue("MECHANIC")}\n${red("MECHANIC")}`;
 
-const dsiLogo = `${white("TIONAL")}${red("DESIGN")}${blue("S")}\n${blue("YSTEMS")}${white(
-  "INTERNA"
-)}`;
+const dsiLogo = `${white("TIONAL")}${red("DESIGN")}${blue("S")}\n${blue(
+  "YSTEMS"
+)}${white("INTERNA")}`;
 
 module.exports = {
   spinners: {

@@ -2,7 +2,12 @@ const path = require("path");
 const express = require("express");
 const portfinder = require("portfinder");
 const history = require("connect-history-api-fallback");
-const { getConfig, setCustomInterrupt, greet, goodbye } = require("./utils.cjs");
+const {
+  getConfig,
+  setCustomInterrupt,
+  greet,
+  goodbye
+} = require("./utils.cjs");
 
 const {
   spinners: { mechanicSpinner: spinner },
@@ -23,7 +28,9 @@ const command = async argv => {
     spinner.fail(`Mechanic config file (${configPath}) not found`);
     return;
   } else {
-    spinner.succeed(`Mechanic config file loaded: ${success(path.relative(".", configPath))}`);
+    spinner.succeed(
+      `Mechanic config file loaded: ${success(path.relative(".", configPath))}`
+    );
   }
   const distDir = path.normalize(
     argv.distDir !== "./dist" ? argv.distDir : config.distDir || "./dist"
@@ -41,8 +48,10 @@ const command = async argv => {
       next();
     } else {
       res.format({
-        default: () => res.sendFile(path.resolve(__dirname, "./html/loading.html")),
-        "text/html": () => res.sendFile(path.resolve(__dirname, "./html/loading.html")),
+        default: () =>
+          res.sendFile(path.resolve(__dirname, "./html/loading.html")),
+        "text/html": () =>
+          res.sendFile(path.resolve(__dirname, "./html/loading.html")),
         "application/json": () => res.json({ loading: true, status })
       });
     }

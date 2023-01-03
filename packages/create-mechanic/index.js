@@ -1,7 +1,7 @@
 const path = require("path");
 const inquirer = require("inquirer");
 const {
-  spinners: { mechanicSpinner: spinner },
+  spinners: { mechanicSpinner: spinner }
 } = require("@mechanic-design/utils");
 
 const content = require("./script-content");
@@ -12,22 +12,22 @@ const {
   installationMethodQuestion,
   generateProjectTemplate,
   installDependencies,
-  checkLockFile,
+  checkLockFile
 } = require("./new-project");
 const {
   baseExists,
   directoryExists,
   generateFunctionTemplate,
-  getFunctionQuestions,
+  getFunctionQuestions
 } = require("./new-function");
 
 const log = console.log;
 const logSuccess = spinner.succeed;
 const logFail = spinner.fail;
-const sleep = (ms = 1000) => new Promise((resolve) => setTimeout(resolve, ms));
+const sleep = (ms = 1000) => new Promise(resolve => setTimeout(resolve, ms));
 const nullishCoalescingOp = (arg1, arg2) => (arg1 != null ? arg1 : arg2);
 
-const askToInstall = async (projectName) => {
+const askToInstall = async projectName => {
   // Install dependencies in new project directory
   const { install } = await inquirer.prompt(confirmInstallQuestion);
   await sleep();
@@ -46,7 +46,7 @@ const askToInstall = async (projectName) => {
   return install;
 };
 
-const command = async (argv) => {
+const command = async argv => {
   const project = argv._[0];
   const template = argv.template || argv.t;
   const example = argv.example || argv.e;
@@ -84,7 +84,7 @@ const command = async (argv) => {
   const projectQuestion = getProjectQuestion({
     project,
     usesBase: typeOfBaseUsed,
-    base,
+    base
   });
   const answers = await inquirer.prompt(projectQuestion);
   await sleep();
@@ -110,7 +110,7 @@ const command = async (argv) => {
     // Generate new functions directory and design function files and prompt if necessary
     const functionQuestions = getFunctionQuestions({
       usesBase: typeOfBaseUsed,
-      base,
+      base
     });
     const functionAnswers = await inquirer.prompt(functionQuestions);
     await sleep();
@@ -137,7 +137,7 @@ const command = async (argv) => {
     await generateFunctionTemplate(projectName, {
       typeOfBaseUsed: usesBase,
       base: finalBase,
-      functionName,
+      functionName
     });
   }
 
@@ -154,18 +154,18 @@ const commandOptions = {
     alias: "t",
     type: "string",
     description:
-      "Use simple design functions we created to show how to use Mechanic with specific web technologies.",
+      "Use simple design functions we created to show how to use Mechanic with specific web technologies."
   },
   example: {
     alias: "e",
     type: "string",
     description:
-      "Use more complicated design functions we created to show how to use Mechanic to tackle some common use cases.",
-  },
+      "Use more complicated design functions we created to show how to use Mechanic to tackle some common use cases."
+  }
 };
 
 module.exports = {
   create: command,
   options: commandOptions,
-  askToInstall,
+  askToInstall
 };

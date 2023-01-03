@@ -45,7 +45,8 @@ const App = () => {
             type: "text",
             label: "The Text",
             default: "Hi",
-            validation: value => (value.length < 15 ? null : "Length must be less than 15")
+            validation: value =>
+              value.length < 15 ? null : "Length must be less than 15"
           }}
           onChange={handleChange}
         />
@@ -69,7 +70,8 @@ const App = () => {
           attributes={{
             type: "number",
             default: 400,
-            validation: value => (value < 450 || value > 455 ? null : "Not in range")
+            validation: value =>
+              value < 450 || value > 455 ? null : "Not in range"
           }}
           onChange={handleChange}
         />
@@ -84,7 +86,8 @@ const App = () => {
             min: 400,
             max: 500,
             step: 10,
-            validation: value => (value < 430 || value > 465 ? null : "Not in range")
+            validation: value =>
+              value < 430 || value > 465 ? null : "Not in range"
           }}
           onChange={handleChange}
         />
@@ -100,7 +103,8 @@ const App = () => {
             max: 500,
             step: 0.5,
             slider: true,
-            validation: value => (value < 430 || value > 465 ? null : "Not in range")
+            validation: value =>
+              value < 430 || value > 465 ? null : "Not in range"
           }}
           onChange={handleChange}
         />
@@ -113,7 +117,8 @@ const App = () => {
             type: "color",
             model: "hex",
             default: "#f62696",
-            validation: value => (value[1] === "f" ? null : "Should have high red channel")
+            validation: value =>
+              value[1] === "f" ? null : "Should have high red channel"
           }}
           onChange={handleChange}
         />
@@ -138,7 +143,8 @@ const App = () => {
             type: "text",
             default: "Option 1",
             options: ["Option 1", "Option 2", "Option 3"],
-            validation: value => (value === "Option 1" ? null : "Should be Option 1")
+            validation: value =>
+              value === "Option 1" ? null : "Should be Option 1"
           }}
           onChange={handleChange}
         />
@@ -380,13 +386,23 @@ const App = () => {
           placeholder="Write... "
           min="100"
           max="200"
-          step="5"></NumberInput>
+          step="5"
+        ></NumberInput>
       </div>
       <div className={css.simpleBlock}>
-        <NumberInput label="Slider Number Input" slider min="100" max="200" step="5"></NumberInput>
+        <NumberInput
+          label="Slider Number Input"
+          slider
+          min="100"
+          max="200"
+          step="5"
+        ></NumberInput>
       </div>
       <div className={css.simpleBlock}>
-        <ColorInput label="Color Input" value="rgba(100, 200, 200,1)"></ColorInput>
+        <ColorInput
+          label="Color Input"
+          value="rgba(100, 200, 200,1)"
+        ></ColorInput>
       </div>
       <div className={css.simpleBlock}>
         <Select label="Select Input">

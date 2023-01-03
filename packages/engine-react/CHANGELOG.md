@@ -16,7 +16,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Updated engine to new `registerFrameCallback` and `registerDoneCallback` setup
 - Breaking: `mechanic` is now destructured into the design function directly, so you can access `useDrawLoop`, `frame`,`done` directly in the function arguments instead of needing to destructure them from `mechanic`. `setState` and `state` remain on the `mechanic` object.
 
-
 ## 2.0.0-beta.0 - 2022-03-16
 
 ### Added
