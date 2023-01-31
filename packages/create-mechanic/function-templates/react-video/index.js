@@ -11,7 +11,7 @@ export const handler = ({ inputs, frame, done, useDrawLoop }) => {
   const isPlaying = useRef(true);
 
   // frameCount has the number of the current frame, this is based on the framerate
-  // your animation is running it. For 60fps the frame at 1 seconds will be 60, whie
+  // your animation is running it. For 60 fps the frame at 1 seconds will be 60, while
   // at 24 fps it will be 24.
   //
   // timestamp has the frame offset in seconds and is always the same, no matter the
