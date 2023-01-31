@@ -54,12 +54,12 @@ export const handler = async ({ inputs, frame, done, drawLoop, getCanvas }) => {
     ctx.restore();
   };
 
-  drawLoop(frameCount => {
+  drawLoop(({ timestamp }) => {
     let changed = false;
     blockConfigs.forEach(blockConfigs => {
       const { block, animation } = blockConfigs;
       const currentProgress = Math.floor(
-        2 * animation.loops * block.cols * (frameCount / duration)
+        2 * animation.loops * block.cols * (timestamp / duration)
       );
       if (currentProgress > animation.progress) {
         animation.progress = currentProgress;
@@ -76,7 +76,7 @@ export const handler = async ({ inputs, frame, done, drawLoop, getCanvas }) => {
       draw();
     }
 
-    if (frameCount < duration) {
+    if (timestamp < duration) {
       frame();
     } else {
       done();
@@ -110,10 +110,11 @@ export const inputs = {
   },
   duration: {
     type: "number",
-    default: 300,
-    step: 10,
-    min: 10,
-    label: "Duration in frames"
+    default: 3,
+    step: 0.1,
+    min: 1,
+    max: 10,
+    label: "Duration in seconds"
   },
   fontMode: {
     type: "text",

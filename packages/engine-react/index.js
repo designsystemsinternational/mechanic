@@ -12,7 +12,10 @@ const head = document.querySelector("head");
 const makeDrawLoop =
   drawLoop =>
   (isPlaying = true) => {
-    const [frameCount, setFrameCount] = useState(0);
+    const [animationProgress, setAnimationProgress] = useState({
+      frameCount: 0,
+      timestamp: 0
+    });
 
     useEffect(() => {
       if (!isPlaying) {
@@ -20,12 +23,12 @@ const makeDrawLoop =
         return;
       }
 
-      drawLoop.start(setFrameCount);
+      drawLoop.start(setAnimationProgress);
 
       return () => drawLoop.stop();
     }, [isPlaying]);
 
-    return frameCount;
+    return animationProgress;
   };
 
 export const run = (functionName, func, values, config) => {
