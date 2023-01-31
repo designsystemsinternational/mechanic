@@ -68,7 +68,11 @@ class MechanicDrawloop {
    * @param {number} frame - The number of the frame to render
    */
   renderFrame(frame) {
-    if (this.callback) this.callback(frame);
+    // We can easily calculate the timestamp of the current frame by multiplying
+    // the current framecount with the fpsInterval. This yields the timestamp
+    // in milliseconds.
+    const time = frame * this.fpsInterval;
+    if (this.callback) this.callback({ frame, time });
   }
 
   /**
