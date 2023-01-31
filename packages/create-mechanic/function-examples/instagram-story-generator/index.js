@@ -19,19 +19,18 @@ export const handler = ({ inputs, done, frame, useDrawLoop }) => {
 
   // stuff needed for the looping
   const isPlaying = useRef(true);
-  const frameCount = useDrawLoop(isPlaying.current);
+  const { timestamp } = useDrawLoop(isPlaying.current);
   const lines = text.split(" ");
-  const durationInFrames = duration * 60;
 
   // function to determine when to end the animation
   useEffect(() => {
-    if (durationInFrames > frameCount) {
+    if (duration > timestamp) {
       frame();
     } else if (isPlaying.current) {
       isPlaying.current = false;
       done();
     }
-  }, [frameCount]);
+  }, [timestamp]);
 
   // colors and font sizes
   const textColor = backgroundColor;

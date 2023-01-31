@@ -4,11 +4,18 @@ export const handler = async ({ inputs, frame, done, drawLoop, getCanvas }) => {
 
   const center = [width / 2, height / 2];
   const radius = ((height / 2) * radiusPercentage) / 100;
-  let angle = 0;
 
   const { ctx } = getCanvas(width, height);
 
-  drawLoop(() => {
+  // frameCount has the number of the current frame, this is based on the framerate
+  // your animation is running it. For 60fps the frame at 1 seconds will be 60, whie
+  // at 24 fps it will be 24.
+  //
+  // timestamp has the frame offset in seconds and is always the same, no matter the
+  // framerate.
+  drawLoop(({ frameCount, timestamp }) => {
+    const angle = Math.PI * timestamp;
+
     ctx.fillStyle = "#F4F4F4";
     ctx.fillRect(0, 0, width, height);
 
@@ -32,12 +39,13 @@ export const handler = async ({ inputs, frame, done, drawLoop, getCanvas }) => {
     ctx.fillStyle = "#000000";
     ctx.font = `${height / 10}px sans-serif`;
     ctx.textAlign = "center";
-    ctx.strokeText(text, width / 2, height - height / 20);
-    ctx.fillText(text, width / 2, height - height / 20);
+
+    const textWithFrameCount = `${text} ${frameCount}`;
+    ctx.strokeText(textWithFrameCount, width / 2, height - height / 20);
+    ctx.fillText(textWithFrameCount, width / 2, height - height / 20);
 
     if (angle < turns * 2 * Math.PI) {
       frame();
-      angle += (2 * Math.PI) / 100;
     } else {
       done();
     }
