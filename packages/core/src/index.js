@@ -1,2 +1,2 @@
 export { Mechanic } from "./mechanic.js";
-export { memo } from "./memoization.js";
+export { memo, preload, preloadFont } from "./memoization.js";
