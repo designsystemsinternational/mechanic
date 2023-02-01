@@ -49,7 +49,8 @@ export const BooleanInput = props => {
           onFocus={onFocus}
           onBlur={onBlur}
           aria-describedby={`error-${id}`}
-          aria-invalid={invalid}>
+          aria-invalid={invalid}
+        >
           {value ? "true" : "false"}
           {children}
         </Toggle>

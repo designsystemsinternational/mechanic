@@ -55,56 +55,56 @@ export const handler = ({ inputs, mechanic }) => {
 export const inputs = {
   width: {
     type: "number",
-    default: 400,
+    default: 400
   },
   height: {
     type: "number",
-    default: 300,
+    default: 300
   },
   text: {
     type: "text",
-    default: "mechanic",
+    default: "mechanic"
   },
   color1: {
     type: "color",
     model: "hex",
-    default: "#E94225",
+    default: "#E94225"
   },
   color2: {
     type: "color",
     model: "hex",
-    default: "#002EBB",
+    default: "#002EBB"
   },
   radiusPercentage: {
     type: "number",
     default: 40,
     min: 0,
     max: 100,
-    slider: true,
+    slider: true
   },
   turns: {
     type: "number",
-    default: 3,
-  },
+    default: 3
+  }
 };
 
 export const presets = {
   medium: {
     width: 800,
-    height: 600,
+    height: 600
   },
   large: {
     width: 1600,
-    height: 1200,
-  },
+    height: 1200
+  }
 };
 
 export const settings = {
   engine: require("@mechanic-design/engine-react"),
-  animated: true,
+  animated: true
 };
 
-const useDrawLoop = (isPlaying) => {
+const useDrawLoop = isPlaying => {
   const raf = useRef();
   const [frameCount, setFrameCount] = useState(0);
 
@@ -116,7 +116,7 @@ const useDrawLoop = (isPlaying) => {
     }
 
     const draw = () => {
-      setFrameCount((cur) => cur + 1);
+      setFrameCount(cur => cur + 1);
       raf.current = requestAnimationFrame(draw);
     };
 

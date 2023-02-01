@@ -1,7 +1,7 @@
 const path = require("path");
 const inquirer = require("inquirer");
 const {
-  spinners: { mechanicSpinner: spinner },
+  spinners: { mechanicSpinner: spinner }
 } = require("@mechanic-design/utils");
 const { create, options, askToInstall } = require("create-mechanic");
 const {
@@ -9,7 +9,7 @@ const {
   directoryExists,
   generateFunctionTemplate,
   getFunctionQuestions,
-  content,
+  content
 } = require("create-mechanic/new-function");
 
 const { getIsMechanicProject } = require("./utils");
@@ -17,10 +17,10 @@ const { getIsMechanicProject } = require("./utils");
 const log = console.log;
 const logSuccess = spinner.succeed;
 const logFail = spinner.fail;
-const sleep = (ms = 1000) => new Promise((resolve) => setTimeout(resolve, ms));
+const sleep = (ms = 1000) => new Promise(resolve => setTimeout(resolve, ms));
 const nullishCoalescingOp = (arg1, arg2) => (arg1 != null ? arg1 : arg2);
 
-const newFunctionCommand = async (argv) => {
+const newFunctionCommand = async argv => {
   const isMechanicProject = getIsMechanicProject();
   if (!isMechanicProject) {
     logFail(content.notMechanicProjectError);
@@ -66,7 +66,7 @@ const newFunctionCommand = async (argv) => {
     {
       functionName,
       usesBase: typeOfBaseUsed,
-      base,
+      base
     },
     { ...config, isFirst: false }
   );
@@ -92,7 +92,7 @@ const newFunctionCommand = async (argv) => {
     {
       typeOfBaseUsed: usesBase,
       base: finalBase,
-      functionName: finalFunctionName,
+      functionName: finalFunctionName
     },
     config
   );
@@ -109,16 +109,16 @@ module.exports = {
   command: "new",
   aliases: ["n"],
   desc: "Creates new mechanic project and design function",
-  builder: (yargs) =>
+  builder: yargs =>
     yargs.options(options).command({
       command: "function",
       aliases: ["f"],
       desc: "Creates new mechanic design function in existing mechanic project",
-      builder: (yargs) => yargs,
-      handler: newFunctionCommand,
+      builder: yargs => yargs,
+      handler: newFunctionCommand
     }),
-  handler: (argv) => {
+  handler: argv => {
     argv._ = argv._.slice(1);
     create(argv);
-  },
+  }
 };

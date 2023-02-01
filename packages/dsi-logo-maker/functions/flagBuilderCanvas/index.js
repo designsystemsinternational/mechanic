@@ -14,18 +14,18 @@ export const handler = ({ inputs, mechanic }) => {
     seedMode,
     seedText,
     seedForDistribution,
-    seedForOffset,
+    seedForOffset
   } = inputs;
 
   const colors = getColors(colorMode, flag, [
     firstColor,
     secondColor,
-    thirdColor,
+    thirdColor
   ]);
 
   const { seedDistribution, seedOffset } = buildSeeds(seedMode, seedText, {
     seedForDistribution,
-    seedForOffset,
+    seedForOffset
   });
 
   const blocks = buildBlocks({
@@ -33,7 +33,7 @@ export const handler = ({ inputs, mechanic }) => {
     height,
     seedDistribution,
     seedOffset,
-    colors,
+    colors
   });
 
   const canvas = document.createElement("canvas");
@@ -42,7 +42,7 @@ export const handler = ({ inputs, mechanic }) => {
 
   const ctx = canvas.getContext("2d");
 
-  blocks.forEach((block) => {
+  blocks.forEach(block => {
     ctx.fillStyle = block.color;
     ctx.fillRect(block.x, block.y, block.w, block.h);
   });
@@ -53,63 +53,63 @@ export const handler = ({ inputs, mechanic }) => {
 export const inputs = {
   width: {
     type: "number",
-    default: 600,
+    default: 600
   },
   height: {
     type: "number",
-    default: 400,
+    default: 400
   },
   seedMode: {
     type: "text",
     options: ["From Text", "Set Numbers"],
-    default: "From Text",
+    default: "From Text"
   },
   seedText: {
     type: "text",
     default: "Seed text",
-    editable: (inputs) => inputs.seedMode === "From Text",
+    editable: inputs => inputs.seedMode === "From Text"
   },
   seedForDistribution: {
     type: "number",
     default: 0,
-    editable: (inputs) => inputs.seedMode === "Set Numbers",
+    editable: inputs => inputs.seedMode === "Set Numbers"
   },
   seedForOffset: {
     type: "number",
     default: 0,
-    editable: (inputs) => inputs.seedMode === "Set Numbers",
+    editable: inputs => inputs.seedMode === "Set Numbers"
   },
   colorMode: {
     type: "text",
     options: ["Random Flag", "Pick Flag", "Custom Colors"],
-    default: "Random Flag",
+    default: "Random Flag"
   },
   flag: {
     type: "text",
     options: flagNames,
     default: flagNames[0],
-    editable: (inputs) => inputs.colorMode === "Pick Flag",
+    editable: inputs => inputs.colorMode === "Pick Flag"
   },
   firstColor: {
     type: "color",
     model: "hex",
     default: "#11457e",
-    editable: (inputs) => inputs.colorMode === "Custom Colors",
+    editable: inputs => inputs.colorMode === "Custom Colors"
   },
   secondColor: {
     type: "color",
     model: "hex",
     default: "#d7141a",
-    editable: (inputs) => inputs.colorMode === "Custom Colors",
+    editable: inputs => inputs.colorMode === "Custom Colors"
   },
   thirdColor: {
     type: "color",
     model: "hex",
     default: "#f1f1f1",
-    editable: (inputs) => inputs.colorMode === "Custom Colors",
-  },
+    editable: inputs => inputs.colorMode === "Custom Colors"
+  }
 };
 
 export const settings = {
-  engine: require("@mechanic-design/engine-canvas"),
+  engine: require("@mechanic-design/engine-canvas")
 };

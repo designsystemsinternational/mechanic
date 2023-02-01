@@ -4,7 +4,13 @@ const DEFAULT_PRESET_VALUE = "Default values";
 const getPossiblePresets = presets =>
   [NO_PRESET_VALUE].concat(Object.keys(presets)).concat([DEFAULT_PRESET_VALUE]);
 
-const addPresetsAsSources = (inputValue, inputName, presets, inputs, values) => {
+const addPresetsAsSources = (
+  inputValue,
+  inputName,
+  presets,
+  inputs,
+  values
+) => {
   const sources = [{ [inputName]: inputValue }];
   if (inputName === "preset") {
     if (inputValue === DEFAULT_PRESET_VALUE) {
@@ -20,7 +26,8 @@ const addPresetsAsSources = (inputValue, inputName, presets, inputs, values) => 
   } else if (
     values.hasOwnProperty("preset") &&
     values.preset !== NO_PRESET_VALUE &&
-    (values.preset === DEFAULT_PRESET_VALUE || presets[values.preset].hasOwnProperty(inputName))
+    (values.preset === DEFAULT_PRESET_VALUE ||
+      presets[values.preset].hasOwnProperty(inputName))
   ) {
     sources.push({ preset: NO_PRESET_VALUE });
   }

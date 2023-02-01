@@ -16,28 +16,28 @@ export const run = (functionName, func, values, config) => {
       mechanic.frame(root.childNodes[0]);
     }
   };
-  const onDone = async (name) => {
+  const onDone = async name => {
     p5Sketch.noLoop();
     if (!isPreview) {
       await mechanic.done(root.childNodes[0]);
       mechanic.download(name || functionName);
     }
   };
-  const onSetState = async (obj) => {
+  const onSetState = async obj => {
     mechanic.setState(obj);
   };
 
   p5Sketch = new p5(
-    (sketch) =>
+    sketch =>
       func.handler({
         inputs: mechanic.values,
         mechanic: {
           frame: onFrame,
           done: onDone,
           state: mechanic.functionState,
-          setState: onSetState,
+          setState: onSetState
         },
-        sketch,
+        sketch
       }),
     root
   );

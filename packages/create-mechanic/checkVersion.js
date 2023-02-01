@@ -3,7 +3,7 @@ const getPackageJson = require("package-json");
 const currentPkgJson = require("./package.json");
 const semver = require("semver");
 const {
-  spinners: { mechanicSpinner: spinner },
+  spinners: { mechanicSpinner: spinner }
 } = require("@mechanic-design/utils");
 
 const getLatestCommand = "npm init mechanic@latest";
@@ -33,5 +33,5 @@ const checkVersion = async () => {
 };
 
 module.exports = {
-  checkVersion,
+  checkVersion
 };

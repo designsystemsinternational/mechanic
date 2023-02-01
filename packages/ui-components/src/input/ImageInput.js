@@ -46,7 +46,10 @@ export const ImageInput = props => {
   const [focus, setFocus] = useState(false);
   const [preview, setPreview] = useState(null);
 
-  const handleChangePreview = useCallback(value => setPreview(value), [setPreview]);
+  const handleChangePreview = useCallback(
+    value => setPreview(value),
+    [setPreview]
+  );
 
   const handleOnChange = event => {
     const { name, files } = event.target;
@@ -136,7 +139,8 @@ export const ImageInput = props => {
             onFocus={handleOnFocus}
             onBlur={handleOnBlur}
             onClick={handleButtonClick}
-            disabled={disabled}>
+            disabled={disabled}
+          >
             <Add className={css.plus} />
           </button>
         </div>

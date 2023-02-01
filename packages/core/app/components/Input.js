@@ -11,7 +11,8 @@ import {
 } from "@mechanic-design/ui-components";
 import { customComponents } from "../INPUTS";
 
-const uid = (prefix = "comp") => prefix + "-" + Math.random().toString(36).substring(2, 16);
+const uid = (prefix = "comp") =>
+  prefix + "-" + Math.random().toString(36).substring(2, 16);
 
 const baseComponents = {
   text: props => {
@@ -28,7 +29,9 @@ const baseComponents = {
     if (options) {
       return <OptionInput {...props} options={options} />;
     }
-    return <NumberInput min={min} max={max} step={step} slider={slider} {...props} />;
+    return (
+      <NumberInput min={min} max={max} step={step} slider={slider} {...props} />
+    );
   },
   boolean: props => <BooleanInput {...props} />,
   color: props => {
@@ -46,7 +49,14 @@ const baseComponents = {
   }
 };
 
-export const Input = ({ name, className, values, inputDef, onChange, children }) => {
+export const Input = ({
+  name,
+  className,
+  values,
+  inputDef,
+  onChange,
+  children
+}) => {
   const id = useRef(uid("mechanic-input"));
   const { type } = inputDef;
   if (type in customComponents) {
@@ -71,7 +81,11 @@ export const Input = ({ name, className, values, inputDef, onChange, children })
 
   const value = values[name];
   const isEditable =
-    editable === undefined ? true : typeof editable === "function" ? !!editable(values) : editable;
+    editable === undefined
+      ? true
+      : typeof editable === "function"
+      ? !!editable(values)
+      : editable;
   const actualValue = value === undefined ? _default : value;
   const error = validation ? validation(values) : null;
 
@@ -89,7 +103,8 @@ export const Input = ({ name, className, values, inputDef, onChange, children })
       error={error}
       disabled={!isEditable}
       onChange={onChange}
-      inputDef={inputDef}>
+      inputDef={inputDef}
+    >
       {children}
     </Component>
   );

@@ -3,7 +3,14 @@ import PropTypes from "prop-types";
 import classnames from "classnames";
 import * as css from "./Feedback.module.css";
 
-export const Feedback = ({ className, href, variant, onClick, children, disabled }) => {
+export const Feedback = ({
+  className,
+  href,
+  variant,
+  onClick,
+  children,
+  disabled
+}) => {
   const classes = classnames(css.root, {
     [className]: className,
     [css[variant]]: css[variant]

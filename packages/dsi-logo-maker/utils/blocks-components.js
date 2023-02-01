@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { getIndexModule } from './blocks';
+import React, { useState, useEffect, useRef } from "react";
+import { getIndexModule } from "./blocks";
 
 const Brick = ({ brick, block, colors, stroke }) => {
   const { x, w, char, charX, isWordFirst, isWordLast } = brick;
@@ -59,7 +59,7 @@ export const Block = ({ position, block, colors, stroke }) => {
   const { rows } = block;
   return (
     <g transform={`translate(${x} ${y})`}>
-      {rows.map((row) => (
+      {rows.map(row => (
         <Row
           key={row.rowIndex}
           row={row}
@@ -87,7 +87,7 @@ export const Unit = ({
     let runtimeProgress = Math.floor(runtime * stepRate);
     if (runtimeProgress > progress.current) {
       progress.current = runtimeProgress;
-      setIndex((index) => getIndexModule(index + 1, blocks.length));
+      setIndex(index => getIndexModule(index + 1, blocks.length));
     }
   }, [runtime]);
 

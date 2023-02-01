@@ -6,9 +6,12 @@ import { resetOtherInteractive } from "./useInteractiveInputs.js";
 import { hashFromString } from "../../../src/mechanic-utils.js";
 
 const isEmptyObject = obj =>
-  obj && Object.keys(obj).length === 0 && Object.getPrototypeOf(obj) === Object.prototype;
+  obj &&
+  Object.keys(obj).length === 0 &&
+  Object.getPrototypeOf(obj) === Object.prototype;
 
-const isSerializable = obj => isEmptyObject(obj) || !(JSON.stringify(obj) === "{}");
+const isSerializable = obj =>
+  isEmptyObject(obj) || !(JSON.stringify(obj) === "{}");
 
 const copySerializable = obj => {
   if (typeof obj !== "object") {
@@ -20,7 +23,10 @@ const copySerializable = obj => {
     for (const o of obj) {
       if (isSerializable(o)) {
         copy.push(copySerializable(o));
-      } else console.warn("Unserializable object ignored for local storage persistance.");
+      } else
+        console.warn(
+          "Unserializable object ignored for local storage persistance."
+        );
     }
   } else {
     copy = {};
@@ -29,7 +35,10 @@ const copySerializable = obj => {
     for (const key of keys) {
       if (isSerializable(obj[key])) {
         copy[key] = copySerializable(obj[key]);
-      } else console.warn("Unserializable object ignored for local storage persistance.");
+      } else
+        console.warn(
+          "Unserializable object ignored for local storage persistance."
+        );
     }
   }
   return copy;
@@ -84,7 +93,9 @@ function initialize(key, initialState) {
  * @param {any} initialState - Default initial value
  */
 function useLocalStorageState(key, initialState, clean) {
-  const [value, __setValue] = useImmer(() => clean(initialize(key, initialState)));
+  const [value, __setValue] = useImmer(() =>
+    clean(initialize(key, initialState))
+  );
   const isUpdateFromListener = useRef(false);
 
   useEffect(() => {
@@ -160,7 +171,10 @@ const generateHashFromInputsObject = inputs => {
 };
 
 const useValues = (functionName, functionInputs, presets) => {
-  const clean = useCallback(object => cleanValues(object, functionInputs), [functionInputs]);
+  const clean = useCallback(
+    object => cleanValues(object, functionInputs),
+    [functionInputs]
+  );
   const initialValue = useMemo(() => {
     return Object.fromEntries([
       ["preset", NO_PRESET_VALUE],
@@ -173,12 +187,26 @@ const useValues = (functionName, functionInputs, presets) => {
   const inputsHash = generateHashFromInputsObject(functionInputs);
   const storageKey = `mechanic_df_${functionName}_${inputsHash}`;
 
-  const [values, __setValues] = useLocalStorageState(storageKey, initialValue, clean);
+  const [values, __setValues] = useLocalStorageState(
+    storageKey,
+    initialValue,
+    clean
+  );
 
   const setValues = (name, value) => {
     __setValues(draft => {
-      const sources = addPresetsAsSources(value, name, presets, functionInputs, draft);
-      const sourcesAndInteractive = resetOtherInteractive(sources, functionInputs, name);
+      const sources = addPresetsAsSources(
+        value,
+        name,
+        presets,
+        functionInputs,
+        draft
+      );
+      const sourcesAndInteractive = resetOtherInteractive(
+        sources,
+        functionInputs,
+        name
+      );
       for (let source of sourcesAndInteractive) {
         for (let prop in source) {
           draft[prop] = source[prop];

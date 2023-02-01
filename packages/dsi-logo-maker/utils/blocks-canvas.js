@@ -1,7 +1,7 @@
 export const drawBlock = (context, blockConfig, customStroke) => {
   const { position, block, colors } = blockConfig;
-  block.rows.forEach((row) =>
-    row.bricks.forEach((brick) => {
+  block.rows.forEach(row =>
+    row.bricks.forEach(brick => {
       const { x: xOffset, y: yOffset } = position;
       const { x: brickX, w, char, charX: brickCharX } = brick;
       const { background, blackOrWhite } = colors[brick.color % colors.length];

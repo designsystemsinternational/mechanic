@@ -49,18 +49,18 @@ For example, the following `inputs` export says the corresponding design functio
 export const inputs = {
   width: {
     type: "number",
-    default: 400,
+    default: 400
   },
   height: {
     type: "number",
     default: 300,
     min: 200,
-    max: 400,
+    max: 400
   },
   name: {
     type: "text",
-    default: "John",
-  },
+    default: "John"
+  }
 };
 ```
 
@@ -76,7 +76,7 @@ For example, the following `settings` export is for an function that generates a
 ```javascript
 export const settings = {
   engine: require("@mechanic-design/engine-p5"),
-  animated: true,
+  animated: true
 };
 ```
 
@@ -118,46 +118,46 @@ export const inputs = {
   width: {
     type: "number",
     default: 400,
-    validation: (v) => (v < 410 || v > 420 ? null : "Out of range"),
+    validation: v => (v < 410 || v > 420 ? null : "Out of range")
   },
   height: {
     type: "number",
-    default: 300,
+    default: 300
   },
   primaryColor: {
     type: "color",
     model: "hex",
-    default: "#FF0000",
+    default: "#FF0000"
   },
   secondaryColor: {
     type: "color",
     options: ["#00FFFF", "#FF00FF", "#FFFF00"],
-    default: "#00FFFF",
+    default: "#00FFFF"
   },
   numberOfRects: {
     type: "number",
     default: 2,
-    options: [2, 3, 4],
-  },
+    options: [2, 3, 4]
+  }
 };
 
 export const presets = {
   medium: {
     width: 800,
-    height: 600,
+    height: 600
   },
   large: {
     width: 1600,
-    height: 1200,
+    height: 1200
   },
   extraLarge: {
     width: 3200,
-    height: 2400,
-  },
+    height: 2400
+  }
 };
 
 export const settings = {
-  engine: require("@mechanic-design/engine-canvas"),
+  engine: require("@mechanic-design/engine-canvas")
 };
 ```
 

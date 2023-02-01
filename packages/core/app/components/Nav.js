@@ -25,7 +25,8 @@ export const Nav = ({ name, functions }) => {
             className={css.navigationSelect}
             onChange={({ target }) => history.push(`/${target.value}`)}
             name={name}
-            value={name}>
+            value={name}
+          >
             <option key="disabled" disabled>
               Select...
             </option>

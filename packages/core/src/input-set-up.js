@@ -136,9 +136,16 @@ const setUp = customInputs => {
     Object.entries(customInputs).map(([fileName, fileExport]) => {
       const input = inputProperties.reduce((acc, prop) => {
         const exp = fileExport[prop];
-        const error = exp === undefined ? undefined : validateExportProperty(fileName, prop, exp);
+        const error =
+          exp === undefined
+            ? undefined
+            : validateExportProperty(fileName, prop, exp);
         if (error) errors.push(error);
-        return { ...acc, [prop]: error || exp === undefined ? exportDefault(fileName, prop) : exp };
+        return {
+          ...acc,
+          [prop]:
+            error || exp === undefined ? exportDefault(fileName, prop) : exp
+        };
       }, {});
       return [input.typeName, input];
     })
@@ -155,7 +162,10 @@ const setUp = customInputs => {
   const interactiveInputs = Object.fromEntries(
     Object.entries(inputs)
       .map(([name, properties]) => [name, properties.eventHandlers])
-      .filter(([_, eventObject]) => !!eventObject && Object.keys(eventObject).length > 0)
+      .filter(
+        ([_, eventObject]) =>
+          !!eventObject && Object.keys(eventObject).length > 0
+      )
   );
   return [inputs, customComponents, interactiveInputs, errors];
 };

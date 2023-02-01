@@ -16,10 +16,10 @@ export const getSections = (availableRows, filter = 0) => {
     lastRow = row;
   }
   sections.push([lastRow - (counter - 1), counter]);
-  return filter > 0 ? sections.filter((s) => s[1] > filter) : sections;
+  return filter > 0 ? sections.filter(s => s[1] > filter) : sections;
 };
 
-export const choice = (values) => {
+export const choice = values => {
   const index = Math.floor(Math.random() * values.length);
   return values[index];
 };
@@ -60,7 +60,7 @@ export const removeRowsUsedByElement = (availableRows, element) => {
   }
 };
 
-export const getRowsFromElements = (elements) => {
+export const getRowsFromElements = elements => {
   const rows = new Set();
   for (const element of elements) {
     for (let row = element.startRow; row <= element.endRow; row++) {

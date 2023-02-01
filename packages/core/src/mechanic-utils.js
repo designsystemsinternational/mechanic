@@ -71,7 +71,10 @@ const svgPrepare = (el, serializer) => {
   }
 
   if (!str.match(/^<svg[^>]+"http\:\/\/www\.w3\.org\/1999\/xlink"/)) {
-    str = str.replace(/^<svg/, '<svg xmlns:xlink="http://www.w3.org/1999/xlink"');
+    str = str.replace(
+      /^<svg/,
+      '<svg xmlns:xlink="http://www.w3.org/1999/xlink"'
+    );
   }
   str = '<?xml version="1.0" standalone="no"?>\r\n' + str;
   return str;

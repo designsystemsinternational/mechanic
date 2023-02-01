@@ -11,6 +11,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Adds public `memo` function to mechanic core to provide an opt-in performance optimization. `memo` can be imported directly from mechanic-core into a design function where it can be used to cache the results of slow computations (like loading static assets).
 
+### Changed
+
+- Adds the setting to debounce re-rendering after changing the input values. By default inputs are debounced by 100ms. If a user sets `debounceInputs` in their functions settings to false they can opt-out of the debouncing. The period can be passed in the settings as `debounceDelay` and defaults to 100ms.
+
 ### Fixed
 
 - Hash the localStorage key storing a function's params based on the input's config of the function. This makes sure a fresh localStorage key is used if a function's input configuration changes to prevent bugs like #139 from happening.

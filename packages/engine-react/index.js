@@ -15,13 +15,13 @@ export const run = (functionName, func, values, config) => {
       mechanic.frame(root.childNodes[0], { head });
     }
   };
-  const onDone = async (name) => {
+  const onDone = async name => {
     if (!isPreview) {
       await mechanic.done(root.childNodes[0], { head });
       mechanic.download(name || functionName);
     }
   };
-  const onSetState = async (obj) => {
+  const onSetState = async obj => {
     mechanic.setState(obj);
   };
   render(
@@ -31,7 +31,7 @@ export const run = (functionName, func, values, config) => {
         frame: onFrame,
         done: onDone,
         state: mechanic.functionState,
-        setState: onSetState,
+        setState: onSetState
       }}
     />,
     root
