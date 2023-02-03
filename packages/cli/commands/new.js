@@ -32,6 +32,7 @@ const newFunctionCommand = async argv => {
   const functionName = argv._[2];
   const template = argv.template || argv.t;
   const example = argv.example || argv.e;
+
   const typeOfBaseUsed = !!template
     ? "template"
     : !!example
@@ -53,10 +54,12 @@ const newFunctionCommand = async argv => {
       logSuccess(content.baseExist(typeOfBaseUsed, base));
     }
     const alreadyExists = await directoryExists(
-      path.resolve("functions", base)
+      path.resolve("functions", functionName ?? base)
     );
     if (alreadyExists) {
-      logFail(content.directoryAlreadyExist(typeOfBaseUsed, base));
+      logFail(
+        content.directoryAlreadyExist(typeOfBaseUsed, functionName ?? base)
+      );
       return;
     }
   }
@@ -85,7 +88,7 @@ const newFunctionCommand = async argv => {
       : null;
   const finalFunctionName = nullishCoalescingOp(
     functionAnswers.functionName,
-    questions[3].default
+    functionName ?? "my-function"
   );
   const functionDir = await generateFunctionTemplate(
     ".",

@@ -90,7 +90,7 @@ const command = async argv => {
   await sleep();
   const projectName = nullishCoalescingOp(
     answers.project,
-    projectQuestion[0].default
+    project ?? "my-project"
   );
   await generateProjectTemplate(projectName, typeOfBaseUsed);
 

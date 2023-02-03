@@ -98,7 +98,7 @@ const getFunctionQuestions = (initialAnswers, config = {}) => [
       );
       return !exists ? true : content.functionNameExistsError;
     },
-    when: initialAnswers.noSkip || !initialAnswers.usesBase
+    when: initialAnswers.noSkip || !initialAnswers.functionName
   }
 ];
 
