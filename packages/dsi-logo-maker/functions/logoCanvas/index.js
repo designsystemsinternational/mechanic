@@ -1,3 +1,5 @@
+import { memo } from "@mechanic-design/core";
+
 import { getColors, flagNames } from "../../utils/graphics";
 import {
   computeBaseBricks,
@@ -24,7 +26,11 @@ export const handler = async ({ inputs, mechanic }) => {
   const cols = 13;
   const words = ["DESIGN", "SYSTEMS", "INTERNATIONAL"];
   const height = Math.floor((width / ratio) * rows);
-  const font = await loadOpentypeFont(fontMode);
+
+  const font = await memo(
+    async () => await loadOpentypeFont(fontMode),
+    [fontMode]
+  );
 
   const colors = getColors(colorMode, flag, [
     firstColor,
