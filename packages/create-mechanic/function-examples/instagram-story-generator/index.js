@@ -43,7 +43,7 @@ export const handler = ({ inputs, done, frame, useDrawLoop }) => {
   // this is an array where will  store the circles
   const circles = [];
 
-  for (let i = 0; i < Math.min(Math.floor(frameCount / 15), 20); i++) {
+  for (let i = 0; i < Math.min(Math.floor(timestamp * 4), 20); i++) {
     circles.push(
       <Circle
         key={i}
