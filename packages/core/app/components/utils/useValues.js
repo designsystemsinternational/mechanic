@@ -3,6 +3,7 @@ import { useImmer } from "use-immer";
 import { inputsDefs } from "../../INPUTS";
 import { NO_PRESET_VALUE, addPresetsAsSources } from "./presets.js";
 import { resetOtherInteractive } from "./useInteractiveInputs.js";
+import { hashFromString } from "../../../src/mechanic-utils.js";
 
 const isEmptyObject = obj =>
   obj &&
@@ -166,14 +167,7 @@ const cleanValues = (object, reference) => {
 const generateHashFromInputsObject = inputs => {
   const inputsAsString = stringify(inputs);
 
-  let hash = 0;
-  if (inputsAsString.length === 0) return hash.toString();
-  for (let i = 0; i < inputsAsString.length; i++) {
-    const char = inputsAsString.charCodeAt(i);
-    hash = (hash << 5) - hash + char;
-    hash |= 0;
-  }
-  return hash.toString().substring(0, 16);
+  return hashFromString(inputsAsString);
 };
 
 const useValues = (functionName, functionInputs, presets) => {
