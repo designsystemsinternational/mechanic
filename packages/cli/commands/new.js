@@ -53,13 +53,12 @@ const newFunctionCommand = async argv => {
     } else {
       logSuccess(content.baseExist(typeOfBaseUsed, base));
     }
+    const potentialFileName = nullishCoalescingOp(functionName, base);
     const alreadyExists = await directoryExists(
-      path.resolve("functions", functionName ?? base)
+      path.resolve("functions", potentialFileName)
     );
     if (alreadyExists) {
-      logFail(
-        content.directoryAlreadyExist(typeOfBaseUsed, functionName ?? base)
-      );
+      logFail(content.directoryAlreadyExist(typeOfBaseUsed, potentialFileName));
       return;
     }
   }
@@ -88,7 +87,7 @@ const newFunctionCommand = async argv => {
       : null;
   const finalFunctionName = nullishCoalescingOp(
     functionAnswers.functionName,
-    functionName ?? "my-function"
+    nullishCoalescingOp(functionName, "my-function")
   );
   const functionDir = await generateFunctionTemplate(
     ".",
