@@ -27,7 +27,7 @@ export const handler = ({ inputs, frame, done, useDrawLoop }) => {
   const progress = useRef(0);
   const [state, setState] = useState("loading");
   const font = useLoadedOpentypeFont(fontMode);
-  const frameCount = useDrawLoop(state === "playing");
+  const { timestamp } = useDrawLoop(state === "playing");
 
   const rows = 2;
   const cols = 13;
@@ -75,11 +75,9 @@ export const handler = ({ inputs, frame, done, useDrawLoop }) => {
 
   useEffect(() => {
     if (state === "playing") {
-      if (frameCount < duration) {
+      if (timestamp < duration) {
         frame();
-        let currentProgress = Math.floor(
-          2 * loops * cols * (frameCount / duration)
-        );
+        let currentProgress = Math.floor(2 * loops * cols * timestamp);
         if (currentProgress > progress.current) {
           progress.current = currentProgress;
           setInternalOffset(internalOffset => internalOffset + 1);
@@ -89,7 +87,7 @@ export const handler = ({ inputs, frame, done, useDrawLoop }) => {
         done();
       }
     }
-  }, [frameCount]);
+  }, [timestamp]);
 
   return (
     <svg width={width} height={height}>
@@ -101,7 +99,7 @@ export const handler = ({ inputs, frame, done, useDrawLoop }) => {
           blockIndex={brickIndex}
           colors={colors}
           animation={animation}
-          runtime={frameCount}
+          runtime={timestamp}
         ></Unit>
       )}
     </svg>
@@ -161,10 +159,11 @@ export const inputs = {
   },
   duration: {
     type: "number",
-    default: 300,
-    step: 10,
-    min: 10,
-    label: "Duration in frames"
+    default: 3,
+    step: 0.1,
+    min: 1,
+    max: 20,
+    label: "Duration in seconds"
   },
   loops: {
     type: "number",

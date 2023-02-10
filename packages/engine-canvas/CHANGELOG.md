@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - Expose `getCanvas` util to design function. This will create a preview canvas that is adjusted to render crisp on the current display’s pixelDensity.
+- Expose `drawLoop` util to design function. This will call a callback determined by the `frameRate` and pass `frameCount` and `timestamp` in as arguments.
 
 ### Changed
 

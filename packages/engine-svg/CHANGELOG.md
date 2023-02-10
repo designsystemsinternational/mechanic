@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### Added
+
+- Expose `drawLoop` util to design function. This will call a callback determined by the `frameRate` and pass `frameCount` and `timestamp` in as arguments.
+
 ### Changed
 
 - Updated engine to new `registerFrameCallback` and `registerDoneCallback` setup

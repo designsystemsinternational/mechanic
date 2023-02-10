@@ -9,17 +9,24 @@ export const handler = ({ inputs, frame, done, useDrawLoop }) => {
   const angle = useRef(0);
 
   const isPlaying = useRef(true);
-  const frameCount = useDrawLoop(isPlaying.current);
+
+  // frameCount has the number of the current frame, this is based on the framerate
+  // your animation is running it. For 60 fps the frame at 1 seconds will be 60, while
+  // at 24 fps it will be 24.
+  //
+  // timestamp has the frame offset in seconds and is always the same, no matter the
+  // framerate.
+  const { frameCount, timestamp } = useDrawLoop(isPlaying.current);
 
   useEffect(() => {
     if (angle.current < turns * 360) {
       frame();
-      angle.current += 360 / 100;
+      angle.current = 180 * timestamp;
     } else if (isPlaying.current) {
       isPlaying.current = false;
       done();
     }
-  }, [frameCount]);
+  }, [timestamp]);
 
   return (
     <svg width={width} height={height}>
@@ -45,7 +52,7 @@ export const handler = ({ inputs, frame, done, useDrawLoop }) => {
           fontFamily="sans-serif"
           fontSize={height / 10}
         >
-          {text}
+          {text} {frameCount}
         </text>
       </g>
     </svg>

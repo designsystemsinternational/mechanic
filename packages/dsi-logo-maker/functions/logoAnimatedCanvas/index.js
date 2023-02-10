@@ -58,16 +58,14 @@ export const handler = async ({ inputs, frame, done, getCanvas, drawLoop }) => {
   let internalOffset = 0;
   let progress = 0;
 
-  drawLoop(frameCount => {
-    let currentProgress = Math.floor(
-      2 * loops * cols * (frameCount / duration)
-    );
+  drawLoop(({ timestamp }) => {
+    let currentProgress = Math.floor(2 * loops * cols * (timestamp / duration));
     if (currentProgress > progress) {
       progress = currentProgress;
       internalOffset = internalOffset + 1;
       draw();
     }
-    if (frameCount < duration) {
+    if (timestamp < duration) {
       frame();
     } else {
       done();
@@ -135,10 +133,11 @@ export const inputs = {
   },
   duration: {
     type: "number",
-    default: 300,
-    step: 10,
-    min: 10,
-    label: "Duration in frames"
+    default: 3,
+    step: 0.1,
+    min: 1,
+    max: 10,
+    label: "Duration in seconds"
   },
   loops: {
     type: "number",

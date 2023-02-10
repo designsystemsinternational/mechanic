@@ -14,7 +14,7 @@ export const handler = ({ inputs, frame, done, useDrawLoop }) => {
 
   const [state, setState] = useState("loading");
   const font = useLoadedOpentypeFont(fontMode);
-  const frameCount = useDrawLoop(state === "playing");
+  const { timestamp } = useDrawLoop(state === "playing");
 
   const rows = 2;
   const cols = 13;
@@ -72,14 +72,14 @@ export const handler = ({ inputs, frame, done, useDrawLoop }) => {
 
   useEffect(() => {
     if (state === "playing") {
-      if (frameCount < duration) {
+      if (timestamp < duration) {
         frame();
       } else {
         setState("stopped");
         done();
       }
     }
-  }, [frameCount, state, setState]);
+  }, [timestamp, state, setState]);
 
   const { blockConfigs } = blockParams;
   return (
@@ -93,7 +93,7 @@ export const handler = ({ inputs, frame, done, useDrawLoop }) => {
             blockIndex={blockIndex}
             colors={colors}
             animation={animation}
-            runtime={frameCount}
+            runtime={timestamp}
           ></Unit>
         ))}
     </svg>
@@ -126,10 +126,10 @@ export const inputs = {
   },
   duration: {
     type: "number",
-    default: 300,
-    step: 20,
-    min: 10,
-    label: "Duration in frames"
+    default: 3,
+    step: 0.1,
+    min: 1,
+    label: "Duration in seconds"
   },
   fontMode: {
     type: "text",

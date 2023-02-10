@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- Provides a `useDrawLoop` helper to design functions
+- Provides a `useDrawLoop` helper to design functions. It destructures to `frameCount` and `timestamp`. Both are updated determined by the pace of `frameRate`
 
 ### Changed
 
