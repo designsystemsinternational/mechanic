@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - Adds public `memo` function to mechanic core to provide an opt-in performance optimization. `memo` can be imported directly from mechanic-core into a design function where it can be used to cache the results of slow computations (like loading static assets).
+- Adds public `preload` and `preloadFont` functions to mechanic core, that extend `memo` to fetch external resources like images and fonts.
 
 ### Changed
 
@@ -18,6 +19,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 - Hash the localStorage key storing a function's params based on the input's config of the function. This makes sure a fresh localStorage key is used if a function's input configuration changes to prevent bugs like #139 from happening.
+- Serve command now prioritizes argument option for port to use instead of config file. Similar as how dev command works.
 
 ## 2.0.0-beta.9 - 2022-08-12
 
