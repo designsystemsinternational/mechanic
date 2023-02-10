@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## 2.0.0-beta.10 - 2023-02-10
+
 ### Added
 
 - Adds public `memo` function to mechanic core to provide an opt-in performance optimization. `memo` can be imported directly from mechanic-core into a design function where it can be used to cache the results of slow computations (like loading static assets).

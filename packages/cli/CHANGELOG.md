@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## 2.0.0-beta.10 - 2023-02-10
+
 ### Fixed
 
 - new function command takes function name argument into account when using template or example option.

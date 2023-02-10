@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## 2.0.0-beta.10 - 2023-02-10
+
 ### Changed
 
 - Updated `fillAnimatedCanvas` to show the new `debounceInputs` and `debounceDelay` setting

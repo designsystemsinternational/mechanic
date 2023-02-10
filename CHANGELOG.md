@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.0.0-beta.10] - 2023-02-10
+
 ### Added
 
 - Adds public `preload`, `preloadFont` and `memo` utility functions to mechanic core to provide an opt-in performance optimization.
@@ -317,7 +319,8 @@ Beta release
 
 First logged release
 
-[unreleased]: https://github.com/designsystemsinternational/mechanic/compare/v2.0.0-beta.9...main
+[unreleased]: https://github.com/designsystemsinternational/mechanic/compare/v2.0.0-beta.10...main
+[2.0.0-beta.10]: https://github.com/designsystemsinternational/mechanic/releases/tag/v2.0.0-beta.10
 [2.0.0-beta.9]: https://github.com/designsystemsinternational/mechanic/releases/tag/v2.0.0-beta.9
 [2.0.0-beta.8]: https://github.com/designsystemsinternational/mechanic/releases/tag/v2.0.0-beta.8
 [2.0.0-beta.7]: https://github.com/designsystemsinternational/mechanic/releases/tag/v2.0.0-beta.7
