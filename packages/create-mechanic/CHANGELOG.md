@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
-- Extra instruction line got logged when finalizing creating a DF. I was removed.
+- Extra instruction line got logged when finalizing creating a DF. It was removed.
 
 ## 2.0.0-beta.9 - 2022-08-12
 
