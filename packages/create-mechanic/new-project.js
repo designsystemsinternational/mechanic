@@ -18,9 +18,7 @@ const getProjectQuestion = initialAnswers => [
     default: initialAnswers.usesBase
       ? initialAnswers.base
       : initialAnswers.project || "my-project",
-    when:
-      initialAnswers.noSkip ||
-      (!initialAnswers.usesBase && !initialAnswers.project),
+    when: initialAnswers.noSkip || !initialAnswers.project,
     validate: async project => {
       const exists = await fs.pathExists(path.resolve(project));
       return !exists ? true : content.projectNameExistsError;

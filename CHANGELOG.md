@@ -16,6 +16,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fixed extra logged lines when creating DFs through CLI.
 - Better localStorage management that detects input changes.
 - Serve command now prioritizes argument option for port to use instead of config file. Similar as how dev command works.
+- CLI takes new project or function name argument into account when using template or example option.
 
 ### Changed
 
