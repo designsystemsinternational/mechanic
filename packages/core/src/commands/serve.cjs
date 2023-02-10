@@ -38,7 +38,7 @@ const command = async argv => {
 
   spinner.start("Starting off server...");
   // Set port and express server
-  portfinder.basePort = config.port != null ? config.port : argv.port;
+  portfinder.basePort = argv.port !== null ? argv.port : config.port;
   const port = await portfinder.getPortPromise();
   const app = express();
   let status = "start-server";
