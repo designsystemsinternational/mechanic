@@ -1,6 +1,6 @@
 {
   "name": "@mechanic-design/create",
-  "version": "1.2.0",
+  "version": "2.0.0-beta.10",
   "description": "Create Mechanic projects.",
   "license": "MIT",
   "homepage": "https://github.com/designsystemsinternational/mechanic#readme",
@@ -42,7 +42,7 @@
     "start": "node index.js"
   },
   "dependencies": {
-    "@mechanic-design/utils": "^1.1.0"
+    "@mechanic-design/utils": "^2.0.0-beta.10"
   },
   "private": true,
   "gitHead": "a40b8eb1dba5138782d47cbc6d25a18ec8cb1cea"

@@ -1,6 +1,6 @@
 {
   "name": "@mechanic-design/cli",
-  "version": "2.0.0-beta.9",
+  "version": "2.0.0-beta.10",
   "description": "CLI to interact with Mechanic.",
   "license": "MIT",
   "homepage": "https://github.com/designsystemsinternational/mechanic#readme",
@@ -42,8 +42,8 @@
     "start": "node cli.js"
   },
   "dependencies": {
-    "@mechanic-design/utils": "^1.1.0",
-    "create-mechanic": "^2.0.0-beta.9",
+    "@mechanic-design/utils": "^2.0.0-beta.10",
+    "create-mechanic": "^2.0.0-beta.10",
     "inquirer": "^8.1.1",
     "resolve-cwd": "^3.0.0",
     "yargs": "^17.0.1"

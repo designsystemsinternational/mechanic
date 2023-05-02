@@ -7,9 +7,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.0.0-beta.10] - 2023-02-10
+
+### Added
+
+- Adds public `preload`, `preloadFont` and `memo` utility functions to mechanic core to provide an opt-in performance optimization.
+
 ### Fixed
 
 - Fixed extra logged lines when creating DFs through CLI.
+- Better localStorage management that detects input changes.
+- Serve command now prioritizes argument option for port to use instead of config file. Similar as how dev command works.
+- CLI takes new project or function name argument into account when using template or example option.
+
+### Changed
+
+- Holding down shift allows increases the step of the numeric input by 10
+- Adds the setting to debounce re-rendering after changing the input values. By default inputs are debounced by 100ms. If a user sets `debounceInputs` in their functions settings to false they can opt-out of the debouncing. The period can be passed in the settings as `debounceDelay` and defaults to 100ms.
 
 ## [2.0.0-beta.9] - 2022-08-12
 
@@ -305,7 +319,8 @@ Beta release
 
 First logged release
 
-[unreleased]: https://github.com/designsystemsinternational/mechanic/compare/v2.0.0-beta.9...main
+[unreleased]: https://github.com/designsystemsinternational/mechanic/compare/v2.0.0-beta.10...main
+[2.0.0-beta.10]: https://github.com/designsystemsinternational/mechanic/releases/tag/v2.0.0-beta.10
 [2.0.0-beta.9]: https://github.com/designsystemsinternational/mechanic/releases/tag/v2.0.0-beta.9
 [2.0.0-beta.8]: https://github.com/designsystemsinternational/mechanic/releases/tag/v2.0.0-beta.8
 [2.0.0-beta.7]: https://github.com/designsystemsinternational/mechanic/releases/tag/v2.0.0-beta.7

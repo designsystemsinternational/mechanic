@@ -73,9 +73,14 @@ const command = async argv => {
     } else {
       logSuccess(content.baseExist(typeOfBaseUsed, base));
     }
-    const alreadyExists = await directoryExists(path.resolve(base));
+    const potentialFolderName = nullishCoalescingOp(project, base);
+    const alreadyExists = await directoryExists(
+      path.resolve(potentialFolderName)
+    );
     if (alreadyExists) {
-      logFail(content.directoryAlreadyExist(typeOfBaseUsed, base));
+      logFail(
+        content.directoryAlreadyExist(typeOfBaseUsed, potentialFolderName)
+      );
       return;
     }
   }
@@ -90,7 +95,7 @@ const command = async argv => {
   await sleep();
   const projectName = nullishCoalescingOp(
     answers.project,
-    projectQuestion[0].default
+    nullishCoalescingOp(project, "my-project")
   );
   await generateProjectTemplate(projectName, typeOfBaseUsed);
 
