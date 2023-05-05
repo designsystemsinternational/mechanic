@@ -114,6 +114,11 @@ ${
     "Do you wish to install dependencies for your project right away?",
   installationMethodQuestion:
     "Do you wish to install dependencies using npm or yarn?",
+  installingDependenciesMessage: "\nDependencies to install:",
+  dependencyItem: dep =>
+    !dep.includes("@mechanic-design")
+      ? `- ${dep}`
+      : `- ${bgRed("@mechanic-design")}/${bgBlue(dep.split("/")[1])}`,
   installTry: method => `Trying with ${method}.`,
   installSucceed: method => `Installed dependencies with ${method}.`,
   installFailed: method =>
