@@ -203,6 +203,7 @@ const generateFunctionTemplate = async (
   copyDirAndContents(functionSrcDir, newFunctionDir);
 
   spinner.succeed(content.generateFunctionSuccess(functionName));
+  log();
   log(
     content.functionCreationDetails(
       { functionName, functionTypeDirectory, functionDir },

@@ -107,6 +107,7 @@ const command = async argv => {
     const { confirmContinue } = await inquirer.prompt(confirmDFQuestion);
     await sleep();
     if (confirmContinue) {
+      log();
       log(content.designFunctionBasesDescription);
     } else {
       skipFunctions = true;

@@ -88,6 +88,7 @@ const generateProjectTemplate = async (projectName, typeOfBaseUsed) => {
   ]);
 
   spinner.succeed(content.generateProjectSuccess(typeOfBaseUsed, projectName));
+  log();
   log(content.projectContents(path.dirname(directory)));
 };
 
