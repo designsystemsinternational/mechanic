@@ -135,7 +135,7 @@ To start you now can run:
   }${
     !installation
       ? "\n> `npm run dev` or `yarn run dev`"
-      : `\`${installation.installingMethod} run dev\``
+      : `\n> \`${installation.installingMethod} run dev\``
   }
 `,
   bye: mechanicInverse,
@@ -157,7 +157,7 @@ To start you now can run:${
   }${
     !installation
       ? "\n> `npm run dev` or `yarn run dev`"
-      : `\`${installation.installingMethod} run dev\``
+      : `\n> \`${installation.installingMethod} run dev\``
   }
   `
 };

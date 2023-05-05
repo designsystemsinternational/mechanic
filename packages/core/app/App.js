@@ -7,6 +7,7 @@ import { Nav } from "./components/Nav.js";
 import Feedback from "./components/Feedback.js";
 
 import functions from "./FUNCTIONS";
+const theresNoFunctions = Object.keys(functions).length === 0;
 
 import * as css from "./App.module.css";
 
@@ -62,18 +63,24 @@ const AppComponent = () => {
             )}
           />
         ))}
+
         <Route
           exact
           path="/"
-          render={() => (
-            <Layout
-              funcName={firstFunctionName}
-              functions={functions}
-              iframeRef={iframe}
-              mainRef={mainRef}
-            />
-          )}
+          render={() =>
+            !theresNoFunctions ? (
+              <Layout
+                funcName={firstFunctionName}
+                functions={functions}
+                iframeRef={iframe}
+                mainRef={mainRef}
+              />
+            ) : (
+              <NotFound theresNoFunctions={theresNoFunctions} />
+            )
+          }
         />
+
         <Route component={NotFound} />
       </Switch>
     </div>

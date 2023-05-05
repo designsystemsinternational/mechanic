@@ -20,9 +20,16 @@ module.exports = function () {
 
   const result = `
 ${importSection}
-export default {
+
+const allFunctions = {
   ${codeSection}
 };
+
+const functions = Object.fromEntries(
+  Object.entries(allFunctions).filter(([name, func]) => !func.settings.hideFunction)
+);
+
+export default functions;
 `;
   // console.log(result);
   return result;
