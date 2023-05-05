@@ -126,6 +126,59 @@ const installDependencies = async (projectName, installingMethod) => {
   }
 };
 
+async function isInGitRepository(cwd) {
+  try {
+    await execa("git", ["rev-parse", "--is-inside-work-tree"], { cwd });
+    return true;
+  } catch (_) {}
+  return false;
+}
+
+async function isInMercurialRepository(cwd) {
+  try {
+    await execa("hg", ["--cwd", ".", "root"], { cwd });
+    return true;
+  } catch (_) {}
+  return false;
+}
+
+// Adaptation of https://github.com/vercel/next.js/blob/canary/packages/create-next-app/helpers/git.ts
+const tryGitInit = async projectName => {
+  // Project directory
+  const cwd = path.resolve(projectName);
+  let didInit = false;
+  try {
+    await execa("git", ["--version"], { cwd });
+    if (
+      (await isInGitRepository(cwd)) ||
+      (await isInMercurialRepository(cwd))
+    ) {
+      return false;
+    }
+
+    await execa("git", ["init"], { cwd });
+    didInit = true;
+
+    await execa("git", ["checkout", "-b", "main"], { cwd });
+
+    await execa("git", ["add", "-A"], { cwd });
+    await execa(
+      "git",
+      ["commit", "-m", "Initial commit from Create Mechanic"],
+      { cwd }
+    );
+
+    return true;
+  } catch (e) {
+    if (didInit) {
+      try {
+        fs.rmSync(path.join(cwd, ".git"));
+      } catch (_) {}
+    }
+    return false;
+  }
+};
+
 module.exports = {
   getProjectQuestion,
   confirmDFQuestion,
@@ -133,5 +186,6 @@ module.exports = {
   installationMethodQuestion,
   generateProjectTemplate,
   checkLockFile,
-  installDependencies
+  installDependencies,
+  tryGitInit
 };

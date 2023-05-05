@@ -12,6 +12,7 @@ const {
   installationMethodQuestion,
   generateProjectTemplate,
   installDependencies,
+  tryGitInit,
   checkLockFile
 } = require("./new-project");
 const {
@@ -148,6 +149,9 @@ const command = async argv => {
 
   // Install dependencies in new project directory
   const install = await askToInstall(projectName);
+
+  // Try initializing git repository
+  await tryGitInit(projectName);
 
   // Done!
   log(content.doneAndNextStepsMessage(projectName, install));
