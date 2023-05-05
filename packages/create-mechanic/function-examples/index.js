@@ -13,6 +13,11 @@ const options = [
     name: "Poster Generator",
     type: "Canvas",
     dir: "poster-generator"
+  },
+  {
+    name: "Adaptive Grid",
+    type: "Canvas",
+    dir: "adaptive-grid"
   }
 ];
 

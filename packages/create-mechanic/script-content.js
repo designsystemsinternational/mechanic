@@ -1,9 +1,11 @@
 const {
   logo: { mechanic, mechanicInverse },
-  colors: { success, bgRed, bgBlue }
+  colors: { success, bgRed, bgBlue, fail }
 } = require("@mechanic-design/utils");
 
 const mechanicPackage = "@mechanic-design/core";
+const sourceCodeUrl = "https://github.com/designsystemsinternational/mechanic";
+const sourceCodeMainBranchUrl = `${sourceCodeUrl}/tree/main`;
 
 module.exports = {
   welcome: `${mechanic}
@@ -81,7 +83,10 @@ ${bgBlue(
   generateFunctionStart: "Adding design function to project...",
   generateFunctionSuccess: functionName =>
     `Design function "${functionName}" added to project!`,
-  functionCreationDetails: functionName =>
+  functionCreationDetails: (
+    { functionName, functionDir, functionTypeDirectory },
+    customInputGeneration
+  ) =>
     `This just:
 > Created a folder inside functions/, called ${success(
       functionName
@@ -89,8 +94,21 @@ ${bgBlue(
       "index.js"
     )} file where the design function is defined.
 > Added some other dependencies into your project to make your design function work.
-
-`,
+${
+  customInputGeneration.tried
+    ? customInputGeneration.success
+      ? "> Added a custom input used in the function. You can find it in the " +
+        success("inputs/") +
+        " folder \n"
+      : "> " +
+        fail("Tried") +
+        " adding a needed custom input, but it wasn't possible. " +
+        "Check " +
+        `${sourceCodeMainBranchUrl}/packages/create-mechanic/${functionTypeDirectory}${
+          functionDir !== "" ? "/" + functionDir : ""
+        }/inputs for the input's source code.\n`
+    : ""
+}`,
 
   confirmInstallQuestion:
     "Do you wish to install dependencies for your project right away?",
