@@ -63,7 +63,7 @@ const generateProjectTemplate = async (projectName, typeOfBaseUsed) => {
   // Copying content promises
   await Promise.all([
     // Copy array of files that get duplicated without change
-    ...["mechanic.config.js", "README.md"].map(filename =>
+    ...["mechanic.config.js", "README.md", "_gitignore"].map(filename =>
       fs.copyFile(
         path.join(projectTemplateDir, filename),
         path.join(directory, filename.replace(/^_/, "."))
