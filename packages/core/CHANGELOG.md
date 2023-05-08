@@ -28,11 +28,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 - Hash the localStorage key storing a function's params based on the input's config of the function. This makes sure a fresh localStorage key is used if a function's input configuration changes to prevent bugs like #139 from happening.
-<<<<<<< HEAD
 - Removed unused `callbacks` method from Mechanic class.
-=======
 - Serve command now prioritizes argument option for port to use instead of config file. Similar as how dev command works.
->>>>>>> main
 
 ## 2.0.0-beta.9 - 2022-08-12
 
