@@ -1,5 +1,6 @@
 import { optimize, extendDefaultPlugins } from "svgo/dist/svgo.browser.js";
 import { toPng, toCanvas } from "html-to-image";
+import { parse as parseCSS, walk as walkCSS } from "css-tree";
 
 /**
  * Checks whether a DOM element is instance of SVGElement
@@ -52,7 +53,19 @@ const svgAppendStyles = (el, head) => {
     copy = el.cloneNode(true);
     const styles = head.querySelectorAll("style");
     for (var i = 0; i < styles.length; i++) {
-      copy.append(styles[i].cloneNode(true));
+      const styleNode = styles[i];
+
+      const ast = parseCSS(styleNode.innerHTML);
+      let hasPseudoElements = false;
+      walkCSS(ast, node => {
+        if (!hasPseudoElements && node.type === "PseudoElementSelector") {
+          hasPseudoElements = true;
+        }
+      });
+      if (!hasPseudoElements) copy.append(styleNode.cloneNode(true));
+      else {
+        console.warn("Skipped style!");
+      }
     }
   }
   return copy;
