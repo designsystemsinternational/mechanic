@@ -86,8 +86,8 @@ export class Mechanic {
 
     this.drawLoop = mechanicDrawLoop.prepare(this.settings.frameRate);
 
-    this.engineFrameCallback = () => {};
-    this.engineDoneCallback = () => {};
+    this.engineFrameCallback = () => { };
+    this.engineDoneCallback = () => { };
   }
 
   /**
@@ -99,16 +99,18 @@ export class Mechanic {
    * @param {object} overwrites - An object with overwrites for the callbacks
    */
   callbacksForDesignFunction(overwrites = {}) {
+    const frame = (...args) => this.engineFrameCallback(...args);
+    const done = (...args) => {
+      // Always make sure to stop the drawloop when we're done rendering
+      this.drawLoop.stop();
+      this.engineDoneCallback(...args);
+    };
+
     return Object.assign(
       {},
       {
-        frame: (...args) => this.engineFrameCallback(...args),
-        done: (...args) => {
-          // Always make sure to stop the drawloop when we're done rendering
-          this.drawLoop.stop();
-          this.engineDoneCallback(...args);
-        },
-
+        frame,
+        done,
         // This is where the timeline feature could intercept to render a
         // single frame. A single frame number can be passed as the second
         // arguments to drawLoop's start method.
@@ -118,7 +120,33 @@ export class Mechanic {
         // collisions with React
         mechanic: {
           setState: this.setState.bind(this),
-          state: this.functionState
+          state: this.functionState,
+
+          /**
+           * Add a reference to the frame callback to the mechanic
+           * object for backwards compatibility.
+           *
+           * @deprecated
+           */
+          frame: (...args) => {
+            console.warn(
+              "mechanic.frame() has been deprecated and will be removed in a future version of Mechanic. The done() and frame() callbacks are now passed to your design function directly."
+            );
+            frame(...args);
+          },
+
+          /**
+           * Add a reference to the done callback to the mechanic
+           * object for backwards compatibility.
+           *
+           * @deprecated
+           */
+          done: (...args) => {
+            console.warn(
+              "mechanic.done() has been deprecated and will be removed in a future version of Mechanic. The done() and frame() callbacks are now passed to your design function directly."
+            );
+            done(...args);
+          }
         }
       },
       overwrites
