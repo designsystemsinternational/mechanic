@@ -1,10 +1,9 @@
 import React, { useEffect, useRef } from "react";
 
 import { Circle } from "./Circle";
-import { useDrawLoop } from "./utils";
 import "./styles.css";
 
-export const handler = ({ inputs, mechanic }) => {
+export const handler = ({ inputs, done, frame, useDrawLoop }) => {
   const {
     width,
     height,
@@ -19,20 +18,19 @@ export const handler = ({ inputs, mechanic }) => {
   } = inputs;
 
   // stuff needed for the looping
-  const startTime = useRef(Date.now());
   const isPlaying = useRef(true);
-  const frameCount = useDrawLoop(isPlaying.current);
+  const { timestamp } = useDrawLoop(isPlaying.current);
   const lines = text.split(" ");
 
   // function to determine when to end the animation
   useEffect(() => {
-    if (Date.now() - startTime.current < duration * 1000) {
-      mechanic.frame();
+    if (duration > timestamp) {
+      frame();
     } else if (isPlaying.current) {
       isPlaying.current = false;
-      mechanic.done();
+      done();
     }
-  }, [frameCount]);
+  }, [timestamp]);
 
   // colors and font sizes
   const textColor = backgroundColor;
@@ -45,7 +43,7 @@ export const handler = ({ inputs, mechanic }) => {
   // this is an array where will  store the circles
   const circles = [];
 
-  for (let i = 0; i < Math.min(Math.floor(frameCount / 15), 20); i++) {
+  for (let i = 0; i < Math.min(Math.floor(timestamp * 4), 20); i++) {
     circles.push(
       <Circle
         key={i}

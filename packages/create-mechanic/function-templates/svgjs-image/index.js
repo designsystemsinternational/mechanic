@@ -8,7 +8,7 @@ import {
 const rawSVG =
   '<svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 90 90" ><defs></defs><path class="cls-1" d="M90,45A45,45,0,0,0,0,45Z"/></svg>';
 
-export const handler = ({ inputs, mechanic }) => {
+export const handler = ({ inputs, done }) => {
   const { width, height, text, color1, color2, radiusPercentage } = inputs;
 
   const center = [width / 2, height / 2];
@@ -35,7 +35,7 @@ export const handler = ({ inputs, mechanic }) => {
     .fill({ color: "#000" })
     .font({ size: 36 });
 
-  mechanic.done(draw.node.outerHTML);
+  done(draw.node.outerHTML);
 };
 
 export const inputs = {

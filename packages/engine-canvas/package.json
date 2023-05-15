@@ -31,7 +31,8 @@
     }
   ],
   "files": [
-    "index.js"
+    "index.js",
+    "prepare-canvas.js"
   ],
   "type": "module",
   "exports": "./index.js",
