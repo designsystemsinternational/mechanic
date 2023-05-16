@@ -1,7 +1,6 @@
 import { optimize, extendDefaultPlugins } from "svgo/dist/svgo.browser.js";
 import { toPng, toCanvas } from "html-to-image";
 import { parse as parseCSS, generate as generateCSS } from "css-tree";
-
 import { selectOne as cssSelectOne } from "css-select";
 import cssSelectBrowserAdapter from "css-select-browser-adapter";
 
