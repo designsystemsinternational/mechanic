@@ -5,7 +5,6 @@ Helper functions to make animation easier.
 ## Usage
 
 ```js
-
 import { transition } from "@mechanic-design/transition";
 
 export const handler = ({ inputs, frame, done, drawLoop }) => {
@@ -16,6 +15,36 @@ export const handler = ({ inputs, frame, done, drawLoop }) => {
     // you pass as the tick in the next step
     duration: 10,
     delay: 1,
+
+    // Allows to set how often the transition should run
+    // Defaults to 1
+    iterationCount: 10,
+
+    // Defines the direction of the animation
+    // forward (0 -> 1)
+    // runs the animation in the specified direction
+    //
+    // reverse (1 -> 0)
+    // runs the animation in the reversed direction 
+    //
+    // alternate (0 -> 1 -> 0 -> 1 -> ...)
+    // runs the animation in alternating directions, starting
+    // with a forwards run.
+    //
+    // alternateReverse (1 -> 0 -> -> 0 -> ...)
+    // runs the animation in alternating directions, starting
+    // with a reversed run.
+    //
+    // Defaults to forward
+    direction: 'alternate',
+
+    // Sets the easing curve of the transition. Accepts a custom
+    // function or a string referring to one of the predefined
+    // easing curves. See `src/easings.js` for a list of all
+    // predefined easings.
+    //
+    // Defaults to linear
+    easing: 'easeInOutExpo',
   });
 
   drawLoop({ frameCount, timestamp }) => {
