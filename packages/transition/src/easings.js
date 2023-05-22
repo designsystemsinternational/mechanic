@@ -232,3 +232,31 @@ export const EasingFunctions = {
     return easeOutBounce(t * 2 - 1) * 0.5 + 0.5;
   }
 };
+
+/**
+ * Turns the user specified easing into a function that can
+ * be executed by the transition utility.
+ *
+ * Easing can either be a string referencing one of the
+ * pre-built easing functions or a custom function.
+ *
+ * @params{string|function} easing
+ */
+export const resolveEasing = easing => {
+  // If the user specified a function for the easing,
+  // we’re using that
+  if (typeof easing === "function") return easing;
+
+  // If not, we check if we can return a pre-built
+  // easing function
+  if (EasingFunctions[easing]) return EasingFunctions[easing];
+
+  // Lastly we need to throw
+  throw new Error(
+    `Unexpected easing (${easing}) passed to transition function. Easing should either be a custom function or one of the pre-built values: ${Object.keys(
+      EasingFunctions
+    ).join(", ")}.`
+  );
+};
+
+
