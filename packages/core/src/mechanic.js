@@ -1,6 +1,6 @@
 import seedrandom from "seedrandom";
 import { download } from "./download.js";
-import { WebMWriter } from "./webm-writer.js";
+import { VideoWriter } from "./video-writer.js";
 import {
   isSVG,
   isCanvas,
@@ -122,9 +122,10 @@ export class Mechanic {
     if (!this.exportInit) {
       this.exportInit = true;
       this.serializer = new XMLSerializer();
-      this.videoWriter = new WebMWriter({
-        quality: 0.95,
-        frameRate: 60
+      this.videoWriter = new VideoWriter({
+        frameRate: 60,
+        format: this.settings.animationFormat ?? 'mp4',
+        bitRate: this.settings.animationBitrate ?? 2e6,
       });
     }
 
@@ -245,7 +246,9 @@ export class Mechanic {
       download(this.canvasData, `${name}.png`, "image/png");
     } else if (this.htmlData) {
       download(this.htmlData, `${name}.png`, "image/png");
-    } else if (this.videoData) {
+    } else if (this.videoData && this.videoData.type === "video/mp4") {
+      download(this.videoData, `${name}.mp4`, "video/mp4");
+    } else if (this.videoData && this.videoData.type === "video/webm") {
       download(this.videoData, `${name}.webm`, "video/webm");
     }
   }

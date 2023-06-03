@@ -1,5 +1,6 @@
 import { optimize, extendDefaultPlugins } from "svgo/dist/svgo.browser.js";
 import { toPng, toCanvas } from "html-to-image";
+import { MechanicError } from "./mechanic-error.js";
 
 /**
  * Checks whether a DOM element is instance of SVGElement
@@ -179,6 +180,15 @@ const hashFromString = (str, len = Infinity) => {
   return hash.toString().substring(0, len);
 };
 
+/**
+ * Throws an error unless the predicate is true
+ *
+ * @param {boolean} predicate
+ */
+const assert = (predicate, message) => {
+  if (!predicate) throw new MechanicError(message);
+};
+
 export {
   isSVG,
   isCanvas,
@@ -193,5 +203,6 @@ export {
   extractSvgSize,
   dataUrlToCanvas,
   getTimeStamp,
-  hashFromString
+  hashFromString,
+  assert
 };
