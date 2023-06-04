@@ -1,13 +1,17 @@
 import * as MP4Muxer from "mp4-muxer";
 import * as WebmMuxer from "webm-muxer";
 
-import { assert } from "./mechanic-utils.js";
+import { assert, calculateBitrate } from "./mechanic-utils.js";
 import { WebMWriter } from "./webm-writer.js";
 import { MechanicError } from "./mechanic-error.js";
 
+/**
+ * Predefined export settings.
+ */
 const settings = {
   mp4: {
     multiplexer: MP4Muxer,
+
     // An MPEG-4 file containing AVC (H.264) video, Main Profile, Level 4.2
     // This seems to be a good default, but we should do more research.
     encoderCodec: "avc1.4d002a",
@@ -27,33 +31,40 @@ const settings = {
   },
   webm: {
     multiplexer: WebmMuxer,
+
     // VP9 is an open source video codec for webM video
     // Youtube is using it for high quality video, so it feels
     // like a safe default.
     //
     // 4:2:0 sampling
-    // Level 1.0
+    // Level 5.1 (see: https://en.wikipedia.org/wiki/VP9#Levels)
     // 8 bits per sample
-    encoderCodec: "vp09.00.10.08",
+    encoderCodec: "vp09.00.51.08",
     muxerCodec: "V_VP9",
     mimeType: "video/webm",
     validateDimensions: () => { }
   }
 };
 
+// Convenience array of allowed formats
 const allowedFormats = Object.keys(settings);
 
 /**
  * Handles the export of animated design functions into a video file.
  * Uses the web codec API if the browser supports it, falls back to a
  * pure JavaScript webM encoder if not.
+ *
+ * @typedef {Object} VideoWriterSettings
+ * @property {number} frameRate
+ * @property {number|null} bitRate
+ * @property {("mp4"|"webm")} format
  */
 export class VideoWriter {
   /**
    * @constructor
-   * @param {object} options
+   * @param {VideoWriterSettings} options
    */
-  constructor({ frameRate = 60, bitRate = 1e6, format = "mp4" } = {}) {
+  constructor({ frameRate = 60, bitRate = null, format = "mp4" } = {}) {
     // While the WebCodecs API has fairly good support in modern versions
     // of Chrome, it is still a working draft. So we shouldn't treat it like
     // a browser standard. That’s why we keep the old purely JS based
@@ -144,11 +155,21 @@ export class VideoWriter {
         }
       });
 
+      // If the user didn't specify a bitrate we calculate one
+      // that’s focused on high output quality.
+      const bitrate =
+        this.options.bitRate ??
+        calculateBitrate(
+          this.videoWidth,
+          this.videoHeight,
+          this.options.frameRate
+        );
+
       this.encoder.configure({
         codec: encoderCodec,
         width: this.videoWidth,
         height: this.videoHeight,
-        bitrate: this.options.bitRate,
+        bitrate: bitrate,
         framerate: this.options.frameRate
       });
     }

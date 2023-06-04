@@ -125,7 +125,7 @@ export class Mechanic {
       this.videoWriter = new VideoWriter({
         frameRate: 60,
         format: this.settings.animationFormat ?? 'mp4',
-        bitRate: this.settings.animationBitrate ?? 2e6,
+        bitRate: this.settings.animationBitrate || null,
       });
     }
 
