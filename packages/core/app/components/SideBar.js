@@ -58,6 +58,7 @@ export const SideBar = ({
     initialAutoRefresh ?? true
   );
   const [lastRun, setLastRun] = useState(null);
+  const [isExporting, setIsExporting] = useState(false);
   const [seedHistory, setSeedHistory] = useSeedHistory(name);
 
   const iframeLoaded = useIframeLoaded(iframe, name);
@@ -79,33 +80,46 @@ export const SideBar = ({
     setLastRun(lastRun =>
       run
         ? run(
-            name,
-            values,
-            getRunConfig(lastRun, true, seedHistory.current, true)
-          )
+          name,
+          values,
+          getRunConfig(lastRun, true, seedHistory.current, true)
+        )
         : null
     );
   };
 
   const preview = debounceInputs
     ? useDebouncedCallback(
-        previewHandler,
-        debounceDelay || DEFAULT_PREVIEW_DEBOUNCE_TIMEOUT
-      )
+      previewHandler,
+      debounceDelay || DEFAULT_PREVIEW_DEBOUNCE_TIMEOUT
+    )
     : previewHandler;
 
   const handleExport = async type => {
     const run = iframe.current.contentWindow?.run;
+    setIsExporting(true);
     setLastRun(lastRun =>
       run
         ? run(
-            name,
-            values,
-            getRunConfig(lastRun, false, seedHistory.current, false, type)
-          )
+          name,
+          values,
+          getRunConfig(lastRun, false, seedHistory.current, false, type)
+        )
         : null
     );
   };
+
+  useEffect(() => {
+    const finishExport = () => setIsExporting(false);
+
+    if (lastRun === null) return;
+
+    lastRun.on?.("startDownload", finishExport);
+
+    return () => {
+      lastRun.off?.("startDownload", finishExport);
+    };
+  }, [lastRun]);
 
   const handleDownloadState = async () => {
     lastRun.downloadState(name);
@@ -216,7 +230,7 @@ export const SideBar = ({
               <Button
                 className={cn(css.grow)}
                 onClick={() => setSeedHistory.set()}
-                disabled={!iframeLoaded || lastRun === undefined}
+                disabled={!iframeLoaded || lastRun === undefined || isExporting}
               >
                 {iframeLoaded ? "Generate" : "Loading content"}
               </Button>
@@ -244,13 +258,15 @@ export const SideBar = ({
               className={css.grow}
               primary={iframeLoaded}
               onClick={() => handleExport()}
-              disabled={!iframeLoaded || lastRun === undefined}
+              disabled={!iframeLoaded || lastRun === undefined || isExporting}
             >
               {lastRun === undefined
                 ? "Error"
                 : iframeLoaded
-                ? "Export"
-                : "Loading content"}
+                  ? isExporting
+                    ? "Exporting"
+                    : "Export"
+                  : "Loading content"}
             </Button>
           </div>
         ) : (
@@ -259,26 +275,30 @@ export const SideBar = ({
               className={css.grow}
               primary={iframeLoaded}
               onClick={() => handleExport("svg")}
-              disabled={!iframeLoaded || lastRun === undefined}
+              disabled={!iframeLoaded || lastRun === undefined || isExporting}
             >
               {lastRun === undefined
                 ? "Error"
                 : iframeLoaded
-                ? "Export SVG"
-                : "Loading content"}
+                  ? isExporting
+                    ? "Exporting"
+                    : "Export SVG"
+                  : "Loading content"}
             </Button>
             <div className={css.sep} />
             <Button
               className={css.grow}
               primary={iframeLoaded}
               onClick={() => handleExport("png")}
-              disabled={!iframeLoaded || lastRun === undefined}
+              disabled={!iframeLoaded || lastRun === undefined || isExporting}
             >
               {lastRun === undefined
                 ? "Error"
                 : iframeLoaded
-                ? "Export PNG"
-                : "Loading content"}
+                  ? isExporting
+                    ? "Exporting"
+                    : "Export PNG"
+                  : "Loading content"}
             </Button>
           </>
         )}
