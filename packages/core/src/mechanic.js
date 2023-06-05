@@ -124,8 +124,8 @@ export class Mechanic {
       this.serializer = new XMLSerializer();
       this.videoWriter = new VideoWriter({
         frameRate: 60,
-        format: this.settings.animationFormat ?? 'mp4',
-        bitRate: this.settings.animationBitrate || null,
+        format: this.settings.animationFormat ?? "webm",
+        bitRate: this.settings.animationBitrate || null
       });
     }
 
@@ -145,11 +145,11 @@ export class Mechanic {
         this.svgSize = extractSvgSize(el);
       }
     } else if (isCanvas(el)) {
-      this.videoWriter.addFrame(el);
+      await this.videoWriter.addFrame(el);
     } else {
       // This is slow. We should find a more efficient way
       const frame = await htmlToCanvas(el);
-      this.videoWriter.addFrame(frame);
+      await this.videoWriter.addFrame(frame);
     }
     this.frameCalled = true;
   }
@@ -219,7 +219,7 @@ export class Mechanic {
         cacheCanvas.height = this.svgSize.height;
         for (let i = 0; i < this.svgFrames.length; i++) {
           await dataUrlToCanvas(this.svgFrames[i], cacheCanvas);
-          this.videoWriter.addFrame(cacheCanvas);
+          await this.videoWriter.addFrame(cacheCanvas);
         }
       }
       this.videoData = await this.videoWriter.complete();

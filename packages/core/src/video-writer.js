@@ -13,7 +13,6 @@ const settings = {
     multiplexer: MP4Muxer,
 
     // An MPEG-4 file containing AVC (H.264) video, Main Profile, Level 4.2
-    // This seems to be a good default, but we should do more research.
     encoderCodec: "avc1.4d002a",
     muxerCodec: "avc",
     mimeType: "video/mp4",
@@ -38,7 +37,7 @@ const settings = {
     //
     // 4:2:0 sampling
     // Level 5.1 (see: https://en.wikipedia.org/wiki/VP9#Levels)
-    // 8 bits per sample
+    // 8 bit color
     encoderCodec: "vp09.00.51.08",
     muxerCodec: "V_VP9",
     mimeType: "video/webm",
@@ -71,7 +70,12 @@ export class VideoWriter {
     // implementation of the webmWriter as a fallback.
     //
     // See: https://caniuse.com/webcodecs
-    if (!"VideoEncoder" in window) {
+    const supportsWebCodec = "VideoEncoder" in window;
+
+    // If the video codec API is not supported by the current browser
+    // but the user wants a webM export, we can fallback to the
+    // legacy JS based webM writer.
+    if (!supportsWebCodec && format === "webm") {
       console.warn(
         "Your browser does not have support for the VideoEncoder API, falling back to JavaScript version. This might be slower."
       );
@@ -80,6 +84,12 @@ export class VideoWriter {
         frameRate,
         quality: 0.95
       });
+    }
+
+    if (!supportsWebCodec) {
+      throw new MechanicError(
+        `Your running browser doesn’t support exporting video in ${format} format. Try using the latest version of Google Chrome for exporting.`
+      );
     }
 
     if (!allowedFormats.includes(format)) {
@@ -100,8 +110,8 @@ export class VideoWriter {
    * Internal utility function that registers an encoded chunk of
    * video with the multiplexer.
    *
-   * @param {VideoFrame} chunk
-   * @param {object} meta
+   * @param {EncodedVideoChunk} chunk
+   * @param {EncodedVideoChunkMetadata} meta
    */
   _handleChunk(chunk, meta) {
     if (!this.multiplexer) {
@@ -116,7 +126,7 @@ export class VideoWriter {
    *
    * @params {HTMLCanvasElement} canvas
    */
-  addFrame(canvas) {
+  async addFrame(canvas) {
     // Both the video encode and the multiplexer need to
     // know the dimenions of the video. So we cache them
     // in the instance after looking them up on the passed
@@ -165,13 +175,25 @@ export class VideoWriter {
           this.options.frameRate
         );
 
-      this.encoder.configure({
+      const encoderConfig = {
         codec: encoderCodec,
         width: this.videoWidth,
         height: this.videoHeight,
         bitrate: bitrate,
         framerate: this.options.frameRate
-      });
+      };
+
+      // Support for the Video Codec API does not mean that a browser
+      // supports all codecs, so we need to do a second check when the
+      // encoder is configured.
+      const { supported } = await VideoEncoder.isConfigSupported(encoderConfig);
+      if (!supported) {
+        throw new MechanicError(
+          `Your running browser doesn’t support VideoEncoding using the ${encoderCodec} codec. Try using the latest version of Chrome for exporting.`
+        );
+      }
+
+      this.encoder.configure(encoderConfig);
     }
 
     // Timestamp of a video frame should be expressed
@@ -182,6 +204,28 @@ export class VideoWriter {
       timestamp
     });
 
+    // Video compression works by not storing a full image
+    // for every frame of the video, but instead encoding the
+    // difference to the previous frame. Full frames are usually
+    // called i-frames or keyframes. While the encoded frames
+    // are reffered to as p-frames, before they are predicted.
+    //
+    // Usually you'd want to keep the number of encoded keyframes
+    // as low as possible, because key frames take more file size
+    // than predicted frames. But this comes with a tradeoff: A
+    // video file that uses a lot of keyframes puts more strain on
+    // the CPU that's playing it back, because more image reconstruction
+    // has to happen. While this is not a problem for normal playback
+    // in a video player this can negatively impact the editing
+    // experience when loading the video into video software like
+    // Premiere.
+    //
+    // As we don’t know what users are going to do with video
+    // exported from Mechanic we opt for a manual density of
+    // keyframes of one keyframe per second of video. This ensures
+    // an acceptable editing performance of the video while not
+    // consuming as much file size as uncompressed (uncompressed
+    // simply means that all frames are keyframes) video.
     this.encoder.encode(frame, {
       keyFrame:
         this.frameCounter === 0 ||
@@ -196,7 +240,7 @@ export class VideoWriter {
   /**
    * Finalizes the video encoding and returns a blob
    *
-   * @returns {Blob}
+   * @returns {Promise<Blob>}
    */
   async complete() {
     await this.encoder.flush();
