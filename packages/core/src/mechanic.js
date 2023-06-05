@@ -80,6 +80,55 @@ export class Mechanic {
     this.values = values;
     this.functionState = lastRun?.functionState ?? {};
     this.exportType = exportType;
+    this.events = {};
+  }
+
+  /**
+   * Registers an event listener with the runtime.
+   * @param {string} event
+   * @param {function} listener
+   */
+  on(event, listener) {
+    if (!this.events[event]) {
+      this.events[event] = [];
+    }
+
+    this.events[event].push(listener);
+  }
+
+  /**
+   * Unsubscribes an event listener from the runtime.
+   * @param {string} event
+   * @param {function} listener
+   */
+  off(event, listener) {
+    let idx;
+
+    if (typeof this.events[event] === "object") {
+      idx = this.events[event].indexOf(listener);
+
+      if (idx > -1) {
+        this.events[event].splice(idx, 1);
+      }
+    }
+  }
+
+  /**
+   * Emits an event to all subscribed listeners
+   * @param {string} event
+   * @param {Array<any>} args
+   */
+  emit(event, ...args) {
+    let i, listeners, length;
+
+    if (typeof this.events[event] === "object") {
+      listeners = this.events[event].slice();
+      length = listeners.length;
+
+      for (i = 0; i < length; i++) {
+        listeners[i].apply(this, args);
+      }
+    }
   }
 
   /**
@@ -232,6 +281,8 @@ export class Mechanic {
    * @param {boolean} addTimeStamp - Adds time stamp to name of file to be downloaded.
    */
   download(fileName, addTimeStamp = true) {
+    this.emit("startDownload");
+
     let name = fileName;
     if (addTimeStamp) {
       name += "-" + getTimeStamp();
