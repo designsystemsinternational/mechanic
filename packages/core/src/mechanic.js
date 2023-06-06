@@ -124,8 +124,11 @@ export class Mechanic {
       this.serializer = new XMLSerializer();
       this.videoWriter = new VideoWriter({
         frameRate: 60,
-        format: this.settings.animationFormat ?? "webm",
-        bitRate: this.settings.animationBitrate || null
+
+        // Video specific settings a user can provide
+        format: this.settings.videoFormat ?? "webm",
+        bitRate: this.settings.videoBitrate || null,
+        keyFramesPerSecond: this.settings.videoKeyFramesPerSecond || null,
       });
     }
 

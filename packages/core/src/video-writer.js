@@ -12,8 +12,8 @@ const settings = {
   mp4: {
     multiplexer: MP4Muxer,
 
-    // An MPEG-4 file containing AVC (H.264) video, Main Profile, Level 4.2
-    encoderCodec: "avc1.4d002a",
+    // An MPEG-4 file containing AVC (H.264) video, High Profile, Level 4.2
+    encoderCodec: "avc1.64002a",
     muxerCodec: "avc",
     mimeType: "video/mp4",
     validateDimensions: (width, height) => {
@@ -57,13 +57,19 @@ const allowedFormats = Object.keys(settings);
  * @property {number} frameRate
  * @property {number|null} bitRate
  * @property {("mp4"|"webm")} format
+ * @property {number|null} keyFramesPerSecond
  */
 export class VideoWriter {
   /**
    * @constructor
    * @param {VideoWriterSettings} options
    */
-  constructor({ frameRate = 60, bitRate = null, format = "mp4" } = {}) {
+  constructor({
+    frameRate = 60,
+    bitRate = null,
+    format = "webm",
+    keyFramesPerSecond = null
+  } = {}) {
     // While the WebCodecs API has fairly good support in modern versions
     // of Chrome, it is still a working draft. So we shouldn't treat it like
     // a browser standard. That’s why we keep the old purely JS based
@@ -100,8 +106,14 @@ export class VideoWriter {
       );
     }
 
+    assert(
+      keyFramesPerSecond === null || keyFramesPerSecond > 0,
+      `Invalid setting for keyFramesPerSecond option. Must either be number greater than zero or null, got ${keyFramesPerSecond}.`
+    );
+
     this.format = format;
-    this.options = { frameRate, bitRate };
+    this.options = { frameRate, bitRate, keyFramesPerSecond };
+
     this.frameCounter = 0;
     this.multiplexer = null;
   }
@@ -208,28 +220,33 @@ export class VideoWriter {
     // for every frame of the video, but instead encoding the
     // difference to the previous frame. Full frames are usually
     // called i-frames or keyframes. While the encoded frames
-    // are reffered to as p-frames, before they are predicted.
+    // are referred to as p-frames, because they are predicted.
     //
-    // Usually you'd want to keep the number of encoded keyframes
-    // as low as possible, because key frames take more file size
-    // than predicted frames. But this comes with a tradeoff: A
-    // video file that uses a lot of keyframes puts more strain on
-    // the CPU that's playing it back, because more image reconstruction
-    // has to happen. While this is not a problem for normal playback
-    // in a video player this can negatively impact the editing
-    // experience when loading the video into video software like
-    // Premiere.
+    // We allow the user to set the number of keyframes they want
+    // per second of video footage. A higher number of keyframes
+    // usually means better quality (less compression) and makes
+    // video footage easier on the CPU when editing.
     //
-    // As we don’t know what users are going to do with video
-    // exported from Mechanic we opt for a manual density of
-    // keyframes of one keyframe per second of video. This ensures
-    // an acceptable editing performance of the video while not
-    // consuming as much file size as uncompressed (uncompressed
-    // simply means that all frames are keyframes) video.
+    // A higher density of keyframes will also mean that the video
+    // should use a higher bitrate. Because a keyframe takes more
+    // bits than a predicted frame. As bitrate is expressed in
+    // bits per second a higher keyframe density overall leaves
+    // less bits per keyframe. So this really is a power-user-setting
+    // for people who know their way around video codecs.
+    //
+    // By default the keyFramesPerSecond are set to null, which
+    // will leave the decision on where to include keyframes to
+    // the codec. This is a good default in 99% of all cases.
+    const enforceKeyFrame =
+      this.options.keyFramesPerSecond !== null
+        ? this.frameCounter === 0 ||
+        this.frameCounter %
+        (this.options.frameRate / this.options.keyFramesPerSecond) ===
+        0
+        : false;
+
     this.encoder.encode(frame, {
-      keyFrame:
-        this.frameCounter === 0 ||
-        this.frameCounter % this.options.frameRate === 0
+      keyFrame: enforceKeyFrame
     });
 
     frame.close();
