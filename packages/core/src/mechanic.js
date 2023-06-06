@@ -1,6 +1,7 @@
 import seedrandom from "seedrandom";
 import { download } from "./download.js";
 import { VideoWriter } from "./video-writer.js";
+import { ZipWriter } from "./zip-writer.js";
 import {
   isSVG,
   isCanvas,
@@ -96,6 +97,25 @@ export class Mechanic {
   }
 
   /**
+   * Returns the correct video writer to use based on the settings of the
+   * current design function.
+   */
+  getVideoWriter() {
+    if (this.settings.videoFormat === "frames") {
+      return new ZipWriter();
+    } else {
+      return new VideoWriter({
+        frameRate: 60,
+
+        // Video specific settings a user can provide
+        format: this.settings.videoFormat ?? "webm",
+        bitRate: this.settings.videoBitrate || null,
+        keyFramesPerSecond: this.settings.videoKeyFramesPerSecond || null
+      });
+    }
+  }
+
+  /**
    * Register a frame for an animated design function
    * @param {SVGElement|HTMLCanvasElement} el - Element with the current drawing state of the design function
    * @param {Object} extras  - object containing extra elements needed by some engines
@@ -122,14 +142,7 @@ export class Mechanic {
     if (!this.exportInit) {
       this.exportInit = true;
       this.serializer = new XMLSerializer();
-      this.videoWriter = new VideoWriter({
-        frameRate: 60,
-
-        // Video specific settings a user can provide
-        format: this.settings.videoFormat ?? "webm",
-        bitRate: this.settings.videoBitrate || null,
-        keyFramesPerSecond: this.settings.videoKeyFramesPerSecond || null,
-      });
+      this.videoWriter = this.getVideoWriter();
     }
 
     if (isSVG(el)) {
@@ -253,6 +266,8 @@ export class Mechanic {
       download(this.videoData, `${name}.mp4`, "video/mp4");
     } else if (this.videoData && this.videoData.type === "video/webm") {
       download(this.videoData, `${name}.webm`, "video/webm");
+    } else if (this.videoData && this.videoData.type === "application/zip") {
+      download(this.videoData, `${name}.zip`, "application/zip");
     }
   }
 
