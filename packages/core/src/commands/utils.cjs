@@ -141,29 +141,12 @@ const setCustomInterrupt = (callback, tempDirObjs = []) => {
   });
 };
 
-const writeToFile = (data, mimeType, file) => {
-  let buffer;
-
-  switch (mimeType) {
-    case "image/png": {
-      buffer = Buffer.from(data.split(",").pop(), "base64");
-      break;
-    }
-    case "video/webm": {
-      buffer = Buffer.from(data, "binary");
-      break;
-    }
-    case "image/svg+xml": {
-      buffer = decodeURIComponent(data.split("charset=utf-8,").pop());
-      break;
-    }
-    default: {
-      throw new Error(`Unknown mime type (${mimeType}).`);
-    }
-  }
-
-  fs.writeFileSync(file, buffer);
+const writeToFile = (file, data) => {
+  fs.writeFileSync(file, data);
 };
+
+const formatTimestamp = ms =>
+  `${Math.round((ms / 1000) * 100 + Number.EPSILON) / 100}s`;
 
 const greet = () => {
   console.log(`${mechanic}
@@ -187,6 +170,7 @@ module.exports = {
   generateFuncTempScripts,
   setCustomInterrupt,
   writeToFile,
+  formatTimestamp,
   greet,
   goodbye
 };

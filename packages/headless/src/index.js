@@ -4,7 +4,8 @@ import puppeteer from "puppeteer";
 
 import { createServer, shutdownServer } from "./server.js";
 import { assert } from "./util/fns.js";
-import { executeDesignFunction, renderInClient } from "./client.js";
+import { createBufferFromRender } from "./util/data.js";
+import { renderInClient } from "./client.js";
 
 export const render = async ({
   distDir = "/",
@@ -47,10 +48,11 @@ export const render = async ({
       // Finalize
       shutdownServer(server);
       await browser.close();
+      const buffer = createBufferFromRender(data, mimeType);
       const timeEnd = performance.now();
 
       // Send the result back to the caller
-      callback({ data, name, mimeType, duration: timeEnd - timeStart });
+      callback({ data: buffer, name, mimeType, duration: timeEnd - timeStart });
     }
   );
 

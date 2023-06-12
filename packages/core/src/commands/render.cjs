@@ -2,15 +2,20 @@ const path = require("path");
 const fs = require("fs");
 const headless = require("@mechanic-design/headless");
 
-const { getConfig, writeToFile } = require("./utils.cjs");
-
-const buildCommand = require("./build.cjs");
+const { formatTimestamp, getConfig, writeToFile } = require("./utils.cjs");
 
 const {
   spinners: { mechanicSpinner: spinner },
-  colors: { success, fail }
+  colors: { success }
 } = require("@mechanic-design/utils");
 
+/**
+ * Removes all expected parameters from the argv object.
+ * Returns remaining parameters, so they can be passed as
+ * inputs to the design function.
+ * @param {object} argv
+ * @return object
+ */
 const getParameters = argv => {
   const IGNORE_LIST = [
     "_",
@@ -37,7 +42,7 @@ const getParameters = argv => {
 
 const command = async argv => {
   const { functionName } = argv;
-  spinner.start("Checking if mechanic is already built.");
+  spinner.start("Setting up");
 
   const { config, configPath } = await getConfig(argv.configPath);
 
@@ -55,24 +60,13 @@ const command = async argv => {
   );
 
   if (fs.existsSync(distDir)) {
-    spinner.succeed("Already built, rendering now...");
+    spinner.succeed();
   } else {
-    spinner.fail("No build directory found. Building now, hold on...");
-    await new Promise(res => {
-      buildCommand(argv, res);
-    });
-  }
-
-  spinner.start(`Locating design function ${functionName}`);
-
-  if (!fs.existsSync(path.join(distDir, `${functionName}.html`))) {
-    spinner.fail(`No design function was found for ${functionName}`);
+    spinner.fail(
+      "No build directory found. Make sure to run mechanic build first."
+    );
     return;
   }
-
-  spinner.succeed();
-
-  console.log();
 
   spinner.start("Rendering");
 
@@ -80,11 +74,14 @@ const command = async argv => {
     distDir,
     functionName,
     parameters: getParameters(argv),
-    callback: ({ data, mimeType, duration }) => {
+    callback: ({ data, duration }) => {
       try {
         const outPath = path.join(process.cwd(), argv.outputFile);
-        writeToFile(data, mimeType, outPath);
-        spinner.succeed(`Rendered to ${outPath} in ${duration}ms`);
+        writeToFile(outPath, data);
+        spinner.succeed(`Rendered`);
+        console.log();
+        console.log(`Output\t${success(outPath)}`); 
+        console.log(`Took\t${success(formatTimestamp(duration))}`);
       } catch (e) {
         spinner.fail(`Error rendering.`);
         console.log(e);

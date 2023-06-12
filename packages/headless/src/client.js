@@ -2,7 +2,7 @@
  * Prepares the function to be run in the headless browser
  * context to start the mechanic rendering.
  */
-export const executeDesignFunction = () => {
+const executeDesignFunction = () => {
   const runtime = window.run("df", window.parameters, { isPreview: false });
 
   runtime.on("download", ({ data, name, mimeType }) => {
