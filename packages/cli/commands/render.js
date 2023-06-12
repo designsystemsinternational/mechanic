@@ -19,10 +19,9 @@ module.exports = getCommandHandler => ({
         distDir: {
           type: "string",
           description: "Custom build directory"
-        }
+        },
       })
       .default("configPath", path.normalize("./mechanic.config.js"))
       .default("distDir", path.normalize("./dist")),
   handler: getCommandHandler("render")
 });
-

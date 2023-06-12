@@ -1,11 +1,9 @@
 /**
  * Prepares the function to be run in the headless browser
  * context to start the mechanic rendering.
- *
- * @param {string} functionName
  */
 export const executeDesignFunction = () => {
-  const runtime = window.run('df', {}, { isPreview: false });
+  const runtime = window.run("df", window.parameters, { isPreview: false });
 
   runtime.on("download", ({ data, name, mimeType }) => {
     const isBlob = data instanceof Blob;
@@ -26,4 +24,9 @@ export const executeDesignFunction = () => {
       handleDownload({ data, name, mimeType });
     }
   });
+};
+
+export const renderInClient = async ({ page, parameters }) => {
+  await page.evaluate(`window.parameters = ${JSON.stringify(parameters)};`);
+  await page.evaluate(executeDesignFunction);
 };

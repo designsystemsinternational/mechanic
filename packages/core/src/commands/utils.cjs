@@ -143,6 +143,7 @@ const setCustomInterrupt = (callback, tempDirObjs = []) => {
 
 const writeToFile = (data, mimeType, file) => {
   let buffer;
+
   switch (mimeType) {
     case "image/png": {
       buffer = Buffer.from(data.split(",").pop(), "base64");

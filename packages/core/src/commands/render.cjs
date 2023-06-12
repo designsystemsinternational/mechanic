@@ -11,6 +11,30 @@ const {
   colors: { success, fail }
 } = require("@mechanic-design/utils");
 
+const getParameters = argv => {
+  const IGNORE_LIST = [
+    "_",
+    "configPath",
+    "config-path",
+    "distDir",
+    "dist-dir",
+    "$0",
+    "functionName",
+    "function-name",
+    "outputFile",
+    "output-file",
+    "directory"
+  ];
+
+  let obj = {};
+
+  for (const key of Object.keys(argv)) {
+    if (!IGNORE_LIST.includes(key)) obj[key] = argv[key];
+  }
+
+  return obj;
+};
+
 const command = async argv => {
   const { functionName } = argv;
   spinner.start("Checking if mechanic is already built.");
@@ -50,15 +74,21 @@ const command = async argv => {
 
   console.log();
 
-  spinner.start('Rendering');
+  spinner.start("Rendering");
 
   await headless.render({
     distDir,
     functionName,
+    parameters: getParameters(argv),
     callback: ({ data, mimeType, duration }) => {
-      const outPath = path.join(process.cwd(), argv.outputFile);
-      writeToFile(data, mimeType, outPath);
-      spinner.succeed(`Rendered to ${outPath} in ${duration}ms`)
+      try {
+        const outPath = path.join(process.cwd(), argv.outputFile);
+        writeToFile(data, mimeType, outPath);
+        spinner.succeed(`Rendered to ${outPath} in ${duration}ms`);
+      } catch (e) {
+        spinner.fail(`Error rendering.`);
+        console.log(e);
+      }
     }
   });
 };

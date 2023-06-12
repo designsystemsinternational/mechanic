@@ -4,13 +4,12 @@ import puppeteer from "puppeteer";
 
 import { createServer, shutdownServer } from "./server.js";
 import { assert } from "./util/fns.js";
-import { executeDesignFunction } from "./client.js";
+import { executeDesignFunction, renderInClient } from "./client.js";
 
 export const render = async ({
   distDir = "/",
   functionName,
-  // This will have the params to send to the design function
-  parameters,
+  parameters = { text: "Lucas Nolte" },
   headlessMode,
   callback
 }) => {
@@ -55,5 +54,8 @@ export const render = async ({
     }
   );
 
-  await page.evaluate(executeDesignFunction);
+  await renderInClient({
+    page,
+    parameters,
+  })
 };
