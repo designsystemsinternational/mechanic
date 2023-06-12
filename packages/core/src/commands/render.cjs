@@ -74,18 +74,21 @@ const command = async argv => {
     distDir,
     functionName,
     parameters: getParameters(argv),
-    callback: ({ data, duration }) => {
+    done: ({ data, duration }) => {
       try {
         const outPath = path.join(process.cwd(), argv.outputFile);
         writeToFile(outPath, data);
         spinner.succeed(`Rendered`);
         console.log();
-        console.log(`Output\t${success(outPath)}`); 
+        console.log(`Output\t${success(outPath)}`);
         console.log(`Took\t${success(formatTimestamp(duration))}`);
       } catch (e) {
         spinner.fail(`Error rendering.`);
         console.log(e);
       }
+    },
+    hooks: {
+      frame: (count) => spinner.text = `Rendering frame ${count}`,
     }
   });
 };

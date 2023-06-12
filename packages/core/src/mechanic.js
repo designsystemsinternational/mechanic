@@ -200,6 +200,7 @@ export class Mechanic {
       this.videoWriter.addFrame(frame);
     }
     this.frameCalled = true;
+    this.emit("afterHandleFrame");
   }
 
   /**
@@ -273,6 +274,7 @@ export class Mechanic {
       this.videoData = await this.videoWriter.complete();
     }
     this.isDone = true;
+    this.emit("afterHandleDone");
   }
 
   /**

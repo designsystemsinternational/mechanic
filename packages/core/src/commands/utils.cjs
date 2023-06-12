@@ -96,6 +96,7 @@ const generateFuncTempScripts = functionsPath => {
     );
     designFunctions[name]["temp"] = tempScriptName;
   });
+
   return [designFunctions, tempDirObj];
 };
 
