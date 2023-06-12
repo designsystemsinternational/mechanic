@@ -66,8 +66,8 @@ const inputsPath = path.resolve(
 const getFuncScriptContent = designFunctionPath => `
 import { inputsDefs, inputErrors } from "${inputsPath}";
 import * as designFunction from "${designFunctionPath
-  .split(path.sep)
-  .join("/")}";
+    .split(path.sep)
+    .join("/")}";
 import { setUp } from "${setUpFunctionPath.split(path.sep).join("/")}";
 setUp(inputsDefs, designFunction, inputErrors)
 if (module.hot) {
@@ -133,12 +133,35 @@ const generateInputScript = inputsPath => {
 };
 
 const setCustomInterrupt = (callback, tempDirObjs = []) => {
-  process.on("SIGINT", function () {
+  process.on("SIGINT", function() {
     if (tempDirObjs.length > 0)
       tempDirObjs.forEach(obj => obj.removeCallback());
     callback();
     process.exit();
   });
+};
+
+const writeToFile = (data, mimeType, file) => {
+  let buffer;
+  switch (mimeType) {
+    case "image/png": {
+      buffer = Buffer.from(data.split(",").pop(), "base64");
+      break;
+    }
+    case "video/webm": {
+      buffer = Buffer.from(data, "binary");
+      break;
+    }
+    case "image/svg+xml": {
+      buffer = decodeURIComponent(data.split("charset=utf-8,").pop());
+      break;
+    }
+    default: {
+      throw new Error(`Unknown mime type (${mimeType}).`);
+    }
+  }
+
+  fs.writeFileSync(file, buffer);
 };
 
 const greet = () => {
@@ -162,6 +185,7 @@ module.exports = {
   generateInputScript,
   generateFuncTempScripts,
   setCustomInterrupt,
+  writeToFile,
   greet,
   goodbye
 };

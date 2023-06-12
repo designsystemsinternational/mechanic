@@ -10,6 +10,7 @@ const newCommand = require("./new");
 const getDevCommand = require("./dev");
 const getBuildCommand = require("./build");
 const getServeCommand = require("./serve");
+const getRenderCommand = require("./render");
 
 const buildLocalCommands = (cli, isMechanicProject) => {
   const directory = path.resolve(".");
@@ -18,12 +19,12 @@ const buildLocalCommands = (cli, isMechanicProject) => {
     if (!isMechanicProject) {
       console.log(
         fail("Not mechanic project: ") +
-          `mechanic ${command} can only be run inside mechanic project.`
+        `mechanic ${command} can only be run inside mechanic project.`
       );
       console.log(`Current directory: ${directory}`);
       console.log(
         `Either the current working directory does not contain a valid package.json or ` +
-          `'${mechanic}' is not specified as a dependency \n`
+        `'${mechanic}' is not specified as a dependency \n`
       );
 
       cli.showHelp();
@@ -73,7 +74,7 @@ const buildLocalCommands = (cli, isMechanicProject) => {
 
   const getCommandHandler = (commandName, handler) => {
     return argv => {
-      const localCmd = resolveLocalCommand(commandName) || (() => {});
+      const localCmd = resolveLocalCommand(commandName) || (() => { });
       const args = { ...argv, directory };
       return handler ? handler(args, localCmd) : localCmd(args);
     };
@@ -82,7 +83,8 @@ const buildLocalCommands = (cli, isMechanicProject) => {
   cli
     .command(getDevCommand(getCommandHandler))
     .command(getBuildCommand(getCommandHandler))
-    .command(getServeCommand(getCommandHandler));
+    .command(getServeCommand(getCommandHandler))
+    .command(getRenderCommand(getCommandHandler));
 };
 
 module.exports = () => {
