@@ -1,5 +1,4 @@
 import seedrandom from "seedrandom";
-import { download } from "./download.js";
 import { WebMWriter } from "./webm-writer.js";
 import {
   isSVG,
@@ -80,6 +79,56 @@ export class Mechanic {
     this.values = values;
     this.functionState = lastRun?.functionState ?? {};
     this.exportType = exportType;
+    this.events = {};
+  }
+
+  /**
+   * Registers an event listener with the runtime.
+   * @param {string} event
+   * @param {function} listener
+   */
+  on(event, listener) {
+    if (!this.events[event]) {
+      this.events[event] = [];
+    }
+
+    this.events[event].push(listener);
+  }
+
+  /**
+   * Unsubscribes an event listener from the runtime.
+   * @param {string} event
+   * @param {function} listener
+   */
+  off(event, listener) {
+    let idx;
+
+    if (typeof this.events[event] === "object") {
+      idx = this.events[event].indexOf(listener);
+
+      if (idx > -1) {
+        this.events[event].splice(idx, 1);
+      }
+    }
+  }
+
+  /**
+   * Emits an event to all subscribed listeners.
+   * @param {string} event
+   * @perem {Array<any>} args
+   * @private
+   */
+  emit(event, ...args) {
+    let i, listeners, length;
+
+    if (typeof this.events[event] === "object") {
+      listeners = this.events[event].slice();
+      length = listeners.length;
+
+      for (i = 0; i < length; i++) {
+        listeners[i].apply(this, args);
+      }
+    }
   }
 
   /**
@@ -240,13 +289,29 @@ export class Mechanic {
       throw "The download function can only be called after the done() function has finished";
     }
     if (this.svgData) {
-      download(this.svgData, `${name}.svg`, "image/svg+xml");
+      this.emit("download", {
+        data: this.svgData,
+        name: `${name}.svg`,
+        mimeType: "image/svg+xml"
+      });
     } else if (this.canvasData) {
-      download(this.canvasData, `${name}.png`, "image/png");
+      this.emit("download", {
+        data: this.canvasData,
+        name: `${name}.png`,
+        mimeType: "image/png"
+      });
     } else if (this.htmlData) {
-      download(this.htmlData, `${name}.png`, "image/png");
+      this.emit("download", {
+        data: this.htmlData,
+        name: `${name}.png`,
+        mimeType: "image/png"
+      });
     } else if (this.videoData) {
-      download(this.videoData, `${name}.webm`, "video/webm");
+      this.emit("download", {
+        data: this.videoData,
+        name: `${name}.webm`,
+        mimeType: "video/webm"
+      });
     }
   }
 
@@ -262,10 +327,10 @@ export class Mechanic {
     if (!this.functionState) {
       throw "The downloadState if a state has been set.";
     }
-    download(
-      JSON.stringify(this.functionState),
-      `${name}.json`,
-      "application/json"
-    );
+    this.emit("download", {
+      data: JSON.stringify(this.functionState),
+      name: `${name}.json`,
+      mimeType: "application/json"
+    });
   }
 }
