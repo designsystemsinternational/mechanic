@@ -1,3 +1,13 @@
+/**
+ * Turns the result returned by headless mechanic into
+ * a buffer (either of text or binary data) that can be
+ * processed further server-side (e.g. send as a HTTP response
+ * or written to file)
+ *
+ * @param {any} data
+ * @param {string} mimeType
+ * @returns {Buffer}
+ */
 export const createBufferFromRender = (data, mimeType) => {
   let buffer; 
 

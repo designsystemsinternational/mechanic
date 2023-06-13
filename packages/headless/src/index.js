@@ -8,8 +8,21 @@ import { assert } from "./util/fns.js";
 import { createBufferFromRender } from "./util/data.js";
 import { renderInClient } from "./client.js";
 
+/**
+ * Headlessly renders a mechanic design function, by starting a static
+ * file express server on a built mechanic project, pointing puppeteer
+ * to that server and dispatching a render inside the headless browser.
+ *
+ * The result of the render will be passed along to a callback given
+ * from the caller. This function makes no assumptions where it's run
+ * (i.e. CLI or as an API endpoint). It expects to be passed the path
+ * to a built mechanic project and just takes care of orchestrating the
+ * headless render process.
+ *
+ * @param {object} options
+ */
 export const render = async ({
-  distDir = "/",
+  distDir,
   functionName,
   parameters,
   headlessMode,
@@ -20,6 +33,11 @@ export const render = async ({
   const fnUrl = `${functionName}.html`;
   const fnPath = path.join(distDir, fnUrl);
   const chromiumPath = findChrome();
+
+  assert(
+    distDir && fs.existsSync(distDir),
+    `The provided dist dir does not exist (looked at ${distDir})`
+  );
 
   assert(
     chromiumPath != null && chromiumPath !== "",
