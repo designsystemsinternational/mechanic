@@ -7,7 +7,7 @@ import {
   getRandomInt,
   getRandomSign,
   getRandomColor,
-  brightnessByColor,
+  brightnessByColor
 } from "./utils";
 
 import "./styles.css";
@@ -27,7 +27,7 @@ export const handler = ({ inputs, mechanic }) => {
     title,
     image,
     filterOpacity,
-    titleSizeAdjust,
+    titleSizeAdjust
   } = inputs;
 
   const canvasRatio = width / height;
@@ -101,12 +101,12 @@ export const handler = ({ inputs, mechanic }) => {
     canvasRatio >= 0.75
       ? twoWidth + gutterRatio
       : twoWidth + gutterRatio * 0.5 + borderRatio,
-    threeWidth + borderRatio + borderRatio * 0.5,
+    threeWidth + borderRatio + borderRatio * 0.5
   ];
   const chooseX = [
     0,
     borderRatio + gutterRatio * 0.5 + oneWidth,
-    borderRatio + gutterRatio * 1.5 + oneWidth + twoWidth,
+    borderRatio + gutterRatio * 1.5 + oneWidth + twoWidth
   ];
   const cropWidth = chooseW[imageColumn - 1];
   const cropX = chooseX[imageColumn - 1];
@@ -134,7 +134,7 @@ export const handler = ({ inputs, mechanic }) => {
     fontFamily: "Object Sans",
     whiteSpace: "pre-wrap",
     overflowWrap: "anywhere",
-    hyphens: "auto",
+    hyphens: "auto"
   };
 
   const textStyle = {
@@ -143,7 +143,7 @@ export const handler = ({ inputs, mechanic }) => {
     fontFamily: "Object Sans",
     whiteSpace: "pre-wrap",
     overflowWrap: "anywhere",
-    hyphens: "auto",
+    hyphens: "auto"
   };
 
   const href = useImageHref(image);
@@ -249,11 +249,11 @@ export const handler = ({ inputs, mechanic }) => {
 export const inputs = {
   width: {
     type: "number",
-    default: 1000,
+    default: 1000
   },
   height: {
     type: "number",
-    default: 1000,
+    default: 1000
   },
   randomRatio: {
     type: "groupToggle",
@@ -266,7 +266,7 @@ export const inputs = {
         default: 2,
         min: 1,
         max: 10,
-        step: 1,
+        step: 1
       },
       columnTwoRatio: {
         type: "number",
@@ -274,7 +274,7 @@ export const inputs = {
         default: 2,
         min: 1,
         max: 10,
-        step: 1,
+        step: 1
       },
       columnThreeRatio: {
         type: "number",
@@ -282,7 +282,7 @@ export const inputs = {
         default: 1,
         min: 1,
         max: 10,
-        step: 1,
+        step: 1
       },
       border: {
         type: "number",
@@ -290,7 +290,7 @@ export const inputs = {
         default: 15,
         min: 1,
         max: 100,
-        step: 1,
+        step: 1
       },
       gutter: {
         type: "number",
@@ -298,7 +298,7 @@ export const inputs = {
         default: 15,
         min: 1,
         max: 100,
-        step: 1,
+        step: 1
       },
       imageColumn: {
         type: "number",
@@ -306,9 +306,9 @@ export const inputs = {
         default: 1,
         min: 1,
         max: 3,
-        step: 1,
-      },
-    },
+        step: 1
+      }
+    }
   },
   randomColor: {
     type: "groupToggle",
@@ -318,23 +318,23 @@ export const inputs = {
       backgroundColor: {
         type: "color",
         model: "hex",
-        default: "#000000",
+        default: "#000000"
       },
       textColor: {
         type: "color",
         model: "hex",
-        default: "#ffffff",
+        default: "#ffffff"
       },
       titleColor: {
         type: "color",
         model: "hex",
-        default: "#E94825",
-      },
-    },
+        default: "#E94825"
+      }
+    }
   },
   image: {
     type: "image",
-    multiple: false,
+    multiple: false
   },
   filterOpacity: {
     type: "number",
@@ -342,11 +342,11 @@ export const inputs = {
     min: 0,
     max: 100,
     step: 1,
-    slider: true,
+    slider: true
   },
   textSize: {
     type: "number",
-    default: 20,
+    default: 20
   },
   titleSizeAdjust: {
     type: "number",
@@ -354,58 +354,58 @@ export const inputs = {
     default: 0,
     min: -5,
     max: 15,
-    step: 1,
+    step: 1
   },
   title: {
     type: "text",
-    default: "Mechanic",
+    default: "Mechanic"
   },
   textOne: {
     type: "text",
-    default: "MUNUS SHIH",
+    default: "MUNUS SHIH"
   },
   textTwo: {
     type: "text",
-    default: "MECHANIC.DESIGN INFO@MECHANIC.DESIGN",
+    default: "MECHANIC.DESIGN INFO@MECHANIC.DESIGN"
   },
   textThree: {
     type: "text",
-    default: "@MECHANIC 781 12TH ST, 8A, NEW YORK, NY 10003",
+    default: "@MECHANIC 781 12TH ST, 8A, NEW YORK, NY 10003"
   },
   textFour: {
     type: "text",
-    default: "MUNUS@MECHANIC.DESIGN",
+    default: "MUNUS@MECHANIC.DESIGN"
   },
   grid: {
     type: "boolean",
-    default: false,
-  },
+    default: false
+  }
 };
 
 export const presets = {
   "Instagram Story": {
     width: 1080,
-    height: 1920,
+    height: 1920
   },
   "Instagram Post": {
     width: 1080,
-    height: 1080,
+    height: 1080
   },
   Poster: {
     width: 812,
-    height: 1148,
+    height: 1148
   },
   Banner: {
     width: 1640,
-    height: 624,
+    height: 624
   },
   Ticket: {
     width: 394,
-    height: 1126,
-  },
+    height: 1126
+  }
 };
 
 export const settings = {
   engine: require("@mechanic-design/engine-react"),
-  showMultipleExports: true,
+  showMultipleExports: true
 };

@@ -10,73 +10,54 @@
  * or check ./assets/EULA-PangramPangram-FreeForPersonalUse-MAY2021.pdf
  * Alex Slobzheninov https://www.behance.net/slobzheninov
  * ---------------------------------------------------------------------------
- */
+*/
 
 @font-face {
-    font-family: "Futura";
-    src: url("./assets/FuturaStd-Bold.otf") format("opentype");
-}
-
-@font-face {
-    font-family: "Object Sans";
-    src: url("./assets/PPObjectSans-Regular.otf") format("opentype");
+  font-family: "Object Sans";
+  src: url("./assets/PPObjectSans-Regular.otf") format("opentype");
 }
 
 @font-face {
-    font-family: "Object Sans Italic";
-    src: url("./assets/PPObjectSans-Slanted.otf") format("opentype");
-    font-style: italic;
+  font-family: "Object Sans Italic";
+  src: url("./assets/PPObjectSans-Slanted.otf") format("opentype");
+  font-style: italic;
 }
 
 @font-face {
-    font-family: "Object Sans Heavy";
-    src: url("./assets/PPObjectSans-Heavy.otf") format("opentype");
-    font-weight: bold;
+  font-family: "Object Sans Heavy";
+  src: url("./assets/PPObjectSans-Heavy.otf") format("opentype");
+  font-weight: bold;
 }
 
 @font-face {
-    font-family: "Object Sans Slanted";
-    src: url("./assets/PPObjectSans-HeavySlanted.otf") format("opentype");
-    font-weight: bold;
-    font-style: italic;
+  font-family: "Object Sans Slanted";
+  src: url("./assets/PPObjectSans-HeavySlanted.otf") format("opentype");
+  font-weight: bold;
+  font-style: italic;
 }
 
-*{
-    padding: 0;
-    margin: 0;
-    box-sizing: border-box;
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
 }
 
-.gutter{
-    background:white;
-}
-
-.darkGrid {
-    outline: #000 solid 1px;
-    outline-offset: -1px;
-}
-/* 
-.lightGrid {
-    outline: #fff solid 1px;
-    outline-offset: -1px;
-} */
-
-.column{
-    height: 100%;
-    position: relative;
-    padding: 10px;
+.column {
+  height: 100%;
+  position: relative;
+  padding: 10px;
 }
 
 .top {
-    position: absolute;
-    top: 0;
-    padding-top: 10px;
-    padding-right: 10px;
+  position: absolute;
+  top: 0;
+  padding-top: 10px;
+  padding-right: 10px;
 }
 
 .bottom {
-    position: absolute;
-    bottom: 0;
-    padding-bottom: 10px;
-    padding-right: 10px;
+  position: absolute;
+  bottom: 0;
+  padding-bottom: 10px;
+  padding-right: 10px;
 }

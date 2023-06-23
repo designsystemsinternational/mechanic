@@ -3,31 +3,31 @@ import {
   BooleanInput,
   NumberInput,
   OptionInput,
-  ColorInput,
+  ColorInput
 } from "@mechanic-design/ui-components";
 
 import * as css from "./style.module.css";
 
 export const typeName = "groupToggle";
 
-export const initValue = (input) => ({
+export const initValue = input => ({
   show: input.default,
   ...Object.fromEntries(
     Object.entries(input.inputs).map(([name, input]) => [name, input.default])
-  ),
+  )
 });
 
 export const prepareValue = (value, input) => {
   const v =
     value === undefined ||
     value === null ||
-    !Object.keys(input.inputs).every((k) => value.hasOwnProperty(k))
+    !Object.keys(input.inputs).every(k => value.hasOwnProperty(k))
       ? initValue(input)
       : value;
   return v;
 };
 
-export const Input = (props) => {
+export const Input = props => {
   const { name, values, inputDef, onChange } = props;
   const { show, ...value } = values[name] ?? initValue(inputDef);
 

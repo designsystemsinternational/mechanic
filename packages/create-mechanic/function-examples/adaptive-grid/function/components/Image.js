@@ -11,7 +11,7 @@ export const Image = ({
   height,
   gutterRatio,
   filterOpacity,
-  gridColor,
+  gridColor
 }) => {
   const imageHref = image ? (href ? href : "") : defaultUrl;
 

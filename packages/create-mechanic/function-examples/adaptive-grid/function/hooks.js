@@ -10,7 +10,7 @@ export const usePotentialRandomValue = (
   return value.current;
 };
 
-export const useImageHref = (image) => {
+export const useImageHref = image => {
   const [href, setHref] = useState("");
 
   useEffect(() => {
