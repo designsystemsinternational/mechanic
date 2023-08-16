@@ -9,6 +9,38 @@ import { useLoadedOpentypeFont } from "../../utils/hooks";
 import { Block } from "../../utils/blocks-components";
 import { greys } from "../../utils/graphics";
 
+function shuffle(array) {
+  const newArray = [...array];
+  let currentIndex = newArray.length,
+    randomIndex;
+
+  // While there remain elements to shuffle.
+  while (currentIndex != 0) {
+    // Pick a remaining element.
+    randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex--;
+
+    // And swap it with the current element.
+    [newArray[currentIndex], newArray[randomIndex]] = [
+      newArray[randomIndex],
+      newArray[currentIndex]
+    ];
+  }
+
+  return newArray;
+}
+
+function chooseRandom(array, k) {
+  const options = [...array];
+  const choices = [];
+  for (let i = 0; i < k; i++) {
+    const elementIndex = Math.floor(Math.random() * options.length);
+    choices.push(options[elementIndex]);
+    options.splice(elementIndex, 1);
+  }
+  return choices;
+}
+
 export const handler = ({ inputs, mechanic }) => {
   const {
     width,
@@ -16,9 +48,12 @@ export const handler = ({ inputs, mechanic }) => {
     logoWidth,
     logoRatio,
     fontMode,
+    randomizeColors,
+    consistentSet,
     firstColor,
     secondColor,
-    thirdColor
+    thirdColor,
+    randomizeColorOrder
   } = inputs;
   const { done } = mechanic;
 
@@ -44,7 +79,9 @@ export const handler = ({ inputs, mechanic }) => {
 
   const blockConfigs = [];
   let position = { x: 0, y: 0 };
-  let colors = [greys[firstColor], greys[secondColor], greys[thirdColor]];
+  let colors = randomizeColors
+    ? chooseRandom(Object.values(greys), 3)
+    : [greys[firstColor], greys[secondColor], greys[thirdColor]];
   let brickOffset = 0;
 
   while (position.y < height) {
@@ -55,6 +92,8 @@ export const handler = ({ inputs, mechanic }) => {
     if (position.x + block.width < width) {
       position.x += block.width;
       brickOffset++;
+      if (!consistentSet) colors = chooseRandom(Object.values(greys), 3);
+      else if (randomizeColorOrder) colors = shuffle(colors);
     } else {
       position.x = position.x - width;
       position.y += block.height;
@@ -99,20 +138,36 @@ export const inputs = {
     min: 6,
     step: 1
   },
+  randomizeColors: {
+    type: "boolean",
+    default: true
+  },
+  consistentSet: {
+    type: "boolean",
+    default: false,
+    editable: inputs => inputs.randomizeColors === true
+  },
   firstColor: {
     type: "text",
     default: "grey1",
-    options: Object.keys(greys)
+    options: Object.keys(greys),
+    editable: inputs => inputs.randomizeColors === false
   },
   secondColor: {
     type: "text",
     default: "grey2",
-    options: Object.keys(greys)
+    options: Object.keys(greys),
+    editable: inputs => inputs.randomizeColors === false
   },
   thirdColor: {
     type: "text",
     default: "grey3",
-    options: Object.keys(greys)
+    options: Object.keys(greys),
+    editable: inputs => inputs.randomizeColors === false
+  },
+  randomizeColorOrder: {
+    type: "boolean",
+    default: true
   },
   fontMode: {
     type: "text",
