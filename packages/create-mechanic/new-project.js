@@ -63,7 +63,7 @@ const generateProjectTemplate = async (projectName, typeOfBaseUsed) => {
   // Copying content promises
   await Promise.all([
     // Copy array of files that get duplicated without change
-    ...["mechanic.config.js", "README.md"].map(filename =>
+    ...["mechanic.config.js", "README.md", "_gitignore"].map(filename =>
       fs.copyFile(
         path.join(projectTemplateDir, filename),
         path.join(directory, filename.replace(/^_/, "."))
@@ -88,6 +88,7 @@ const generateProjectTemplate = async (projectName, typeOfBaseUsed) => {
   ]);
 
   spinner.succeed(content.generateProjectSuccess(typeOfBaseUsed, projectName));
+  log();
   log(content.projectContents(path.dirname(directory)));
 };
 
@@ -110,6 +111,17 @@ const installDependencies = async (projectName, installingMethod) => {
   // Project directory
   const cwd = path.resolve(projectName);
 
+  // List out dependencies being installed
+  const packageJsonPath = path.join(cwd, "package.json");
+  const packageObj = JSON.parse(await fs.readFile(packageJsonPath, "utf8"));
+  log(content.installingDependenciesMessage);
+  for (const depType of ["devDependencies", "dependencies"]) {
+    for (const dep in packageObj[depType]) {
+      log(content.dependencyItem(dep));
+    }
+  }
+  log();
+
   try {
     spinner.start(content.installTry(installingMethod));
     // Install
@@ -126,6 +138,59 @@ const installDependencies = async (projectName, installingMethod) => {
   }
 };
 
+async function isInGitRepository(cwd) {
+  try {
+    await execa("git", ["rev-parse", "--is-inside-work-tree"], { cwd });
+    return true;
+  } catch (_) {}
+  return false;
+}
+
+async function isInMercurialRepository(cwd) {
+  try {
+    await execa("hg", ["--cwd", ".", "root"], { cwd });
+    return true;
+  } catch (_) {}
+  return false;
+}
+
+// Adaptation of https://github.com/vercel/next.js/blob/canary/packages/create-next-app/helpers/git.ts
+const tryGitInit = async projectName => {
+  // Project directory
+  const cwd = path.resolve(projectName);
+  let didInit = false;
+  try {
+    await execa("git", ["--version"], { cwd });
+    if (
+      (await isInGitRepository(cwd)) ||
+      (await isInMercurialRepository(cwd))
+    ) {
+      return false;
+    }
+
+    await execa("git", ["init"], { cwd });
+    didInit = true;
+
+    await execa("git", ["checkout", "-b", "main"], { cwd });
+
+    await execa("git", ["add", "-A"], { cwd });
+    await execa(
+      "git",
+      ["commit", "-m", "Initial commit from Create Mechanic"],
+      { cwd }
+    );
+
+    return true;
+  } catch (e) {
+    if (didInit) {
+      try {
+        fs.rmSync(path.join(cwd, ".git"));
+      } catch (_) {}
+    }
+    return false;
+  }
+};
+
 module.exports = {
   getProjectQuestion,
   confirmDFQuestion,
@@ -133,5 +198,6 @@ module.exports = {
   installationMethodQuestion,
   generateProjectTemplate,
   checkLockFile,
-  installDependencies
+  installDependencies,
+  tryGitInit
 };
