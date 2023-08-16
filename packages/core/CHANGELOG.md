@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## 2.0.0-beta.11 - 2023-08-16
+
 ### Added
 
 - Adds the setting to hide a design function from the mechanic UI app. This allows to iterate multiple functions and simply hide earlier versions, instead of moving everything to other locations. If a user sets `hideFunction` in their functions settings to true, they won't appear but will still be tracked for updates in HMR mode. It defaults to false.
