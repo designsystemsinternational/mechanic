@@ -4,12 +4,19 @@
     >
   </a>
 </p>
+<p align="center">Built with ❤️ by <br/><a href="https://designsystems.international/">
+  <img width="150" alt="logo" src="https://raw.githubusercontent.com/designsystemsinternational/mechanic/main/doc/dsi_logo.png">
+</a></p><br/><br/>
+
+
 
 [![npm version](https://img.shields.io/npm/v/@mechanic-design/core.svg?style=for-the-badge&color=201ed2&labelColor=ed4600)](https://www.npmjs.com/package/@mechanic-design/core) [![Documentation](https://img.shields.io/badge/docs-v2.0.0.beta.9-red.svg?style=for-the-badge&color=201ed2&labelColor=ed4600)](https://mechanic.design/) [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-red.svg?style=for-the-badge&color=201ed2&labelColor=ed4600)](https://github.com/designsystemsinternational/mechanic/pulls)
 
-[Mechanic](https://mechanic.design/) is a powerful design toolchain that helps forward-looking organizations move away from a manual design workflow by automating their design operations. Built with love by your friends at [Design Systems International](https://designsystems.international/).
+[Mechanic](https://mechanic.design/) is a powerful design toolchain that helps forward-looking organizations move away from a manual design workflow by automating their design operations. 
 
 **CURRENT STATUS**: `v1.2.0` is out now! Try it and tell us what you think! `v2.0.0-beta.9` is also out and we're testing it! Feel free to test it out too!
+
+
 
 ## Get Started
 
