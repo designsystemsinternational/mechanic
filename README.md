@@ -34,7 +34,7 @@ This will build a new base Mechanic project, with one **design function**! Follo
 
 ## Documentation
 
-Check the [docs site](https://mechanic.design/docs).
+Check out [v1.2.0 documentation](https://mechanic.design/docs/v1.2.0).
 
 ## Monorepo Content
 
