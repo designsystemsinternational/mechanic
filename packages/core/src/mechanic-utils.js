@@ -1,5 +1,6 @@
 import { optimize, extendDefaultPlugins } from "svgo/dist/svgo.browser.js";
 import { toPng, toCanvas } from "html-to-image";
+import { MechanicError } from "./mechanic-error.js";
 
 /**
  * Checks whether a DOM element is instance of SVGElement
@@ -179,6 +180,37 @@ const hashFromString = (str, len = Infinity) => {
   return hash.toString().substring(0, len);
 };
 
+/**
+ * Throws an error unless the predicate is true
+ *
+ * @param {boolean} predicate
+ */
+const assert = (predicate, message) => {
+  if (!predicate) throw new MechanicError(message);
+};
+
+/**
+ * Utility function to calculate an ideal bitrate for the video if
+ * the user didn't specify one. It aims at 0.3 bits per pixel, which
+ * sits at the higher end of bitrates youtube recommends for uploads.
+ *
+ * See: https://support.google.com/youtube/answer/1722171?hl=en#zippy=%2Cframe-rate%2Cbitrate
+ * See: http://www.silverjuke.net/public/misc/bitrate-calculator
+ *
+ * @param {number} width - width of the video in pixels
+ * @param {number} height - height of the video in pixels
+ * @param {number} framerate - frameRate of the video in fps
+ *
+ * @returns {number} bitrate in bits per second
+ */
+const calculateBitrate = (width, height, framerate) => {
+  const pixels = width * height;
+  const bitsPerPixel = 0.3;
+  return Math.floor(pixels * bitsPerPixel * framerate);
+};
+
+
+
 export {
   isSVG,
   isCanvas,
@@ -193,5 +225,7 @@ export {
   extractSvgSize,
   dataUrlToCanvas,
   getTimeStamp,
-  hashFromString
+  hashFromString,
+  assert,
+  calculateBitrate,
 };
