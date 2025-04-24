@@ -1,6 +1,6 @@
 {
   "dependencies": {
-    "@mechanic-design/engine-svg": "^2.0.0-beta.10",
+    "@mechanic-design/engine-svg": "^2.0.0-beta.11",
     "@svgdotjs/svg.js": "^3.1.2"
   }
 }

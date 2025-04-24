@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## 2.0.0-beta.11 - 2023-08-16
+
 ### Added
 
 - Added `frameRate` setting to mechanic design function
@@ -16,6 +18,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 - Deprecated destructuring `done()` and `frame()` from the `mechanic` object. The lifecycle callbacks are now passed into the design function handler directly now.
+
+### Fixed
+
+- Fixes bug that crushed mechanic on PC, because of a module string that wasn't appropriately made cross-os compatible.
 
 ## 2.0.0-beta.10 - 2023-02-10
 
