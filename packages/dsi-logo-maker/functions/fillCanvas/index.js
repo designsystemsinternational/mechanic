@@ -8,7 +8,7 @@ import {
 import { loadOpentypeFont } from "../../utils/opentype";
 import { drawBlock } from "../../utils/blocks-canvas";
 
-export const handler = async ({ inputs, mechanic }) => {
+export const handler = async ({ inputs, done, getCanvas }) => {
   const { width, height, logoWidth, logoRatio, fontMode } = inputs;
 
   const rows = 2;
@@ -41,16 +41,14 @@ export const handler = async ({ inputs, mechanic }) => {
     }
   }
 
-  const canvas = document.createElement("canvas");
-  canvas.width = width;
-  canvas.height = height;
-  const ctx = canvas.getContext("2d");
+  const { ctx } = getCanvas(width, height);
 
   ctx.save();
   ctx.clearRect(0, 0, width, height);
   blockConfigs.forEach(blockConfig => drawBlock(ctx, blockConfig));
   ctx.restore();
-  mechanic.done(canvas);
+
+  done();
 };
 
 export const inputs = {

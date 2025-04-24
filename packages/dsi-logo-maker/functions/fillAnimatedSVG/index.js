@@ -7,15 +7,14 @@ import {
   getIndexModule
 } from "../../utils/blocks";
 import { Unit } from "../../utils/blocks-components";
-import { useDrawLoop, useLoadedOpentypeFont } from "../../utils/hooks";
+import { useLoadedOpentypeFont } from "../../utils/hooks";
 
-export const handler = ({ inputs, mechanic }) => {
+export const handler = ({ inputs, frame, done, useDrawLoop }) => {
   const { width, height, logoWidth, logoRatio, duration, fontMode } = inputs;
-  const { frame, done } = mechanic;
 
   const [state, setState] = useState("loading");
   const font = useLoadedOpentypeFont(fontMode);
-  const runtime = useDrawLoop(state === "playing", duration);
+  const { timestamp } = useDrawLoop(state === "playing");
 
   const rows = 2;
   const cols = 13;
@@ -73,14 +72,14 @@ export const handler = ({ inputs, mechanic }) => {
 
   useEffect(() => {
     if (state === "playing") {
-      if (runtime < duration) {
+      if (timestamp < duration) {
         frame();
       } else {
         setState("stopped");
         done();
       }
     }
-  }, [runtime, state, setState]);
+  }, [timestamp, state, setState]);
 
   const { blockConfigs } = blockParams;
   return (
@@ -94,7 +93,7 @@ export const handler = ({ inputs, mechanic }) => {
             blockIndex={blockIndex}
             colors={colors}
             animation={animation}
-            runtime={runtime}
+            runtime={timestamp}
           ></Unit>
         ))}
     </svg>
@@ -127,9 +126,10 @@ export const inputs = {
   },
   duration: {
     type: "number",
-    default: 5000,
-    step: 500,
-    min: 1000
+    default: 3,
+    step: 0.1,
+    min: 1,
+    label: "Duration in seconds"
   },
   fontMode: {
     type: "text",

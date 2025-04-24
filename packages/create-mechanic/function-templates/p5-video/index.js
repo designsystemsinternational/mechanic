@@ -1,4 +1,4 @@
-export const handler = ({ inputs, mechanic, sketch }) => {
+export const handler = ({ inputs, frame, done, sketch }) => {
   const { width, height, text, color1, color2, radiusPercentage, turns } =
     inputs;
 
@@ -31,10 +31,10 @@ export const handler = ({ inputs, mechanic, sketch }) => {
     sketch.text(text, 0, height / 2 - height / 20);
 
     if (angle < turns * 2 * Math.PI) {
-      mechanic.frame();
+      frame();
       angle += (2 * Math.PI) / 100;
     } else {
-      mechanic.done();
+      done();
     }
   };
 };

@@ -8,7 +8,7 @@ import {
 import { useLoadedOpentypeFont } from "../../utils/hooks";
 import { Block } from "../../utils/blocks-components";
 
-export const handler = ({ inputs, mechanic }) => {
+export const handler = ({ inputs, done }) => {
   const {
     width,
     ratio,
@@ -20,8 +20,6 @@ export const handler = ({ inputs, mechanic }) => {
     offset,
     image
   } = inputs;
-  const { done } = mechanic;
-
   const [href, setHref] = useState("");
 
   const words = text.split(" ").map(s => s.toUpperCase());
