@@ -37,7 +37,8 @@ export const run = (functionName, func, values, config) => {
           state: mechanic.functionState,
           setState: onSetState
         },
-        sketch
+        sketch,
+        isPreview
       }),
     root
   );
