@@ -72,7 +72,12 @@ export const SideBar = ({
     boundingClient: mainRef.current.getBoundingClientRect(),
     scale: scale && canScale && scaleToFit,
     randomSeed: random,
-    exportType: exportType
+    exportType: exportType,
+    eventListeners: {
+      startDownload: () => {
+        setIsExporting(false);
+      }
+    }
   });
 
   const previewHandler = async () => {
@@ -80,19 +85,19 @@ export const SideBar = ({
     setLastRun(lastRun =>
       run
         ? run(
-          name,
-          values,
-          getRunConfig(lastRun, true, seedHistory.current, true)
-        )
+            name,
+            values,
+            getRunConfig(lastRun, true, seedHistory.current, true)
+          )
         : null
     );
   };
 
   const preview = debounceInputs
     ? useDebouncedCallback(
-      previewHandler,
-      debounceDelay || DEFAULT_PREVIEW_DEBOUNCE_TIMEOUT
-    )
+        previewHandler,
+        debounceDelay || DEFAULT_PREVIEW_DEBOUNCE_TIMEOUT
+      )
     : previewHandler;
 
   const handleExport = async type => {
@@ -101,25 +106,13 @@ export const SideBar = ({
     setLastRun(lastRun =>
       run
         ? run(
-          name,
-          values,
-          getRunConfig(lastRun, false, seedHistory.current, false, type)
-        )
+            name,
+            values,
+            getRunConfig(lastRun, false, seedHistory.current, false, type)
+          )
         : null
     );
   };
-
-  useEffect(() => {
-    const finishExport = () => setIsExporting(false);
-
-    if (lastRun === null) return;
-
-    lastRun.on?.("startDownload", finishExport);
-
-    return () => {
-      lastRun.off?.("startDownload", finishExport);
-    };
-  }, [lastRun]);
 
   const handleDownloadState = async () => {
     lastRun.downloadState(name);
@@ -263,10 +256,10 @@ export const SideBar = ({
               {lastRun === undefined
                 ? "Error"
                 : iframeLoaded
-                  ? isExporting
-                    ? "Exporting"
-                    : "Export"
-                  : "Loading content"}
+                ? isExporting
+                  ? "Exporting"
+                  : "Export"
+                : "Loading content"}
             </Button>
           </div>
         ) : (
@@ -280,10 +273,10 @@ export const SideBar = ({
               {lastRun === undefined
                 ? "Error"
                 : iframeLoaded
-                  ? isExporting
-                    ? "Exporting"
-                    : "Export SVG"
-                  : "Loading content"}
+                ? isExporting
+                  ? "Exporting"
+                  : "Export SVG"
+                : "Loading content"}
             </Button>
             <div className={css.sep} />
             <Button
@@ -295,10 +288,10 @@ export const SideBar = ({
               {lastRun === undefined
                 ? "Error"
                 : iframeLoaded
-                  ? isExporting
-                    ? "Exporting"
-                    : "Export PNG"
-                  : "Loading content"}
+                ? isExporting
+                  ? "Exporting"
+                  : "Export PNG"
+                : "Loading content"}
             </Button>
           </>
         )}
