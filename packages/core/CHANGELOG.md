@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### Changed
+
+- `Export` and `Generate` buttons are disabled while an export is running
+
 ## 2.0.0-beta.11 - 2023-08-16
 
 ### Added
@@ -15,8 +19,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
-- Fixes bug that crushed mechanic on PC, because of a module string that wasn't appropriately made cross-os compatible. 
-
+- Fixes bug that crushed mechanic on PC, because of a module string that wasn't appropriately made cross-os compatible.
 
 ## 2.0.0-beta.10 - 2023-02-10
 
