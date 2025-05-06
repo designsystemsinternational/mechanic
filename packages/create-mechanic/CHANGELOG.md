@@ -15,6 +15,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Tries to initialize a git repository for new projects
 - Right before trying to install dependencies of new project, it will list out which dependencies are being installed
 
+## 2.0.0-beta.11 - 2023-08-16
+
 ### Fixed
 
 - Missing line break was added finalizing creating a DF.
