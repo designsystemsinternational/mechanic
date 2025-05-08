@@ -84,13 +84,19 @@ ${bgBlue(
   generateFunctionSuccess: functionName =>
     `Design function "${functionName}" added to project!`,
   functionCreationDetails: (
-    { functionName, functionDir, functionTypeDirectory },
+    {
+      functionName,
+      functionDir,
+      functionTypeDirectory,
+      functionsSubPath,
+      inputsSubPath
+    },
     customInputGeneration
   ) =>
     `This just:
-> Created a folder inside functions/, called ${success(
-      functionName
-    )}, which has an ${success(
+> Created a folder inside ` +
+    success(`${functionsSubPath}/`) +
+    `, called ${success(functionName)}, which has an ${success(
       "index.js"
     )} file where the design function is defined.
 > Added some other dependencies into your project to make your design function work.
@@ -98,7 +104,7 @@ ${
   customInputGeneration.tried
     ? customInputGeneration.success
       ? "> Added a custom input used in the function. You can find it in the " +
-        success("inputs/") +
+        success(`${inputsSubPath}/`) +
         " folder \n"
       : "> " +
         fail("Tried") +

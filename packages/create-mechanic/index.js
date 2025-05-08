@@ -169,11 +169,19 @@ const command = async argv => {
       functionAnswers.functionName,
       functionQuestions[3].default
     );
-    await generateFunctionTemplate(projectName, {
-      typeOfBaseUsed: usesBase,
-      base: finalBase,
-      functionName
-    });
+    const config = require(path.join(
+      path.resolve(projectName),
+      "mechanic.config.js"
+    ));
+    await generateFunctionTemplate(
+      projectName,
+      {
+        typeOfBaseUsed: usesBase,
+        base: finalBase,
+        functionName
+      },
+      config
+    );
   }
 
   // Install dependencies in new project directory

@@ -125,11 +125,8 @@ const generateFunctionTemplate = async (
   // Create design function folder
   const projectDir = path.resolve(projectName);
   const projectPackagePath = path.join(projectDir, "package.json");
-  const newFunctionDir = path.join(
-    projectDir,
-    config.functionsPath || "functions",
-    functionName
-  );
+  const functionsSubPath = config.functionsPath || "functions";
+  const newFunctionDir = path.join(projectDir, functionsSubPath, functionName);
   await fs.mkdir(newFunctionDir);
 
   // Path of template directory to copy
@@ -187,8 +184,9 @@ const generateFunctionTemplate = async (
   // Add any custom inputs
   const templateHasInputs = await fs.pathExists(inputsSrcDic);
   const generatedCustomInputs = { tried: false, success: false };
+  const inputsSubPath = config.inputsPath || "inputs";
   if (templateHasInputs) {
-    const projectInputDir = path.join(projectDir, "inputs");
+    const projectInputDir = path.join(projectDir, inputsSubPath);
     const projectInputDirExists = await fs.pathExists(projectInputDir);
     if (!projectInputDirExists) {
       await fs.mkdir(projectInputDir);
@@ -206,7 +204,13 @@ const generateFunctionTemplate = async (
   log();
   log(
     content.functionCreationDetails(
-      { functionName, functionTypeDirectory, functionDir },
+      {
+        functionName,
+        functionTypeDirectory,
+        functionDir,
+        functionsSubPath,
+        inputsSubPath
+      },
       generatedCustomInputs
     )
   );
