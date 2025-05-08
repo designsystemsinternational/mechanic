@@ -1,10 +1,6 @@
 import React from "react";
 
-const defaultUrl =
-  "https://images.unsplash.com/photo-1568214697537-ace27ffd6cf3?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1888&q=80";
-
 export const Image = ({
-  image,
   href,
   x,
   width,
@@ -13,8 +9,6 @@ export const Image = ({
   filterOpacity,
   gridColor
 }) => {
-  const imageHref = image ? (href ? href : "") : defaultUrl;
-
   return (
     <>
       <defs>
@@ -30,7 +24,7 @@ export const Image = ({
         height="100%"
         preserveAspectRatio="xMidYMid slice"
         mask="url(#image-mask)"
-        href={imageHref}
+        href={href}
       />
 
       {/* filter applied over image */}

@@ -41,7 +41,7 @@ export const Input = props => {
         onChange={(e, _, v) => onChange(e, name, { ...value, show: v })}
       />
       {!show && (
-        <>
+        <div className={css.inputs}>
           {Object.entries(inputDef.inputs).map(([inputName, input], index) =>
             input.type === "number" ? (
               <NumberInput
@@ -80,7 +80,7 @@ export const Input = props => {
               />
             )
           )}
-        </>
+        </div>
       )}
     </div>
   );

@@ -12,12 +12,13 @@ import {
 
 import "./styles.css";
 
-export const handler = ({ inputs, mechanic }) => {
+import defaultImage from "./assets/default.jpg";
+
+export const handler = ({ inputs, mechanic, isPreview }) => {
   const {
     width,
     height,
     randomRatio,
-    grid,
     textSize,
     randomColor,
     textOne,
@@ -146,10 +147,11 @@ export const handler = ({ inputs, mechanic }) => {
     hyphens: "auto"
   };
 
-  const href = useImageHref(image);
+  const imageHref = useImageHref(image);
+  const href = image ? imageHref : defaultImage;
 
   useEffect(() => {
-    if (!image || href !== "") {
+    if (href !== "") {
       mechanic.done();
     }
   }, [image, href]);
@@ -174,7 +176,7 @@ export const handler = ({ inputs, mechanic }) => {
         height={fullHeight}
         x={borderRatio}
         y={borderRatio}
-        showGrid={grid}
+        showGrid={isPreview}
       >
         <div className="top" style={bigTextStyle}>
           <p>{textOne}</p>
@@ -202,7 +204,7 @@ export const handler = ({ inputs, mechanic }) => {
         height={fullHeight}
         x={chooseX[1] + gutterRatio * 0.5}
         y={borderRatio}
-        showGrid={grid}
+        showGrid={isPreview}
       >
         {canvasRatio < 0.75 && (
           <div className="top" style={bigTextStyle}>
@@ -220,7 +222,7 @@ export const handler = ({ inputs, mechanic }) => {
         height={fullHeight}
         x={chooseX[2] + borderRatio * 0.5}
         y={borderRatio}
-        showGrid={grid}
+        showGrid={isPreview}
       >
         <div className="top" style={bigTextStyle}>
           <p>{textFour}</p>
@@ -375,10 +377,6 @@ export const inputs = {
   textFour: {
     type: "text",
     default: "MUNUS@MECHANIC.DESIGN"
-  },
-  grid: {
-    type: "boolean",
-    default: false
   }
 };
 
