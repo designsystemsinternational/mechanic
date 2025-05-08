@@ -16,7 +16,7 @@ const options = [
   },
   {
     name: "Adaptive Grid",
-    type: "Canvas",
+    type: "SVG",
     dir: "adaptive-grid"
   }
 ];
