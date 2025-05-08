@@ -115,10 +115,10 @@ ${
   gitInitSucceed: `Git repository initialized.`,
   gitInitFailed: `Failed to initialize git repository. Try initializing yourself to check the issue.`,
   confirmInstallQuestion:
-    "Do you wish to install dependencies for your project right away?",
+    "Do you wish to install missing dependencies for your project right away?",
   installationMethodQuestion:
     "Do you wish to install dependencies using npm or yarn?",
-  installingDependenciesMessage: "\nDependencies to install:",
+  installingDependenciesMessage: "The project has the following dependencies:",
   dependencyItem: dep =>
     !dep.includes("@mechanic-design")
       ? `- ${dep}`

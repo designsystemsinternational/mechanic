@@ -120,17 +120,6 @@ const installDependencies = async (projectName, installingMethod) => {
   // Project directory
   const cwd = path.resolve(projectName);
 
-  // List out dependencies being installed
-  const packageJsonPath = path.join(cwd, "package.json");
-  const packageObj = JSON.parse(await fs.readFile(packageJsonPath, "utf8"));
-  log(content.installingDependenciesMessage);
-  for (const depType of ["devDependencies", "dependencies"]) {
-    for (const dep in packageObj[depType]) {
-      log(content.dependencyItem(dep));
-    }
-  }
-  log();
-
   try {
     spinner.start(content.installTry(installingMethod));
     // Install

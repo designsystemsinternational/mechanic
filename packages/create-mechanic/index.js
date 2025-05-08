@@ -1,4 +1,5 @@
 const path = require("path");
+const fs = require("fs-extra");
 const inquirer = require("inquirer");
 const {
   spinners: { mechanicSpinner: spinner }
@@ -30,6 +31,20 @@ const sleep = (ms = 1000) => new Promise(resolve => setTimeout(resolve, ms));
 const nullishCoalescingOp = (arg1, arg2) => (arg1 != null ? arg1 : arg2);
 
 const askToInstall = async projectName => {
+  // Project directory
+  const cwd = path.resolve(projectName);
+
+  // List out dependencies being installed
+  const packageJsonPath = path.join(cwd, "package.json");
+  const packageObj = JSON.parse(await fs.readFile(packageJsonPath, "utf8"));
+  log(content.installingDependenciesMessage);
+  for (const depType of ["devDependencies", "dependencies"]) {
+    for (const dep in packageObj[depType]) {
+      log(content.dependencyItem(dep));
+    }
+  }
+  log();
+
   // Install dependencies in new project directory
   const { install } = await inquirer.prompt(confirmInstallQuestion);
   await sleep();
