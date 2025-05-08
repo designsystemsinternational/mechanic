@@ -13,7 +13,8 @@ const {
   generateProjectTemplate,
   installDependencies,
   tryGitInit,
-  checkLockFile
+  checkLockFile,
+  confirmGitQuestion
 } = require("./new-project");
 const {
   baseExists,
@@ -45,6 +46,18 @@ const askToInstall = async projectName => {
     return { success, installingMethod };
   }
   return install;
+};
+
+const askToInitGit = async projectName => {
+  // Install dependencies in new project directory
+  const { gitInit } = await inquirer.prompt(confirmGitQuestion);
+  await sleep();
+
+  if (gitInit) {
+    const success = await tryGitInit(projectName);
+    return { success };
+  }
+  return gitInit;
 };
 
 const command = async argv => {
@@ -152,7 +165,7 @@ const command = async argv => {
   const install = await askToInstall(projectName);
 
   // Try initializing git repository
-  await tryGitInit(projectName);
+  await askToInitGit(projectName);
 
   // Done!
   log(content.doneAndNextStepsMessage(projectName, install));

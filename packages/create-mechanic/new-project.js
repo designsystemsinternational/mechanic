@@ -52,6 +52,15 @@ const installationMethodQuestion = [
   }
 ];
 
+const confirmGitQuestion = [
+  {
+    name: "gitInit",
+    type: "confirm",
+    message: content.confirmGitInitQuestion,
+    default: true
+  }
+];
+
 const generateProjectTemplate = async (projectName, typeOfBaseUsed) => {
   spinner.start(content.generateProjectStart);
 
@@ -165,6 +174,7 @@ const tryGitInit = async projectName => {
       (await isInGitRepository(cwd)) ||
       (await isInMercurialRepository(cwd))
     ) {
+      spinner.info(content.repositoryFound);
       return false;
     }
 
@@ -179,7 +189,8 @@ const tryGitInit = async projectName => {
       ["commit", "-m", "Initial commit from Create Mechanic"],
       { cwd }
     );
-
+    // Notify success
+    spinner.succeed(content.gitInitSucceed);
     return true;
   } catch (e) {
     if (didInit) {
@@ -187,6 +198,8 @@ const tryGitInit = async projectName => {
         fs.rmSync(path.join(cwd, ".git"));
       } catch (_) {}
     }
+    // Notify failure
+    spinner.fail(content.gitInitFailed);
     return false;
   }
 };
@@ -196,6 +209,7 @@ module.exports = {
   confirmDFQuestion,
   confirmInstallQuestion,
   installationMethodQuestion,
+  confirmGitQuestion,
   generateProjectTemplate,
   checkLockFile,
   installDependencies,

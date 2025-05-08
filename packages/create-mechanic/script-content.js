@@ -109,7 +109,11 @@ ${
         }/inputs for the input's source code.\n`
     : ""
 }`,
-
+  confirmGitInitQuestion:
+    "Do you wish to initialize a git repository for your project right away?",
+  repositoryFound: "Repository already found. Git repository not initialized.",
+  gitInitSucceed: `Git repository initialized.`,
+  gitInitFailed: `Failed to initialize git repository. Try initializing yourself to check the issue.`,
   confirmInstallQuestion:
     "Do you wish to install dependencies for your project right away?",
   installationMethodQuestion:
