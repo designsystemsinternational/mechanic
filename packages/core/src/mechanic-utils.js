@@ -1,5 +1,8 @@
 import { optimize, extendDefaultPlugins } from "svgo/dist/svgo.browser.js";
 import { toPng, toCanvas } from "html-to-image";
+import { parse as parseCSS, generate as generateCSS } from "css-tree";
+import { selectOne as cssSelectOne } from "css-select";
+import cssSelectBrowserAdapter from "css-select-browser-adapter";
 
 /**
  * Checks whether a DOM element is instance of SVGElement
@@ -50,10 +53,55 @@ const svgAppendStyles = (el, head) => {
 
   if (head) {
     copy = el.cloneNode(true);
+    // Get all style to export
     const styles = head.querySelectorAll("style");
+
+    // Incrementally built styles to export
+    let filteredStyles = "";
+
     for (var i = 0; i < styles.length; i++) {
-      copy.append(styles[i].cloneNode(true));
+      // Parse CSS
+      const styleNode = styles[i];
+      const styleSheetTree = parseCSS(styleNode.innerHTML);
+
+      // Go through direct stylesheet children declarations
+      let childNode = styleSheetTree.children.head;
+      while (childNode != null) {
+        // Filtering out rules with no matches
+        if (childNode.data.type === "Rule") {
+          // Check if rules selector actually match so something in export
+          const { prelude } = childNode.data;
+          const selector = generateCSS(prelude);
+          let results;
+          try {
+            results = cssSelectOne(selector, el.parentElement, {
+              adapter: cssSelectBrowserAdapter
+            });
+          } catch (e) {
+            // Some known errors:
+            // Pseudo-elements are not supported by css-select
+            // unmatched pseudo-class
+          }
+          // If they do match to something, export rule
+          if (results != null) {
+            const ruleCSS = generateCSS(childNode.data);
+            filteredStyles += ruleCSS;
+          }
+        } else {
+          // Other nodes that aren't rules copy directly
+          const elementCSS = generateCSS(childNode.data);
+          filteredStyles += elementCSS;
+        }
+
+        // Next node
+        childNode = childNode.next;
+      }
     }
+
+    // Add style node with exported styles
+    const filteredStyleNode = document.createElement("style");
+    filteredStyleNode.innerHTML = filteredStyles;
+    copy.append(filteredStyleNode.cloneNode(true));
   }
   return copy;
 };
