@@ -1,9 +1,11 @@
 const {
   logo: { mechanic, mechanicInverse },
-  colors: { success, bgRed, bgBlue }
+  colors: { success, bgRed, bgBlue, fail }
 } = require("@mechanic-design/utils");
 
 const mechanicPackage = "@mechanic-design/core";
+const sourceCodeUrl = "https://github.com/designsystemsinternational/mechanic";
+const sourceCodeMainBranchUrl = `${sourceCodeUrl}/tree/main`;
 
 module.exports = {
   welcome: `${mechanic}
@@ -81,21 +83,52 @@ ${bgBlue(
   generateFunctionStart: "Adding design function to project...",
   generateFunctionSuccess: functionName =>
     `Design function "${functionName}" added to project!`,
-  functionCreationDetails: functionName =>
+  functionCreationDetails: (
+    {
+      functionName,
+      functionDir,
+      functionTypeDirectory,
+      functionsSubPath,
+      inputsSubPath
+    },
+    customInputGeneration
+  ) =>
     `This just:
-> Created a folder inside functions/, called ${success(
-      functionName
-    )}, which has an ${success(
+> Created a folder inside ` +
+    success(`${functionsSubPath}/`) +
+    `, called ${success(functionName)}, which has an ${success(
       "index.js"
     )} file where the design function is defined.
 > Added some other dependencies into your project to make your design function work.
-
-`,
-
+${
+  customInputGeneration.tried
+    ? customInputGeneration.success
+      ? "> Added a custom input used in the function. You can find it in the " +
+        success(`${inputsSubPath}/`) +
+        " folder \n"
+      : "> " +
+        fail("Tried") +
+        " adding a needed custom input, but it wasn't possible. " +
+        "Check " +
+        `${sourceCodeMainBranchUrl}/packages/create-mechanic/${functionTypeDirectory}${
+          functionDir !== "" ? "/" + functionDir : ""
+        }/inputs for the input's source code.\n`
+    : ""
+}`,
+  confirmGitInitQuestion:
+    "Do you wish to initialize a git repository for your project right away?",
+  repositoryFound: "Repository already found. Git repository not initialized.",
+  gitInitSucceed: `Git repository initialized.`,
+  gitInitFailed: `Failed to initialize git repository. Try initializing yourself to check the issue.`,
   confirmInstallQuestion:
-    "Do you wish to install dependencies for your project right away?",
+    "Do you wish to install missing dependencies for your project right away?",
   installationMethodQuestion:
     "Do you wish to install dependencies using npm or yarn?",
+  installingDependenciesMessage: "The project has the following dependencies:",
+  dependencyItem: dep =>
+    !dep.includes("@mechanic-design")
+      ? `- ${dep}`
+      : `- ${bgRed("@mechanic-design")}/${bgBlue(dep.split("/")[1])}`,
   installTry: method => `Trying with ${method}.`,
   installSucceed: method => `Installed dependencies with ${method}.`,
   installFailed: method =>

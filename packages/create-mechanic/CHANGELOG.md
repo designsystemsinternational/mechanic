@@ -7,6 +7,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### Added
+
+- Ability to copy template or examples that use custom inputs.
+- New Adaptive Grid design function (by @munusshih) added to examples
+- Adds base .gitignore to new projects
+- Tries to initialize a git repository for new projects
+- Right before trying to install dependencies of new project, it will list out which dependencies are being installed
+
+### Fixed
+
+- Adds some line breaks across the CLI logs for reading room.
+
 ## 2.0.0-beta.11 - 2023-08-16
 
 ### Fixed

@@ -12,19 +12,27 @@ module.exports = getCommandHandler => ({
         },
         functionsPath: {
           type: "string",
-          description: "Path to directory containing design functions"
+          description: `Path to directory containing design functions. Fallback is ${path.normalize(
+            "./functions"
+          )}.`
         },
         inputsPath: {
           type: "string",
-          description: "Path to directory containing custom input components"
+          description: `Path to directory containing custom input components. Fallback is ${path.normalize(
+            "./inputs"
+          )}.`
         },
         appCompsPath: {
           type: "string",
-          description: "Path to directory containing custom app components"
+          description: `Path to directory containing custom app components. Fallback is ${path.normalize(
+            "./app"
+          )}.`
         },
         staticPath: {
           type: "string",
-          description: "Path to static directory of files to serve"
+          description: `Path to static directory of files to serve. Fallback is ${path.normalize(
+            "./static"
+          )}.`
         },
         distDir: {
           type: "string",
@@ -32,10 +40,6 @@ module.exports = getCommandHandler => ({
         }
       })
       .default("configPath", path.normalize("./mechanic.config.js"))
-      .default("functionsPath", path.normalize("./functions"))
-      .default("distDir", path.normalize("./dist"))
-      .default("inputsPath", path.normalize("./inputs"))
-      .default("appCompsPath", path.normalize("./app"))
-      .default("staticPath", path.normalize("./static")),
+      .default("distDir", path.normalize("./dist")),
   handler: getCommandHandler("build")
 });

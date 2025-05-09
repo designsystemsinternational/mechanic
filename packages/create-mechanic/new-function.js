@@ -13,29 +13,42 @@ const log = console.log;
 // https://gist.github.com/lovasoa/8691344#gistcomment-3299018
 const walk = (dir, fileCallback, directoryCallback) => {
   const files = fs.readdirSync(dir);
+  let wasSuccessful = true;
   files.forEach(file => {
     const filepath = path.join(dir, file);
     const stats = fs.statSync(filepath);
     if (stats.isDirectory()) {
-      directoryCallback(file, filepath, stats);
-      walk(filepath, fileCallback, directoryCallback);
+      const success = directoryCallback(file, filepath, stats);
+      if (wasSuccessful && !success) wasSuccessful = success;
+      if (success) {
+        wasSuccessful = walk(filepath, fileCallback, directoryCallback);
+      }
     } else if (stats.isFile()) {
-      fileCallback(file, filepath, stats);
+      const success = fileCallback(file, filepath, stats);
+      if (wasSuccessful && !success) wasSuccessful = success;
     }
   });
+  return wasSuccessful;
 };
 
-const copyDirAndContents = (baseFunctionDir, newFunctionDir) => {
+const copyDirAndContents = (originDir, targetDir) => {
   const copyFile = (_, filepath) => {
-    if (path.join(baseFunctionDir, "dependencies.json") === filepath) return;
-    const relativePath = path.relative(baseFunctionDir, filepath);
-    fs.copyFileSync(filepath, path.join(newFunctionDir, relativePath));
+    const relativePath = path.relative(originDir, filepath);
+    const target = path.join(targetDir, relativePath);
+    if (!fs.pathExistsSync(target)) {
+      fs.copyFileSync(filepath, target);
+      return true;
+    } else return false;
   };
-  const copyDir = (_, filepath) => {
-    const relativePath = path.relative(baseFunctionDir, filepath);
-    fs.mkdirSync(path.join(newFunctionDir, relativePath));
+  const copyDir = (_, dirPath) => {
+    const relativePath = path.relative(originDir, dirPath);
+    const target = path.join(targetDir, relativePath);
+    if (!fs.pathExistsSync(target)) {
+      fs.mkdirSync(target);
+      return true;
+    } else return false;
   };
-  walk(baseFunctionDir, copyFile, copyDir);
+  return walk(originDir, copyFile, copyDir);
 };
 
 const baseExists = (typeOfBaseUsed, base) => {
@@ -110,40 +123,46 @@ const generateFunctionTemplate = async (
   spinner.start(content.generateFunctionStart);
 
   // Create design function folder
-  const directory = path.resolve(projectName);
-  const newFunctionDir = path.join(
-    directory,
-    config.functionsPath || "functions",
-    functionName
-  );
+  const projectDir = path.resolve(projectName);
+  const projectPackagePath = path.join(projectDir, "package.json");
+  const functionsSubPath = config.functionsPath || "functions";
+  const newFunctionDir = path.join(projectDir, functionsSubPath, functionName);
   await fs.mkdir(newFunctionDir);
 
   // Path of template directory to copy
-  const baseFunctionDir = path.join(
-    __dirname,
+  const functionTypeDirectory =
     typeOfBaseUsed === "Template"
       ? "function-templates"
       : typeOfBaseUsed === "Example"
       ? "function-examples"
-      : "function-blank",
+      : "function-blank";
+
+  const functionDir =
     typeOfBaseUsed === "Template"
       ? functionTemplateOptions[base].dir
       : typeOfBaseUsed === "Example"
       ? functionExampleOptions[base].dir
-      : ""
+      : "";
+  const baseFunctionDir = path.join(
+    __dirname,
+    functionTypeDirectory,
+    functionDir
   );
+  const functionSrcDir = path.join(baseFunctionDir, "function");
+  const functionDependenciesPath = path.join(
+    baseFunctionDir,
+    "dependencies.json"
+  );
+  const inputsSrcDic = path.join(baseFunctionDir, "inputs");
 
   // Add dependencies and copy basic files
   await Promise.all([
     (async () => {
       const packageObj = JSON.parse(
-        await fs.readFile(path.join(directory, "package.json"), "utf8")
+        await fs.readFile(projectPackagePath, "utf8")
       );
       const baseDependencies = JSON.parse(
-        await fs.readFile(
-          path.join(baseFunctionDir, "dependencies.json"),
-          "utf8"
-        )
+        await fs.readFile(functionDependenciesPath, "utf8")
       );
       // Add dependencies
       for (const depType in baseDependencies) {
@@ -156,16 +175,46 @@ const generateFunctionTemplate = async (
       }
       // Write the resulting package
       await fs.writeFile(
-        path.join(directory, "package.json"),
+        projectPackagePath,
         JSON.stringify(packageObj, null, 2)
       );
     })()
   ]);
+
+  // Add any custom inputs
+  const templateHasInputs = await fs.pathExists(inputsSrcDic);
+  const generatedCustomInputs = { tried: false, success: false };
+  const inputsSubPath = config.inputsPath || "inputs";
+  if (templateHasInputs) {
+    const projectInputDir = path.join(projectDir, inputsSubPath);
+    const projectInputDirExists = await fs.pathExists(projectInputDir);
+    if (!projectInputDirExists) {
+      await fs.mkdir(projectInputDir);
+    }
+
+    const copiedEverything = copyDirAndContents(inputsSrcDic, projectInputDir);
+    generatedCustomInputs.tried = true;
+    generatedCustomInputs.success = copiedEverything;
+  }
+
   // Copy all files in base dir
-  copyDirAndContents(baseFunctionDir, newFunctionDir);
+  copyDirAndContents(functionSrcDir, newFunctionDir);
 
   spinner.succeed(content.generateFunctionSuccess(functionName));
-  log(content.functionCreationDetails(functionName));
+  log();
+  log(
+    content.functionCreationDetails(
+      {
+        functionName,
+        functionTypeDirectory,
+        functionDir,
+        functionsSubPath,
+        inputsSubPath
+      },
+      generatedCustomInputs
+    )
+  );
+
   return newFunctionDir;
 };
 
