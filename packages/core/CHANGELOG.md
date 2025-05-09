@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### Fixed
+
+- Removes unused style declarations that get bundled with design function exports. Fixes a bug that crashed exports when certain declarations couldn't be parsed.
+
 ### Changed
 
 - `Export` and `Generate` buttons are disabled while an export is running
@@ -19,7 +23,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
-- Fixes bug that crushed mechanic on PC, because of a module string that wasn't appropriately made cross-os compatible.
+- Fixes bug that crashed mechanic on PC, because of a module string that wasn't appropriately made cross-os compatible.
 
 ## 2.0.0-beta.10 - 2023-02-10
 
