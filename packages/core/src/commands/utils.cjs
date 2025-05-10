@@ -68,8 +68,8 @@ import { inputsDefs, inputErrors } from "${inputsPath
   .split(path.sep)
   .join("/")}";
 import * as designFunction from "${designFunctionPath
-  .split(path.sep)
-  .join("/")}";
+    .split(path.sep)
+    .join("/")}";
 import { setUp } from "${setUpFunctionPath.split(path.sep).join("/")}";
 setUp(inputsDefs, designFunction, inputErrors)
 if (module.hot) {
@@ -98,6 +98,7 @@ const generateFuncTempScripts = functionsPath => {
     );
     designFunctions[name]["temp"] = tempScriptName;
   });
+
   return [designFunctions, tempDirObj];
 };
 
@@ -135,13 +136,20 @@ const generateInputScript = inputsPath => {
 };
 
 const setCustomInterrupt = (callback, tempDirObjs = []) => {
-  process.on("SIGINT", function () {
+  process.on("SIGINT", function() {
     if (tempDirObjs.length > 0)
       tempDirObjs.forEach(obj => obj.removeCallback());
     callback();
     process.exit();
   });
 };
+
+const writeToFile = (file, data) => {
+  fs.writeFileSync(file, data);
+};
+
+const formatTimestamp = ms =>
+  `${Math.round((ms / 1000) * 100 + Number.EPSILON) / 100}s`;
 
 const greet = () => {
   console.log(`${mechanic}
@@ -164,6 +172,8 @@ module.exports = {
   generateInputScript,
   generateFuncTempScripts,
   setCustomInterrupt,
+  writeToFile,
+  formatTimestamp,
   greet,
   goodbye
 };
