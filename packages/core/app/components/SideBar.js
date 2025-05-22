@@ -58,6 +58,7 @@ export const SideBar = ({
     initialAutoRefresh ?? true
   );
   const [lastRun, setLastRun] = useState(null);
+  const [isExporting, setIsExporting] = useState(false);
   const [seedHistory, setSeedHistory] = useSeedHistory(name);
 
   const iframeLoaded = useIframeLoaded(iframe, name);
@@ -71,7 +72,12 @@ export const SideBar = ({
     boundingClient: mainRef.current.getBoundingClientRect(),
     scale: scale && canScale && scaleToFit,
     randomSeed: random,
-    exportType: exportType
+    exportType: exportType,
+    eventListeners: {
+      startDownload: () => {
+        setIsExporting(false);
+      }
+    }
   });
 
   const previewHandler = async () => {
@@ -96,6 +102,7 @@ export const SideBar = ({
 
   const handleExport = async type => {
     const run = iframe.current.contentWindow?.run;
+    setIsExporting(true);
     setLastRun(lastRun =>
       run
         ? run(
@@ -216,7 +223,7 @@ export const SideBar = ({
               <Button
                 className={cn(css.grow)}
                 onClick={() => setSeedHistory.set()}
-                disabled={!iframeLoaded || lastRun === undefined}
+                disabled={!iframeLoaded || lastRun === undefined || isExporting}
               >
                 {iframeLoaded ? "Generate" : "Loading content"}
               </Button>
@@ -244,12 +251,14 @@ export const SideBar = ({
               className={css.grow}
               primary={iframeLoaded}
               onClick={() => handleExport()}
-              disabled={!iframeLoaded || lastRun === undefined}
+              disabled={!iframeLoaded || lastRun === undefined || isExporting}
             >
               {lastRun === undefined
                 ? "Error"
                 : iframeLoaded
-                ? "Export"
+                ? isExporting
+                  ? "Exporting"
+                  : "Export"
                 : "Loading content"}
             </Button>
           </div>
@@ -259,12 +268,14 @@ export const SideBar = ({
               className={css.grow}
               primary={iframeLoaded}
               onClick={() => handleExport("svg")}
-              disabled={!iframeLoaded || lastRun === undefined}
+              disabled={!iframeLoaded || lastRun === undefined || isExporting}
             >
               {lastRun === undefined
                 ? "Error"
                 : iframeLoaded
-                ? "Export SVG"
+                ? isExporting
+                  ? "Exporting"
+                  : "Export SVG"
                 : "Loading content"}
             </Button>
             <div className={css.sep} />
@@ -272,12 +283,14 @@ export const SideBar = ({
               className={css.grow}
               primary={iframeLoaded}
               onClick={() => handleExport("png")}
-              disabled={!iframeLoaded || lastRun === undefined}
+              disabled={!iframeLoaded || lastRun === undefined || isExporting}
             >
               {lastRun === undefined
                 ? "Error"
                 : iframeLoaded
-                ? "Export PNG"
+                ? isExporting
+                  ? "Exporting"
+                  : "Export PNG"
                 : "Loading content"}
             </Button>
           </>

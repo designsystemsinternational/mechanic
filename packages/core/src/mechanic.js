@@ -30,6 +30,7 @@ export class Mechanic {
    * Mechanic class constructor
    * @param {object} settings - Settings from the design function
    * @param {object} baseValues - Values for some or all of the design function inputs
+   * @param {object} config - Configuration object for the Mechanic runtime
    */
   constructor(settings, baseValues, config) {
     const values = Object.assign({}, baseValues);
@@ -39,8 +40,18 @@ export class Mechanic {
       scale,
       randomSeed,
       isPreview,
-      exportType
+      exportType,
+      eventListeners = {}
     } = config;
+
+    // Set up the event listeners first, to ensure
+    // all initially passed events are registered
+    // before any rendering and exporting is done.
+    this.events = {};
+
+    Object.keys(eventListeners).forEach(key => {
+      this.on(key, eventListeners[key]);
+    });
 
     values._isPreview = isPreview;
 
@@ -86,17 +97,69 @@ export class Mechanic {
 
     this.drawLoop = mechanicDrawLoop.prepare(this.settings.frameRate);
 
-    this.engineFrameCallback = () => { };
-    this.engineDoneCallback = () => { };
+    this.engineFrameCallback = () => {};
+    this.engineDoneCallback = () => {};
   }
 
   /**
-   * Convenience function to collect all callbacks that an engine can pass to a
+   * Registers an event listener with the runtime.
+   * @param {string} event
+   * @param {function} listener
+   */
+  on(event, listener) {
+    if (!this.events[event]) {
+      this.events[event] = [];
+    }
+
+    this.events[event].push(listener);
+  }
+
+  /**
+   * Unsubscribes an event listener from the runtime.
+   * @param {string} event
+   * @param {function} listener
+   */
+  off(event, listener) {
+    let idx;
+
+    if (Array.isArray(this.events[event])) {
+      idx = this.events[event].indexOf(listener);
+
+      if (idx > -1) {
+        this.events[event].splice(idx, 1);
+      }
+    }
+  }
+
+  /**
+   * Emits an event to all subscribed listeners
+   * @param {string} event
+   * @param {Array<any>} args
+   */
+  emit(event, ...args) {
+    let i, listeners, length;
+
+    if (Array.isArray(this.events[event])) {
+      listeners = [...this.events[event]];
+      length = listeners.length;
+
+      for (i = 0; i < length; i++) {
+        listeners[i].apply(this, args);
+      }
+    }
+  }
+
+  /**
+   ** Convenience function to collect all callbacks that an engine can pass to a
    * design function. An engine can pass overwrites to inject custom behavior
    * into the callbacks. This is currently used by engine-p5 to disable using
    * mechanic.drawLoop within engine-p5.
    *
    * @param {object} overwrites - An object with overwrites for the callbacks
+
+   * Returns an object with common functions to be used in the design function
+   * @param {function} frame - The frame function
+   * @param {function} done - The done function
    */
   callbacksForDesignFunction(overwrites = {}) {
     const frame = (...args) => this.engineFrameCallback(...args);
@@ -310,6 +373,8 @@ export class Mechanic {
    * @param {boolean} addTimeStamp - Adds time stamp to name of file to be downloaded.
    */
   download(fileName, addTimeStamp = true) {
+    this.emit("startDownload");
+
     let name = fileName;
     if (addTimeStamp) {
       name += "-" + getTimeStamp();

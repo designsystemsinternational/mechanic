@@ -28,7 +28,8 @@ export const run = (functionName, func, values, config) => {
 
   func.handler({
     inputs: mechanic.values,
-    ...mechanic.callbacksForDesignFunction()
+    ...mechanic.callbacksForDesignFunction(),
+    isPreview
   });
 
   return mechanic;

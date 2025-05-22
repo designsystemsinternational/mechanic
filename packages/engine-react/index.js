@@ -60,6 +60,10 @@ export const run = (functionName, func, values, config) => {
     useDrawLoop: makeDrawLoop(mechanic.drawLoop)
   });
 
-  render(<Handler inputs={mechanic.values} {...callbacks} />, root);
+  render(
+    <Handler inputs={mechanic.values} {...callbacks} isPreview={isPreview} />,
+    root
+  );
+
   return mechanic;
 };

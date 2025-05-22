@@ -37,6 +37,7 @@ export const run = (functionName, func, values, config) => {
           );
         }
       }),
+      isPreview,
       sketch
     });
   }, root);

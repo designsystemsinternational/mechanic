@@ -64,7 +64,8 @@ export const run = (functionName, func, values, config) => {
 
         return (preparedCanvas = prepareCanvas(dimensions));
       }
-    })
+    }),
+    isPreview
   });
 
   return mechanic;
