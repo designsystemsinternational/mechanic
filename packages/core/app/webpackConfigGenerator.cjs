@@ -249,6 +249,14 @@ module.exports = function (
           chunks: [name]
         })
     ),
+    new CopyPlugin({
+      patterns: [
+        {
+          from: path.resolve(__dirname, "./ffmpeg"),
+          to: path.relative(process.cwd(), "ffmpeg")
+        }
+      ]
+    }),
     new NodePolyfillPlugin()
   ].concat(
     isProduction
@@ -280,13 +288,6 @@ module.exports = function (
       alias: {
         react: resolve("react"),
         "react-dom": resolve("react-dom")
-      },
-      // This is needed, because the WASM based h264 encoder
-      // used mounts a virtual file system.
-      //
-      // SEE: https://github.com/TrevorSundberg/h264-mp4-encoder/tree/master?tab=readme-ov-file#use-with-webpack
-      fallback: {
-        fs: false
       }
     },
     module: {

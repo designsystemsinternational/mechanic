@@ -15,9 +15,8 @@ export const DEFAULT_SETTINGS = {
   frameRate: 60,
   videoFormat: "mp4",
   mp4Settings: {
-    keyFramePeriod: 20,
-    quantizationParameter: 23,
-    speed: 5
+    args: [],
+    preset: "high"
   },
   webMSettings: {
     quality: 0.95

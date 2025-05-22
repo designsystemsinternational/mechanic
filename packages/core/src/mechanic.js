@@ -2,7 +2,7 @@ import seedrandom from "seedrandom";
 
 import { download } from "./download.js";
 
-import { H264Writer } from "./h264-writer.js";
+import { FFMpegWriter } from "./ffmpeg-writer.js";
 import { WebMWriter } from "./webm-writer.js";
 import { ZipWriter } from "./zip-writer.js";
 
@@ -258,12 +258,10 @@ export class Mechanic {
       });
     }
 
-    return new H264Writer({
+    return new FFMpegWriter({
       frameRate: this.settings.frameRate,
-      keyFramePeriod: this.settings.mp4Settings?.keyFramePeriod ?? 20,
-      quantizationParameter:
-        this.settings.mp4Settings?.quanitizationParameter ?? 23,
-      speed: this.settings.mp4Settings?.speed ?? 5
+      args: this.settings.mp4Settings?.args,
+      preset: this.settings.mp4Settings?.preset
     });
   }
 
