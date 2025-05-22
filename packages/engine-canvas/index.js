@@ -1,4 +1,5 @@
 import { Mechanic } from "@mechanic-design/core";
+import { buildCanvasDimensions, prepareCanvas } from "./prepare-canvas.js";
 
 const root = document.getElementById("root");
 
@@ -7,41 +8,65 @@ export const run = (functionName, func, values, config) => {
 
   root.innerHTML = "";
 
+  let isElAdded = false;
+  let preparedCanvas = null;
+
   const mechanic = new Mechanic(func.settings, values, config);
 
-  let isElAdded = false;
-  const onFrame = el => {
-    if (!isElAdded) {
-      isElAdded = true;
-      root.appendChild(el);
-    }
-    if (!isPreview) {
-      mechanic.frame(el);
+  // This ensures backwards compatibility for function's building their own
+  // canvas. This keeps the engine backwards compatible and allows users to
+  // opt-out of the assumptions the prepared canvas makes if they need to.
+  const checkForCanvas = el => {
+    if (!el && !preparedCanvas) {
+      throw new Error(
+        `You need to call getCanvas() before calling either frame() or done(), or pass your own canvas element as an argument to either function.`
+      );
     }
   };
-  const onDone = async (el, name) => {
+
+  mechanic.registerFrameCallback(el => {
+    checkForCanvas(el);
+
     if (!isElAdded) {
       isElAdded = true;
-      root.appendChild(el);
+      root.appendChild(preparedCanvas?.canvas ?? el);
     }
     if (!isPreview) {
-      await mechanic.done(el);
+      mechanic.frame(preparedCanvas?.canvas ?? el);
+    }
+  });
+
+  mechanic.registerDoneCallback(async (el, name) => {
+    checkForCanvas(el);
+
+    if (!isElAdded) {
+      isElAdded = true;
+      root.appendChild(preparedCanvas?.canvas ?? el);
+    }
+    if (!isPreview) {
+      await mechanic.done(preparedCanvas?.canvas ?? el);
       mechanic.download(name || functionName);
     }
-  };
-  const onSetState = async obj => {
-    mechanic.setState(obj);
-  };
+  });
 
   func.handler({
     inputs: mechanic.values,
-    mechanic: {
-      frame: onFrame,
-      done: onDone,
-      state: mechanic.functionState,
-      setState: onSetState
-    },
+    ...mechanic.callbacksForDesignFunction({
+      getCanvas: (width = null, height = null) => {
+        if (preparedCanvas !== null) return preparedCanvas;
+
+        const dimensions = buildCanvasDimensions({
+          width,
+          height,
+          mechanic,
+          isPreview
+        });
+
+        return (preparedCanvas = prepareCanvas(dimensions));
+      }
+    }),
     isPreview
   });
+
   return mechanic;
 };

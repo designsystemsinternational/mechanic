@@ -1,4 +1,4 @@
-export const handler = ({ inputs, mechanic }) => {
+export const handler = ({ inputs, done }) => {
   const { width, height, text, color1, color2, radiusPercentage } = inputs;
 
   const center = [width / 2, height / 2];
@@ -32,7 +32,8 @@ export const handler = ({ inputs, mechanic }) => {
         </text>
       </g>
     </svg>`;
-  mechanic.done(svg);
+
+  done(svg);
 };
 
 export const inputs = {

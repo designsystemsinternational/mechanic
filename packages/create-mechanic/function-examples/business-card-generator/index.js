@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import "./styles.css";
 
-export const handler = ({ inputs, mechanic }) => {
+export const handler = ({ inputs, done }) => {
   const {
     width,
     height,
@@ -32,7 +32,7 @@ export const handler = ({ inputs, mechanic }) => {
     Math.random() * (height - margin * 2 - circleRadius * 2);
 
   useEffect(() => {
-    mechanic.done();
+    done();
   }, []);
 
   return (

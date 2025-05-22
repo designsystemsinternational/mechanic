@@ -1,15 +1,11 @@
-export const handler = ({ inputs, mechanic }) => {
+export const handler = ({ inputs, done, getCanvas }) => {
   const { width, height, text, color1, color2, radiusPercentage } = inputs;
 
   const center = [width / 2, height / 2];
   const radius = ((height / 2) * radiusPercentage) / 100;
   const angle = Math.random() * Math.PI * 2;
 
-  const canvas = document.createElement("canvas");
-  canvas.width = width;
-  canvas.height = height;
-
-  const ctx = canvas.getContext("2d");
+  const { ctx } = getCanvas(width, height);
 
   ctx.fillStyle = "#F4F4F4";
   ctx.fillRect(0, 0, width, height);
@@ -37,7 +33,7 @@ export const handler = ({ inputs, mechanic }) => {
   ctx.strokeText(text, width / 2, height - height / 20);
   ctx.fillText(text, width / 2, height - height / 20);
 
-  mechanic.done(canvas);
+  done();
 };
 
 export const inputs = {

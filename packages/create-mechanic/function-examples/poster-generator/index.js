@@ -14,7 +14,7 @@ import fontRegular from "./assets/PPObjectSans-Regular.otf";
 import fontHeavy from "./assets/PPObjectSans-Heavy.otf";
 import fontHeavySlanted from "./assets/PPObjectSans-HeavySlanted.otf";
 
-export const handler = ({ inputs, mechanic, sketch }) => {
+export const handler = ({ inputs, done, sketch }) => {
   const { width, height, dates, location, artist, title, image, color } =
     inputs;
   const artistText = artist.toUpperCase();
@@ -349,7 +349,7 @@ export const handler = ({ inputs, mechanic, sketch }) => {
 
     drawRectangles();
 
-    mechanic.done();
+    done();
   };
 };
 

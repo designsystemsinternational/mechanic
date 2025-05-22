@@ -7,7 +7,7 @@ import {
 import { loadOpentypeFont } from "../../utils/opentype";
 import { drawBlock } from "../../utils/blocks-canvas";
 
-export const handler = async ({ inputs, mechanic }) => {
+export const handler = async ({ inputs, done, getCanvas }) => {
   const {
     width,
     ratio,
@@ -35,10 +35,7 @@ export const handler = async ({ inputs, mechanic }) => {
   );
   const position = { x: image ? height : 0, y: 0 };
 
-  const canvas = document.createElement("canvas");
-  canvas.width = width + height;
-  canvas.height = height;
-  const ctx = canvas.getContext("2d");
+  const { ctx } = getCanvas(width, height);
 
   ctx.save();
   ctx.clearRect(0, 0, blockGeometry.width, blockGeometry.height);
@@ -48,11 +45,11 @@ export const handler = async ({ inputs, mechanic }) => {
   const img = new Image();
   img.onload = function () {
     ctx.drawImage(img, 0, 0, height, height);
-    mechanic.done(canvas);
+    done();
   };
   img.src = image ? URL.createObjectURL(image) : "";
   if (!image) {
-    mechanic.done(canvas);
+    done();
   }
 };
 

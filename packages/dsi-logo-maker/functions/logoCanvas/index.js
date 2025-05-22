@@ -9,7 +9,7 @@ import {
 import { loadOpentypeFont } from "../../utils/opentype";
 import { drawBlock } from "../../utils/blocks-canvas";
 
-export const handler = async ({ inputs, mechanic }) => {
+export const handler = async ({ inputs, getCanvas, done }) => {
   const {
     width,
     ratio,
@@ -47,19 +47,14 @@ export const handler = async ({ inputs, mechanic }) => {
   );
   const position = { x: 0, y: 0 };
 
-  const canvas = document.createElement("canvas");
-  canvas.width = width;
-  canvas.height = height;
-  const ctx = canvas.getContext("2d");
+  const { canvas, ctx } = getCanvas(width, height);
 
   ctx.save();
   ctx.clearRect(0, 0, blockGeometry.width, blockGeometry.height);
   drawBlock(ctx, { position, block, colors });
   ctx.restore();
-  mechanic.done(
-    canvas,
-    colorMode !== "Custom Colors" ? `${flag}-${offset}` : null
-  );
+
+  done(canvas, colorMode !== "Custom Colors" ? `${flag}-${offset}` : null);
 };
 
 export const inputs = {

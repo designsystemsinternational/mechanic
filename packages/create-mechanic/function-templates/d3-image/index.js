@@ -1,6 +1,6 @@
 import * as d3 from "d3";
 
-export const handler = ({ inputs, mechanic }) => {
+export const handler = ({ inputs, done }) => {
   const { width, height, text, color1, color2, radiusPercentage } = inputs;
 
   const center = [width / 2, height / 2];
@@ -45,7 +45,7 @@ export const handler = ({ inputs, mechanic }) => {
     .style("font-family", "sans-serif")
     .text(text);
 
-  mechanic.done(SVG._groups[0][0].outerHTML);
+  done(SVG._groups[0][0].outerHTML);
 };
 
 export const inputs = {
