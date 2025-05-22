@@ -280,6 +280,13 @@ module.exports = function (
       alias: {
         react: resolve("react"),
         "react-dom": resolve("react-dom")
+      },
+      // This is needed, because the WASM based h264 encoder
+      // used mounts a virtual file system.
+      //
+      // SEE: https://github.com/TrevorSundberg/h264-mp4-encoder/tree/master?tab=readme-ov-file#use-with-webpack
+      fallback: {
+        fs: false
       }
     },
     module: {
