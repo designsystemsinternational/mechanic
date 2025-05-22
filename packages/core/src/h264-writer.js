@@ -1,4 +1,3 @@
-import * as HME from "h264-mp4-encoder";
 import { clamp } from "./mechanic-utils.js";
 import { MechanicError } from "./mechanic-error.js";
 
@@ -77,6 +76,7 @@ export class H264Writer {
    * @returns {Promise<Blob>}
    */
   async complete() {
+    const HME = await import("h264-mp4-encoder");
     this.encoder = await HME.createH264MP4Encoder();
 
     this.encoder.width = this.width;
