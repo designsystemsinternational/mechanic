@@ -7,9 +7,9 @@ import {
   getIndexModule
 } from "../../utils/blocks";
 import { Unit } from "../../utils/blocks-components";
-import { useDrawLoop, useLoadedOpentypeFont } from "../../utils/hooks";
+import { useLoadedOpentypeFont } from "../../utils/hooks";
 
-export const handler = ({ inputs, mechanic }) => {
+export const handler = ({ inputs, frame, done, useDrawLoop }) => {
   const {
     width,
     ratio,
@@ -23,12 +23,11 @@ export const handler = ({ inputs, mechanic }) => {
     loops,
     fontMode
   } = inputs;
-  const { frame, done } = mechanic;
   const [internalOffset, setInternalOffset] = useState(0);
   const progress = useRef(0);
   const [state, setState] = useState("loading");
   const font = useLoadedOpentypeFont(fontMode);
-  const runtime = useDrawLoop(state === "playing", duration);
+  const { timestamp } = useDrawLoop(state === "playing");
 
   const rows = 2;
   const cols = 13;
@@ -76,11 +75,9 @@ export const handler = ({ inputs, mechanic }) => {
 
   useEffect(() => {
     if (state === "playing") {
-      if (runtime < duration) {
+      if (timestamp < duration) {
         frame();
-        let currentProgress = Math.floor(
-          2 * loops * cols * (runtime / duration)
-        );
+        let currentProgress = Math.floor(2 * loops * cols * timestamp);
         if (currentProgress > progress.current) {
           progress.current = currentProgress;
           setInternalOffset(internalOffset => internalOffset + 1);
@@ -90,7 +87,7 @@ export const handler = ({ inputs, mechanic }) => {
         done();
       }
     }
-  }, [runtime]);
+  }, [timestamp]);
 
   return (
     <svg width={width} height={height}>
@@ -102,7 +99,7 @@ export const handler = ({ inputs, mechanic }) => {
           blockIndex={brickIndex}
           colors={colors}
           animation={animation}
-          runtime={runtime}
+          runtime={timestamp}
         ></Unit>
       )}
     </svg>
@@ -162,9 +159,11 @@ export const inputs = {
   },
   duration: {
     type: "number",
-    default: 5000,
-    step: 500,
-    min: 1000
+    default: 3,
+    step: 0.1,
+    min: 1,
+    max: 20,
+    label: "Duration in seconds"
   },
   loops: {
     type: "number",

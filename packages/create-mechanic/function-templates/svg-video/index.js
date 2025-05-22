@@ -1,12 +1,19 @@
-export const handler = ({ inputs, mechanic }) => {
+export const handler = ({ inputs, frame, done, drawLoop }) => {
   const { width, height, text, color1, color2, radiusPercentage, turns } =
     inputs;
 
   const center = [width / 2, height / 2];
   const radius = ((height / 2) * radiusPercentage) / 100;
 
-  let angle = 0;
-  const drawFrame = () => {
+  // frameCount has the number of the current frame, this is based on the framerate
+  // your animation is running it. For 60 fps the frame at 1 seconds will be 60, while
+  // at 24 fps it will be 24.
+  //
+  // timestamp has the frame offset in seconds and is always the same, no matter the
+  // framerate.
+  drawLoop(({ frameCount, timestamp }) => {
+    const angle = 180 * timestamp;
+
     const svg = `<svg width="${width}" height="${height}">
       <rect fill="#F4F4F4" width="${width}" height="${height}" />
       <g transform="translate(${center[0]}, ${center[1]})">
@@ -30,21 +37,17 @@ export const handler = ({ inputs, mechanic }) => {
           font-family="sans-serif"
           font-size="${height / 10}"
         >
-          ${text}
+          ${text} ${frameCount}
         </text>
       </g>
     </svg>`;
 
     if (angle < turns * 360) {
-      mechanic.frame(svg);
-      angle += 360 / 100;
-      window.requestAnimationFrame(drawFrame);
+      frame(svg);
     } else {
-      mechanic.done(svg);
+      done(svg);
     }
-  };
-
-  drawFrame();
+  });
 };
 
 export const inputs = {

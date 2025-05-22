@@ -2,7 +2,7 @@ import { getColors, flagNames } from "../../utils/graphics";
 import { buildSeeds } from "../../utils/seeds";
 import { buildBlocks } from "../../utils/flagBlocks";
 
-export const handler = ({ inputs, mechanic }) => {
+export const handler = ({ inputs, done, getCanvas }) => {
   const {
     width,
     height,
@@ -36,28 +36,26 @@ export const handler = ({ inputs, mechanic }) => {
     colors
   });
 
-  const canvas = document.createElement("canvas");
-  canvas.width = width;
-  canvas.height = height;
-
-  const ctx = canvas.getContext("2d");
+  const { ctx } = getCanvas(width, height);
 
   blocks.forEach(block => {
     ctx.fillStyle = block.color;
     ctx.fillRect(block.x, block.y, block.w, block.h);
   });
 
-  mechanic.done(canvas);
+  done();
 };
 
 export const inputs = {
   width: {
     type: "number",
-    default: 600
+    default: 600,
+    min: 1
   },
   height: {
     type: "number",
-    default: 400
+    default: 400,
+    min: 1
   },
   seedMode: {
     type: "text",

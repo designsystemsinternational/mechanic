@@ -8,7 +8,7 @@ import {
 import { loadOpentypeFont } from "../../utils/opentype";
 import { drawBlock } from "../../utils/blocks-canvas";
 
-export const handler = async ({ inputs, mechanic }) => {
+export const handler = async ({ inputs, frame, done, drawLoop, getCanvas }) => {
   const { width, height, logoWidth, logoRatio, duration, fontMode } = inputs;
 
   const rows = 2;
@@ -45,10 +45,7 @@ export const handler = async ({ inputs, mechanic }) => {
     }
   }
 
-  const canvas = document.createElement("canvas");
-  canvas.width = width;
-  canvas.height = height;
-  const ctx = canvas.getContext("2d");
+  const { ctx } = getCanvas(width, height);
 
   const draw = () => {
     ctx.save();
@@ -57,19 +54,12 @@ export const handler = async ({ inputs, mechanic }) => {
     ctx.restore();
   };
 
-  let starttime;
-
-  const animationHandler = t => {
-    const timestamp = t || new Date().getTime();
-    if (!starttime) {
-      starttime = timestamp;
-    }
-    const runtime = timestamp - starttime;
+  drawLoop(({ timestamp }) => {
     let changed = false;
     blockConfigs.forEach(blockConfigs => {
       const { block, animation } = blockConfigs;
       const currentProgress = Math.floor(
-        2 * animation.loops * block.cols * (runtime / duration)
+        2 * animation.loops * block.cols * (timestamp / duration)
       );
       if (currentProgress > animation.progress) {
         animation.progress = currentProgress;
@@ -85,15 +75,13 @@ export const handler = async ({ inputs, mechanic }) => {
     if (changed) {
       draw();
     }
-    if (runtime < duration) {
-      mechanic.frame(canvas);
-      requestAnimationFrame(animationHandler);
-    } else {
-      mechanic.done(canvas);
-    }
-  };
 
-  requestAnimationFrame(animationHandler);
+    if (timestamp < duration) {
+      frame();
+    } else {
+      done();
+    }
+  });
 };
 
 export const inputs = {
@@ -122,9 +110,11 @@ export const inputs = {
   },
   duration: {
     type: "number",
-    default: 5000,
-    step: 500,
-    min: 1000
+    default: 3,
+    step: 0.1,
+    min: 1,
+    max: 10,
+    label: "Duration in seconds"
   },
   fontMode: {
     type: "text",
@@ -155,4 +145,5 @@ export const settings = {
   engine: require("@mechanic-design/engine-canvas"),
   animated: true,
   videoFormat: "mp4",
+  frameRate: 10
 };

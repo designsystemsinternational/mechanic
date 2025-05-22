@@ -1,8 +1,11 @@
 import seedrandom from "seedrandom";
+
 import { download } from "./download.js";
-import { WebMWriter } from "./webm-writer.js";
+
 import { H264Writer } from "./h264-writer.js";
+import { WebMWriter } from "./webm-writer.js";
 import { ZipWriter } from "./zip-writer.js";
+
 import {
   isSVG,
   isCanvas,
@@ -16,8 +19,11 @@ import {
   htmlToCanvas,
   extractSvgSize,
   dataUrlToCanvas,
-  getTimeStamp
+  getTimeStamp,
+  mergeWithDefaultSettings
 } from "./mechanic-utils.js";
+
+import { mechanicDrawLoop } from "./mechanic-drawloop.js";
 
 import { MechanicError } from "./mechanic-error.js";
 
@@ -89,10 +95,15 @@ export class Mechanic {
       }
     }
 
-    this.settings = settings;
+    this.settings = mergeWithDefaultSettings(settings);
     this.values = values;
     this.functionState = lastRun?.functionState ?? {};
     this.exportType = exportType;
+
+    this.drawLoop = mechanicDrawLoop.prepare(this.settings.frameRate);
+
+    this.engineFrameCallback = () => {};
+    this.engineDoneCallback = () => {};
   }
 
   /**
@@ -144,16 +155,90 @@ export class Mechanic {
   }
 
   /**
+   ** Convenience function to collect all callbacks that an engine can pass to a
+   * design function. An engine can pass overwrites to inject custom behavior
+   * into the callbacks. This is currently used by engine-p5 to disable using
+   * mechanic.drawLoop within engine-p5.
+   *
+   * @param {object} overwrites - An object with overwrites for the callbacks
+
    * Returns an object with common functions to be used in the design function
    * @param {function} frame - The frame function
    * @param {function} done - The done function
    */
-  callbacks(frame, done) {
-    return {
-      frame,
-      done
-      //requestAnimationFrame:
+  callbacksForDesignFunction(overwrites = {}) {
+    const frame = (...args) => this.engineFrameCallback(...args);
+    const done = (...args) => {
+      // Always make sure to stop the drawloop when we're done rendering
+      this.drawLoop.stop();
+      this.engineDoneCallback(...args);
     };
+
+    return Object.assign(
+      {},
+      {
+        frame,
+        done,
+        // This is where the timeline feature could intercept to render a
+        // single frame. A single frame number can be passed as the second
+        // arguments to drawLoop's start method.
+        drawLoop: cb => this.drawLoop.start(cb),
+
+        // Keeping setState and state in their own namespace to avoid namespace
+        // collisions with React
+        mechanic: {
+          setState: this.setState.bind(this),
+          state: this.functionState,
+
+          /**
+           * Add a reference to the frame callback to the mechanic
+           * object for backwards compatibility.
+           *
+           * @deprecated
+           */
+          frame: (...args) => {
+            console.warn(
+              "mechanic.frame() has been deprecated and will be removed in a future version of Mechanic. The done() and frame() callbacks are now passed to your design function directly."
+            );
+            frame(...args);
+          },
+
+          /**
+           * Add a reference to the done callback to the mechanic
+           * object for backwards compatibility.
+           *
+           * @deprecated
+           */
+          done: (...args) => {
+            console.warn(
+              "mechanic.done() has been deprecated and will be removed in a future version of Mechanic. The done() and frame() callbacks are now passed to your design function directly."
+            );
+            done(...args);
+          }
+        }
+      },
+      overwrites
+    );
+  }
+
+  /**
+   * Helper function that sets the engineFrameCallback to an instance variable.
+   * Done as a function so validation and other setter logic can be added later.
+   *
+   * @param {function} frameCallback - The frame callback function
+   */
+  registerFrameCallback(frameCallback) {
+    this.engineFrameCallback = frameCallback;
+  }
+
+  /**
+   * Helper function that sets the engineFinalizeCallback to an instance variable.
+   * Done as a function so validation and other setter logic can be added later.
+   *
+   * @param {function} doneCallback - The done callback function
+   */
+  registerDoneCallback(doneCallback) {
+    this.engineDoneCallback = doneCallback;
   }
 
   /**
@@ -168,27 +253,16 @@ export class Mechanic {
 
     if (this.settings.videoFormat === "webM") {
       return new WebMWriter({
-        // TODO: Framerate will be on the settings once the
-        // new Animation API is merged.
-        frameRate: 60,
+        frameRate: this.settings.frameRate,
         quality: this.settings.webMSettings?.quality ?? 0.95
       });
     }
 
     return new H264Writer({
-      // TODO: Framerate will be on the settings once the
-      // new Animation API is merged.
-      frameRate: 60,
-
-      // The number of frames between keyframes. Also known as GOP.
+      frameRate: this.settings.frameRate,
       keyFramePeriod: this.settings.mp4Settings?.keyFramePeriod ?? 20,
-
-      // Higher means better compression, and lower means better quality [10..51].
       quantizationParameter:
         this.settings.mp4Settings?.quanitizationParameter ?? 23,
-
-      // 0 means slower compression but butter quality, while
-      // 10 means fastest compression but lower quality [0..10]
       speed: this.settings.mp4Settings?.speed ?? 5
     });
   }

@@ -8,7 +8,7 @@ import {
 import { loadOpentypeFont } from "../../utils/opentype";
 import { drawBlock } from "../../utils/blocks-canvas";
 
-export const handler = async ({ inputs, mechanic }) => {
+export const handler = async ({ inputs, getCanvas, done, frame, drawLoop }) => {
   const {
     width,
     ratio,
@@ -33,10 +33,7 @@ export const handler = async ({ inputs, mechanic }) => {
   const blocksByIndex = precomputeBlocks(blockGeometry, baseBricks);
   const position = { x: 0, y: 0 };
 
-  const canvas = document.createElement("canvas");
-  canvas.width = width;
-  canvas.height = height;
-  const ctx = canvas.getContext("2d");
+  const { ctx } = getCanvas(width, height);
 
   const draw = () => {
     const brickOffset =
@@ -52,31 +49,23 @@ export const handler = async ({ inputs, mechanic }) => {
     ctx.restore();
   };
 
-  let starttime;
   let internalOffset = 0;
   let progress = 0;
 
-  const animationHandler = t => {
-    const timestamp = t || new Date().getTime();
-    if (!starttime) {
-      starttime = timestamp;
-    }
-    const runtime = timestamp - starttime;
-    let currentProgress = Math.floor(2 * loops * cols * (runtime / duration));
+  drawLoop(({ timestamp }) => {
+    let currentProgress = Math.floor(2 * loops * cols * (timestamp / duration));
+
     if (currentProgress > progress) {
       progress = currentProgress;
       internalOffset = internalOffset + 1;
       draw();
     }
-    if (runtime < duration) {
-      mechanic.frame(canvas);
-      requestAnimationFrame(animationHandler);
+    if (timestamp < duration) {
+      frame();
     } else {
-      mechanic.done(canvas);
+      done();
     }
-  };
-
-  requestAnimationFrame(animationHandler);
+  });
 };
 
 export const inputs = {
@@ -131,9 +120,11 @@ export const inputs = {
   },
   duration: {
     type: "number",
-    default: 10000,
-    min: 1000,
-    step: 500
+    default: 6,
+    min: 1,
+    max: 10,
+    step: 0.1,
+    label: "Duration in Seconds"
   },
   loops: {
     type: "number",

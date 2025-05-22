@@ -9,9 +9,8 @@ import {
 import { useLoadedOpentypeFont } from "../../utils/hooks";
 import { Block } from "../../utils/blocks-components";
 
-export const handler = ({ inputs, mechanic }) => {
+export const handler = ({ inputs, done }) => {
   const { width, height, logoWidth, logoRatio, fontMode } = inputs;
-  const { done } = mechanic;
 
   const rows = 2;
   const cols = 13;

@@ -1,4 +1,4 @@
-export const handler = ({ inputs, mechanic, sketch }) => {
+export const handler = ({ inputs, done, sketch }) => {
   const { width, height, text, color1, color2, radiusPercentage } = inputs;
 
   const center = [width / 2, height / 2];
@@ -28,7 +28,7 @@ export const handler = ({ inputs, mechanic, sketch }) => {
     sketch.textSize(height / 10);
     sketch.text(text, 0, height / 2 - height / 20);
 
-    mechanic.done();
+    done();
   };
 };
 
