@@ -1,6 +1,7 @@
 import seedrandom from "seedrandom";
 import { download } from "./download.js";
-import { VideoWriter } from "./video-writer.js";
+import { WebMWriter } from "./webm-writer.js";
+import { H264Writer } from "./h264-writer.js";
 import { ZipWriter } from "./zip-writer.js";
 import {
   isSVG,
@@ -92,6 +93,7 @@ export class Mechanic {
     this.values = values;
     this.functionState = lastRun?.functionState ?? {};
     this.exportType = exportType;
+    this.frameCount = 0;
   }
 
   /**
@@ -157,21 +159,39 @@ export class Mechanic {
 
   /**
    * Returns the correct video writer to use based on the settings of the
-   * current design function.
+   * current design function. This is currently set up to default to export
+   * as MP4, but users can opt into ZIP or WebM export.
    */
   getVideoWriter() {
     if (this.settings.videoFormat === "frames") {
       return new ZipWriter();
-    } else {
-      return new VideoWriter({
-        frameRate: 60,
+    }
 
-        // Video specific settings a user can provide
-        format: this.settings.videoFormat ?? "webm",
-        bitRate: this.settings.videoBitrate || null,
-        keyFramesPerSecond: this.settings.videoKeyFramesPerSecond || null
+    if (this.settings.videoFormat === "webM") {
+      return new WebMWriter({
+        // TODO: Framerate will be on the settings once the
+        // new Animation API is merged.
+        frameRate: 60,
+        quality: this.settings.webMSettings?.quality ?? 0.95
       });
     }
+
+    return new H264Writer({
+      // TODO: Framerate will be on the settings once the
+      // new Animation API is merged.
+      frameRate: 60,
+
+      // The number of frames between keyframes. Also known as GOP.
+      keyFramePeriod: this.settings.mp4Settings?.keyFramePeriod ?? 20,
+
+      // Higher means better compression, and lower means better quality [10..51].
+      quantizationParameter:
+        this.settings.mp4Settings?.quanitizationParameter ?? 23,
+
+      // 0 means slower compression but butter quality, while
+      // 10 means fastest compression but lower quality [0..10]
+      speed: this.settings.mp4Settings?.speed ?? 5
+    });
   }
 
   /**
