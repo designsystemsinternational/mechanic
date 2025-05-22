@@ -64,7 +64,9 @@ const inputsPath = path.resolve(
   path.join(__dirname, "..", "..", "app", "INPUTS")
 );
 const getFuncScriptContent = designFunctionPath => `
-import { inputsDefs, inputErrors } from "${inputsPath}";
+import { inputsDefs, inputErrors } from "${inputsPath
+  .split(path.sep)
+  .join("/")}";
 import * as designFunction from "${designFunctionPath
   .split(path.sep)
   .join("/")}";

@@ -1,6 +1,6 @@
 {
   "name": "@mechanic-design/core",
-  "version": "2.0.0-beta.10",
+  "version": "2.0.0-beta.11",
   "description": "Mechanic is a framework to build assets built on web code.",
   "license": "MIT",
   "homepage": "https://github.com/designsystemsinternational/mechanic#readme",
@@ -55,6 +55,9 @@
     "connect-history-api-fallback": "^1.6.0",
     "copy-webpack-plugin": "^10.2.4",
     "css-loader": "^6.2.0",
+    "css-select": "^4.3.0",
+    "css-select-browser-adapter": "^0.1.2",
+    "css-tree": "^2.3.1",
     "express": "^4.17.1",
     "fs-extra": "^10.0.0",
     "html-loader": "^2.1.2",

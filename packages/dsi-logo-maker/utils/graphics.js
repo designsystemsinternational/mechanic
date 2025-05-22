@@ -47,3 +47,15 @@ export function genColorObject(color) {
     blackOrWhite: textContrastColor(color)
   };
 }
+
+const gray1 = "#37363A";
+const gray2 = "#2D2B30";
+const gray3 = "#1E1D20";
+const gray4 = "#0C0B0F";
+
+export const greys = {
+  grey1: { blackOrWhite: "white", background: gray1, text: gray1 },
+  grey2: { blackOrWhite: "white", background: gray2, text: gray2 },
+  grey3: { blackOrWhite: "white", background: gray3, text: gray3 },
+  grey4: { blackOrWhite: "white", background: gray4, text: gray4 }
+};
