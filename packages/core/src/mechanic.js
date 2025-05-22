@@ -93,7 +93,6 @@ export class Mechanic {
     this.values = values;
     this.functionState = lastRun?.functionState ?? {};
     this.exportType = exportType;
-    this.frameCount = 0;
   }
 
   /**
