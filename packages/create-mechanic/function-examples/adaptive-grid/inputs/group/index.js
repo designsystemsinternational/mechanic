@@ -34,7 +34,6 @@ export const Input = props => {
   return (
     <div className={css.root}>
       <BooleanInput
-        className={css.toggle}
         label={inputDef.label}
         name="show"
         value={show}
