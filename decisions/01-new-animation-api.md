@@ -1,4 +1,4 @@
-# Title
+# New Animation API
 
 ## Status
 
@@ -11,10 +11,10 @@ Mechanic currently has support for animations. When setting `animation: true` in
 For the `2.0` release, we want to improve this setup to create a standardized animation API that cleans up the animated design functions by moving some logic into the Mechanic core, while still giving users the flexibility to write animation with whatever mental model feels comfortable for them. Choosing a standardized animation API is a bit tricky with Mechanic, since it integrates with different kinds of frameworks and web technologies, and each of these frameworks have their own ways of doing things.
 
 - **p5.js** has its own animation api with the `setup` and `draw` functions. So `engine-p5` will most likely just want to use the `frame` and `done` callbacks as it currently does. Furthermore, this frame-based animation style encourages the use of global variables to hold the cumulated state of the animation, which makes it harder to implement the timeline functionality described below.
-- **React** does not ship with any animation API, so users can either just re-render their component once per frame (which is a bit slow) or use something like `react-spring` to perform animations in a more event-driven fashion (which is faster because of the `react-spring` `animated` components that bypass the react rendering tree; the same could manually be done by manipulating the DOM directly inside `useEffect`). Furthermore, React components are most of the time pure functions, which is a benefit for the timeline functionality mentioned below.
+- **React** does not ship with any animation API, so users can either just re-render their component once per frame (which is a bit slow) or use something like `motion` to perform animations in a more event-driven fashion (which is faster because of the `motion` `animated` components that bypass the react rendering tree; the same could manually be done by manipulating the DOM directly inside `useEffect`). Furthermore, React components are most of the time pure functions, which is a benefit for the timeline functionality mentioned below.
 - `engine-svg` and `engine-canvas` have no best practices since these are just slim wrappers around the native HTML5 elements.
 
-One important aspect of this new animation API is that we want the ability to show a timeline scrubber in the Mechanic UI to give users an easy way to preview a specific frame of their design function output. This can only be done for pure functions, where each frame is a function of the current frame number. This timeline functionality is not described in this decision, but will build upon any decisions made in this proposal.
+One important aspect of this new animation API is that we want the ability to show a timeline scrubber in the Mechanic UI to give users an easy way to preview a specific frame of their design function output. This can only be done for pure functions, where each frame is a pure result of the current frame number. This timeline functionality is not described in this decision, but will build upon any decisions made in this proposal.
 
 We explored a new animation API where design functions default to a frame-based approach and the draw loop was hidden from the user inside mechanic core. This approach would call the design function over and over again in a pace determined by the `frameRate` setting, making it a pure function of the current frame count. This approach would make implementing a timeline in the UI very simple, as the frameCount can be passed to the design function directly. However this approach comes with drawbacks. Treating the entire design function as a pure function is very opioniated and removes a lot of flexibilty from the way mechanic can currently be used or at least makes things like loading fonts/images or generating random numbers more verbose, because they need to be persisted across function calls (as a pure function is stateless).
 
@@ -35,7 +35,7 @@ This approach does not impose any rules about the duration (or exit condition) o
 
 The new animation API comes with a new setting:
 
-- `frameRate` (default: `60`) is a number that can be used to change the number of frames per second that the design function is called in `animation` mode.
+- `frameRate` (default: `60`) is a number that can be used to change the number of frames per second that the design function is called.
 
 The argument syntax is also changing slightly by placing the `frame`, `done` and the new `drawLoop` functions as root properties of the design function argument object. We are also removing the need for passing the element into these callbacks except for `engine-svg` where it is needed.
 
