@@ -1,0 +1,10 @@
+.root {
+  margin: 1em 0;
+  padding: 1em;
+  border: 1px solid currentColor;
+  border-radius: var(--mechanic-input-height-half);
+}
+
+.inputs {
+  margin-top: 1em;
+}
