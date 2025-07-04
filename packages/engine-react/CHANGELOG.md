@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## 2.0.0-beta.12 - 2023-07-08
+
 ### Added
 
 - Expose `isPreview` to design function.
