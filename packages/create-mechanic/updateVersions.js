@@ -19,6 +19,7 @@ const path = require("path");
     projectTemplatePkgPath,
     JSON.stringify(projectTemplatePkg, null, 2) + "\n"
   );
+  console.log(`Updated: ${path.relative(__dirname, projectTemplatePkgPath)}`);
 
   for (const directory of ["function-templates", "function-examples"]) {
     const bases = fs
@@ -26,6 +27,7 @@ const path = require("path");
       .filter(d => d !== "index.js");
 
     for (const base of bases) {
+      console.log(`\nTraversing: ${base}`);
       const dependenciesPath = path.join(
         __dirname,
         directory,
@@ -33,7 +35,10 @@ const path = require("path");
         `dependencies.json`
       );
       // skip if file doesn't exist
-      if (!fs.existsSync(dependenciesPath)) continue;
+      if (!fs.existsSync(dependenciesPath)) {
+        console.log(`Skipping: ${path.relative(__dirname, dependenciesPath)}`);
+        continue;
+      }
 
       const dependencies = require(dependenciesPath);
 
@@ -52,6 +57,7 @@ const path = require("path");
         dependenciesPath,
         JSON.stringify(dependencies, null, 2) + "\n"
       );
+      console.log(`Updated: ${path.relative(__dirname, dependenciesPath)}`);
     }
   }
 })();
