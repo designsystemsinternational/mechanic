@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## 2.0.0-beta.12 - 2025-07-14
+
 ### Added
 
 - Ability to copy template or examples that use custom inputs.
