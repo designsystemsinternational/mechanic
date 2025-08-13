@@ -12,6 +12,7 @@ import { useSeedHistory } from "./utils/useSeedHistory.js";
 import { Button, Toggle } from "@mechanic-design/ui-components";
 import { Input } from "./Input.js";
 import { useInteractiveInputs } from "./utils/useInteractiveInputs.js";
+import { download } from "./utils/download.js";
 
 import { appComponents } from "../APP";
 
@@ -118,6 +119,10 @@ export const SideBar = ({
     lastRun.downloadState(name);
   };
 
+  const handleFileDownload = ({ data, name, mimeType }) => {
+    download(data, name, mimeType);
+  }
+
   useEffect(() => {
     if (autoRefreshOn && iframeLoaded) preview();
   }, [values, autoRefreshOn, iframeLoaded, scaleToFit]);
@@ -125,6 +130,14 @@ export const SideBar = ({
   useEffect(() => {
     preview();
   }, [seedHistory.current]);
+
+  useEffect(() => {
+    if (lastRun === null) return;
+
+    lastRun.on("download", handleFileDownload);
+
+    return () => lastRun.off("download", handleFileDownload);
+  }, [lastRun]);
 
   useInteractiveInputs(inputs, iframe, handleOnChange);
   useShortcuts(handleExport);
