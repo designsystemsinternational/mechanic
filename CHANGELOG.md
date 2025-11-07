@@ -7,6 +7,28 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.0.0-beta.12] - 2025-07-14
+
+### Added
+
+- Ability to copy template or examples that use custom inputs.
+- New Adaptive Grid design function (by @munusshih) added to examples
+- Adds base .gitignore to new projects
+- Tries to initialize a git repository for new projects
+- Right before trying to install dependencies of new project, it will list out which dependencies are being installed
+- Engines now expose `isPreview` to design functions
+
+
+### Fixed
+
+- `dev` and `build` commands now will use a project's config values when the following options aren't specified :`functionsPath`, `inputsPath`, `staticPath` and `appCompsPath`
+- Removes unused style declarations that get bundled with design function exports. Fixes a bug that crashed exports when certain declarations couldn't be parsed.
+
+### Changed
+
+- `Export` and `Generate` buttons are disabled while an export is running
+
+
 ## [2.0.0-beta.11] - 2023-08-16
 
 ### Added
@@ -330,7 +352,8 @@ Beta release
 
 First logged release
 
-[unreleased]: https://github.com/designsystemsinternational/mechanic/compare/v2.0.0-beta.11...main
+[unreleased]: https://github.com/designsystemsinternational/mechanic/compare/v2.0.0-beta.12...main
+[2.0.0-beta.12]: https://github.com/designsystemsinternational/mechanic/releases/tag/v2.0.0-beta.12
 [2.0.0-beta.11]: https://github.com/designsystemsinternational/mechanic/releases/tag/v2.0.0-beta.11
 [2.0.0-beta.10]: https://github.com/designsystemsinternational/mechanic/releases/tag/v2.0.0-beta.10
 [2.0.0-beta.9]: https://github.com/designsystemsinternational/mechanic/releases/tag/v2.0.0-beta.9

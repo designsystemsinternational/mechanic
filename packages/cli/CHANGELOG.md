@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## 2.0.0-beta.12 - 2025-07-14
+
+### Fixed
+
+- `dev` and `build` commands now will use a project's config values when the following options aren't specified :`functionsPath`, `inputsPath`, `staticPath` and `appCompsPath`
+
 ## 2.0.0-beta.10 - 2023-02-10
 
 ### Fixed

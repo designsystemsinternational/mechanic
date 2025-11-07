@@ -11,6 +11,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Updated engine to new `registerFrameCallback` and `registerDoneCallback` setup
 - `done` and `frame` are passed into the design function directly now. Destructuring them from `mechanic` is deprecated.
+
+## 2.0.0-beta.12 - 2025-07-14
+
+### Added
+
 - Expose `isPreview` to design function.
 
 ## 2.0.0-beta.0 - 2022-03-16

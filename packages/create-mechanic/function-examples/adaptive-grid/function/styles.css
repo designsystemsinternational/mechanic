@@ -1,0 +1,63 @@
+/* Object Sans
+ * This beautiful font was designed by Alex Slobzheninov.
+ * ---------------------------------------------------------------------------
+ * Object Sans is a contemporary type family that puts together the best
+ * qualities of Swiss neo-grotesks and geometric fonts. It’s a multifunctional
+ * workhorse designed to work best in any printed and on-screen contexts.
+ * It is free to use for personal purposes. If you would like to use it
+ * for commercial purposes, you will need to purchase a license.
+ * for more information visit https://pangrampangram.com/products/object-sans
+ * or check ./assets/EULA-PangramPangram-FreeForPersonalUse-MAY2021.pdf
+ * Alex Slobzheninov https://www.behance.net/slobzheninov
+ * ---------------------------------------------------------------------------
+*/
+
+@font-face {
+  font-family: "Object Sans";
+  src: url("./assets/PPObjectSans-Regular.otf") format("opentype");
+}
+
+@font-face {
+  font-family: "Object Sans Italic";
+  src: url("./assets/PPObjectSans-Slanted.otf") format("opentype");
+  font-style: italic;
+}
+
+@font-face {
+  font-family: "Object Sans Heavy";
+  src: url("./assets/PPObjectSans-Heavy.otf") format("opentype");
+  font-weight: bold;
+}
+
+@font-face {
+  font-family: "Object Sans Slanted";
+  src: url("./assets/PPObjectSans-HeavySlanted.otf") format("opentype");
+  font-weight: bold;
+  font-style: italic;
+}
+
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+.column {
+  height: 100%;
+  position: relative;
+  padding: 10px;
+}
+
+.top {
+  position: absolute;
+  top: 0;
+  padding-top: 10px;
+  padding-right: 10px;
+}
+
+.bottom {
+  position: absolute;
+  bottom: 0;
+  padding-bottom: 10px;
+  padding-right: 10px;
+}

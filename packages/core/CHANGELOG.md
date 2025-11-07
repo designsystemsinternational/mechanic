@@ -13,6 +13,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added `mechanicDrawLoop` singleton that provides a unified and coordinated way to dispatch a drawLoop determined by the pace of `frameRate`
 - Adds the setting to hide a design function from the mechanic UI app. This allows to iterate multiple functions and simply hide earlier versions, instead of moving everything to other locations. If a user sets `hideFunction` in their functions settings to true, they won't appear but will still be tracked for updates in HMR mode. It defaults to false.
 
+## 2.0.0-beta.12 - 2025-07-14
+
 ### Fixed
 
 - Removes unused style declarations that get bundled with design function exports. Fixes a bug that crashed exports when certain declarations couldn't be parsed.
