@@ -11,6 +11,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- Expose `drawLoop` util to design function. This will call a callback determined by the `frameRate` and pass `frameCount` and `timestamp` in as arguments.
+
+### Changed
+
+- Updated engine to new `registerFrameCallback` and `registerDoneCallback` setup
+- `done` and `frame` are passed into the design function directly now. Destructuring them from `mechanic` is deprecated.
 - Expose `isPreview` to design function.
 
 ## 2.0.0-beta.0 - 2022-03-16

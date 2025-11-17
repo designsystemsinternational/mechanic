@@ -1,10 +1,10 @@
 import React, { useEffect } from "react";
 
-export const handler = ({ inputs, mechanic }) => {
+export const handler = ({ inputs, done }) => {
   const { width, height, color } = inputs;
 
   useEffect(() => {
-    mechanic.done();
+    done();
   }, []);
 
   return (

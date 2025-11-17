@@ -4,6 +4,8 @@ import { parse as parseCSS, generate as generateCSS } from "css-tree";
 import { selectOne as cssSelectOne } from "css-select";
 import cssSelectBrowserAdapter from "css-select-browser-adapter";
 
+import { DEFAULT_SETTINGS } from "./default-settings.js";
+
 /**
  * Checks whether a DOM element is instance of SVGElement
  * @param {object} el - A DOM element to check
@@ -211,6 +213,19 @@ const getTimeStamp = () => {
 };
 
 /**
+ * Creates a standardized settings object from user-provided settings.
+ *
+ * @param {object} settings - User-provided settings
+ * @returns {object} - Standardized settings object
+ */
+const mergeWithDefaultSettings = (
+  settings,
+  defaultSettings = DEFAULT_SETTINGS
+) => {
+  return Object.assign({}, defaultSettings, settings);
+};
+
+/**
  * Turns an input string into a hash to be used as a cache key.
  * @param {string} str - String to hash
  * @param {number} length - Length of the hash
@@ -241,5 +256,6 @@ export {
   extractSvgSize,
   dataUrlToCanvas,
   getTimeStamp,
+  mergeWithDefaultSettings,
   hashFromString
 };

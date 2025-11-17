@@ -11,6 +11,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- Provides a `useDrawLoop` helper to design functions. It destructures to `frameCount` and `timestamp`. Both are updated determined by the pace of `frameRate`
+
+### Changed
+
+- Updated engine to new `registerFrameCallback` and `registerDoneCallback` setup
+- `done` and `frame` are passed into the design function directly now. Destructuring them from `mechanic` is deprecated.
 - Expose `isPreview` to design function.
 
 ## 2.0.0-beta.0 - 2022-03-16

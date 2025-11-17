@@ -1,6 +1,6 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useEffect, useRef } from "react";
 
-export const handler = ({ inputs, mechanic }) => {
+export const handler = ({ inputs, frame, done, useDrawLoop }) => {
   const { width, height, text, color1, color2, radiusPercentage, turns } =
     inputs;
 
@@ -9,17 +9,24 @@ export const handler = ({ inputs, mechanic }) => {
   const angle = useRef(0);
 
   const isPlaying = useRef(true);
-  const frameCount = useDrawLoop(isPlaying.current);
+
+  // frameCount has the number of the current frame, this is based on the framerate
+  // your animation is running it. For 60 fps the frame at 1 seconds will be 60, while
+  // at 24 fps it will be 24.
+  //
+  // timestamp has the frame offset in seconds and is always the same, no matter the
+  // framerate.
+  const { frameCount, timestamp } = useDrawLoop(isPlaying.current);
 
   useEffect(() => {
     if (angle.current < turns * 360) {
-      mechanic.frame();
-      angle.current += 360 / 100;
+      frame();
+      angle.current = 180 * timestamp;
     } else if (isPlaying.current) {
       isPlaying.current = false;
-      mechanic.done();
+      done();
     }
-  }, [frameCount]);
+  }, [timestamp]);
 
   return (
     <svg width={width} height={height}>
@@ -45,7 +52,7 @@ export const handler = ({ inputs, mechanic }) => {
           fontFamily="sans-serif"
           fontSize={height / 10}
         >
-          {text}
+          {text} {frameCount}
         </text>
       </g>
     </svg>
@@ -102,30 +109,4 @@ export const presets = {
 export const settings = {
   engine: require("@mechanic-design/engine-react"),
   animated: true
-};
-
-const useDrawLoop = isPlaying => {
-  const raf = useRef();
-  const [frameCount, setFrameCount] = useState(0);
-
-  useEffect(() => {
-    cancelAnimationFrame(raf.current);
-
-    if (!isPlaying) {
-      return;
-    }
-
-    const draw = () => {
-      setFrameCount(cur => cur + 1);
-      raf.current = requestAnimationFrame(draw);
-    };
-
-    draw();
-
-    return () => {
-      cancelAnimationFrame(raf.current);
-    };
-  }, [isPlaying]);
-
-  return frameCount;
 };

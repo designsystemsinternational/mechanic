@@ -4,7 +4,7 @@ import { getColors, flagNames } from "../../utils/graphics";
 import { buildSeeds } from "../../utils/seeds";
 import { buildBlocks } from "../../utils/flagBlocks";
 
-export const handler = ({ inputs, mechanic }) => {
+export const handler = ({ inputs, done }) => {
   const {
     width,
     height,
@@ -41,7 +41,7 @@ export const handler = ({ inputs, mechanic }) => {
   }, [width, height, seedDistribution, seedOffset, colors]);
 
   useEffect(() => {
-    mechanic.done();
+    done();
   }, []);
 
   return (
