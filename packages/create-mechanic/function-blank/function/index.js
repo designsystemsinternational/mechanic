@@ -1,4 +1,4 @@
-export const handler = ({ inputs, mechanic }) => {};
+export const handler = ({ inputs, frame, done }) => { };
 
 export const inputs = {};
 
