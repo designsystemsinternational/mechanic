@@ -1,5 +1,5 @@
 import React from "react";
-import { render } from "react-dom";
+import { createRoot } from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
 import { App } from "./App.js";
 import "./index.module.css";
@@ -10,7 +10,8 @@ const app = (
     <App />
   </BrowserRouter>
 );
-render(app, root);
+
+createRoot(root).render(app);
 
 if (import.meta.webpackHot) {
   import.meta.webpackHot.accept();

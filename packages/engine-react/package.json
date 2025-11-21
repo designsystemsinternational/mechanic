@@ -36,8 +36,8 @@
   "type": "module",
   "exports": "./index.js",
   "peerDependencies": {
-    "react": "^17.0.2",
-    "react-dom": "^17.0.2"
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0"
   },
   "dependencies": {
     "@mechanic-design/core": "^2.0.0-beta.12"

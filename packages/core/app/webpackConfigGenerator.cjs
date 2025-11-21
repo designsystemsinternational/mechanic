@@ -1,5 +1,6 @@
 const path = require("path");
 const webpack = require("webpack");
+const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
@@ -8,7 +9,7 @@ const CopyPlugin = require("copy-webpack-plugin");
 
 const { resolve } = require;
 
-module.exports = function (
+module.exports = function(
   modeParameter,
   { designFunctions, inputsData, appCompsPath, staticPath },
   distDir,
@@ -60,7 +61,7 @@ module.exports = function (
           ]
         ],
         plugins: [
-          resolve("react-hot-loader/babel"),
+          resolve("react-refresh/babel"),
           resolve("@babel/plugin-transform-runtime")
         ],
         env: {
@@ -209,9 +210,9 @@ module.exports = function (
       app: isProduction
         ? path.resolve(__dirname, "./index.js")
         : [
-            resolve("webpack-hot-middleware/client"),
-            path.resolve(__dirname, "./index.js")
-          ]
+          resolve("webpack-hot-middleware/client"),
+          path.resolve(__dirname, "./index.js")
+        ]
     }
   );
 
@@ -249,15 +250,16 @@ module.exports = function (
           chunks: [name]
         })
     ),
-    new NodePolyfillPlugin()
+    new NodePolyfillPlugin(),
+    ...(mode === 'development' ? [new ReactRefreshWebpackPlugin()] : []),
   ].concat(
     isProduction
       ? [
-          new CleanWebpackPlugin(),
-          new MiniCssExtractPlugin({
-            filename: "[contenthash]-[name].css"
-          })
-        ]
+        new CleanWebpackPlugin(),
+        new MiniCssExtractPlugin({
+          filename: "[contenthash]-[name].css"
+        })
+      ]
       : [new webpack.HotModuleReplacementPlugin()]
   );
 
@@ -279,7 +281,7 @@ module.exports = function (
       extensions: [".js", ".jsx", ".json"],
       alias: {
         react: resolve("react"),
-        "react-dom": resolve("react-dom")
+        "react-dom/client": resolve("react-dom/client")
       }
     },
     module: {
