@@ -12,5 +12,14 @@ export const DEFAULT_SETTINGS = {
   hideGenerate: false,
   showMultipleExports: false,
   ignoreStyles: false,
-  frameRate: 60
+  frameRate: 60,
+  videoFormat: "mp4",
+  mp4Settings: {
+    keyFramePeriod: 20,
+    quantizationParameter: 23,
+    speed: 5
+  },
+  webMSettings: {
+    quality: 0.95
+  }
 };

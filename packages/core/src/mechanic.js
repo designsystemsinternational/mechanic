@@ -1,6 +1,11 @@
 import seedrandom from "seedrandom";
+
 import { download } from "./download.js";
+
+import { H264Writer } from "./h264-writer.js";
 import { WebMWriter } from "./webm-writer.js";
+import { ZipWriter } from "./zip-writer.js";
+
 import {
   isSVG,
   isCanvas,
@@ -237,6 +242,32 @@ export class Mechanic {
   }
 
   /**
+   * Returns the correct video writer to use based on the settings of the
+   * current design function. This is currently set up to default to export
+   * as MP4, but users can opt into ZIP or WebM export.
+   */
+  getVideoWriter() {
+    if (this.settings.videoFormat === "frames") {
+      return new ZipWriter();
+    }
+
+    if (this.settings.videoFormat === "webM") {
+      return new WebMWriter({
+        frameRate: this.settings.frameRate,
+        quality: this.settings.webMSettings?.quality ?? 0.95
+      });
+    }
+
+    return new H264Writer({
+      frameRate: this.settings.frameRate,
+      keyFramePeriod: this.settings.mp4Settings?.keyFramePeriod ?? 20,
+      quantizationParameter:
+        this.settings.mp4Settings?.quanitizationParameter ?? 23,
+      speed: this.settings.mp4Settings?.speed ?? 5
+    });
+  }
+
+  /**
    * Register a frame for an animated design function
    * @param {SVGElement|HTMLCanvasElement} el - Element with the current drawing state of the design function
    * @param {Object} extras  - object containing extra elements needed by some engines
@@ -263,10 +294,7 @@ export class Mechanic {
     if (!this.exportInit) {
       this.exportInit = true;
       this.serializer = new XMLSerializer();
-      this.videoWriter = new WebMWriter({
-        quality: 0.95,
-        frameRate: this.settings.frameRate
-      });
+      this.videoWriter = this.getVideoWriter();
     }
 
     if (isSVG(el)) {
@@ -285,11 +313,11 @@ export class Mechanic {
         this.svgSize = extractSvgSize(el);
       }
     } else if (isCanvas(el)) {
-      this.videoWriter.addFrame(el);
+      await this.videoWriter.addFrame(el);
     } else {
       // This is slow. We should find a more efficient way
       const frame = await htmlToCanvas(el);
-      this.videoWriter.addFrame(frame);
+      await this.videoWriter.addFrame(frame);
     }
     this.frameCalled = true;
   }
@@ -359,7 +387,7 @@ export class Mechanic {
         cacheCanvas.height = this.svgSize.height;
         for (let i = 0; i < this.svgFrames.length; i++) {
           await dataUrlToCanvas(this.svgFrames[i], cacheCanvas);
-          this.videoWriter.addFrame(cacheCanvas);
+          await this.videoWriter.addFrame(cacheCanvas);
         }
       }
       this.videoData = await this.videoWriter.complete();
@@ -388,8 +416,12 @@ export class Mechanic {
       download(this.canvasData, `${name}.png`, "image/png");
     } else if (this.htmlData) {
       download(this.htmlData, `${name}.png`, "image/png");
-    } else if (this.videoData) {
+    } else if (this.videoData && this.videoData.type === "video/mp4") {
+      download(this.videoData, `${name}.mp4`, "video/mp4");
+    } else if (this.videoData && this.videoData.type === "video/webm") {
       download(this.videoData, `${name}.webm`, "video/webm");
+    } else if (this.videoData && this.videoData.type === "application/zip") {
+      download(this.videoData, `${name}.zip`, "application/zip");
     }
   }
 
