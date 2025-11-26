@@ -3,6 +3,7 @@ import { toPng, toCanvas } from "html-to-image";
 import { parse as parseCSS, generate as generateCSS } from "css-tree";
 import { selectOne as cssSelectOne } from "css-select";
 import cssSelectBrowserAdapter from "css-select-browser-adapter";
+import deepmerge from "deepmerge";
 
 import { DEFAULT_SETTINGS } from "./default-settings.js";
 
@@ -222,7 +223,7 @@ const mergeWithDefaultSettings = (
   settings,
   defaultSettings = DEFAULT_SETTINGS
 ) => {
-  return Object.assign({}, defaultSettings, settings);
+  return deepmerge(defaultSettings, settings);
 };
 
 /**
@@ -242,6 +243,18 @@ const hashFromString = (str, len = Infinity) => {
   return hash.toString().substring(0, len);
 };
 
+/**
+ * Clamps a number between a min and max value
+ *
+ * @param {number} min
+ * @param {number} max
+ * @param {number} value
+ * @returns {number}
+ */
+const clamp = (min, max, value) => {
+  return Math.max(min, Math.min(max, value));
+};
+
 export {
   isSVG,
   isCanvas,
@@ -257,5 +270,6 @@ export {
   dataUrlToCanvas,
   getTimeStamp,
   mergeWithDefaultSettings,
-  hashFromString
+  hashFromString,
+  clamp
 };

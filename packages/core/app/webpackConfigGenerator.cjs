@@ -249,6 +249,14 @@ module.exports = function (
           chunks: [name]
         })
     ),
+    new CopyPlugin({
+      patterns: [
+        {
+          from: path.resolve(__dirname, "./ffmpeg"),
+          to: path.relative(process.cwd(), "ffmpeg")
+        }
+      ]
+    }),
     new NodePolyfillPlugin()
   ].concat(
     isProduction
