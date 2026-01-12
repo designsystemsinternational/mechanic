@@ -60,7 +60,9 @@ module.exports = function(
             }
           ]
         ],
-        plugins: [
+        plugins: isProduction ? [
+          resolve("@babel/plugin-transform-runtime")
+        ] : [
           resolve("react-refresh/babel"),
           resolve("@babel/plugin-transform-runtime")
         ],

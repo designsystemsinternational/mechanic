@@ -1,5 +1,5 @@
 import React, { useRef } from "react";
-import { Routes, Route } from "react-router";
+import { BrowserRouter, Routes, Route } from "react-router";
 
 import { SideBar } from "./components/SideBar.js";
 import { NotFound } from "./components/NotFound.js";
@@ -48,41 +48,43 @@ export const App = () => {
   const firstFunctionName = Object.keys(functions)[0];
   return (
     <div className={css.base}>
-      <Routes>
-        {Object.keys(functions).map((name) => (
-          <Route
-            key={`route-${name}`}
-            path={`/${name}`}
-            element={<Layout
-              key={`layout-${name}`}
-              funcName={name}
-              functions={functions}
-              iframeRef={iframe}
-              mainRef={mainRef}
+      <BrowserRouter basename={BASENAME}>
+        <Routes>
+          {Object.keys(functions).map(name => (
+            <Route
+              key={`route-${name}`}
+              path={`/${name}`}
+              Component={() => (
+                <Layout
+                  key={`layout-${name}`}
+                  funcName={name}
+                  functions={functions}
+                  iframeRef={iframe}
+                  mainRef={mainRef}
+                />
+              )}
             />
+          ))}
+
+          <Route
+            path="/"
+            Component={() =>
+              !theresNoFunctions ? (
+                <Layout
+                  funcName={firstFunctionName}
+                  functions={functions}
+                  iframeRef={iframe}
+                  mainRef={mainRef}
+                />
+              ) : (
+                <NotFound theresNoFunctions={theresNoFunctions} />
+              )
             }
           />
-        ))}
 
-        <Route
-          exact
-          path="/"
-          element={() =>
-            !theresNoFunctions ? (
-              <Layout
-                funcName={firstFunctionName}
-                functions={functions}
-                iframeRef={iframe}
-                mainRef={mainRef}
-              />
-            ) : (
-              <NotFound theresNoFunctions={theresNoFunctions} />
-            )
-          }
-        />
-
-        <Route element={NotFound} />
-      </Routes>
+          <Route path="*" Component={NotFound} />
+        </Routes>
+      </BrowserRouter>
     </div>
   );
 };
