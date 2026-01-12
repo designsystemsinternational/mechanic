@@ -1,5 +1,5 @@
 import React, { useRef } from "react";
-import { Switch, Route, withRouter } from "react-router-dom";
+import { Routes, Route } from "react-router";
 
 import { SideBar } from "./components/SideBar.js";
 import { NotFound } from "./components/NotFound.js";
@@ -42,32 +42,32 @@ const Layout = ({ funcName, functions, mainRef, iframeRef }) => {
   );
 };
 
-const AppComponent = () => {
+export const App = () => {
   const mainRef = useRef();
   const iframe = useRef();
   const firstFunctionName = Object.keys(functions)[0];
   return (
     <div className={css.base}>
-      <Switch>
-        {Object.keys(functions).map((name, i) => (
+      <Routes>
+        {Object.keys(functions).map((name) => (
           <Route
             key={`route-${name}`}
-            path={[`/${name}`]}
-            render={() => (
-              <Layout
-                funcName={name}
-                functions={functions}
-                iframeRef={iframe}
-                mainRef={mainRef}
-              />
-            )}
+            path={`/${name}`}
+            element={<Layout
+              key={`layout-${name}`}
+              funcName={name}
+              functions={functions}
+              iframeRef={iframe}
+              mainRef={mainRef}
+            />
+            }
           />
         ))}
 
         <Route
           exact
           path="/"
-          render={() =>
+          element={() =>
             !theresNoFunctions ? (
               <Layout
                 funcName={firstFunctionName}
@@ -81,10 +81,8 @@ const AppComponent = () => {
           }
         />
 
-        <Route component={NotFound} />
-      </Switch>
+        <Route element={NotFound} />
+      </Routes>
     </div>
   );
 };
-
-export const App = withRouter(AppComponent);
