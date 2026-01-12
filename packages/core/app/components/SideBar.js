@@ -85,19 +85,19 @@ export const SideBar = ({
     setLastRun(lastRun =>
       run
         ? run(
-            name,
-            values,
-            getRunConfig(lastRun, true, seedHistory.current, true)
-          )
+          name,
+          values,
+          getRunConfig(lastRun, true, seedHistory.current, true)
+        )
         : null
     );
   };
 
   const preview = debounceInputs
     ? useDebouncedCallback(
-        previewHandler,
-        debounceDelay || DEFAULT_PREVIEW_DEBOUNCE_TIMEOUT
-      )
+      previewHandler,
+      debounceDelay || DEFAULT_PREVIEW_DEBOUNCE_TIMEOUT
+    )
     : previewHandler;
 
   const handleExport = async type => {
@@ -106,10 +106,10 @@ export const SideBar = ({
     setLastRun(lastRun =>
       run
         ? run(
-            name,
-            values,
-            getRunConfig(lastRun, false, seedHistory.current, false, type)
-          )
+          name,
+          values,
+          getRunConfig(lastRun, false, seedHistory.current, false, type)
+        )
         : null
     );
   };
@@ -121,6 +121,17 @@ export const SideBar = ({
   useEffect(() => {
     if (autoRefreshOn && iframeLoaded) preview();
   }, [values, autoRefreshOn, iframeLoaded, scaleToFit]);
+
+  useEffect(() => {
+    const handleHMRMessage = event => {
+      if (event.data?.type === "mechanic-hmr-update") {
+        preview();
+      }
+    }
+
+    window.addEventListener("message", handleHMRMessage);
+    return () => window.removeEventListener("message", handleHMRMessage);
+  }, [preview]);
 
   useEffect(() => {
     preview();
@@ -256,10 +267,10 @@ export const SideBar = ({
               {lastRun === undefined
                 ? "Error"
                 : iframeLoaded
-                ? isExporting
-                  ? "Exporting"
-                  : "Export"
-                : "Loading content"}
+                  ? isExporting
+                    ? "Exporting"
+                    : "Export"
+                  : "Loading content"}
             </Button>
           </div>
         ) : (
@@ -273,10 +284,10 @@ export const SideBar = ({
               {lastRun === undefined
                 ? "Error"
                 : iframeLoaded
-                ? isExporting
-                  ? "Exporting"
-                  : "Export SVG"
-                : "Loading content"}
+                  ? isExporting
+                    ? "Exporting"
+                    : "Export SVG"
+                  : "Loading content"}
             </Button>
             <div className={css.sep} />
             <Button
@@ -288,10 +299,10 @@ export const SideBar = ({
               {lastRun === undefined
                 ? "Error"
                 : iframeLoaded
-                ? isExporting
-                  ? "Exporting"
-                  : "Export PNG"
-                : "Loading content"}
+                  ? isExporting
+                    ? "Exporting"
+                    : "Export PNG"
+                  : "Loading content"}
             </Button>
           </>
         )}

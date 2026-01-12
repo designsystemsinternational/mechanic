@@ -238,6 +238,7 @@ module.exports = function(
     new webpack.EnvironmentPlugin({
       "process.env.NODE_ENV": mode
     }),
+    ...(mode === 'development' ? [new ReactRefreshWebpackPlugin()] : []),
     new HtmlWebpackPlugin({
       template: path.resolve(__dirname, "./index.html"),
       chunks: ["app"]
@@ -251,7 +252,6 @@ module.exports = function(
         })
     ),
     new NodePolyfillPlugin(),
-    ...(mode === 'development' ? [new ReactRefreshWebpackPlugin()] : []),
   ].concat(
     isProduction
       ? [
