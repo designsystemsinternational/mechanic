@@ -143,5 +143,7 @@ export const presets = {
 
 export const settings = {
   engine: require("@mechanic-design/engine-canvas"),
-  animated: true
+  animated: true,
+  videoFormat: "mp4",
+  frameRate: 10
 };
