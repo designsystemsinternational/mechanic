@@ -3,8 +3,6 @@ const path = require("path");
 module.exports = function () {
   const { designFunctions } = this.getOptions();
 
-  console.log('Loaded design functions without loader utils :tada:');
-
   let importSection = "";
   let codeSection = "";
   let count = 0;

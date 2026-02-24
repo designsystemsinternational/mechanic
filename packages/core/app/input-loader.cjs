@@ -1,5 +1,3 @@
-const { getOptions } = require("loader-utils");
-
 module.exports = function () {
   const { inputs } = this.getOptions();
   const { inputsPath, inputScriptContent, customInputs } = inputs;
