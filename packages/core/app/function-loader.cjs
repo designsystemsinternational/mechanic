@@ -1,8 +1,9 @@
 const path = require("path");
-const { getOptions } = require("loader-utils");
 
 module.exports = function () {
-  const { designFunctions } = getOptions(this);
+  const { designFunctions } = this.getOptions();
+
+  console.log('Loaded design functions without loader utils :tada:');
 
   let importSection = "";
   let codeSection = "";

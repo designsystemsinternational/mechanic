@@ -65,7 +65,6 @@
     "html-to-image": "^1.9.0",
     "html-webpack-plugin": "^5.6.6",
     "immer": "^10.2.0",
-    "loader-utils": "^2.0.0",
     "mini-css-extract-plugin": "^2.10.0",
     "mousetrap": "^1.6.5",
     "node-polyfill-webpack-plugin": "^4.1.0",
