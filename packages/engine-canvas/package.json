@@ -40,7 +40,7 @@
     "@mechanic-design/core": "^2.0.0-beta.12"
   },
   "engines": {
-    "node": ">=16.0.0"
+    "node": ">=20"
   },
   "gitHead": "123dc6a0f0532663d411bb9cf1b99271e185436f"
 }

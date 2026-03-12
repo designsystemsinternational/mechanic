@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### Removed
+
+- Dropped support for node.js versions below 20 (EOL prior to that are no longer supported)
+
+
 ### Changed
 
 - Updated engine to new `registerFrameCallback` and `registerDoneCallback` setup

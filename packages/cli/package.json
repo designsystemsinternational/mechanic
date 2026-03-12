@@ -48,5 +48,8 @@
     "resolve-cwd": "^3.0.0",
     "yargs": "^17.7.2"
   },
+  "engines": {
+    "node": ">=20"
+  },
   "gitHead": "123dc6a0f0532663d411bb9cf1b99271e185436f"
 }
