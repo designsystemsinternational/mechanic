@@ -37,7 +37,7 @@
   "exports": "./index.js",
   "dependencies": {
     "@mechanic-design/core": "^2.0.0-beta.12",
-    "p5": "^1.4.0"
+    "p5": "^2.2.2"
   },
   "engines": {
     "node": ">=20"
