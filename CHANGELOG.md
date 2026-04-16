@@ -7,6 +7,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- Deprecated destructuring `done()` and `frame()` from the `mechanic` object. The lifecycle callbacks are now passed into the design function handler directly now
+- New frame-based animation API is introduced. All video examples and templates have been updated to use this new way of defining design functions
+- Updated internal dependencies to their latest stable and supported versions, including React 19 and p5.js 2.0
+
+### Added
+
+- Added `frameRate` setting to mechanic design function
+- Engines expose new utility functions and helpers for design function definitions
+
+### Removed
+
+- Dropped support for node.js versions below 20 (EOL prior to that are no longer supported)
+
 ## [2.0.0-beta.12] - 2025-07-14
 
 ### Added
@@ -18,7 +33,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Right before trying to install dependencies of new project, it will list out which dependencies are being installed
 - Engines now expose `isPreview` to design functions
 
-
 ### Fixed
 
 - `dev` and `build` commands now will use a project's config values when the following options aren't specified :`functionsPath`, `inputsPath`, `staticPath` and `appCompsPath`
@@ -28,7 +42,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - `Export` and `Generate` buttons are disabled while an export is running
 
-
 ## [2.0.0-beta.11] - 2023-08-16
 
 ### Added
@@ -37,7 +50,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
-- Fixes bug that crushed mechanic on PC. 
+- Fixes bug that crushed mechanic on PC.
 - Improved log formatting in create script.
 
 ## [2.0.0-beta.10] - 2023-02-10

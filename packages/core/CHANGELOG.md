@@ -13,13 +13,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- Deprecated destructuring `done()` and `frame()` from the `mechanic` object. The lifecycle callbacks are now passed into the design function handler directly now.
+- Provide engine callbacks from mechanic core. This requires engines to register their frame and done callbacks with mechanic core using `registerFrameCallback` and `registerDoneCallback`
 - Updated internal dependencies to their latest stable and supported versions
 
 ### Added
 
 - Added `frameRate` setting to mechanic design function
 - Added `mechanicDrawLoop` singleton that provides a unified and coordinated way to dispatch a drawLoop determined by the pace of `frameRate`
-- Adds the setting to hide a design function from the mechanic UI app. This allows to iterate multiple functions and simply hide earlier versions, instead of moving everything to other locations. If a user sets `hideFunction` in their functions settings to true, they won't appear but will still be tracked for updates in HMR mode. It defaults to false.
 
 ## 2.0.0-beta.12 - 2025-07-14
 
@@ -30,9 +31,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 - `Export` and `Generate` buttons are disabled while an export is running
-- Deprecated destructuring `done()` and `frame()` from the `mechanic` object. The lifecycle callbacks are now passed into the design function handler directly now.
 
 ## 2.0.0-beta.11 - 2023-08-16
+
+### Added
+
+- Added `frameRate` setting to mechanic design function
+- Added `mechanicDrawLoop` singleton that provides a unified and coordinated way to dispatch a drawLoop determined by the pace of `frameRate`
+- Adds the setting to hide a design function from the mechanic UI app. This allows to iterate multiple functions and simply hide earlier versions, instead of moving everything to other locations. If a user sets `hideFunction` in their functions settings to true, they won't appear but will still be tracked for updates in HMR mode. It defaults to false.
 
 ### Fixed
 

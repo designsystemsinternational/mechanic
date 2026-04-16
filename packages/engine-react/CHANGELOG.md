@@ -11,12 +11,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Dropped support for node.js versions below 20 (EOL prior to that are no longer supported)
 
-### Changed
-
-- Updated React peer dependency to React 19
-
-## 2.0.0-beta.12 - 2025-07-14
-
 ### Added
 
 - Provides a `useDrawLoop` helper to design functions. It destructures to `frameCount` and `timestamp`. Both are updated determined by the pace of `frameRate`
@@ -25,6 +19,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Updated engine to new `registerFrameCallback` and `registerDoneCallback` setup
 - `done` and `frame` are passed into the design function directly now. Destructuring them from `mechanic` is deprecated.
+- Updated React peer dependency to React 19
+
+## 2.0.0-beta.12 - 2025-07-14
+
+### Added
+
 - Expose `isPreview` to design function.
 
 ## 2.0.0-beta.0 - 2022-03-16

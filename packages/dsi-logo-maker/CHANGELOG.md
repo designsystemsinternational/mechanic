@@ -7,11 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### Changed
+
+- Updated all design functions to use the new animation API
+
 ## 2.0.0-beta.10 - 2023-02-10
 
 ### Changed
 
-- Updated all design functions to use the new animation API
 - Updated `fillAnimatedCanvas` to show the new `debounceInputs` and `debounceDelay` setting
 
 ### Added
