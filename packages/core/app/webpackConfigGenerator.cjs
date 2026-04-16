@@ -45,6 +45,14 @@ module.exports = function(
         !pathname.startsWith(__dirname)
       );
     },
+    resolve: {
+      /**
+       * This enables support for importing JS files without
+       * specifying the extension. This is required to make
+       * the node polyfills work correctly.
+       */
+      fullySpecified: false
+    },
     use: {
       loader: resolve("babel-loader"),
       options: {

@@ -44,9 +44,12 @@
   "dependencies": {
     "@mechanic-design/utils": "^2.0.0-beta.10",
     "create-mechanic": "^2.0.0-beta.12",
-    "inquirer": "^8.1.1",
+    "inquirer": "^8.2.6",
     "resolve-cwd": "^3.0.0",
-    "yargs": "^17.0.1"
+    "yargs": "^17.7.2"
+  },
+  "engines": {
+    "node": ">=20"
   },
   "gitHead": "123dc6a0f0532663d411bb9cf1b99271e185436f"
 }

@@ -1,8 +1,7 @@
 const path = require("path");
-const { getOptions } = require("loader-utils");
 
 module.exports = function () {
-  const { appCompsPath } = getOptions(this);
+  const { appCompsPath } = this.getOptions();
 
   const result = appCompsPath
     ? `

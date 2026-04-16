@@ -32,11 +32,12 @@
   ],
   "scripts": {
     "dev": "mechanic dev",
+    "new": "mechanic new function",
     "build": "mechanic build",
     "serve": "mechanic serve"
   },
   "dependencies": {
-    "@babel/runtime": "^7.14.6",
+    "@babel/runtime": "^7.28.6",
     "@mechanic-design/cli": "^2.0.0-beta.12",
     "@mechanic-design/core": "^2.0.0-beta.12",
     "@mechanic-design/engine-canvas": "^2.0.0-beta.12",
