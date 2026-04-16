@@ -32,6 +32,7 @@
   ],
   "scripts": {
     "dev": "mechanic dev",
+    "new": "mechanic new function",
     "build": "mechanic build",
     "serve": "mechanic serve"
   },

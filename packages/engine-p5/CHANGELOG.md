@@ -7,10 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### Removed
+
+- Dropped support for node.js versions below 20 (EOL prior to that are no longer supported)
+
 ### Changed
 
 - Updated engine to new `registerFrameCallback` and `registerDoneCallback` setup
 - `done` and `frame` are passed into the design function directly now. Destructuring them from `mechanic` is deprecated.
+- Updated p5.js to version 2
 
 ## 2.0.0-beta.12 - 2025-07-14
 

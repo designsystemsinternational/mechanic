@@ -39,12 +39,12 @@ export const handler = ({ inputs, done, sketch }) => {
   const loadImageAndAddFilter = () => {
     imgGraphic = sketch.createGraphics(img.width, img.height);
     imgGraphic.image(img, 0, 0);
-    imgGraphic.filter(imgGraphic.GRAY);
-    imgGraphic.blendMode(imgGraphic.MULTIPLY);
+    imgGraphic.filter(sketch.GRAY);
+    imgGraphic.blendMode(sketch.MULTIPLY);
     imgGraphic.noStroke();
     imgGraphic.fill(color);
     imgGraphic.rect(0, 0, img.width, img.height);
-    imgGraphic.blendMode(imgGraphic.BLEND);
+    imgGraphic.blendMode(sketch.BLEND);
   };
 
   const drawGrid = () => {
@@ -70,7 +70,7 @@ export const handler = ({ inputs, done, sketch }) => {
     const words = artistText.split(" ");
     sketch.textSize(element.baseSize * 0.8);
     sketch.textFont(objSansHeavySlanted);
-    const lengths = words.map(t => sketch.textWidth(t));
+    const lengths = words.map(t => sketch.fontWidth(t));
     element.length = Math.max(width / 3, ...lengths) + width / 20;
 
     element.startRow = choice(
@@ -107,7 +107,7 @@ export const handler = ({ inputs, done, sketch }) => {
 
     sketch.textSize(element.baseSize);
     sketch.textStyle(sketch.NORMAL);
-    element.length = sketch.textWidth(titleText) + width / 20;
+    element.length = sketch.fontWidth(titleText) + width / 20;
 
     element.startRow = choice(
       getPossibleStartPositions(availableRows, element.baseRowSize + 1)
@@ -132,12 +132,12 @@ export const handler = ({ inputs, done, sketch }) => {
     sketch.textFont(objSansHeavy);
     const minLength =
       (element.isSingleRow
-        ? sketch.textWidth(datesText) +
+        ? sketch.fontWidth(datesText) +
           width / 20 +
-          sketch.textWidth(locationText)
+          sketch.fontWidth(locationText)
         : Math.max(
-            sketch.textWidth(datesText),
-            sketch.textWidth(locationText)
+            sketch.fontWidth(datesText),
+            sketch.fontWidth(locationText)
           )) +
       width / 20;
 
@@ -171,15 +171,15 @@ export const handler = ({ inputs, done, sketch }) => {
       (element.isSingleRow
         ? Math.max(
             leftWidth / 2,
-            sketch.textWidth(datesText) +
+            sketch.fontWidth(datesText) +
               element.midDistance +
-              sketch.textWidth(locationText)
+              sketch.fontWidth(locationText)
           )
         : Math.max(
             leftWidth / 4,
             Math.max(
-              sketch.textWidth(datesText),
-              sketch.textWidth(locationText)
+              sketch.fontWidth(datesText),
+              sketch.fontWidth(locationText)
             )
           )) +
       leftWidth / 20;
@@ -196,7 +196,7 @@ export const handler = ({ inputs, done, sketch }) => {
       sketch.text(first, element.x1, element.y + element.baseSize);
       sketch.text(
         second,
-        element.x1 + sketch.textWidth(first) + element.midDistance,
+        element.x1 + sketch.fontWidth(first) + element.midDistance,
         element.y + element.baseSize
       );
     } else {
@@ -315,17 +315,16 @@ export const handler = ({ inputs, done, sketch }) => {
     }
   };
 
-  sketch.preload = () => {
-    if (image) {
-      img = sketch.loadImage(URL.createObjectURL(image));
-    }
-    objSansRegular = sketch.loadFont(fontRegular);
-    objSansHeavy = sketch.loadFont(fontHeavy);
-    objSansHeavySlanted = sketch.loadFont(fontHeavySlanted);
-  };
-
-  sketch.setup = () => {
+  sketch.setup = async () => {
     sketch.createCanvas(width, height);
+
+    if (image) {
+      img = await sketch.loadImage(URL.createObjectURL(image));
+    }
+    objSansRegular = await sketch.loadFont(fontRegular);
+    objSansHeavy = await sketch.loadFont(fontHeavy);
+    objSansHeavySlanted = await sketch.loadFont(fontHeavySlanted);
+
     if (img) {
       loadImageAndAddFilter();
     }
