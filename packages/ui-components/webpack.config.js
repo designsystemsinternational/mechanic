@@ -3,6 +3,7 @@ import { fileURLToPath } from "url";
 import webpack from "webpack";
 import getPort from "get-port";
 import { spawn } from "child_process";
+import ReactRefreshWebpackPlugin from "@pmmmwh/react-refresh-webpack-plugin";
 
 import HtmlWebPackPlugin from "html-webpack-plugin";
 import { BundleAnalyzerPlugin } from "webpack-bundle-analyzer";
@@ -55,13 +56,14 @@ export default async (env, argv) => {
       chunks: ["app"]
     }),
     // new BundleAnalyzerPlugin(),
-    new webpack.HotModuleReplacementPlugin()
+    new webpack.HotModuleReplacementPlugin(),
+    ...(mode === 'development' ? [new ReactRefreshWebpackPlugin()] : []),
   ];
 
   const devServer = {
     port: process.env.PORT || (await getPort({ port: 3000 })),
     host: "0.0.0.0",
-    disableHostCheck: true,
+    allowedHosts: "all",
     historyApiFallback: true,
     hot: true
   };

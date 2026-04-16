@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { render } from "react-dom";
+import { createRoot } from "react-dom/client";
 import {
   MechanicInput,
   TextInput,
@@ -429,4 +429,4 @@ const App = () => {
 };
 
 const root = document.getElementById("root");
-render(<App></App>, root);
+createRoot(root).render(<App></App>);

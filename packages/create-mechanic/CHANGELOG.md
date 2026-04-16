@@ -10,6 +10,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 - Changed all examples and templates to new animation API
+- Updated internal dependencies to their latest stable and supported versions
+- Updated poster example to use version p5.js 2.0
 
 ## 2.0.0-beta.12 - 2025-07-14
 

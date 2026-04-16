@@ -63,19 +63,31 @@ const setUpFunctionPath = path.resolve(
 const inputsPath = path.resolve(
   path.join(__dirname, "..", "..", "app", "INPUTS")
 );
-const getFuncScriptContent = designFunctionPath => `
+const getFuncScriptContent = designFunctionPath => {
+  const normalizedDesignFunctionPath = designFunctionPath
+    .split(path.sep)
+    .join("/");
+
+  return `
 import { inputsDefs, inputErrors } from "${inputsPath
-  .split(path.sep)
-  .join("/")}";
-import * as designFunction from "${designFunctionPath
-  .split(path.sep)
-  .join("/")}";
+      .split(path.sep)
+      .join("/")}";
+import * as designFunction from "${normalizedDesignFunctionPath}";
 import { setUp } from "${setUpFunctionPath.split(path.sep).join("/")}";
 setUp(inputsDefs, designFunction, inputErrors)
+
 if (module.hot) {
   // Accept hot update
-  module.hot.accept();
+  module.hot.accept("${normalizedDesignFunctionPath}", function() {
+  import("${normalizedDesignFunctionPath}").then((newDesignFunction) => {
+      setUp(inputsDefs, newDesignFunction, inputErrors);
+      if (window.parent !== window) {
+        window.parent.postMessage({ type: "mechanic-hmr-update" }, "*");
+      }
+    });
+  });
 }`;
+};
 
 const generateFuncTempScripts = functionsPath => {
   const designFunctions = {};
@@ -135,7 +147,7 @@ const generateInputScript = inputsPath => {
 };
 
 const setCustomInterrupt = (callback, tempDirObjs = []) => {
-  process.on("SIGINT", function () {
+  process.on("SIGINT", function() {
     if (tempDirObjs.length > 0)
       tempDirObjs.forEach(obj => obj.removeCallback());
     callback();

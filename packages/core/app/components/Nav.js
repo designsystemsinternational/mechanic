@@ -1,11 +1,11 @@
 import React, { useEffect } from "react";
 import Case from "case";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router";
 import { DropdownIcon } from "@mechanic-design/ui-components";
 import * as css from "./Nav.module.css";
 
 export const Nav = ({ name, functions }) => {
-  const history = useHistory();
+  const navigate = useNavigate();
   const functionsNames = Object.keys(functions);
 
   const currentFn = functions[name];
@@ -23,7 +23,7 @@ export const Nav = ({ name, functions }) => {
           <select
             id="navigation-select"
             className={css.navigationSelect}
-            onChange={({ target }) => history.push(`/${target.value}`)}
+            onChange={({ target }) => navigate(`/${target.value}`)}
             name={name}
             value={name}
           >

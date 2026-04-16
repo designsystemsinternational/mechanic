@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### Removed
+
+- Dropped support for node.js versions below 20 (EOL prior to that are no longer supported)
+
 ## 2.0.0-beta.12 - 2025-07-14
 
 ### Added

@@ -1,9 +1,19 @@
 import React, { useState, useEffect } from "react";
-import { render, unmountComponentAtNode } from "react-dom";
+import { createRoot } from "react-dom/client";
 import { Mechanic } from "@mechanic-design/core";
 
 const root = document.getElementById("root");
 const head = document.querySelector("head");
+/**
+ * Once you call root.unmount you cannot call root.render again on the same 
+ * root. Attempting to call root.render on an unmounted root will throw a 
+ * “Cannot update an unmounted root” error. 
+ *
+ * However, you can create a new root for the same DOM node after the previous 
+ * root for that node has been unmounted. Which is why we keep the react root
+ * in a global variable, so we can create a new one if needed.
+ */
+let reactRoot;
 
 /**
  * Returns a drawLoop hook preloaded with the correctly setup version of
@@ -11,29 +21,32 @@ const head = document.querySelector("head");
  */
 const makeDrawLoop =
   drawLoop =>
-  (isPlaying = true) => {
-    const [animationProgress, setAnimationProgress] = useState({
-      frameCount: 0,
-      timestamp: 0
-    });
+    (isPlaying = true) => {
+      const [animationProgress, setAnimationProgress] = useState({
+        frameCount: 0,
+        timestamp: 0
+      });
 
-    useEffect(() => {
-      if (!isPlaying) {
-        drawLoop.stop();
-        return;
-      }
+      useEffect(() => {
+        if (!isPlaying) {
+          drawLoop.stop();
+          return;
+        }
 
-      drawLoop.start(setAnimationProgress);
+        drawLoop.start(setAnimationProgress);
 
-      return () => drawLoop.stop();
-    }, [isPlaying]);
+        return () => drawLoop.stop();
+      }, [isPlaying]);
 
-    return animationProgress;
-  };
+      return animationProgress;
+    };
 
 export const run = (functionName, func, values, config) => {
   const { isPreview } = config;
-  unmountComponentAtNode(root);
+
+  if (reactRoot) {
+    reactRoot.unmount();
+  }
 
   const mechanic = new Mechanic(func.settings, values, config);
   const Handler = func.handler;
@@ -60,9 +73,9 @@ export const run = (functionName, func, values, config) => {
     useDrawLoop: makeDrawLoop(mechanic.drawLoop)
   });
 
-  render(
-    <Handler inputs={mechanic.values} {...callbacks} isPreview={isPreview} />,
-    root
+  reactRoot = createRoot(root);
+  reactRoot.render(
+    <Handler inputs={mechanic.values} {...callbacks} isPreview={isPreview} />
   );
 
   return mechanic;

@@ -1,8 +1,7 @@
 const path = require("path");
-const { getOptions } = require("loader-utils");
 
 module.exports = function () {
-  const { designFunctions } = getOptions(this);
+  const { designFunctions } = this.getOptions();
 
   let importSection = "";
   let codeSection = "";

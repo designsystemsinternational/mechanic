@@ -1,5 +1,5 @@
 import React, { useRef } from "react";
-import { Switch, Route, withRouter } from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router";
 
 import { SideBar } from "./components/SideBar.js";
 import { NotFound } from "./components/NotFound.js";
@@ -42,49 +42,49 @@ const Layout = ({ funcName, functions, mainRef, iframeRef }) => {
   );
 };
 
-const AppComponent = () => {
+export const App = () => {
   const mainRef = useRef();
   const iframe = useRef();
   const firstFunctionName = Object.keys(functions)[0];
   return (
     <div className={css.base}>
-      <Switch>
-        {Object.keys(functions).map((name, i) => (
+      <BrowserRouter basename={BASENAME}>
+        <Routes>
+          {Object.keys(functions).map(name => (
+            <Route
+              key={`route-${name}`}
+              path={`/${name}`}
+              Component={() => (
+                <Layout
+                  key={`layout-${name}`}
+                  funcName={name}
+                  functions={functions}
+                  iframeRef={iframe}
+                  mainRef={mainRef}
+                />
+              )}
+            />
+          ))}
+
           <Route
-            key={`route-${name}`}
-            path={[`/${name}`]}
-            render={() => (
-              <Layout
-                funcName={name}
-                functions={functions}
-                iframeRef={iframe}
-                mainRef={mainRef}
-              />
-            )}
+            path="/"
+            Component={() =>
+              !theresNoFunctions ? (
+                <Layout
+                  funcName={firstFunctionName}
+                  functions={functions}
+                  iframeRef={iframe}
+                  mainRef={mainRef}
+                />
+              ) : (
+                <NotFound theresNoFunctions={theresNoFunctions} />
+              )
+            }
           />
-        ))}
 
-        <Route
-          exact
-          path="/"
-          render={() =>
-            !theresNoFunctions ? (
-              <Layout
-                funcName={firstFunctionName}
-                functions={functions}
-                iframeRef={iframe}
-                mainRef={mainRef}
-              />
-            ) : (
-              <NotFound theresNoFunctions={theresNoFunctions} />
-            )
-          }
-        />
-
-        <Route component={NotFound} />
-      </Switch>
+          <Route path="*" Component={NotFound} />
+        </Routes>
+      </BrowserRouter>
     </div>
   );
 };
-
-export const App = withRouter(AppComponent);

@@ -1,6 +1,6 @@
 {
   "dependencies": {
     "@mechanic-design/engine-react": "^2.0.0-beta.12",
-    "@mechanic-design/ui-components": "^2.0.0-beta.10"
+    "@mechanic-design/ui-components": "^2.0.0-beta.12"
   }
 }

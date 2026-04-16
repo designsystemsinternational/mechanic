@@ -1,5 +1,6 @@
 const path = require("path");
 const webpack = require("webpack");
+const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
@@ -8,7 +9,7 @@ const CopyPlugin = require("copy-webpack-plugin");
 
 const { resolve } = require;
 
-module.exports = function (
+module.exports = function(
   modeParameter,
   { designFunctions, inputsData, appCompsPath, staticPath },
   distDir,
@@ -44,6 +45,14 @@ module.exports = function (
         !pathname.startsWith(__dirname)
       );
     },
+    resolve: {
+      /**
+       * This enables support for importing JS files without
+       * specifying the extension. This is required to make
+       * the node polyfills work correctly.
+       */
+      fullySpecified: false
+    },
     use: {
       loader: resolve("babel-loader"),
       options: {
@@ -59,8 +68,10 @@ module.exports = function (
             }
           ]
         ],
-        plugins: [
-          resolve("react-hot-loader/babel"),
+        plugins: isProduction ? [
+          resolve("@babel/plugin-transform-runtime")
+        ] : [
+          resolve("react-refresh/babel"),
           resolve("@babel/plugin-transform-runtime")
         ],
         env: {
@@ -209,9 +220,9 @@ module.exports = function (
       app: isProduction
         ? path.resolve(__dirname, "./index.js")
         : [
-            resolve("webpack-hot-middleware/client"),
-            path.resolve(__dirname, "./index.js")
-          ]
+          resolve("webpack-hot-middleware/client"),
+          path.resolve(__dirname, "./index.js")
+        ]
     }
   );
 
@@ -237,6 +248,7 @@ module.exports = function (
     new webpack.EnvironmentPlugin({
       "process.env.NODE_ENV": mode
     }),
+    ...(mode === 'development' ? [new ReactRefreshWebpackPlugin()] : []),
     new HtmlWebpackPlugin({
       template: path.resolve(__dirname, "./index.html"),
       chunks: ["app"]
@@ -249,15 +261,15 @@ module.exports = function (
           chunks: [name]
         })
     ),
-    new NodePolyfillPlugin()
+    new NodePolyfillPlugin(),
   ].concat(
     isProduction
       ? [
-          new CleanWebpackPlugin(),
-          new MiniCssExtractPlugin({
-            filename: "[contenthash]-[name].css"
-          })
-        ]
+        new CleanWebpackPlugin(),
+        new MiniCssExtractPlugin({
+          filename: "[contenthash]-[name].css"
+        })
+      ]
       : [new webpack.HotModuleReplacementPlugin()]
   );
 
@@ -279,7 +291,7 @@ module.exports = function (
       extensions: [".js", ".jsx", ".json"],
       alias: {
         react: resolve("react"),
-        "react-dom": resolve("react-dom")
+        "react-dom/client": resolve("react-dom/client")
       }
     },
     module: {

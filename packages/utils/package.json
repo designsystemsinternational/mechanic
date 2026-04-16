@@ -39,7 +39,7 @@
     "test": "node ./test.js"
   },
   "dependencies": {
-    "chalk": "^4.1.1",
+    "chalk": "^4.1.2",
     "ora": "^5.4.1"
   },
   "gitHead": "a40b8eb1dba5138782d47cbc6d25a18ec8cb1cea"
