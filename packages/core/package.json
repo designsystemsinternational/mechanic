@@ -1,6 +1,6 @@
 {
   "name": "@mechanic-design/core",
-  "version": "2.0.0",
+  "version": "2.0.0-beta.12",
   "description": "Mechanic is a framework to build assets built on web code.",
   "license": "MIT",
   "homepage": "https://github.com/designsystemsinternational/mechanic#readme",
@@ -45,9 +45,9 @@
     "@babel/preset-env": "^7.28.6",
     "@babel/preset-react": "^7.28.5",
     "@babel/runtime": "^7.28.6",
-    "@mechanic-design/fonts": "^2.0.0",
-    "@mechanic-design/ui-components": "^2.0.0",
-    "@mechanic-design/utils": "^2.0.0",
+    "@mechanic-design/fonts": "^1.1.0",
+    "@mechanic-design/ui-components": "^2.0.0-beta.10",
+    "@mechanic-design/utils": "^2.0.0-beta.10",
     "@pmmmwh/react-refresh-webpack-plugin": "^0.6.1",
     "babel-loader": "^10.0.0",
     "case": "^1.6.3",
@@ -83,8 +83,8 @@
     "use-immer": "^0.11.0",
     "webpack": "^5.104.1",
     "webpack-dev-middleware": "^7.4.5",
-    "webpack-dev-server": "^5.2.3",
-    "webpack-hot-middleware": "^2.26.1"
+    "webpack-hot-middleware": "^2.26.1",
+    "webpack-dev-server": "^5.2.3"
   },
   "engines": {
     "node": ">=20"

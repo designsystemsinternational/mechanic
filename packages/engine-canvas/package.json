@@ -1,6 +1,6 @@
 {
   "name": "@mechanic-design/engine-canvas",
-  "version": "2.0.0",
+  "version": "2.0.0-beta.12",
   "description": "Mechanic engine that powers the Canvas API.",
   "license": "MIT",
   "homepage": "https://github.com/designsystemsinternational/mechanic#readme",
@@ -37,7 +37,7 @@
   "type": "module",
   "exports": "./index.js",
   "dependencies": {
-    "@mechanic-design/core": "^2.0.0"
+    "@mechanic-design/core": "^2.0.0-beta.12"
   },
   "engines": {
     "node": ">=20"
