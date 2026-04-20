@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.0.0] - 2026-04-20
+
 ### Changed
 
 - Deprecated destructuring `done()` and `frame()` from the `mechanic` object. The lifecycle callbacks are now passed into the design function handler directly now
@@ -365,7 +367,8 @@ Beta release
 
 First logged release
 
-[unreleased]: https://github.com/designsystemsinternational/mechanic/compare/v2.0.0-beta.12...main
+[unreleased]: https://github.com/designsystemsinternational/mechanic/compare/v2.0.0...main
+[2.0.0]: https://github.com/designsystemsinternational/mechanic/releases/tag/v2.0.0
 [2.0.0-beta.12]: https://github.com/designsystemsinternational/mechanic/releases/tag/v2.0.0-beta.12
 [2.0.0-beta.11]: https://github.com/designsystemsinternational/mechanic/releases/tag/v2.0.0-beta.11
 [2.0.0-beta.10]: https://github.com/designsystemsinternational/mechanic/releases/tag/v2.0.0-beta.10
