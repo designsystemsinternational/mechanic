@@ -5,6 +5,8 @@ import { NO_PRESET_VALUE, addPresetsAsSources } from "./presets.js";
 import { resetOtherInteractive } from "./useInteractiveInputs.js";
 import { hashFromString } from "../../../src/mechanic-utils.js";
 
+export const LOCAL_STORAGE_PREFIX = "mechanic_";
+
 const isEmptyObject = obj =>
   obj &&
   Object.keys(obj).length === 0 &&
@@ -147,6 +149,33 @@ function useLocalStorageState(key, initialState, clean) {
   return [value, setValue, remove];
 }
 
+/**
+ * clearLocalStorage function
+ * Removes a specific mechanic entry in localStorage object
+ * or clears all mechanic entries if entryKey is not set.
+ * @param {string} entryKey - Key of entry in localStorage object
+ */
+function clearLocalStorage(entryKey) {
+  if (typeof localStorage === "undefined") {
+    return;
+  }
+  if (
+    entryKey != null &&
+    localStorage.getItem(entryKey) != null &&
+    entryKey.startsWith(LOCAL_STORAGE_PREFIX)
+  ) {
+    localStorage.removeItem(entryKey);
+    return entryKey;
+  }
+  for (let i = 0; i < localStorage.length; i++) {
+    const key = localStorage.key(i);
+    if (key.startsWith(LOCAL_STORAGE_PREFIX)) {
+      localStorage.removeItem(key);
+    }
+  }
+  return null;
+}
+
 const cleanValues = (object, reference) => {
   for (let property in object) {
     if (!(property in reference) && property !== "preset") {
@@ -185,7 +214,7 @@ const useValues = (functionName, functionInputs, presets) => {
   }, [functionInputs]);
 
   const inputsHash = generateHashFromInputsObject(functionInputs);
-  const storageKey = `mechanic_df_${functionName}_${inputsHash}`;
+  const storageKey = `${LOCAL_STORAGE_PREFIX}_df_${functionName}_${inputsHash}`;
 
   const [values, __setValues] = useLocalStorageState(
     storageKey,
@@ -217,4 +246,4 @@ const useValues = (functionName, functionInputs, presets) => {
   return [values, setValues];
 };
 
-export { useValues };
+export { useValues, clearLocalStorage };
